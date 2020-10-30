@@ -15,7 +15,11 @@
 				type : "POST",
 				data : Data,
 				success : function(data){
-					console.log(data.usrId);
+					if(data.err != "Y"){
+						window.location.href = '/counsel/counselMain.do';
+					}else{
+						alert(data.MSG);
+					}
 				},
 				error : function(){
 					console.log("ER");

@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import kr.co.chase.ncms.common.dao.SysCodeDao;
 import kr.co.chase.ncms.common.service.SysCodeService;
+import kr.co.chase.ncms.dao.SysCodeDao;
 
 @Service("sysCodeService")
 public class SysCodeServiceImpl extends EgovAbstractServiceImpl implements SysCodeService {

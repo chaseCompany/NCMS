@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sysUsr">
+	<select id="sysUsr.getSysUsrList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysUsr.getSysUsrList */
+			   USR_ID, USR_NM, REG_DT
+		  FROM SYS_USR
+		 ORDER BY REG_DT DESC
+		 LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	]]>
+	</select>
+
+	<select id="sysUsr.getSysUsrInfo" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysUsr.getSysUsrInfo */
+			   USR_ID, USR_NM, ROLE_CD, SITE_CD, REG_DT, UPD_DT
+		  FROM SYS_USR
+		 WHERE USR_ID = #{usrId}
+		   AND PASSWD = #{passwd}
+		   AND USE_YN = 'Y'
+	]]>
+	</select>
+</mapper>

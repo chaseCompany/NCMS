@@ -1,4 +1,4 @@
-package kr.co.chase.ncms.common.dao;
+package kr.co.chase.ncms.dao;
 
 import java.sql.SQLException;
 import java.util.HashMap;

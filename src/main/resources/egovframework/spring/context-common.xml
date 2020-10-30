@@ -13,8 +13,8 @@
 	<bean id="kvaPageUtil" class="kr.co.chase.ncms.common.domain.PageUtil" />
 
 	<!-- Commmon System DAO -->
-	<bean id="sysCodeDao" class="kr.co.chase.ncms.common.dao.SysCodeDao" />
-	<bean id="ipControllMgrDao" class="kr.co.chase.ncms.common.dao.IpControllMgrDao" />
+	<bean id="sysCodeDao" class="kr.co.chase.ncms.dao.SysCodeDao" />
+	<bean id="ipControllMgrDao" class="kr.co.chase.ncms.dao.IpControllMgrDao" />
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="100000000" />

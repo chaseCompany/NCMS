@@ -1,7 +1,6 @@
-package kr.co.chase.ncms.common;
+package kr.co.chase.ncms.login.web;
 
 import java.util.HashMap;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -12,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.co.chase.ncms.common.service.SysCodeService;
+import kr.co.chase.ncms.login.service.LoginService;
 
 @Controller
 public class LoginController {
-	@Resource(name="sysCodeService")
-	private SysCodeService sysCodeService;
+	@Resource(name="loginService")
+	private LoginService loginService;
 
 	/**
 	 * 로그인 페이지 호출
@@ -39,12 +38,20 @@ public class LoginController {
 		String usrId = StringUtils.defaultString((String)reqMap.get("usrId"), "");
 		String passwd = StringUtils.defaultString((String)reqMap.get("passwd"), "");
 
-		reqMap.put("grpCd", "C1000");
-		reqMap.put("useYn", "Y");
-		List<HashMap<String, Object>> resultList = sysCodeService.getSysCdList(reqMap);
+		if(usrId == "" || passwd == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "사용자 ID 또는 비밀번호를 입력하세요.");
+		}else{
+			HashMap<String, Object> usrInfoMap = loginService.getSysUsrInfo(reqMap);
 
-		resultView.addObject("usrId", usrId);
-		resultView.addObject("passwd", passwd);
+			if(usrInfoMap != null) {
+				resultView.addObject("err", "N");
+				resultView.addObject("usrInfo", usrInfoMap);
+			}else{
+				resultView.addObject("err", "Y");
+				resultView.addObject("MSG", "사용자 ID가 존재하지 않거나 비밀번호가 맞지 않습니다.");
+			}
+		}
 
 		return resultView;
 	}
