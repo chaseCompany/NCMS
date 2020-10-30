@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<title>대한배구협회 안내 메일 입니다.</title>
+</head>
+
+<body>
+	<div align="center">
+		<table width="700" border="0" cellspacing="0" cellpadding="0">
+			<tbody>
+				<tr>
+					<td width="100%" align="right" style="text-align: right;"></td>
+				</tr>
+			</tbody>
+		</table>
+		<div style="width: 700px; display: block;">
+			<table width="700"
+				style="margin: 0px auto; font-family: Malgun Gothic, Dotum, Verdana, sans-serif; border-top-color: rgb(221, 221, 221); border-right-color: rgb(221, 221, 221); border-left-color: rgb(221, 221, 221); border-top-width: 1px; border-right-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-left-style: solid;"
+				cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr>
+						<td></td>
+						<td height="35" style="height: 35px;">&nbsp;</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 40px;"></td>
+						<td>
+							<table width="100%" cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td style="text-align: left; vertical-align: top;">
+											&nbsp;<img src="${url}/images/mail/logo.png">
+										</td>
+										<td></td>
+										<td style="text-align: right;"><a
+											title="https://www.kva.or.kr" class="light"
+											style="text-align: right; color: rgb(102, 102, 102); font-family: malgun gothic, dotum, 맑은고딕, 돋움, verdana, sans-serif; font-size: 12px; text-decoration: none;"
+											href="https://www.kva.or.kr" target="_blank"
+											rel="noreferrer noopener">https://www.kva.or.kr</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+						<td style="width: 40px;"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td height="15"
+							style="height: 15px; border-bottom-color: rgb(0, 0, 0); border-bottom-width: 2px; border-bottom-style: solid;"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td height="60" style="height: 60px;">&nbsp;</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td
+							style="text-align: center; color: rgb(0, 0, 0); letter-spacing: -0.5px; font-family: Malgun Gothic, Dotum, 맑은고딕, 돋움, Verdana, sans-serif; font-size: 31px; font-weight: bold;">대한배구협회
+							안내 메일 입니다.</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td
+							style="height: 60px; border-bottom-color: rgb(0, 0, 0); border-bottom-width: 2px; border-bottom-style: solid;">&nbsp;</td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td
+							style="height: 50px; color: rgb(1, 1, 1); font-family: Malgun Gothic, Dotum, 맑은고딕, 돋움, Verdana, sans-serif; font-size: 18px;">
+							<br>&nbsp;대표홈페이지 → 어울림방<strong>&nbsp;&quot;신규Q&A 건수
+									1건이&quot;</strong>등록되었습니다.<br> &nbsp;확인해 주시기 바랍니다.
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><table align="left"
+								style="padding: 0px; width: 45%; height: 184px; text-align: left; float: left !important; min-width: 244px;"
+								border="0" cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td height="20"></td>
+									</tr>
+									<tr>
+										<td height="29" style="vertical-align: top;"><span
+											style='color: rgb(51, 51, 51); font-family: "맑은 고딕", SDNeoGothic, SDGothicNeo, "돋움", sans-serif; font-size: 15px; font-weight: bold;'>관리자페이지에서
+												조회하기</span></td>
+									</tr>
+									<tr>
+										<td height="45" style="vertical-align: top;"><span
+											style='text-align: left; color: rgb(164, 164, 164); line-height: 18px; font-family: &amp; quot; 맑은 고딕&amp;quot; , SDNeoGothic , SDGothicNeo, &amp;quot; 돋움 &amp;quot; , sans-serif; font-size: 12px;'>신규등록된
+												Q&amp;A의 내용에 답변을 등록할 수 <BR>있습니다.
+										</span></td>
+									</tr>
+									<tr>
+										<td height="34" style="vertical-align: top;"><table
+												align="left"
+												style="background: rgb(255, 255, 255); border: 1px solid rgb(192, 192, 192); border-image: none; text-align: center;"
+												border="0" cellspacing="0" cellpadding="0">
+												<tbody>
+													<tr>
+														<td width="79" height="32"><a title="바로가기"
+															style='background: rgb(255, 255, 255); border: 0px currentColor; border-image: none; text-align: center; color: rgb(92, 92, 92); font-family: "맑은 고딕", sdneogothic, sdgothicneo, "돋움", sans-serif; font-size: 13px; text-decoration: none; display: block; line-: 31px;'
+															href="${url}/admin" target="_blank"
+															rel="noreferrer noopener">바로가기</a></td>
+													</tr>
+												</tbody>
+											</table></td>
+									</tr>
+								</tbody>
+							</table>
+							<table align="left"
+								style="padding: 0px; width: 45%; height: 184px; text-align: left; float: left !important; min-width: 244px;"
+								border="0" cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td height="20"></td>
+									</tr>
+									<tr>
+										<td height="29" style="vertical-align: top;"><span
+											style='color: rgb(51, 51, 51); font-family: "맑은 고딕", SDNeoGothic, SDGothicNeo, "돋움", sans-serif; font-size: 15px; font-weight: bold;'>대표홈페이지에서
+												확인하기</span></td>
+									</tr>
+									<tr>
+										<td height="45" style="vertical-align: top;"><span
+											style='text-align: left; color: rgb(164, 164, 164); line-height: 18px; font-family: "맑은 고딕", SDNeoGothic, SDGothicNeo, "돋움", sans-serif; font-size: 12px;'>신규등록된
+												Q&A내용을 확인할 수 <br> 있습니다.
+										</span></td>
+									</tr>
+									<tr>
+										<td height="34" style="vertical-align: top;"><table
+												align="left"
+												style="background: rgb(255, 255, 255); border: 1px solid rgb(192, 192, 192); border-image: none; text-align: center;"
+												border="0" cellspacing="0" cellpadding="0">
+												<tbody>
+													<tr>
+														<td width="79" height="32"><a title="바로가기"
+															style='background: rgb(255, 255, 255); border: 0px currentColor; border-image: none; text-align: center; color: rgb(92, 92, 92); font-family: "맑은 고딕", sdneogothic, sdgothicneo, "돋움", sans-serif; font-size: 13px; text-decoration: none; display: block; line-: 31px;'
+															href="${url}/user/usr11Board/usrBoard.do?p_idNm=questionAnswer"
+															target="_blank" rel="noreferrer noopener">바로가기</a></td>
+													</tr>
+												</tbody>
+											</table></td>
+									</tr>
+								</tbody>
+							</table></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td height="50" style="height: 50px; text-align: center;">&nbsp;</td>
+						<td></td>
+					</tr>
+					<!--인증테이블 끝-->
+					<tr>
+						<td colspan="3">
+							<table width="100%" style="margin: 0px; padding: 0px;"
+								bgcolor="#738089" border="0" cellspacing="0" cellpadding="0">
+
+								<tbody>
+									<tr>
+										<td height="30" style="height: 30px;" colspan="4"></td>
+									</tr>
+									<tr>
+										<td style="width: 40px;"></td>
+										<td
+											style="color: rgb(233, 239, 245); line-height: 17px; font-size: 12px;"
+											colspan="2"><img src="${url}/images/mail/img_arrow.png"
+											border="0"><strong>&nbsp;문의 방법</strong><br> <span
+													style="color: rgb(233, 239, 245); line-height: 17px; font-size: 12px;">&nbsp;&nbsp;&nbsp;본
+														이메일의 발신자 주소는 발신전용으로 문의하실 경우 회신되지 않습니다.<br>
+															&nbsp;&nbsp;&nbsp;문의는 [대한배구협회 총무부]로 문의하시기 바랍니다.
+												</span> <br> <img src="${url}/images/mail/img_arrow.png"
+														border="0"> 02)578-9025(내선 ④ 총무부)</td>
+										<td style="width: 40px;"></td>
+									</tr>
+									<tr>
+										<td bgcolor="#738089" colspan="4">
+											<table width="100%" style="margin: 0px; padding: 0px;"
+												bgcolor="#738089" border="0" cellspacing="0" cellpadding="0">
+												<tbody>
+													<tr>
+														<td></td>
+														<td height="25"
+															style="height: 25px; border-top-color: rgb(157, 166, 173); border-top-width: 1px; border-top-style: solid;"
+															colspan="2"></td>
+														<td></td>
+													</tr>
+													<tr>
+														<td style="width: 40px;"></td>
+														<td
+															style="color: rgb(233, 239, 245); line-height: 17px; font-size: 12px;">대한민국
+															배구협회 <span
+															style="padding: 0px 2px; line-height: 14px; font-size: 6px; vertical-align: top;">|</span>
+															E-mail : kva@kva.or.kr (총무부), gamed@kva.or.kr (경기부),
+															international@kva.or.kr (국제부), volley7330@kva.or.kr
+															(생활체육부)<br> TEL : 02)578-9025(내선 ①국제부 ②생체부 ③경기부 ④
+																총무부 / FAX : 02)6499-1215 | <br>Copyrightⓒ 2019
+																	Korea Volleyball Association. All Rights Reserved. 
+														</td>
+														<td style="width: 40px;"></td>
+													</tr>
+													<tr>
+														<td height="30" style="height: 30px;" colspan="4"></td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table width="100%"
+								style="margin: 0px auto; padding: 0px; border-bottom-color: rgb(221, 221, 221); border-bottom-width: 1px; border-bottom-style: solid;"
+								border="0" cellspacing="0" cellpadding="0">
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

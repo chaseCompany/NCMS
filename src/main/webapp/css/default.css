@@ -1,0 +1,92 @@
+@charset "utf-8";
+body {width:100%;height:100%;margin:0;padding:0;border:none;font-family:'Noto Sans KR', sans-serif;overflow-y:hidden}
+textarea {resize: none !important}
+.number > input  {text-align: right;}
+label {display:inline-block;}
+
+label.required:before { content: "*";display: inline-block;margin-right: 2px;line-height: 1;font-size: 14px;color: #ed4014;}
+label.text {font-size:14px;font-weight: 500; margin:0 8px 0 6px !important;color:#606266;vertical-align: middle;}
+label.text:not(:first-child) {font-weight: 500; margin:0 8px 0 10px !important;vertical-align: middle;}
+
+span.readonly {display:inline-block; border-radius:4px;border:1px solid #DCDFE6;height:30px;line-height:30px;font-size:13px;color:#606266;padding:0 8px;background: #f4f4f4;}
+
+     .bodydiv{
+        widith:100%;
+        height:100%;
+        text-align:center;
+        font-size:14px;
+        color:#0f0;
+     }
+     .sidebar{
+        widith:100%;
+        height:100%;
+        text-align:center;
+        font-size:14px;
+        color:#000;
+     }
+
+	.layout-logo{
+        width: 100px;
+        height: 30px;
+        background: #5b6270;
+        border-radius: 3px;
+        float: left;
+        position: relative;
+        top: 15px;
+        left: 20px;
+    }
+
+div.tac > input {text-align:center}
+div.ro > input {background:#f4f4f4;}
+
+.mgt5{margin-top:5px;}
+.mgt6 {margin-top:6px;}
+.mgt7 {margin-top:7px;}
+.mgt8 {margin-top:8px;}
+.mgt10 {margin-top:10px;}
+
+ #appcard > .ivu-card-head {background:#f0faff;padding: 8px 12px;color:#fff}
+ #appcard > .ivu-card-body {background:#fdfdfd; padding: 10px 12px;border-radius: 4px;} /* f6f6f6 */
+ #appcard {border-radius: 0 0 4px 4px; border-top: 2px solid #0E76BA;}
+ .page_title {font-size:18px !important;font-weight:500;color:#fff !important;}
+
+ .subcard  p:not(:first-child) {margin-top:10px;}
+
+
+.search_card {margin-bottom: 10px;background:#F0F9EB;}
+
+.form_card p:not(:first-child) {margin-top:10px;}
+.form_card1 p label {margin-right: 10px; width:20%}
+
+.form_button {text-align:center;margin-top:16px;}
+.form_button button:not(:first-child) {margin-left:20px;}
+
+.popup_content .ivu-modal-content {border: 1px solid #DCDEE2; border-radius: 0 0 6px 6px}
+.popup_content .ivu-modal-body {background: #fdfdfd;}
+.popup_content .ivu-modal-header{background:#f0faff}
+.popup_content .ivu-modal-header-inner{vertical-align:bottom;font-weight:bold}
+
+.header-menu,  .header-menu > a {font-size:17px;color:#fff; text-decoration: none;}
+.header-menu > a {margin:0 20px;}
+.menu-button {padding: 6px 6px 4px 6px;}
+
+.main-top-button {margin-bottom:5px;}
+
+
+button:disabled,
+button[disabled]{
+  border: 1px solid #C3C3C3 !important;
+  background-color: #E0E0E0 !important;
+  color: #A3A3A3 !important;
+}
+
+.link-box{border:1px solid #e9e9eb;color: #409EFF;background-color: #f4f4f5;height: 31px;border-radius: 4px;box-sizing: border-box;white-space: nowrap;}
+
+@media ( max-width: 1740px ) {
+  .x-mgt10 {margin-top:10px;}
+}
+
+
+.col_link{ color:#169;font-weight:400;}
+a.col_link, a.col_link:link, a.col_link:visited{ color: #1a0dab; text-decoration: none; }
+a.col_link:hover, a.col_link:active{ color: #c61a1a; text-decoration: underline;}

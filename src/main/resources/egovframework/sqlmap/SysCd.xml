@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="sysCd">
+	<select id="sysCd.getSysCdList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysCd.getSysCdList */
+			   CD_ID, CD_NM, DP_SEQ
+		  FROM SYS_CD
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="grpCd != null or grpCD != ''">
+		   AND GRP_CD = #{grpCd}
+			</if>
+			<if test="useYn != null or useYn != ''">
+		   AND USE_YN = #{useYn}
+			</if>
+		</trim>
+	</select>
+
+	<insert id="sysCd.insertSysCd" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* sysCd.insertSysCd */ INTO SYS_CD(
+			GRP_CD		, CD_ID			, CD_NM			, DP_SEQ		, USE_YN
+		  , CRE_DT		, CRE_ID		, UPD_DT		, UPD_ID
+		)VALUE(
+			#{grpCd}	, #{cdId}		, #{cdNm}		, #{dpSeq}		, #{useYn}
+		  , #{creDt}	, #{creId}		, #{updDt}		, #{updId}
+		)
+	]]>
+	</insert>
+</mapper>

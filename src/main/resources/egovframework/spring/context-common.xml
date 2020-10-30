@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- Commmon Bean -->
+	<bean id="kvaPageUtil" class="kr.co.chase.ncms.common.domain.PageUtil" />
+
+	<!-- Commmon System DAO -->
+	<bean id="sysCodeDao" class="kr.co.chase.ncms.common.dao.SysCodeDao" />
+	<bean id="ipControllMgrDao" class="kr.co.chase.ncms.common.dao.IpControllMgrDao" />
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="100000000" />
+		<property name="maxInMemorySize" value="100000000" />
+	</bean>
+
+	<!--  velocityEngine 동적 메리 컨텐츠를 위한 velocity view  -->
+	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="WEB-INF/mail"/>
+		<property name="velocityProperties" >
+			<props>
+				<prop key="input.encoding">EUC-KR</prop>
+				<prop key="output.encoding">EUC-KR</prop>
+			</props>
+		</property>
+	</bean> 
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/kr/co/chase/ncms/**" />
+			<bean class="kr.co.chase.ncms.common.AuthenticInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>

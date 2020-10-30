@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<beans profile="prod">
+		<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+			<property name="properties">
+		        <map>
+					<!-- 관리자 화면에 운영 표시 -->	        	
+		        	<entry key="systemNm" value="운영"/>
+		        	
+		        	<entry key="pageUnit" value="10"/>
+		        	<entry key="pageSize" value="10"/>
+		        	<!-- 메일에서 사용 -->
+		        	<entry key="site.url" value="https://sbirt.kcgp.or.kr"/>
+		        	<entry key="site.fromMail" value="sbirt@kcgp.or.kr"/>
+
+		        	<!-- 시스템별 환경 설정정보 -->
+		        	<!-- 실서버 -->	        	
+		        	<entry key="egov.download_path" value="/data/KVA_Project/upload/"/>
+					<!-- 게시판 첨부파일 저장경로 -->	        	
+		        	<entry key="board.save_path" value="/data/KVA_Project/board"/>
+					<!-- SmartEditor 첨부파일 저장경로 -->	        	
+		        	<entry key="board.smarteditor_path" value="/data/imgUpload/editor/multiupload"/>
+		        	<entry key="board.smarteditor_url" value="/imgUpload/editor/multiupload/"/>
+					
+		        	<!-- heybud (테스트서버)다음 지도 멀티마커 api Key -->
+		        	<entry key="daum.map.apikey" value="-----"/>
+		        	
+		        	<!-- 연동관련 실행여부 설정 -->
+		        	<entry key="schedule.enable" value="Y"/>
+		        	<entry key="schedule.api.cluburl" value="https://club.sports.or.kr/api/"/>
+		        	<entry key="schedule.api.clubkey" value="aea37c25ab70466cfb9bcbc6ad39159c"/>
+		        	<entry key="schedule.log_path" value="/data/KVA_Project/schlog/"/>
+		        	<!-- 연동관련 엘리트선수 조회용 사이트키  116.124.128.211 (운영서버) -->
+		        	<entry key="schedule.api.elitekey" value="ZoOCe0GyaEkQ1V0NuDSKwg=="/>
+		        	
+		        	<!-- 네이버 -->
+		        	<entry key="naver.api.clientId" value="LGQKKOScuRzZtWshpGQ7"/>
+		        	<entry key="naver.api.clientSecret" value="0Cr989jk9l"/>
+		        	<entry key="naver.api.redirectUri" value="/user/naverCallback"/>
+		        	
+		        	<!-- 카카오 -->
+		        	<entry key="kakao.api.clientId" value="8bc324fe3f79e5dde7c18e206931534b"/>
+		        	<entry key="kakao.api.redirectUri" value="/user/kakaoCallback"/>
+		        	
+		        	<!-- 페이스북 -->
+		        	<entry key="facebook.api.redirectUri" value="/user/facebookCallback"/>
+		        	<entry key="facebook.api.accessToken" value="EAAoysLssMv8BANpjed9BNCAkbJPetC8D9IK1TOXoSYsAQBtQCNJymGutLNuonf2p4PFxZAWhpenEaeAa8518tzpvL8YsZA5DB45ZBPZBWaNZBK3pED5f49p5ZBCwwYIW3XYRy7MHWUGELtSzCPLHEmjqecmwreHE0q16kSyhFe7AZDZD"/>
+		        	
+		        	<!-- 이니시스 결제 -->
+		        	<entry key="inicis.mid" value="kvaorkr001"/>
+		        	<entry key="inicis.signKey" value="a2RxSW51Qm5yRXNpRS9LekI3MVNpZz09"/>
+		        	<entry key="inicis.cancelKey" value="l4sWIMtQcqqw7FDc"/>
+		        </map>
+			</property>
+		</bean>
+	</beans>
+	
+	<beans profile="beta">
+		<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+			<property name="properties">
+		        <map>
+					<!-- 관리자 화면에 운영 표시 -->	        	
+		        	<entry key="systemNm" value="베타"/>
+		        	
+		        	<entry key="pageUnit" value="10"/>
+		        	<entry key="pageSize" value="10"/>
+		        	<!-- 메일에서 사용 -->
+		        	<entry key="site.url" value="https://sbirt.kcgp.or.kr:8443"/>
+		        	<entry key="site.fromMail" value="sbirt@kcgp.or.kr"/>
+		        	
+		        	<!-- 시스템별 환경 설정정보 -->
+		        	<!-- 실서버 -->
+		        	<entry key="egov.download_path" value="/dataDev/KVA_Project/upload/"/>
+					<!-- 게시판 첨부파일 저장경로 -->	        	
+		        	<entry key="board.save_path" value="/dataDev/KVA_Project/board"/>
+					<!-- SmartEditor 첨부파일 저장경로 -->	        	
+		        	<entry key="board.smarteditor_path" value="/dataDev/imgUpload/editor/multiupload"/>
+		        	<entry key="board.smarteditor_url" value="/imgDevUpload/editor/multiupload/"/>
+					
+		        	<!-- heybud (테스트서버)다음 지도 멀티마커 api Key -->
+		        	<entry key="daum.map.apikey" value="-----"/>
+		        	
+		        	<!-- 연동관련 실행여부 설정 -->
+		        	<entry key="schedule.enable" value="Y"/>
+		        	<entry key="schedule.api.cluburl" value="http://106.250.187.82:8180/api/"/>
+		        	<entry key="schedule.api.clubkey" value="aea37c25ab70466cfb9bcbc6ad39159c"/>
+		        	<entry key="schedule.log_path" value="/dataDev/KVA_Project/schlog/"/>
+		        	<!-- 연동관련 엘리트선수 조회용 사이트키  116.124.128.211 (운영서버) -->
+		        	<entry key="schedule.api.elitekey" value="ZoOCe0GyaEkQ1V0NuDSKwg=="/>
+		        	
+		        	<!-- SNS -->
+		        	<!-- 네이버 -->
+		        	<entry key="naver.api.clientId" value="LGQKKOScuRzZtWshpGQ7"/>
+		        	<entry key="naver.api.clientSecret" value="0Cr989jk9l"/>
+		        	<entry key="naver.api.redirectUri" value="/user/naverCallback"/>
+		        	
+		        	<!-- 카카오 -->
+		        	<entry key="kakao.api.clientId" value="8bc324fe3f79e5dde7c18e206931534b"/>
+		        	<entry key="kakao.api.redirectUri" value="/user/kakaoCallback"/>
+		        	
+		        	<!-- 페이스북 -->
+		        	<entry key="facebook.api.redirectUri" value="/user/facebookCallback"/>
+		        	<entry key="facebook.api.accessToken" value="EAAoysLssMv8BAAkPz2RZCDb6dnxPFk0U1jixINdiyVO542uifKIohV9T69ZB0ZB0maPok8QILkrJH9mBwa7xp9wcfHWYeNDjrgZC8SF2jUx888KmZAZBTqZAfv1BAzxdUho5yqoHjjPZAPx9fFBOAUXOKHAPWMpCnG7lhhog03LwkAZDZD"/>
+		        	
+		        	<!-- 이니시스 결제 -->
+		        	<entry key="inicis.mid" value="INIpayTest"/>
+		        	<entry key="inicis.signKey" value="SU5JTElURV9UUklQTEVERVNfS0VZU1RS"/>
+		        	<entry key="inicis.cancelKey" value="ItEQKi3rY7uvDS8l"/>
+		        </map>
+			</property>
+		</bean>
+	</beans>
+	
+		
+	<beans profile="locdev">
+		<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+			<property name="properties">
+		        <map>
+					<!-- 관리자 화면에 운영 표시 -->	        	
+		        	<entry key="systemNm" value="로컬"/>
+		        	
+		        	<entry key="pageUnit" value="10"/>
+		        	<entry key="pageSize" value="10"/>
+		        	
+		        	<!-- 메일에서 사용 -->
+		        	<entry key="site.url" value="http://localhost"/>
+		        	<entry key="site.fromMail" value="kva2@kva.or.kr"/>
+		        	
+		        	<!-- 시스템별 환경 설정정보 -->
+		        	<!-- 실서버 -->
+		        	<entry key="egov.download_path" value="/data/KVA_Project/upload/"/>
+					<!-- 게시판 첨부파일 저장경로 -->	        	
+		        	<entry key="board.save_path" value="/data/KVA_Project/board"/>
+					<!-- SmartEditor 첨부파일 저장경로 -->	        	
+		        	<entry key="board.smarteditor_path" value="/data/imgUpload/editor/multiupload"/>
+		        	<entry key="board.smarteditor_url" value="/imgDevUpload/editor/multiupload/"/>
+					
+		        	<!-- heybud (테스트서버)다음 지도 멀티마커 api Key -->
+		        	<entry key="daum.map.apikey" value="-----"/>
+		        	
+		        	<!-- 연동관련 실행여부 설정 -->
+		        	<entry key="schedule.enable" value="Y"/>
+		        	<entry key="schedule.api.cluburl" value="http://106.250.187.82:8180/api/"/>
+		        	<entry key="schedule.api.clubkey" value="aea37c25ab70466cfb9bcbc6ad39159c"/>
+		        	<entry key="schedule.log_path" value="/data/KVA_Project/schlog/"/>
+		        	<!-- 연동관련 엘리트선수 조회용 사이트키  61.43.143.178  (개발서버) -->
+		        	<entry key="schedule.api.elitekey" value="rPFr3kDkd1OK04ou/HjD0g=="/>
+		        	
+		        	<!-- SNS -->
+		        	<!-- 네이버 -->
+		        	<entry key="naver.api.clientId" value="LGQKKOScuRzZtWshpGQ7"/>
+		        	<entry key="naver.api.clientSecret" value="0Cr989jk9l"/>
+		        	<entry key="naver.api.redirectUri" value="/user/naverCallback"/>
+		        	
+		        	<!-- 카카오 -->
+		        	<entry key="kakao.api.clientId" value="8bc324fe3f79e5dde7c18e206931534b"/>
+		        	<entry key="kakao.api.redirectUri" value="/user/kakaoCallback"/>
+		        	
+		        	<!-- 페이스북 -->
+		        	<entry key="facebook.api.redirectUri" value="/user/facebookCallback"/>
+		        	<entry key="facebook.api.accessToken" value="EAAoysLssMv8BANpjed9BNCAkbJPetC8D9IK1TOXoSYsAQBtQCNJymGutLNuonf2p4PFxZAWhpenEaeAa8518tzpvL8YsZA5DB45ZBPZBWaNZBK3pED5f49p5ZBCwwYIW3XYRy7MHWUGELtSzCPLHEmjqecmwreHE0q16kSyhFe7AZDZD"/>
+		        	
+		        	<!-- 이니시스 결제 -->
+		        	<entry key="inicis.mid" value="INIpayTest"/>
+		        	<entry key="inicis.signKey" value="SU5JTElURV9UUklQTEVERVNfS0VZU1RS"/>
+		        	<entry key="inicis.cancelKey" value="ItEQKi3rY7uvDS8l"/>
+		        </map>
+			</property>
+		</bean>
+	</beans>
+</beans>	
