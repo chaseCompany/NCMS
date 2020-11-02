@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<script>
+<script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		$("input[name='subBtn']").click(function(){
 			var usrId = $("input[name='usrId']").val();
@@ -16,7 +16,7 @@
 				data : Data,
 				success : function(data){
 					if(data.err != "Y"){
-						window.location.href = '/counsel/counselMain.do';
+						window.location.href = '/counselMain.do';
 					}else{
 						alert(data.MSG);
 					}

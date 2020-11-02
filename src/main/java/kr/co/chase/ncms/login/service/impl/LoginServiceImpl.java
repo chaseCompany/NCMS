@@ -21,10 +21,22 @@ public class LoginServiceImpl extends EgovAbstractServiceImpl implements LoginSe
 	@Resource(name="sysUsrDao")
 	private SysUsrDao sysUsrDao;
 
+	/**
+	 * 회원 목록 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
 	public List<HashMap<String, Object>> getSysUsrList(HashMap<String, Object> map) throws Exception{
 		return sysUsrDao.getSysUsrList(map);
 	}
 
+	/**
+	 * 회원 정보 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
 	public HashMap<String, Object> getSysUsrInfo(HashMap<String, Object> map) throws Exception{
 		if(StringUtils.defaultIfEmpty((String)map.get("usrId"), "").equals("")){
 			return null;

@@ -23,7 +23,7 @@ public class CslRcpVO implements Serializable {
 	private String ifpAge;					// 정보제공자 연령
 	private String ifpTelNo1;				// 정보제공자 전화번호1
 	private String ifpTelNo2;				// 정보제공자 전화번호2
-	private int ifpTelNo3;					// 정보제공자 전화번호3
+	private String ifpTelNo3;				// 정보제공자 전화번호3
 	private String ifpAreaCd;				// 정보제공자 지역 코드
 	private String ifpJobCd;				// 정보제공자 직업
 	private String tgpMbrNo;				// 대상자 회원정보 번호
@@ -240,13 +240,13 @@ public class CslRcpVO implements Serializable {
 	/**
 	 * 정보제공자 전화번호3
 	 */
-	public int getIfpTelNo3() {
+	public String getIfpTelNo3() {
 		return ifpTelNo3;
 	}
 	/**
 	 * 정보제공자 전화번호3
 	 */
-	public void setIfpTelNo3(int ifpTelNo3) {
+	public void setIfpTelNo3(String ifpTelNo3) {
 		this.ifpTelNo3 = ifpTelNo3;
 	}
 	/**

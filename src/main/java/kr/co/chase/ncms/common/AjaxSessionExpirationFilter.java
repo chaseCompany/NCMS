@@ -26,7 +26,7 @@ public class AjaxSessionExpirationFilter implements Filter {
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filerChain) throws IOException, ServletException{
-		
+/*
         String requestURI = ((HttpServletRequest)request).getRequestURI(); //요청 URI
         
         if(requestURI.toLowerCase().indexOf("admin") > 0){
@@ -58,7 +58,7 @@ public class AjaxSessionExpirationFilter implements Filter {
         } else {
         	filerChain.doFilter(request, response);
         }
-		
+*/
 	}
 
 	@Override

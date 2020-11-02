@@ -8,12 +8,7 @@ public class ConstantObject {
 	/**
 	 * 사용자 로그인 세션변수
 	 */
-	public static final String  LOGIN_USER_SESSEION_INFO = "Kva_User_Session_Info";
-	
-	public static final String  LOGIN_ADMIN_SESSEION_INFO = "Kva_Admin_Session_Info";
-	
-	public static final String  MENU_SESSEION_INFO = "Kva_Menu_Session_Info";
+	public static final String LOGIN_SESSEION_INFO = "Usr_Session_Info";
 
-	public static final String  USER_SNS_SESSEION_INFO = "Kva_User_Sns_Session_Info";
-	
+	public static final String Y = "Y";
 }

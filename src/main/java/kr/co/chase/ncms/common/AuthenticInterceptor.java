@@ -127,7 +127,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 	}
 		
 	private boolean adminProc(String requestURI, int requestPORT, HttpSession session) throws Exception {
-		
+/*
 		if(session.getAttribute(ConstantObject.LOGIN_ADMIN_SESSEION_INFO) != null) {
 			return true;
 		}
@@ -145,12 +145,12 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 	       requestURI.toLowerCase().endsWith("file_uploader_html5_naver.ajax")) {
 	    	return true;
 	    }
-		
-		return false;
+*/
+		return true;
 	}
 	
 	private boolean userProc(String requestURI, int requestPORT, HttpSession session) throws Exception {
-		
+/*
 		if( cmpnyCd.equals("1000") && session.getAttribute(ConstantObject.LOGIN_USER_SESSEION_INFO) != null ) {
 			return true;
 		}
@@ -174,7 +174,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 	    	return false;
 	    }
 	    
-	    
+*/
 		return true;
 	}
 	

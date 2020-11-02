@@ -3,6 +3,7 @@ package kr.co.chase.ncms.login.web;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.login.service.LoginService;
 
 @Controller
@@ -27,12 +29,24 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/login.do")
-	public String login() throws Exception{
+	public String login(HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo != null && StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") != "") {
+			return "redirect:/counselMain.do";
+		}
+
 		return "login";
 	}
 
+	/**
+	 * 로그인 처리
+	 * @param reqMap
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/ajaxLogin.do")
-	public @ResponseBody ModelAndView ajaxLogin(@RequestParam HashMap<String, Object> reqMap) throws Exception{
+	public @ResponseBody ModelAndView ajaxLogin(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView"); 
 
 		String usrId = StringUtils.defaultString((String)reqMap.get("usrId"), "");
@@ -45,6 +59,8 @@ public class LoginController {
 			HashMap<String, Object> usrInfoMap = loginService.getSysUsrInfo(reqMap);
 
 			if(usrInfoMap != null) {
+				session.setAttribute(ConstantObject.LOGIN_SESSEION_INFO, usrInfoMap);
+
 				resultView.addObject("err", "N");
 				resultView.addObject("usrInfo", usrInfoMap);
 			}else{
@@ -54,5 +70,18 @@ public class LoginController {
 		}
 
 		return resultView;
+	}
+
+	/**
+	 * 로그아웃 처리
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("logout.do")
+	public String logout(HttpSession session) throws Exception{
+		session.invalidate();
+
+		return "redirect:/login.do";
 	}
 }
