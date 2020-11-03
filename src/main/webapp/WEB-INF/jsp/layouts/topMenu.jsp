@@ -10,7 +10,7 @@
 	});
 </script>
 <a href="javaScript:goPage('/counselMain.do');">일반 상담</a>
-<a href="javaScript:goPage('/');">개별 회복지원 서비스</a>
+<a href="javaScript:goPage('/individualMain.do');">개별 회복지원 서비스</a>
 <a href="javaScript:goPage('/');">주간 프로그램</a>
 <a href="javaScript:goPage('/');">회원정보 관리</a>
 <a href="javaScript:goPage('/');">통계 관리</a>

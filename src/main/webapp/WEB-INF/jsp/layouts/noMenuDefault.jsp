@@ -7,7 +7,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><spring:message code="ncms.title" /></title>
-	<link rel="shortcut icon" href="<c:url value='/images/favicon.ico'/>">
+	<link rel="shortcut icon" href="<c:url value='/images/favicon.ico'/>" />
 	<tiles:insertAttribute name="head" />
 </head>
 <body>

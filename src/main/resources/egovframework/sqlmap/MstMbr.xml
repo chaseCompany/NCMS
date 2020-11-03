@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mstMbr">
+	<select id="mstMbr.getMstMbrList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* mstMbr.getMstMbrList */ *
+		  FROM (
+				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
+				  FROM (
+						SELECT 
+							   MBR_NO			, MBR_NM		, JUMIN_NO1			, GEND_CD			, AGE
+							 , TEL_NO1			, TEL_NO2		, TEL_NO3			, STS_CD			, CRE_DT
+						  FROM MST_MBR
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNm != null or mbrNm != ''">
+						   AND MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
+			</if>
+			<if test="telNo != null or telNo != ''">
+						   AND TEL_NO1 || TEL_NO2 || TEL_NO3 LIKE CONCAT('%', #{telNo}, '%')
+			</if>
+		</trim>
+	<![CDATA[
+						 ORDER BY CRE_DT DESC
+				  ) T,(SELECT @RNUM := 0) RNUM
+				 ORDER BY T.CRE_DT DESC
+		  ) T1
+		 WHERE ROWNUM > (#{currentPageNo}-1) * #{recordCountPerPage}
+		 ORDER BY T1.CRE_DT DESC 
+		 LIMIT #{recordCountPerPage}
+	]]>
+	</select>
+</mapper>

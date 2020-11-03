@@ -4,12 +4,10 @@
 		$("input[name='subBtn']").click(function(){
 			var usrId = $("input[name='usrId']").val();
 			var passwd = $("input[name='passwd']").val();
-
 			var Data = {
 				"usrId" : usrId,
 				"passwd" : passwd
 			};
-
 			$.ajax({
 				url : "/ajaxLogin.do",
 				type : "POST",

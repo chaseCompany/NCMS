@@ -1,6 +1,7 @@
 package kr.co.chase.ncms.counsel.web;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -10,9 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.SysCodeService;
+import kr.co.chase.ncms.counsel.service.CounselService;
 import kr.co.chase.ncms.vo.CslRcpVO;
 
 @Controller
@@ -20,8 +26,19 @@ public class CounselController {
 	@Resource(name="sysCodeService")
 	private SysCodeService sysCodeService;
 
+	@Resource(name="counselService")
+	private CounselService counselService;
+
+	/**
+	 * 일반상담 등록화면
+	 * @param model
+	 * @param cslRcpVO
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/counselMain.do")
-	public String counselMain(HttpSession session, @ModelAttribute("cslRcpVO") CslRcpVO cslRcpVO, ModelMap model) throws Exception{
+	public String counselMain(ModelMap model, @ModelAttribute("cslRcpVO") CslRcpVO cslRcpVO, HttpSession session) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
@@ -76,5 +93,261 @@ public class CounselController {
 		model.put("rskcTpList", sysCodeService.getSysCdList(codeListMap));
 
 		return "counsel/counselMain";
+	}
+
+	/**
+	 * 일반상담 등록 처리
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCounselAdd.do")
+	public @ResponseBody ModelAndView ajaxCounselAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+		boolean flag = true;
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		if(StringUtils.defaultString((String)reqMap.get("cslDt"), "") == "" || 
+		   StringUtils.defaultString((String)reqMap.get("cslFmTm"), "") == "" || 
+		   StringUtils.defaultString((String)reqMap.get("cslToTm"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "상담일시를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpGbCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자/본인여부를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자 성명를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자 성명를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpGendCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자 성별를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpAge"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자 연령를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpTelNo1"), "") == "" ||
+		   StringUtils.defaultString((String)reqMap.get("ifpTelNo2"), "") == "" ||
+		   StringUtils.defaultString((String)reqMap.get("ifpTelNo3"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자 연락처를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpJobCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자 직업를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보제공자 지역를 선택하세요.");
+
+			flag = false;
+		}else if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "ZZZ"){
+			if(StringUtils.defaultString((String)reqMap.get("ifpAreaEtc"), "") == "") {
+				resultView.addObject("err", "Y");
+				resultView.addObject("MSG", "정보제공자 지역를 입력하세요.");
+
+				flag = false;
+			}
+		}
+		if(StringUtils.defaultString((String)reqMap.get("tgpNm"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "대상자 성명를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("tgpGendCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "대상자 성별를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("tgpAge"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "대상자 연령를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("tgpTelNo1"), "") == "" ||
+		   StringUtils.defaultString((String)reqMap.get("tgpTelNo2"), "") == "" ||
+		   StringUtils.defaultString((String)reqMap.get("tgpTelNo3"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "대상자 연락처를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("tgpJobCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "대상자 직업를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("tgpFrgCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "대상자 내/외국인 여부를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "대상자 지역를 선택하세요.");
+
+			flag = false;
+		}else if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "ZZZ"){
+			if(StringUtils.defaultString((String)reqMap.get("tgpAreaEtc"), "") == "") {
+				resultView.addObject("err", "Y");
+				resultView.addObject("MSG", "대상자 지역를 입력하세요.");
+
+				flag = false;
+			}
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ifPathCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "정보취득경로를 선택하세요.");
+			
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("pbmKndCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "주호소문제를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslTpCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "상담유형를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("fstDrugCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "최초사용약물을 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("mainDrugCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "주요사용약물을 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("mjrMngCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "주요조치를 선택하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("rskSco"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "위기분류척도 점수를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslCtnt"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "상담내용을 입력하세요.");
+
+			flag = false;
+		}
+
+		if(flag){
+			reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+			reqMap.put("cslNm", StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
+
+			counselService.counselAdd(reqMap);
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 일반상담 목록 조회
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/getClsRcpList.do")
+	public String getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		String currentPageNo = StringUtils.defaultString((String)reqMap.get("currentPageNo"), "");
+		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("recordCountPerPage"), "");
+
+		PaginationInfo paginginfo = new PaginationInfo();
+		if(currentPageNo == "" || recordCountPerPage == ""){
+			paginginfo.setCurrentPageNo(1);
+			paginginfo.setPageSize(10);
+			paginginfo.setRecordCountPerPage(10);
+		} else {
+			paginginfo.setCurrentPageNo(Integer.valueOf(currentPageNo));
+			paginginfo.setPageSize(10);
+			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
+		}
+
+		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
+		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
+
+		List<HashMap<String, Object>> resultList = counselService.getCslRcpList(reqMap);
+		model.put("resultList", resultList);
+
+		return "";
+	}
+
+	@RequestMapping(value="/ajaxClsRcpDel.do")
+	public @ResponseBody ModelAndView ajaxClsRcpDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		if(StringUtils.defaultString((String)reqMap.get("rcpNo"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "상담번호를 입력하세요.");
+
+			return resultView;
+		}
+
+		int result = counselService.deleteCslRcp(StringUtils.defaultString((String)reqMap.get("rcpNo"), ""));
+
+		return resultView;
 	}
 }
