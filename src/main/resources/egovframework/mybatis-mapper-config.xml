@@ -5,6 +5,6 @@
 		<setting name="cacheEnabled" value="false" />
 	</settings>
 	<typeAliases>
-		<typeAlias  alias="hashMap" type="java.util.HashMap" />
+		<typeAlias alias="hashMap" type="java.util.HashMap" />
 	</typeAliases>
 </configuration>
