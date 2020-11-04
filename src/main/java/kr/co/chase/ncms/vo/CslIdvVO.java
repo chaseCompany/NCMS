@@ -5,6 +5,10 @@ import java.sql.Timestamp;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * 집중상담
+ * @author Molra
+ */
 public class CslIdvVO implements Serializable {
 	private static final long serialVersionUID = -858838578081269358L;
 
