@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cslIsp">
+	<select id="cslIsp.getCslIspList" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslIsp.getCslIspList */
+			   CI.ISP_DT		, CI.MBR_NO				, CI.MNG_TP_CD		, SC.CD_NM AS MNG_TP_NM		, CI.ISP_RST
+			 , CI.CRE_ID		, SU.USR_NM AS CRE_NM
+		  FROM CSL_ISP CI
+		  LEFT JOIN SYS_USR SU ON (CI.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC ON (SC.GRP_CD = 'C4200' AND CI.MNG_TP_CD = SC.CD_ID)
+		 WHERE CI.MBR_NO = #{mbrNo}
+		 ORDER BY CI.CRE_DT DESC
+	]]>
+	</select>
+
+	<select id="cslIsp.getCslIspInfo" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslIsp.getCslIspInfo */
+			   ISP_DT			, MBR_NO			, MNG_TP_CD			, EVL_ITM_SCO01		, EVL_ITM_SCO02
+			 , EVL_ITM_SCO03	, EVL_ITM_SCO04		, EVL_ITM_SCO05		, EVL_ITM_SCO06		, EVL_ITM_SCO07
+			 , EVL_ITM_SCO08	, EVL_ITM_SCO09		, EVL_ITM_SCO10		, EVL_ITM_SCO11		, EVL_ITM_SCO12
+			 , EVL_ITM_SCO13	, EVL_ITM_SCO14		, EVL_ITM_SCO15		, EVL_ITM_SCO16		, EVL_ITM_LNK01
+			 , EVL_ITM_LNK02	, EVL_ITM_LNK03		, EVL_ITM_LNK04		, EVL_ITM_LNK05		, EVL_ITM_LNK06
+			 , EVL_ITM_LNK07	, EVL_ITM_LNK08		, EVL_ITM_LNK09		, EVL_ITM_LNK10		, EVL_ITM_LNK11
+			 , EVL_ITM_LNK12	, EVL_ITM_LNK13		, EVL_ITM_LNK14		, EVL_ITM_LNK15		, EVL_ITM_LNK16
+			 , ISP_RST			, TGT_CTNT			, CRE_ID			, CRE_DT			, UPD_ID
+			 , UPD_DT
+		  FROM CSL_ISP
+		 where MBR_NO = #{mbrNo}
+		   AND ISP_DT = #{ispDt}
+	]]>
+	</select>
+
+	<delete id="cslIsp.deleteCslIsp" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* cslIsp.deleteCslIsp */ FROM CSL_ISP
+		 WHERE MBR_NO = #{mbrNo}
+		   AND ISP_DT = #{ispDt}
+	]]>
+	</delete>
+</mapper>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cslRcp">
-	<select id="cslRcp.getCslRcp" parameterType="hashMap" resultType="hashMap">
+	<select id="cslRcp.getCslRcp" parameterType="String" resultType="hashMap">
 	<![CDATA[
 		SELECT /* cslRcp.getCslRcp */
 			   RCP_NO			, CSL_DT		, CSL_FM_TM		, CSL_TO_TM			, CSL_TERM_TM
@@ -17,6 +17,15 @@
 			 , UPD_DT			, IFP_AREA_ETC	, TGP_AREA_ETC
 		  FROM CSL_RCP
 		 WHERE RCP_NO = #{rcpNo}
+	]]>
+	</select>
+
+	<select id="cslRcp.getCslRcpSeq" resultType="String">
+	<![CDATA[
+		SELECT /* cslRcp.getCslRcpSeq */
+			   CONCAT('R', DATE_FORMAT(NOW(), '%Y%m%d%H'), LPAD(IFNULL(MAX(CAST(SUBSTR(RCP_NO, 12) AS UNSIGNED)), 0) + 1, 4, '0')) AS rcpSeq
+		  FROM CSL_RCP
+		 WHERE RCP_NO LIKE CONCAT('R', DATE_FORMAT(NOW(), '%Y%m%d%H'), '%')
 	]]>
 	</select>
 
@@ -48,6 +57,28 @@
 	]]>
 	</insert>
 
+	<select id="cslRcp.getCslRcpListCount" parameterType="hashMap" resultType="int">
+	<![CDATA[
+		SELECT /* cslRcp.getCslRcpListCount */ COUNT(RCP_NO) AS CNT
+		  FROM CSL_RCP
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="schGb != null or schGb != ''">
+				<choose>
+					<when test="schGb == 0">
+		   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+					</when>
+					<when test="schGb == 1">
+		   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+					</when>
+					<when test="schGb == 2">
+		   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+					</when>
+				</choose>
+			</if>
+		</trim>
+	</select>
+
 	<select id="cslRcp.getCslRcpList" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* cslRcp.getCslRcpList */ *
@@ -55,7 +86,7 @@
 				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
 				  FROM (
 						SELECT RCP_NO			, CSL_DT		, CSL_FM_TM		, CSL_TO_TM			, CSL_TERM_TM
-							 , CSL_NM			, IFP_NM		, TGP_NM
+							 , CSL_NM			, IFP_NM		, TGP_NM		, CRE_DT
 						  FROM CSL_RCP
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -74,12 +105,12 @@
 			</if>
 		</trim>
 	<![CDATA[
-						 ORDER BY CSL_DT DESC, CSL_FM_TM DESC
+						 ORDER BY CRE_DT DESC
 				  ) T,(SELECT @RNUM := 0) RNUM
-				 ORDER BY T.CSL_DT DESC, T.CSL_FM_TM DESC
+				 ORDER BY T.CRE_DT DESC
 		  ) T1
 		 WHERE ROWNUM > (#{currentPageNo}-1) * #{recordCountPerPage}
-		 ORDER BY T1.CSL_DT DESC, T1.CSL_FM_TM DESC 
+		 ORDER BY T1.CRE_DT DESC 
 		 LIMIT #{recordCountPerPage}
 	]]>
 	</select>
@@ -91,4 +122,34 @@
 		  WHERE RCP_NO = #{rcpNo}
 	]]>
 	</delete>
+
+	<update id="cslRcp.updateCslRcp" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* cslRcp.updateCslRcp */ CSL_RCP
+		   SET CSL_DT			= #{cslDt}							, CSL_FM_TM			= #{cslFmTm}
+			 , CSL_TO_TM		= #{cslToTm}						, CSL_TERM_TM		= CAST(#{cslTermTm} AS UNSIGNED)
+			 , CSL_ID			= #{cslId}							, CSL_NM			= #{cslNm}
+			 , IFP_GB_CD		= #{ifpGbCd}						, IFP_GB_ETC		= #{ifpGbEtc}
+			 , IFP_MBR_NO		= #{ifpMbrNo}						, IFP_NM			= #{ifpNm}
+			 , IFP_GEND_CD		= #{ifpGendCd}						, IFP_AGE			= #{ifpAge}
+			 , IFP_TEL_NO1		= #{ifpTelNo1}						, IFP_TEL_NO2		= #{ifpTelNo2}
+			 , IFP_TEL_NO3		= CAST(#{ifpTelNo3} AS UNSIGNED)	, IFP_AREA_CD		= #{ifpAreaCd}
+			 , IFP_JOB_CD		= #{ifpJobCd}						, TGP_MBR_NO		= #{tgpMbrNo}
+			 , TGP_NM			= #{tgpNm}							, TGP_GEND_CD		= #{tgpGendCd}
+			 , TGP_AGE			= #{tgpAge}							, TGP_TEL_NO1		= #{tgpTelNo1}
+			 , TGP_TEL_NO2		= #{tgpTelNo2}						, TGP_TEL_NO3		= #{tgpTelNo3}
+			 , TGP_AREA_CD		= #{tgpAreaCd}						, TGP_FRG_CD		= #{tgpFrgCd}
+			 , TGP_JOB_CD		= #{tgpJobCd}						, IF_PATH_CD		= #{ifPathCd}
+			 , PBM_KND_CD		= #{pbmKndCd}						, CSL_TP_CD			= #{cslTpCd}
+			 , CSL_HIS_CD		= #{cslHisCd}						, FST_DRUG_CD		= #{fstDrugCd}
+			 , MAIN_DRUG_CD		= #{mainDrugCd}						, MAIN_DRUG			= #{mainDrug}
+			 , CSL_CTNT			= #{cslCtnt}						, MJR_MNG_CD		= #{mjrMngCd}
+			 , AST_SCO			= CAST(#{astSco} AS UNSIGNED)		, RSKA_TP_CD		= #{rskaTpCd}
+			 , RSKB_TP_CD		= #{rskbTpCd}						, RSKC_TP_CD		= #{rskcTpCd}
+			 , RSK_SCO			= CAST(#{rskSco} AS UNSIGNED)		, UPD_ID			= #{cslId}
+			 , UPD_DT			= NOW()								, IFP_AREA_ETC		= #{ifpAreaEtc}
+			 , TGP_AREA_ETC		= #{tgpAreaEtc}
+		 WHERE RCP_NO = #{rcpNo}
+	]]>
+	</update>
 </mapper>

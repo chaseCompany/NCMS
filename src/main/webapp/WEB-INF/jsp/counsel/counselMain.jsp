@@ -3,6 +3,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
+		var tagMbrInfo = "";
+		<%-- 상담정보 저장 --%>
 		counselSave = function(){
 			var str = "rcpNo:" + $("input[name='rcpNo']").val() + ", ";
 				str += "cslDt:" + $("input[name='cslDt']").val() + ", ";
@@ -67,18 +69,21 @@
 
 			console.log("저장");
 		},
+		<%-- 신규 --%>
 		counselNew = function(){
-			console.log("신규")
+			window.location.reload();
 		},
+		<%-- 복사 --%>
 		counselCopy = function(){
-			console.log("복사");
+			$("input[name='rcpNo']").val("");
 		},
+		<%-- 상담 내용 삭제 --%>
 		counselDel = function(){
 			$.ajax({
 				url : '/ajaxClsRcpDel.do',
 				type : 'POST',
 				data : {
-					rcpNo : "R00000000000000"
+					rcpNo : $("input[name='rcpNo']").val()
 				},
 				success : function(data){
 					if(data.err != "Y"){
@@ -99,36 +104,151 @@
 		counselExel = function(){
 			console.log("엑셀다운로드");
 		},
+		<%-- 상담 목록 조회 --%>
 		getRcpNo = function(){
 			$.ajax({
 				url : '/getClsRcpList.do',
 				type : 'POST',
 				data : $('#counselForm').serialize(),
-				success : function(data){
-					if(data.err != "Y"){
+				success : function(res){
+					if(res.totalCount > 0){
 						alert("조회 완료");
+						console.log(res.resultList);
+						counselInfoViewSet(res.resultList[0].RCP_NO);
 					}else{
-						alert(data.MSG);
-
-						if(data.actUrl != "" && data.actUrl != undefined){
-							window.location.href = data.actUrl;
-						}
+						alert("목록 없음");
 					}
 				},
 				error : function(xhr, status){
-					
+					console.log(xhr);
 				}
 			});
 			console.log("상담조회");
 		},
-		ifpMbrSearchPopup = function(){
-			console.log("정보제공자 조회");
+		<%-- 회원 조회 --%>
+		mstMbrSearchPopup = function(resFuct){
+			$.ajax({
+				url : '/ajaxMstMbrList.do',
+				type : 'POST',
+				data : {},
+				success : function(res){
+					if(res.totalCount > 0){
+						console.log(res.resultList);
+
+						tagMbrInfo = res.resultList[0];
+						(new Function(resFuct + "('" + res.resultList[0].MBR_NO + "');"))();
+					}else{
+						tagMbrInfo = "";
+						console.log("회원 정보 없음");
+					}
+				},
+				error : function(xhr, status){
+					tagMbrInfo = "";
+					console.log(xhr);
+				}
+			});
 		},
+		<%-- 정보 제공자 회원 정보 셋팅 --%>
+		ifpMbrSearchPopup = function(tagMbrMbrNo){
+			if(tagMbrInfo.MBR_NO == tagMbrMbrNo){
+				$("input[name='ifpNm']").val(tagMbrInfo.MBR_NM);
+				$("input[name='ifpMbrNo']").val(tagMbrInfo.MBR_NO);
+				$("input[name='ifpGendCd']:radio[value='" + tagMbrInfo.GEND_CD + "']").prop("checked", true);
+				$("input[name='ifpAge']").val(tagMbrInfo.AGE);
+				$("input[name='ifpTelNo1']").val(tagMbrInfo.TEL_NO1);
+				$("input[name='ifpTelNo2']").val(tagMbrInfo.TEL_NO2);
+				$("input[name='ifpTelNo3']").val(tagMbrInfo.TEL_NO3);
+				$("select[name='ifpJobCd']").val(tagMbrInfo.JOB_CD).prop("selected", true);
+			}
+		},
+		<%-- 정보제공자 복사 --%>
 		ifpCopy = function(){
-			console.log("정보제공자 복사");
+			$("input[name='tgpNm']").val($("input[name='ifpNm']").val());
+			$("input[name='tgpMbrNo']").val($("input[name='ifpMbrNo']").val());
+			$("input[name='tgpGendCd']:radio[value='" + $("input[name='ifpGendCd']:radio:checked").val() + "']").prop("checked", true);
+			$("input[name='tgpAge']").val($("input[name='ifpAge']").val());
+			$("input[name='tgpTelNo1']").val($("input[name='ifpTelNo1']").val());
+			$("input[name='tgpTelNo2']").val($("input[name='ifpTelNo2']").val());
+			$("input[name='tgpTelNo3']").val($("input[name='ifpTelNo3']").val());
+			$("select[name='tgpJobCd']").val($("select[name='ifpJobCd']").val()).prop("selected", true);
+			$("select[name='tgpAreaCd']").val($("select[name='ifpAreaCd']").val()).prop("selected", true);
+			$("input[name='tgpAreaEtc']").val($("input[name='ifpAreaEtc']").val());
 		},
-		tgpMbrSearchPopup = function(){
-			console.log("대상자 조회");
+		<%-- 대상자 회원 정보 셋팅 --%>
+		tgpMbrSearchPopup = function(tagMbrMbrNo){
+			if(tagMbrInfo.MBR_NO == tagMbrMbrNo){
+				$("input[name='tgpNm']").val(tagMbrInfo.MBR_NM);
+				$("input[name='tgpMbrNo']").val(tagMbrInfo.MBR_NO);
+				$("input[name='tgpGendCd']:radio[value='" + tagMbrInfo.GEND_CD + "']").prop("checked", true);
+				$("input[name='tgpAge']").val(tagMbrInfo.AGE);
+				$("input[name='tgpTelNo1']").val(tagMbrInfo.TEL_NO1);
+				$("input[name='tgpTelNo2']").val(tagMbrInfo.TEL_NO2);
+				$("input[name='tgpTelNo3']").val(tagMbrInfo.TEL_NO3);
+				$("select[name='tgpJobCd']").val(tagMbrInfo.JOB_CD).prop("selected", true);
+				$("input[name='tgpFrgCd']:radio[value='" + tagMbrInfo.FRG_CD + "']").prop("checked", true);
+			}
+		},
+		<%-- 상담내용 상세조회 --%>
+		counselInfoViewSet = function(tagRcpNo){
+			$.ajax({
+				url : '/ajaxClsRcpInfo.do',
+				type : 'POST',
+				data : {
+					rcpNo : tagRcpNo
+				},
+				success : function(res){
+					if(res.cslRcpInfo != null){
+						$("input[name='rcpNo']").val(res.cslRcpInfo.RCP_NO);
+						$("input[name='cslDt']").val(res.cslRcpInfo.CSL_DT);
+						$("input[name='cslFmTm']").val(res.cslRcpInfo.CSL_FM_TM);
+						$("input[name='cslToTm']").val(res.cslRcpInfo.CSL_TO_TM);
+						$("#cslTermTm").text(res.cslRcpInfo.CSL_TERM_TM);
+						$("input[name='cslId']").val(res.cslRcpInfo.CSL_ID);
+						$("input[name='cslNm']").val(res.cslRcpInfo.CSL_NM);
+						$("input[name='ifpGbCd']:radio[value='" + res.cslRcpInfo.IFP_GB_CD + "']").prop("checked", true);
+						$("input[name='ifpGbEtc']").val(res.cslRcpInfo.IFP_GB_ETC);
+						$("input[name='ifpNm']").val(res.cslRcpInfo.IFP_NM);
+						$("input[name='ifpMbrNo']").val(res.cslRcpInfo.IFP_MBR_NO);
+						$("input[name='ifpGendCd']:radio[value='" + res.cslRcpInfo.IFP_GEND_CD + "']").prop("checked", true);
+						$("input[name='ifpAge']").val(res.cslRcpInfo.IFP_AGE);
+						$("input[name='ifpTelNo1']").val(res.cslRcpInfo.IFP_TEL_NO1);
+						$("input[name='ifpTelNo2']").val(res.cslRcpInfo.IFP_TEL_NO2);
+						$("input[name='ifpTelNo3']").val(res.cslRcpInfo.IFP_TEL_NO3);
+						$("select[name='ifpJobCd']").val(res.cslRcpInfo.IFP_JOB_CD).prop("selected", true);
+						$("select[name='ifpAreaCd']").val(res.cslRcpInfo.IFP_AREA_CD).prop("selected", true);
+						$("input[name='ifpAreaEtc']").val(res.cslRcpInfo.IFP_AREA_ETC);
+						$("input[name='tgpNm']").val(res.cslRcpInfo.TGP_NM);
+						$("input[name='tgpMbrNo']").val(res.cslRcpInfo.TGP_MBR_NO);
+						$("input[name='tgpGendCd']:radio[value='" + res.cslRcpInfo.TGP_GEND_CD + "']").prop("checked", true);
+						$("input[name='tgpAge']").val(res.cslRcpInfo.TGP_AGE);
+						$("input[name='tgpTelNo1']").val(res.cslRcpInfo.TGP_TEL_NO1);
+						$("input[name='tgpTelNo2']").val(res.cslRcpInfo.TGP_TEL_NO2);
+						$("input[name='tgpTelNo3']").val(res.cslRcpInfo.TGP_TEL_NO3);
+						$("select[name='tgpJobCd']").val(res.cslRcpInfo.TGP_JOB_CD).prop("selected", true);
+						$("input[name='tgpFrgCd']:radio[value='" + res.cslRcpInfo.TGP_FRG_CD + "']").prop("checked", true);
+						$("select[name='tgpAreaCd']").val(res.cslRcpInfo.TGP_AREA_CD).prop("selected", true);
+						$("input[name='tgpAreaEtc']").val(res.cslRcpInfo.TGP_AREA_ETC);
+						$("select[name='ifPathCd']").val(res.cslRcpInfo.IF_PATH_CD).prop("selected", true);
+						$("select[name='pbmKndCd']").val(res.cslRcpInfo.PBM_KND_CD).prop("selected", true);
+						$("select[name='cslTpCd']").val(res.cslRcpInfo.CSL_TP_CD).prop("selected", true);
+						$("select[name='fstDrugCd']").val(res.cslRcpInfo.FST_DRUG_CD).prop("selected", true);
+						$("select[name='mainDrugCd']").val(res.cslRcpInfo.MAIN_DRUG_CD).prop("selected", true);
+						$("input[name='mainDrug']").val(res.cslRcpInfo.MAIN_DRUG);
+						$("select[name='mjrMngCd']").val(res.cslRcpInfo.MJR_MNG_CD).prop("selected", true);
+						$("input[name='astSco']").val(res.cslRcpInfo.AST_SCO);
+						$("input[name='rskSco']").val(res.cslRcpInfo.RSK_SCO);
+						$("select[name='rskaTpCd']").val(res.cslRcpInfo.RSKA_TP_CD).prop("selected", true);
+						$("select[name='rskbTpCd']").val(res.cslRcpInfo.RSKB_TP_CD).prop("selected", true);
+						$("select[name='rskcTpCd']").val(res.cslRcpInfo.RSKC_TP_CD).prop("selected", true);
+						$("textarea[name='cslCtnt']").val(res.cslRcpInfo.CSL_CTNT);
+					}else{
+						console.log("상세내용 조회 오류");
+					}
+				},
+				error : function(xhr, status){
+					console.log(xhr);
+				}
+			});
 		}
 	});
 </script>
@@ -141,14 +261,14 @@
 				<span id="cslTermTm">0</span>분 소요<br/>
 상담자			<form:input path="cslRcpInfo.cslId" cssClass="txt" readonly="true" /><form:input path="cslRcpInfo.cslNm" cssClass="txt" readonly="true" /><br/>
 *정보제공자/본인여부	<c:forEach var="result" items="${ifpGbList}" varStatus="status">
-					<input type="radio" name="ifpGbCd" value="${result.CD_ID}"<c:if test="${result.CD_ID == cslRcpInfo.ifpGbCd}"> checked</c:if> /><c:out value="${result.CD_NM}" />
+					<input type="radio" name="ifpGbCd" value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslRcpInfo.ifpGbCd}"> checked</c:if> /><c:out value="${result.CD_NM}" />
 				</c:forEach>
 				<form:input path="cslRcpInfo.ifpGbEtc" cssClass="txt" placeholder="기타 선택시 입력 가능" /><br/>
 정보 제공자<br/>
-*성명				<form:input path="cslRcpInfo.ifpNm" cssClass="txt" placeholder="정보제공자 성명" /><a href="javaScript:ifpMbrSearchPopup();">조회</a>
+*성명				<form:input path="cslRcpInfo.ifpNm" cssClass="txt" placeholder="정보제공자 성명" /><a href="javaScript:mstMbrSearchPopup('ifpMbrSearchPopup');">조회</a>
 회원번호			<form:input path="cslRcpInfo.ifpMbrNo" cssClass="txt" placeholder="회원번호" readonly="true"/>
-*성별				<input type="radio" name="ifpGendCd" value="M"<c:if test="${cslRcpInfo.ifpGendCd == 'M'}"> checked</c:if> />남
-				<input type="radio" name="ifpGendCd" value="F"<c:if test="${cslRcpInfo.ifpGendCd == 'F'}"> checked</c:if> />여
+*성별				<input type="radio" name="ifpGendCd" value="M"<c:if test="${cslRcpInfo.ifpGendCd eq 'M'}"> checked</c:if> />남
+				<input type="radio" name="ifpGendCd" value="F"<c:if test="${cslRcpInfo.ifpGendCd eq 'F'}"> checked</c:if> />여
 *연령				<form:input path="cslRcpInfo.ifpAge" cssClass="txt" placeholder="연령" maxlength="3" /></br>
 *연락처			<form:input path="cslRcpInfo.ifpTelNo1" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.ifpTelNo2" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.ifpTelNo3" cssClass="txt" maxlength="4" />
 *직업				<select name="ifpJobCd">
@@ -166,10 +286,10 @@
 				<form:input path="cslRcpInfo.ifpAreaEtc" cssClass="txt" placeholder="기타 선택시 입력 가능" /><br/>
 <a href="javaScript:ifpCopy();">▶▶ 정보제공자와 동일</a><br/>
 대상자<br/>
-*성명				<form:input path="cslRcpInfo.tgpNm" cssClass="txt" placeholder="대상자 성명" /><a href="javaScript:tgpMbrSearchPopup();">조회</a>
+*성명				<form:input path="cslRcpInfo.tgpNm" cssClass="txt" placeholder="대상자 성명" /><a href="javaScript:mstMbrSearchPopup('tgpMbrSearchPopup');">조회</a>
 회원번호			<form:input path="cslRcpInfo.tgpMbrNo" cssClass="txt" placeholder="회원번호" readonly="true" />
-*성별				<input type="radio" name="tgpGendCd" value="M"<c:if test="${cslRcpInfo.tgpGendCd == 'M'}"> checked</c:if> />남
-				<input type="radio" name="tgpGendCd" value="F"<c:if test="${cslRcpInfo.tgpGendCd == 'F'}"> checked</c:if> />여
+*성별				<input type="radio" name="tgpGendCd" value="M"<c:if test="${cslRcpInfo.tgpGendCd eq 'M'}"> checked</c:if> />남
+				<input type="radio" name="tgpGendCd" value="F"<c:if test="${cslRcpInfo.tgpGendCd eq 'F'}"> checked</c:if> />여
 *연령				<form:input path="cslRcpInfo.tgpAge" cssClass="txt" maxlength="3" placeholder="연령" /><br/>
 *연락처			<form:input path="cslRcpInfo.tgpTelNo1" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.tgpTelNo2" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.tgpTelNo3" cssClass="txt" maxlength="4" />
 *직업				<select name="tgpJobCd">
@@ -178,8 +298,8 @@
 					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
 				</c:forEach>
 				</select>
-*내/외국인			<input type="radio" name="tgpFrgCd" value="LO"<c:if test="${cslRcpInfo.tgpFrgCd == 'LO'}"> checked</c:if> />내국인
-				<input type="radio" name="tgpFrgCd" value="FO"<c:if test="${cslRcpInfo.tgpFrgCd == 'FO'}"> checked</c:if> />외국인<br/>
+*내/외국인			<input type="radio" name="tgpFrgCd" value="LO"<c:if test="${cslRcpInfo.tgpFrgCd eq 'LO'}"> checked</c:if> />내국인
+				<input type="radio" name="tgpFrgCd" value="FO"<c:if test="${cslRcpInfo.tgpFrgCd eq 'FO'}"> checked</c:if> />외국인<br/>
 *지역				<select name="tgpAreaCd">
 					<option value="" />선택
 				<c:forEach var="result" items="${areaList}" varStatus="status">

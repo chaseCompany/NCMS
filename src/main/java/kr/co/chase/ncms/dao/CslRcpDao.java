@@ -20,8 +20,17 @@ public class CslRcpDao extends EgovAbstractMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<String, Object> getCslRcp(HashMap<String, Object> map) throws SQLException{
-		return selectOne("cslRcp.getCslRcp", map);
+	public HashMap<String, Object> getCslRcp(String rcpNo) throws SQLException{
+		return selectOne("cslRcp.getCslRcp", rcpNo);
+	}
+
+	/**
+	 * 상담이력 번호 생성
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getCslRcpSeq() throws SQLException{
+		return selectOne("cslRcp.getCslRcpSeq");
 	}
 
 	/**
@@ -32,6 +41,16 @@ public class CslRcpDao extends EgovAbstractMapper {
 	 */
 	public int insertCslRcp(HashMap<String, Object> map) throws SQLException{
 		return insert("cslRcp.insertCslRcp", map);
+	}
+
+	/**
+	 * 상담이력 목록 카운트
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getCslRcpListCount(HashMap<String, Object> map) throws SQLException{
+		return selectOne("cslRcp.getCslRcpListCount", map);
 	}
 
 	/**
@@ -52,5 +71,15 @@ public class CslRcpDao extends EgovAbstractMapper {
 	 */
 	public int deleteCslRcp(String rcpNo) throws SQLException{
 		return delete("cslRcp.deleteCslRcp", rcpNo);
+	}
+
+	/**
+	 * 상담정보 수정
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int updateCslRcp(HashMap<String, Object> map) throws SQLException{
+		return update("cslRcp.updateCslRcp", map);
 	}
 }

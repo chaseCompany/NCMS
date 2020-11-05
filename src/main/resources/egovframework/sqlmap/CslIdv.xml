@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cslIdv">
+	<select id="cslIdv.getCslIdvList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslRcp.getCslIdvList */
+			   CSL_NO		, CSL_DT		, CSL_FM_TM		, CSL_TO_TM		, CSL_TERM_TM
+			 , CSL_SBJ		, CSL_TGT		, MBR_NO
+		  FROM CSL_IDV
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNo != null or mbrNo != ''">
+		   AND MBR_NO = #{mbrNo}
+			</if>
+		</trim>
+	<![CDATA[
+		 ORDER BY CSL_DT DESC, CSL_FM_TM DESC
+	]]>
+	</select>
+
+	<select id="cslIdv.getCslIdv" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslIdv.getCslIdv */
+			   CI.MBR_NO		, CI.CSL_NO			, CI.CSL_ID			, SU.USR_NM AS CSL_NM	, CI.CSL_DT
+			 , CI.CSL_FM_TM		, CI.CSL_TO_TM		, CI.CSL_TERM_TM	, CI.PGM_CD				, CI.CSL_TGT_CD
+			 , CI.CSL_TP_CD		, CI.RSKA_TP_CD		, CI.RSKB_TP_CD		, CI.RSKC_TP_CD			, CI.RSK_SCO
+			 , CI.CSL_SBJ		, CI.CSL_TGT		, CI.CSL_CTNT		, CI.NXT_CSL_DT			, CI.NXT_CSL_TM
+			 , CI.NXT_CSL_CTNT	, CI.CRE_ID			, CI.CRE_DT			, CI.UPD_ID				, CI.UPD_DT
+		  FROM CSL_IDV CI
+		  LEFT JOIN SYS_USR SU ON (CI.CSL_ID = SU.USR_ID)
+		 WHERE CI.CSL_NO = #{cslNo}
+	]]>
+	</select>
+
+	<insert id="cslIdv.insertCslIdv" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* cslIdv.insertCslIdv */ INTO CSL_IDV(
+			   MBR_NO		, CSL_NO		, CSL_ID		, CSL_DT			, CSL_FM_TM
+			 , CSL_TO_TM	, CSL_TERM_TM	, PGM_CD		, CSL_TGT_CD		, CSL_TP_CD
+			 , RSKA_TP_CD	, RSKB_TP_CD	, RSKC_TP_CD	, RSK_SCO			, CSL_SBJ
+			 , CSL_TGT		, CSL_CTNT		, NXT_CSL_DT	, NXT_CSL_TM		, NXT_CSL_CTNT
+			 , CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+		)VALUES(
+			   #{mbrNo}		, #{cslNo}		, #{cslId}		, #{cslDt}			, #{cslFmTm}
+			 , #{cslToTm}	, #{cslTermTm}	, #{pgmCd}		, #{cslTgtCd}		, #{cslTpCd}
+			 , #{rskaTpCd}	, #{rskbTpCd}	, #{rskcTpCd}	, #{rskSco}			, #{cslSbj}
+			 , #{cslTgt}	, #{cslCtnt}	, #{nxtCslDt}	, #{nxtCslTm}		, #{nxtCslCtnt}
+			 , #{creId}		, NOW()			, #{creId}		, NOW()
+		)
+	]]>
+	</insert>
+</mapper>

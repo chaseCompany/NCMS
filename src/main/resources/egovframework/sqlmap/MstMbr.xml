@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mstMbr">
+	<select id="mstMbr.getMstMbrListCount" parameterType="hashMap" resultType="int">
+	<![CDATA[
+		SELECT /* mstMbr.getMstMbrListCount */ COUNT(MBR_NO) AS CNT
+		  FROM MST_MBR
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNm != null and mbrNm != ''">
+		   AND MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
+			</if>
+			<if test="telNo != null and telNo != ''">
+		   AND TEL_NO1 || TEL_NO2 || TEL_NO3 LIKE CONCAT('%', #{telNo}, '%')
+			</if>
+		</trim>
+	</select>
+
 	<select id="mstMbr.getMstMbrList" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* mstMbr.getMstMbrList */ *
@@ -9,15 +24,21 @@
 				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
 				  FROM (
 						SELECT 
-							   MBR_NO			, MBR_NM		, JUMIN_NO1			, GEND_CD			, AGE
-							 , TEL_NO1			, TEL_NO2		, TEL_NO3			, STS_CD			, CRE_DT
-						  FROM MST_MBR
+							   MM.MBR_NO		, MM.MBR_NM			, MM.JUMIN_NO1		, MM.GEND_CD		, SC01.CD_NM AS GEND_NM
+							 , MM.AGE			, MM.FRG_CD			, MM.TEL_NO1		, MM.TEL_NO2		, MM.TEL_NO3
+							 , MM.REG_DT		, MM.JOB_CD			, MM.STS_CD			, MM.CRE_DT
+							 , MEDIC_CARE_CD	, SC02.CD_NM AS MEDIC_CARE_NM
+							 , MM.MNG_USR_ID	, SU.USR_NM AS MNG_USR_NM
+						  FROM MST_MBR MM
+						  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND MM.GEND_CD = SC01.CD_ID)
+						  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3100' AND MM.MEDIC_CARE_CD = SC02.CD_ID)
+						  LEFT JOIN SYS_USR SU ON (MM.MNG_USR_ID = SU.USR_ID)
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="mbrNm != null or mbrNm != ''">
+			<if test="mbrNm != null and mbrNm != ''">
 						   AND MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
 			</if>
-			<if test="telNo != null or telNo != ''">
+			<if test="telNo != null and telNo != ''">
 						   AND TEL_NO1 || TEL_NO2 || TEL_NO3 LIKE CONCAT('%', #{telNo}, '%')
 			</if>
 		</trim>

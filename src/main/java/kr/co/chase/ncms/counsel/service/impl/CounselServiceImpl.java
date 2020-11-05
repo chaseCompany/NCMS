@@ -32,8 +32,8 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<String, Object> getCslRcp(HashMap<String, Object> map) throws Exception{
-		return cslRcpDao.getCslRcp(map);
+	public HashMap<String, Object> getCslRcp(String rcpNo) throws Exception{
+		return cslRcpDao.getCslRcp(rcpNo);
 	}
 
 	/**
@@ -47,16 +47,32 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	}
 
 	/**
+	 * 상담이력 번호 생성
+	 * @return
+	 * @throws Exception
+	 */
+	public String getCslRcpSeq() throws Exception{
+		return cslRcpDao.getCslRcpSeq();
+	}
+
+	/**
 	 * 상담이력 등록 처리
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> counselAdd(HashMap<String, Object> map) throws Exception{
+		int result = 0;
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String rcpNo = StringUtils.defaultString(map.get("rcpNo") != null ? map.get("rcpNo").toString() : "", "");
 
-		map.put("rcpNo", "R00000000000000");
-		int result = this.insertCslRcp(map);
+		if(rcpNo.equals("")) {
+			map.put("rcpNo", this.getCslRcpSeq());
+			result = this.insertCslRcp(map);
+		}else {
+			result = this.updateCslRcp(map);
+		}
+
 		if(result <= 0) {
 			
 		}else {
@@ -67,16 +83,26 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	}
 
 	/**
+	 * 상담이력 목록 카운트
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int getCslRcpListCount(HashMap<String, Object> map) throws Exception{
+		return cslRcpDao.getCslRcpListCount(map);
+	} 
+
+	/**
 	 * 상담이력 목록 조회
 	 * @param map
 	 * @return
 	 * @throws SQLException
 	 */
 	public List<HashMap<String, Object>> getCslRcpList(HashMap<String, Object> map) throws Exception{
-		if(StringUtils.defaultString((String)map.get("currentPageNo"), "") == "") {
+		if(map.get("currentPageNo")== null || StringUtils.defaultString(map.get("currentPageNo").toString(), "") == "") {
 			throw processException("페이지 수 누락");
 		}
-		if(StringUtils.defaultString((String)map.get("recordCountPerPage"), "") == "") {
+		if(map.get("recordCountPerPage") == null || StringUtils.defaultString(map.get("recordCountPerPage").toString(), "") == "") {
 			throw processException("목록 수 누락");
 		}
 
@@ -98,19 +124,39 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	}
 
 	/**
+	 * 회원 목록 조회 카운트
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int getMstMbrListCount(HashMap<String, Object> map) throws Exception{
+		return mstMbrDao.getMstMbrListCount(map);
+	}
+
+	/**
 	 * 회원 목록 조회
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
 	public List<HashMap<String, Object>> getMstMbrList(HashMap<String, Object> map) throws Exception{
-		if(StringUtils.defaultString((String)map.get("currentPageNo"), "") == "") {
+		if(map.get("currentPageNo") == null || StringUtils.defaultString(map.get("currentPageNo").toString(), "") == "") {
 			throw processException("페이지 수 누락");
 		}
-		if(StringUtils.defaultString((String)map.get("recordCountPerPage"), "") == "") {
+		if(map.get("recordCountPerPage") == null || StringUtils.defaultString(map.get("recordCountPerPage").toString(), "") == "") {
 			throw processException("목록 수 누락");
 		}
 
 		return mstMbrDao.getMstMbrList(map);
+	}
+
+	/**
+	 * 상담정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateCslRcp(HashMap<String, Object> map) throws Exception{
+		return cslRcpDao.updateCslRcp(map);
 	}
 }

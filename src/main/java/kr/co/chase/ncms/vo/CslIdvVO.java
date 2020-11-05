@@ -21,8 +21,8 @@ public class CslIdvVO implements Serializable {
 	private String cslToTm;						// 상담 종료시간
 	private int cslTermTm;						// 상당 소요시간
 	private String pgmCd;						// 프로그램
-	private String cslTgtCd;					// 상담주제분류
-	private String cslTpCd;						// 상담내용분류
+	private String cslTgtCd;					// 상담대상
+	private String cslTpCd;						// 상담유형
 	private String rskaTpCd;					// 위기분류척도 Rating A: 위험성
 	private String rskbTpCd;					// 위기분류척도 Rating B: 지지체계
 	private String rskcTpCd;					// 위기분류척도 Rating C: 협조능력
@@ -165,28 +165,28 @@ public class CslIdvVO implements Serializable {
 		this.pgmCd = pgmCd;
 	}
 	/**
-	 * 상담주제분류
+	 * 상담대상
 	 * @return
 	 */
 	public String getCslTgtCd() {
 		return cslTgtCd;
 	}
 	/**
-	 * 상담주제분류
+	 * 상담대상
 	 * @param cslTgtCd
 	 */
 	public void setCslTgtCd(String cslTgtCd) {
 		this.cslTgtCd = cslTgtCd;
 	}
 	/**
-	 * 상담내용분류
+	 * 상담유형
 	 * @return
 	 */
 	public String getCslTpCd() {
 		return cslTpCd;
 	}
 	/**
-	 * 상담내용분류
+	 * 상담유형
 	 * @param cslTpCd
 	 */
 	public void setCslTpCd(String cslTpCd) {

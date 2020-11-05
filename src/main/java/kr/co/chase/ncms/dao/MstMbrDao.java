@@ -11,6 +11,16 @@ import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 @Repository("mstMbrDao")
 public class MstMbrDao extends EgovAbstractMapper {
 	/**
+	 * 회원 목록 조회 카운트
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getMstMbrListCount(HashMap<String, Object> map) throws SQLException{
+		return selectOne("mstMbr.getMstMbrListCount", map);
+	}
+
+	/**
 	 * 회원 목록 조회
 	 * @param map
 	 * @return

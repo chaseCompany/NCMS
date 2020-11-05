@@ -42,11 +42,8 @@ public class CounselController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-			return "redirect:/login.do";
+//			return "redirect:/login.do";
 		}
-
-		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
-		codeListMap.put("useYn", ConstantObject.Y);
 
 		cslRcpVO.setCslId(StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 		cslRcpVO.setCslNm(StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
@@ -55,6 +52,9 @@ public class CounselController {
 		cslRcpVO.setTgpFrgCd("LO");
 		cslRcpVO.setTgpGendCd("M");
 		model.put("cslRcpInfo", cslRcpVO);
+
+		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
+		codeListMap.put("useYn", ConstantObject.Y);
 
 		codeListMap.put("grpCd", "C1000");				// 정보제공자/본인여부
 		model.put("ifpGbList", sysCodeService.getSysCdList(codeListMap));
@@ -110,11 +110,11 @@ public class CounselController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-			resultView.addObject("actUrl", "/login.do");
+//			resultView.addObject("err", "Y");
+//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+//			resultView.addObject("actUrl", "/login.do");
 
-			return resultView;
+//			return resultView;
 		}
 
 		if(StringUtils.defaultString((String)reqMap.get("cslDt"), "") == "" || 
@@ -301,9 +301,10 @@ public class CounselController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/getClsRcpList.do")
-	public String getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		String currentPageNo = StringUtils.defaultString((String)reqMap.get("currentPageNo"), "");
-		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("recordCountPerPage"), "");
+	public @ResponseBody ModelAndView getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "");
+		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), "");
 
 		PaginationInfo paginginfo = new PaginationInfo();
 		if(currentPageNo == "" || recordCountPerPage == ""){
@@ -319,24 +320,39 @@ public class CounselController {
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
 		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
 
-		List<HashMap<String, Object>> resultList = counselService.getCslRcpList(reqMap);
-		model.put("resultList", resultList);
+		int totalCount = counselService.getCslRcpListCount(reqMap);
+		paginginfo.setTotalRecordCount(totalCount);
 
-		return "";
+		resultView.addObject("totalCount", totalCount);
+		resultView.addObject("paginationInfo", paginginfo);
+
+		if(totalCount > 0) {
+			List<HashMap<String, Object>> resultList = counselService.getCslRcpList(reqMap);
+			resultView.addObject("resultList", resultList);
+		}
+
+		return resultView;
 	}
 
+	/**
+	 * 상담내용 삭제
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/ajaxClsRcpDel.do")
 	public @ResponseBody ModelAndView ajaxClsRcpDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		ModelAndView resultView = new ModelAndView ("jsonView");
+		ModelAndView resultView = new ModelAndView("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-			resultView.addObject("actUrl", "/login.do");
+//			resultView.addObject("err", "Y");
+//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+//			resultView.addObject("actUrl", "/login.do");
 
-			return resultView;
+//			return resultView;
 		}
 
 		if(StringUtils.defaultString((String)reqMap.get("rcpNo"), "") == "") {
@@ -347,6 +363,80 @@ public class CounselController {
 		}
 
 		int result = counselService.deleteCslRcp(StringUtils.defaultString((String)reqMap.get("rcpNo"), ""));
+
+		return resultView;
+	}
+
+	/**
+	 * 상담 내용 상세 조회
+	 * @param rcpNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxClsRcpInfo.do")
+	public @ResponseBody ModelAndView ajaxClsRcpInfo(@RequestParam String rcpNo, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+//			resultView.addObject("err", "Y");
+//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+//			resultView.addObject("actUrl", "/login.do");
+
+//			return resultView;
+		}
+
+		if(StringUtils.defaultString(rcpNo, "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "상담번호를 입력하세요.");
+
+			return resultView;
+		}
+
+		resultView.addObject("cslRcpInfo", counselService.getCslRcp(rcpNo));
+
+		return resultView;
+	}
+
+	/**
+	 * 회원 목록 조회
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxMstMbrList.do")
+	public @ResponseBody ModelAndView ajaxMstMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "");
+		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), "");
+
+		PaginationInfo paginginfo = new PaginationInfo();
+		if(currentPageNo == "" || recordCountPerPage == ""){
+			paginginfo.setCurrentPageNo(1);
+			paginginfo.setPageSize(10);
+			paginginfo.setRecordCountPerPage(10);
+		} else {
+			paginginfo.setCurrentPageNo(Integer.valueOf(currentPageNo));
+			paginginfo.setPageSize(10);
+			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
+		}
+
+		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
+		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
+
+		int totalCount = counselService.getMstMbrListCount(reqMap);
+		paginginfo.setTotalRecordCount(totalCount);
+
+		resultView.addObject("totalCount", totalCount);
+		resultView.addObject("paginationInfo", paginginfo);
+
+		if(totalCount > 0) {
+			List<HashMap<String, Object>> resultList = counselService.getMstMbrList(reqMap);
+			resultView.addObject("resultList", resultList);
+		}
 
 		return resultView;
 	}
