@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cslAssEvl">
+	<select id="cslAssEvl.getCslAssEvlInfo" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslAssEvl.getCslAssEvlInfo */
+			   MBR_NO		, EVL_SEQ		, EVL_TOL_CD		, EVL_SCO		, EVL_CTNT
+		  FROM CSL_ASS_EVL
+		 WHERE MBR_NO = #{mbrNO}
+		   AND EVL_SEQ = #{evlSeq}
+	]]>
+	</select>
+
+	<select id="cslAssEvl.getCslAssEvlList" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslAssEvl.getCslAssEvlList */
+			   MBR_NO		, EVL_SEQ		, EVL_TOL_CD		, EVL_SCO		, EVL_CTNT
+		  FROM CSL_ASS_EVL
+		 WHERE MBR_NO = #{mbrNO}
+	]]>
+	</select>
+
+	<select id="cslAssEvl.getEvlSqeNext" parameterType="String" resultType="String">
+	<![CDATA[
+		SELECT /* cslAssEvl.getEvlSqeNext */ IFNULL(MAX(EVL_SEQ), 0) + 1
+		  FROM CSL_ASS_EVL
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</select>
+
+	<insert id="cslAssEvl.insertCslAssEvl" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* cslAssEvl.insertCslAssEvl */ INTO CSL_ASS_EVL(
+			MBR_NO		, EVL_SEQ		, EVL_TOL_CD		, EVL_SCO		, EVL_CTNT
+		)VALUES(
+			#{mbrNo}	, #{evlSeq}		, #{evlTolCd}		, #{evlSco}		, #{evlCtnt}
+		)
+	]]>
+	</insert>
+
+	<delete id="cslAssEvl.deleteCslAssEvl" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* cslAssEvl.deleteCslAssEvl */ CSL_ASS_EVL
+		 WHERE MBR_NO = #{mbrNo}
+		   AND EVL_SEQ = #{evlSeq}
+	]]>
+	</delete>
+</mapper>

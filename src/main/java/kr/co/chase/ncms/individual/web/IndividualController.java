@@ -60,6 +60,8 @@ public class IndividualController {
 		cslIdvVO.setCslDt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		cslIdvVO.setCslTgtCd("10");
 		cslIdvVO.setCslTpCd("20");
+		// ISP 수립 기본값 셋팅
+		cslIspVO.setIspDt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
 		model.put("mstMbrInfo", mstMbrVO);				// 회원정보
 		model.put("cslIdvInfo", cslIdvVO);				// 집중상담
@@ -230,6 +232,80 @@ public class IndividualController {
 	}
 
 	/**
+	 * 집중상담 내용 등록
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="ajaxClsIdvAdd.do")
+	public @ResponseBody ModelAndView ajaxClsIdvAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+		boolean flag = true;
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+//			resultView.addObject("err", "Y");
+//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+//			resultView.addObject("actUrl", "/login.do");
+
+//			return resultView;
+		}
+
+		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		reqMap.put("cslDt", StringUtils.defaultIfEmpty(reqMap.get("cslDt").toString(), "").replaceAll("-", ""));
+		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+
+		HashMap<String, Object> resMap = individualService.cslIdvAdd(reqMap);
+		if(resMap != null) {
+			resultView.addObject("err", resMap.get("err"));
+			resultView.addObject("MSG", resMap.get("MSG"));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 집중상담 내역 삭제
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxClsIdvDel.do")
+	public @ResponseBody ModelAndView ajaxClsIdvDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
+//			return "redirect:/login.do";
+		}
+
+		if(StringUtils.defaultString(reqMap.get("cslNo").toString(), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		int resultNum = individualService.deleteCslIdv(StringUtils.defaultString(reqMap.get("cslNo").toString(), ""));
+		if(resultNum <= 0) {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "삭제 오류");
+		}
+
+		return resultView;
+	}
+
+	/**
 	 * ISP 수립 목록 조회
 	 * @param reqMap
 	 * @param session
@@ -258,8 +334,15 @@ public class IndividualController {
 		return resultView;
 	}
 
-	@RequestMapping(value="/ajaxDelClsIsp.do")
-	public @ResponseBody ModelAndView ajaxDelClsIsp(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+	/**
+	 * ISP 수립 삭제
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxClsIspDel.do")
+	public @ResponseBody ModelAndView ajaxClsIspDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
@@ -280,6 +363,108 @@ public class IndividualController {
 			resultView.addObject("err", "Y");
 			resultView.addObject("MSG", "삭제 오류");
 		}
+
+		return resultView;
+	}
+
+	/**
+	 * ISP 수립 상세 내역 조회
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxClsIspInfo.do")
+	public @ResponseBody ModelAndView ajaxClsIspInfo(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
+//			return "redirect:/login.do";
+		}
+
+		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		resultView.addObject("ispInfo", individualService.getCslIspInfo(reqMap));
+
+		return resultView;
+	}
+
+	/**
+	 * ISP 수립 삭제
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCslIspAdd.do")
+	public @ResponseBody ModelAndView ajaxCslIspAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+//			resultView.addObject("err", "Y");
+//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+//			resultView.addObject("actUrl", "/login.do");
+
+//			return resultView;
+		}
+
+		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		reqMap.put("ispDt", StringUtils.defaultIfEmpty(reqMap.get("ispDt").toString(), "").replaceAll("-", ""));
+		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+
+		HashMap<String, Object> resMap = individualService.cslIspAdd(reqMap);
+		if(resMap != null) {
+			resultView.addObject("err", resMap.get("err"));
+			resultView.addObject("MSG", resMap.get("MSG"));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 사정평가 내용 조회
+	 * @param mbrNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCslAssInfo.do")
+	public @ResponseBody ModelAndView ajaxCslAssInfo(@RequestParam String mbrNo, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+//			resultView.addObject("err", "Y");
+//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+//			resultView.addObject("actUrl", "/login.do");
+
+//			return resultView;
+		}
+
+		if(StringUtils.defaultString(mbrNo, "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		resultView.addObject("assInfo", individualService.getCslAssInfoView(mbrNo));
 
 		return resultView;
 	}

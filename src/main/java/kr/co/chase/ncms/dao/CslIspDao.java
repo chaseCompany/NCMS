@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 
 @Repository("cslIspDao")
-public class CslIspDAO extends EgovAbstractMapper {
+public class CslIspDao extends EgovAbstractMapper {
 	/**
 	 * ISP 수립 목록 조회
 	 * @param map
@@ -38,5 +38,25 @@ public class CslIspDAO extends EgovAbstractMapper {
 	 */
 	public int deleteCslIsp(HashMap<String, Object> map) throws SQLException{
 		return delete("cslIsp.deleteCslIsp", map);
+	}
+
+	/**
+	 * ISP 수립 등록
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int insertCslIsp(HashMap<String, Object> map) throws SQLException{
+		return insert("cslIsp.insertCslIsp", map);
+	}
+
+	/**
+	 * ISP 수립 수정
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int updateCslIsp(HashMap<String, Object> map) throws SQLException{
+		return update("cslIsp.updateCslIsp", map);
 	}
 }

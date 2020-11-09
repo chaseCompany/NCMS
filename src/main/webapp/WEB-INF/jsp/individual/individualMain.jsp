@@ -67,14 +67,16 @@
 							$("#idvTableList > tr").remove();
 
 							$(res.clsIdvList).each(function(idx, obj){
-								var inHtml = "<tr>"
-										   + "<td>" + idx + "</td>"
+								var inHtml = "<tr id=" + idx + ">"
+										   + "<td>" + (idx + 1) + "</td>"
 										   + "<td><a href='javaScript:viewIdvRow(\"" + obj.CSL_NO + "\");'>" + obj.CSL_NO + "</td>"
 										   + "<td>" + obj.CSL_DT + "</td>"
 										   + "<td>" + obj.CSL_FM_TM + " ~ " + obj.CSL_TO_TM + "</td>"
 										   + "<td>" + obj.CSL_TERM_TM + "</td>"
 										   + "<td>" + obj.CSL_SBJ + "</td>"
 										   + "<td>" + obj.CSL_TGT + "</td>"
+										   + "<td>" + obj.CSL_ID + "</td>"
+										   + "<td><a href='javaScript:idvDel(\"" + obj.CSL_NO + "\", \"" + idx + "\");'>삭제</a></td>"
 										   + "</tr>";
 								$("#idvTableList").append(inHtml);
 							});
@@ -88,7 +90,36 @@
 				}
 			});
 		},
-		<%-- 상담내용 상세 조회 --%>
+		<%-- 집중상담내용 삭제 --%>
+		idvDel = function(tagCslNo, idx){
+			console.log("DEL : " + tagCslNo + "," + idx);
+
+			$.ajax({
+				url : '/ajaxClsIdvDel.do',
+				type : 'POST',
+				data : {
+					cslNo : tagCslNo
+				},
+				success : function(res){
+					if(res.err != "Y"){
+						$("#idvTableList > tr").each(function(){
+							if($(this).attr("id") == idx){
+								$(this).remove();
+							}
+						});
+
+						if($("#idvTableList > tr").length <= 0){
+							var inHtml = "<tr><td colspan='9'>조회된 데이터가 없습니다.</td></tr>";
+							$("#idvTableList").append(inHtml);
+						}
+					}else{
+						console.log(res.MSG);
+					}
+				},
+				error : function(xhr, status){}
+			});
+		},
+		<%-- 집중상담내용 상세 조회 --%>
 		viewIdvRow = function(tagCslNo){
 			$.ajax({
 				url : '/ajaxClsIdvInfo.do',
@@ -98,6 +129,7 @@
 				},
 				success : function(res){
 					if(res.err != "Y"){
+						$("input[name='cslNo']").val(res.clsIdvInfo.CSL_NO);
 						$("input[name='cslNm']").val(res.clsIdvInfo.CSL_NM);
 						$("input[name='cslDt']").val(res.clsIdvInfo.CSL_DT);
 						$("input[name='cslFmTm']").val(res.clsIdvInfo.CSL_FM_TM);
@@ -123,9 +155,36 @@
 				}
 			});
 		},
+		<%-- 집중상담 신규 --%>
+		newIdv = function(){
+			$("#idvInfoDiv").load(window.location.href + ' #idvInfoDiv');
+		},
+		<%-- 집중상담 저장 --%>
+		saveIdv = function(){
+			if($("input[name='mbrNo']").val() == ""){
+				alert("회원을 선택하세요.");
+				return;
+			}
+
+			$.ajax({
+				url : '/ajaxClsIdvAdd.do',
+				type : 'POST',
+				data : $('#cslForm').serialize(),
+				success : function(res){
+					console.log(res);
+					if(res.err != "Y"){
+						
+					}else{
+						console.log("ERR")
+					}
+				},
+				error : function(xhr, status){
+					
+				}
+			});
+		},
 		<%-- ISP 수립 이력 조회 --%>
 		getCslIspList = function(tagMbrNo){
-			tagMbrNo = "M20291831952681";
 			$.ajax({
 				url : '/ajaxClsIspList.do',
 				type : 'POST',
@@ -146,7 +205,6 @@
 										   + "<td>" + obj.CRE_NM + "</td>"
 										   + "<td><a href='javaScript:removeIsp(\"" + obj.ISP_DT + "\", \"" + obj.MBR_NO + "\", \"" + idx + "\");'>삭제</a></td>"
 										   + "</tr>";
-
 								$("#ispTableList").append(inHtml);
 							});
 						}
@@ -159,14 +217,61 @@
 		},
 		<%-- ISP 상세 보기 --%>
 		viewIspRow = function(tagIspDt, tagMbrNo){
-			console.log("vie : " + tagIspDt + ", " + tagMbrNo);
+			$.ajax({
+				url : '/ajaxClsIspInfo.do',
+				type : 'POST',
+				data : {
+					mbrNo : tagMbrNo, 
+					ispDt : tagIspDt
+				},
+				success : function(res){
+					if(res.ispInfo != null){
+						$("input[name='newFlag']").val("N");
+						$("input[name='ispDt']").val(res.ispInfo.ISP_DT);
+						$("input[name='mngTpNm']").val(res.ispInfo.MNG_TP_NM);
+						$("select[name='evlItmSco01']").val(res.ispInfo.EVL_ITM_SCO01).prop("selected", true);
+						$("input[name='evlItmLnk01']").val(res.ispInfo.EVL_ITM_LNK01);
+						$("select[name='evlItmSco02']").val(res.ispInfo.EVL_ITM_SCO02).prop("selected", true);
+						$("input[name='evlItmLnk02']").val(res.ispInfo.EVL_ITM_LNK02);
+						$("select[name='evlItmSco03']").val(res.ispInfo.EVL_ITM_SCO03).prop("selected", true);
+						$("input[name='evlItmLnk03']").val(res.ispInfo.EVL_ITM_LNK03);
+						$("select[name='evlItmSco04']").val(res.ispInfo.EVL_ITM_SCO04).prop("selected", true);
+						$("input[name='evlItmLnk04']").val(res.ispInfo.EVL_ITM_LNK04);
+						$("select[name='evlItmSco05']").val(res.ispInfo.EVL_ITM_SCO05).prop("selected", true);
+						$("input[name='evlItmLnk05']").val(res.ispInfo.EVL_ITM_LNK05);
+						$("select[name='evlItmSco06']").val(res.ispInfo.EVL_ITM_SCO06).prop("selected", true);
+						$("input[name='evlItmLnk06']").val(res.ispInfo.EVL_ITM_LNK06);
+						$("select[name='evlItmSco07']").val(res.ispInfo.EVL_ITM_SCO07).prop("selected", true);
+						$("input[name='evlItmLnk07']").val(res.ispInfo.EVL_ITM_LNK07);
+						$("select[name='evlItmSco08']").val(res.ispInfo.EVL_ITM_SCO08).prop("selected", true);
+						$("input[name='evlItmLnk08']").val(res.ispInfo.EVL_ITM_LNK08);
+						$("select[name='evlItmSco09']").val(res.ispInfo.EVL_ITM_SCO09).prop("selected", true);
+						$("input[name='evlItmLnk09']").val(res.ispInfo.EVL_ITM_LNK09);
+						$("select[name='evlItmSco10']").val(res.ispInfo.EVL_ITM_SCO10).prop("selected", true);
+						$("input[name='evlItmLnk10']").val(res.ispInfo.EVL_ITM_LNK10);
+						$("select[name='evlItmSco11']").val(res.ispInfo.EVL_ITM_SCO11).prop("selected", true);
+						$("input[name='evlItmLnk11']").val(res.ispInfo.EVL_ITM_LNK11);
+						$("select[name='evlItmSco12']").val(res.ispInfo.EVL_ITM_SCO12).prop("selected", true);
+						$("input[name='evlItmLnk12']").val(res.ispInfo.EVL_ITM_LNK12);
+						$("select[name='evlItmSco13']").val(res.ispInfo.EVL_ITM_SCO13).prop("selected", true);
+						$("input[name='evlItmLnk13']").val(res.ispInfo.EVL_ITM_LNK13);
+						$("select[name='evlItmSco14']").val(res.ispInfo.EVL_ITM_SCO14).prop("selected", true);
+						$("input[name='evlItmLnk14']").val(res.ispInfo.EVL_ITM_LNK14);
+						$("select[name='evlItmSco15']").val(res.ispInfo.EVL_ITM_SCO15).prop("selected", true);
+						$("input[name='evlItmLnk15']").val(res.ispInfo.EVL_ITM_LNK15);
+						$("select[name='evlItmSco16']").val(res.ispInfo.EVL_ITM_SCO16).prop("selected", true);
+						$("input[name='evlItmLnk16']").val(res.ispInfo.EVL_ITM_LNK16);
+						$("textarea[name='ispRst']").val(res.ispInfo.ISP_RST);
+						$("textarea[name='tgtCtnt']").val(res.ispInfo.TGT_CTNT);
+					}
+				},
+				error : function(xhr, status){}
+			});
 		},
 		<%-- ISP 선택 삭제 --%>
 		removeIsp = function(tagIspDt, tagMbrNo, idx){
-			console.log("del : " + tagIspDt + ", " + tagMbrNo);
-			
 			$.ajax({
-				url : '/ajaxDelClsIsp.do',
+				url : '/ajaxClsIspDel.do',
 				type : 'POST',
 				data : {
 					mbrNo : tagMbrNo, 
@@ -191,13 +296,57 @@
 				error : function(xhr, status){}
 			});
 		},
+		<%-- ISP 저장 --%>
+		saveIsp = function(){
+			if($("input[name='mbrNo']").val() == ""){
+				alert("회원을 선택하세요.");
+				return;
+			}
+
+			$.ajax({
+				url : '/ajaxCslIspAdd.do',
+				type : 'POST',
+				data : $('#cslForm').serialize(),
+				success : function(res){
+					console.log(res);
+				},
+				error : function(xhr, status){
+				}
+			});
+		},
+		<%-- ISP 신규 작성 --%>
+		newIsp = function(){
+			$("#ispInfoDiv").load(window.location.href + ' #ispInfoDiv');
+		},
 		<%-- 사정평자 이력 조회 --%>
 		getCslAssList = function(tagMbrNo){
+			tagMbrNo = "M20273770366431";
+			$.ajax({
+				url : '/ajaxCslAssInfo.do',
+				type : 'POST',
+				data : {
+					mbrNo : tagMbrNo
+				},
+				success : function(res){
+					console.log(res);
+				},
+				error : function(xhr, status){
+				}
+			});
+		},
+		saveAss = function(){
+			if($("input[name='mbrNo']").val() == ""){
+				alert("회원을 선택하세요.");
+				return;
+			}
+
+			console.log("SAVE");
 		}
 	});
 </script>
 <br/>
 개별 회복지원 서비스<br/>
+<form name="cslForm" id="cslForm">
 <a href="javaScript:individualNew();">초기화</a> <a href="javaScript:individualExel();">엑셀다운로드</a><br/>
 회원등록번호	<form:input path="mstMbrInfo.mbrNo" cssClass="txt" readonly="true" placeholder="회원등록번호" /><a href="javaScript:searchMemberPopup();">조회</a>
 성명			<form:input path="mstMbrInfo.mbrNm" cssClass="txt" readonly="true" placeholder="성명" />
@@ -213,6 +362,7 @@
 사례관리자		<form:input path="mstMbrInfo.mngUsrId" cssClass="txt" readonly="true" placeholder="사례관리자" /><br/>
 <a href="javaScript:bodyView('body01');">집중상담</a> <a href="javaScript:bodyView('body02');">ISP 수립</a> <a href="javaScript:bodyView('body03');">사정평가</a><br/>
 <div id="bodyView" name="body01" style="display:none;">
+<a href="javaScript:saveIdv();">저장</a> <a href="javaScript:newIdv();">신규</a>
 <table border="1">
 	<tr>
 		<td>#</td>
@@ -222,13 +372,17 @@
 		<td>소요(분)</td>
 		<td>상담주제</td>
 		<td>상담목표</td>
+		<td>상담자</td>
+		<td>작업</td>
 	</tr>
 	<tbody id="idvTableList">
 		<tr>
-			<td colspan="7">조회된 데이터가 없습니다.</td>
+			<td colspan="9">조회된 데이터가 없습니다.</td>
 		</tr>
 	</tbody>
 </table><br/>
+<div id="idvInfoDiv">
+			<form:input path="cslIdvInfo.cslNo" />
 상담자		<form:input path="cslIdvInfo.cslNm" cssClass="txt" readonly="true" />
 상담일시		<form:input path="cslIdvInfo.cslDt" cssClass="txt" placeholder="날짜 선택" />
 			<form:input path="cslIdvInfo.cslFmTm" cssClass="txt" placeholder="시작"/> ~ <form:input path="cslIdvInfo.cslToTm" cssClass="txt" placeholder="종료" />
@@ -263,7 +417,8 @@ Rating C: 협조능력	<select name="rskcTpCd">
 다음 상담내용<a href="javaScript:nxtCtntPopup();">보기</a>
 		<textarea name="nxtCslCtnt" rows="20" placeholder="다음 상담내용">${cslIdvInfo.nxtCslCtnt}</textarea>
 </div>
-<div id="bodyView" name="body02">
+</div>
+<div id="bodyView" name="body02" style="display:none;">
 <a href="javaScript:saveIsp();">저장</a> <a href="javaScript:newIsp();">신규</a>
 <table border="1">
 	<tr>
@@ -280,197 +435,196 @@ Rating C: 협조능력	<select name="rskcTpCd">
 		</tr>
 	</tbody>
 </table><br/>
+<div id="ispInfoDiv">
+			<input type="hidden" name="newFlag" value="Y" />
 ISP 일자		<form:input path="cslIspInfo.ispDt" cssClass="txt" placeholder="날짜 선택" />
-관리구분		<c:forEach var="result" items="${mngTpList}" varStatus="status">
-				<c:if test="${result.CD_ID eq cslIspInfo.mngTpCd}">
-			<form:input path="cslIspInfo.mngTpCd" cssClass="txt" />
-			<form:input path="cslIspInfo.mngTpNm" cssClass="txt" />
-				</c:if>
-			</c:forEach>
-			<table board='1'>
-				<tr>
-					<th colspan="3">중독 평가</th>
-					<th colspan="3">상태 평가</th>
-					<th colspan="3">사회적 기능 평가</th>
-					<th colspan="3">사회 서비스 평가</th>
-				</tr>
-				<tr>
-					<th>문항</th>
-					<th>심각도</th>
-					<th>자원연계</th>
-					<th>문항</th>
-					<th>심각도</th>
-					<th>자원연계</th>
-					<th>문항</th>
-					<th>심각도</th>
-					<th>자원연계</th>
-					<th>문항</th>
-					<th>심각도</th>
-					<th>자원연계</th>
-				</tr>
-				<tr>
-					<td>약물사용문제</td>
-					<td>
-						<select name="evlItmSco01">
-			<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk01" cssClass="txt" /></td>
-					<td>자해 및 타해 위험</td>
-					<td>
-						<select name="evlItmSco05">
-			<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk05" cssClass="txt" /></td>
-					<td>가족관계</td>
-					<td>
-						<select name="evlItmSco10">
-			<c:forEach var="result" items="${evlItmSco10List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk10" cssClass="txt" /></td>
-					<td>주거</td>
-					<td>
-						<select name="evlItmSco12">
-			<c:forEach var="result" items="${evlItmSco12List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk12" cssClass="txt" /></td>
-				</tr>
-				<tr>
-					<td>알코올사용문제</td>
-					<td>
-						<select name="evlItmSco02">
-			<c:forEach var="result" items="${evlItmSco02List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk02" cssClass="txt" /></td>
-					<td>정신과적 증상</td>
-					<td>
-						<select name="evlItmSco06">
-			<c:forEach var="result" items="${evlItmSco06List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk06" cssClass="txt" /></td>
-					<td>사회적관계</td>
-					<td>
-						<select name="evlItmSco11">
-			<c:forEach var="result" items="${evlItmSco11List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk11" cssClass="txt" /></td>
-					<td>경제활동 지원</td>
-					<td>
-						<select name="evlItmSco13">
-			<c:forEach var="result" items="${evlItmSco13List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk13" cssClass="txt" /></td>
-				</tr>
-				<tr>
-					<td>도박사용문제</td>
-					<td>
-						<select name="evlItmSco03">
-			<c:forEach var="result" items="${evlItmSco03List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk03" cssClass="txt" /></td>
-					<td>정신약물관리</td>
-					<td>
-						<select name="evlItmSco07">
-			<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk07" cssClass="txt" /></td>
-					<td colspan="3">&nbsp;</td>
-					<td>취업 및 학업욕구</td>
-					<td>
-						<select name="evlItmSco14">
-			<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk14" cssClass="txt" /></td>
-				</tr>
-				<tr>
-					<td>인터넷사용문제</td>
-					<td>
-						<select name="evlItmSco04">
-			<c:forEach var="result" items="${evlItmSco04List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk04" cssClass="txt" /></td>
-					<td>스트레스 상태</td>
-					<td>
-						<select name="evlItmSco08">
-			<c:forEach var="result" items="${evlItmSco08List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk08" cssClass="txt" /></td>
-					<td colspan="3">&nbsp;</td>
-					<td>고용 및 교육가능성</td>
-					<td>
-						<select name="evlItmSco15">
-			<c:forEach var="result" items="${evlItmSco15List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk15" cssClass="txt" /></td>
-				</tr>
-				<tr>
-					<td colspan="3">&nbsp;</td>
-					<td>신체질환</td>
-					<td>
-						<select name="evlItmSco09">
-			<c:forEach var="result" items="${evlItmSco09List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk09" cssClass="txt" /></td>
-					<td colspan="3">&nbsp;</td>
-					<td>법률적 문제</td>
-					<td>
-						<select name="evlItmSco16">
-			<c:forEach var="result" items="${evlItmSco16List}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-			</c:forEach>
-						</select>
-					</td>
-					<td><form:input path="cslIspInfo.evlItmLnk16" cssClass="txt" /></td>
-				</tr>
-			</table><br/>
+관리구분		<form:input path="cslIspInfo.mngTpNm" cssClass="txt" placeholder="일시관리" />
+	<table border="1">
+		<tr>
+			<th colspan="3">중독 평가</th>
+			<th colspan="3">상태 평가</th>
+			<th colspan="3">사회적 기능 평가</th>
+			<th colspan="3">사회 서비스 평가</th>
+		</tr>
+		<tr>
+			<th>문항</th>
+			<th>심각도</th>
+			<th>자원연계</th>
+			<th>문항</th>
+			<th>심각도</th>
+			<th>자원연계</th>
+			<th>문항</th>
+			<th>심각도</th>
+			<th>자원연계</th>
+			<th>문항</th>
+			<th>심각도</th>
+			<th>자원연계</th>
+		</tr>
+		<tr>
+			<td>약물사용문제</td>
+			<td>
+				<select name="evlItmSco01">
+	<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk01" cssClass="txt" /></td>
+			<td>자해 및 타해 위험</td>
+			<td>
+				<select name="evlItmSco05">
+	<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk05" cssClass="txt" /></td>
+			<td>가족관계</td>
+			<td>
+				<select name="evlItmSco10">
+	<c:forEach var="result" items="${evlItmSco10List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk10" cssClass="txt" /></td>
+			<td>주거</td>
+			<td>
+				<select name="evlItmSco12">
+	<c:forEach var="result" items="${evlItmSco12List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk12" cssClass="txt" /></td>
+		</tr>
+		<tr>
+			<td>알코올사용문제</td>
+			<td>
+				<select name="evlItmSco02">
+	<c:forEach var="result" items="${evlItmSco02List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk02" cssClass="txt" /></td>
+			<td>정신과적 증상</td>
+			<td>
+				<select name="evlItmSco06">
+	<c:forEach var="result" items="${evlItmSco06List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk06" cssClass="txt" /></td>
+			<td>사회적관계</td>
+			<td>
+				<select name="evlItmSco11">
+	<c:forEach var="result" items="${evlItmSco11List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk11" cssClass="txt" /></td>
+			<td>경제활동 지원</td>
+			<td>
+				<select name="evlItmSco13">
+	<c:forEach var="result" items="${evlItmSco13List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk13" cssClass="txt" /></td>
+		</tr>
+		<tr>
+			<td>도박사용문제</td>
+			<td>
+				<select name="evlItmSco03">
+	<c:forEach var="result" items="${evlItmSco03List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk03" cssClass="txt" /></td>
+			<td>정신약물관리</td>
+			<td>
+				<select name="evlItmSco07">
+	<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk07" cssClass="txt" /></td>
+			<td colspan="3">&nbsp;</td>
+			<td>취업 및 학업욕구</td>
+			<td>
+				<select name="evlItmSco14">
+	<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk14" cssClass="txt" /></td>
+		</tr>
+		<tr>
+			<td>인터넷사용문제</td>
+			<td>
+				<select name="evlItmSco04">
+	<c:forEach var="result" items="${evlItmSco04List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk04" cssClass="txt" /></td>
+			<td>스트레스 상태</td>
+			<td>
+				<select name="evlItmSco08">
+	<c:forEach var="result" items="${evlItmSco08List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk08" cssClass="txt" /></td>
+			<td colspan="3">&nbsp;</td>
+			<td>고용 및 교육가능성</td>
+			<td>
+				<select name="evlItmSco15">
+	<c:forEach var="result" items="${evlItmSco15List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk15" cssClass="txt" /></td>
+		</tr>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+			<td>신체질환</td>
+			<td>
+				<select name="evlItmSco09">
+	<c:forEach var="result" items="${evlItmSco09List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk09" cssClass="txt" /></td>
+			<td colspan="3">&nbsp;</td>
+			<td>법률적 문제</td>
+			<td>
+				<select name="evlItmSco16">
+	<c:forEach var="result" items="${evlItmSco16List}" varStatus="status">
+					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
+	</c:forEach>
+				</select>
+			</td>
+			<td><form:input path="cslIspInfo.evlItmLnk16" cssClass="txt" /></td>
+		</tr>
+	</table><br/>
 ISP 결과		<textarea name="ispRst" placeholder="ISP 결과"rows="8"></textarea><br/>
 장단기 목표수립	<textarea name="tgtCtnt" placeholder="장단기 목표수립" rows="8"></textarea><br/>
 </div>
-<div id="bodyView" name="body03" style="display:none;">
+</div>
+<div id="bodyView" name="body03">
+<a href="javaScript:saveAss();">저장</a><br/>
 중독력<br/>
 최초 사용약물	<select name="fstDrugCd">
 				<option value="" />선택
@@ -516,7 +670,7 @@ ISP 결과		<textarea name="ispRst" placeholder="ISP 결과"rows="8"></textarea>
 				<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
 			</c:forEach>
 			</select>
-			<from:input path="cslAssInfo.sprtPbmEtc" cssClass="txt" placeholder="기타 선택시 입력 가능" /><br/>
+			<form:input path="cslAssInfo.sprtPbmEtc" cssClass="txt" placeholder="기타 선택시 입력 가능" /><br/>
 치료정보<br/>
 성격			<select name="prsnCd" multiple>
 				<option value="" />선택
@@ -557,7 +711,7 @@ ISP 결과		<textarea name="ispRst" placeholder="ISP 결과"rows="8"></textarea>
 기대효과		<textarea name="expEfc" rows="11" placeholder="기대효과"></textarea>
 메모			<textarea name="miMemo" rows="11" placeholder="메모"></textarea><br/>
 평가도구<br/>
-			<table board="1">
+			<table border="1">
 				<tr>
 					<td>#</td>
 					<td>작업</td>
@@ -586,3 +740,4 @@ ISP 결과		<textarea name="ispRst" placeholder="ISP 결과"rows="8"></textarea>
 평가점수		<input name="evlSco" type="text" placeholder="평가점수" /><br/>
 평가내용		<textarea name="evlCtnt" rows="4" placeholder="평가 내용을 입력하세요."></textarea>
 </div>
+</form>

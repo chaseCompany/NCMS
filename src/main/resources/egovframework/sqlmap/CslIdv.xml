@@ -5,8 +5,8 @@
 	<select id="cslIdv.getCslIdvList" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* cslRcp.getCslIdvList */
-			   CSL_NO		, CSL_DT		, CSL_FM_TM		, CSL_TO_TM		, CSL_TERM_TM
-			 , CSL_SBJ		, CSL_TGT		, MBR_NO
+			   CSL_NO		, CSL_ID		, CSL_DT		, CSL_FM_TM		, CSL_TO_TM
+			 , CSL_TERM_TM	, CSL_SBJ		, CSL_TGT		, MBR_NO
 		  FROM CSL_IDV
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -15,7 +15,7 @@
 			</if>
 		</trim>
 	<![CDATA[
-		 ORDER BY CSL_DT DESC, CSL_FM_TM DESC
+		 ORDER BY CRE_DT DESC
 	]]>
 	</select>
 
@@ -46,8 +46,41 @@
 			 , #{cslToTm}	, #{cslTermTm}	, #{pgmCd}		, #{cslTgtCd}		, #{cslTpCd}
 			 , #{rskaTpCd}	, #{rskbTpCd}	, #{rskcTpCd}	, #{rskSco}			, #{cslSbj}
 			 , #{cslTgt}	, #{cslCtnt}	, #{nxtCslDt}	, #{nxtCslTm}		, #{nxtCslCtnt}
-			 , #{creId}		, NOW()			, #{creId}		, NOW()
+			 , #{cslId}		, NOW()			, #{cslId}		, NOW()
 		)
 	]]>
 	</insert>
+
+	<update id="cslIdv.updateCslIdv" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* cslIdv.updateCslIdv */ CSL_IDV
+		   SET CSL_DT = #{cslDt}			, CSL_FM_TM = #{cslFmTm}
+			 , CSL_TO_TM = #{cslToTm}		, CSL_TERM_TM = #{cslTermTm}
+			 , PGM_CD = #{pgmCd}			, CSL_TGT_CD = #{cslTgtCd}
+			 , CSL_TP_CD = #{cslTpCd}		, RSKA_TP_CD = #{rskaTpCd}
+			 , RSKB_TP_CD = #{rskbTpCd}		, RSKC_TP_CD = #{rskcTpCd}
+			 , RSK_SCO = #{rskSco}			, CSL_SBJ = #{cslSbj}
+			 , CSL_TGT = #{cslTgt}			, CSL_CTNT = #{cslCtnt}
+			 , NXT_CSL_DT = #{nxtCslDt}		, NXT_CSL_TM = #{nxtCslTm}
+			 , NXT_CSL_CTNT = #{nxtCslCtnt}	, UPD_ID = #{cslId}
+			 , UPD_DT = NOW()
+		 WHERE CSL_NO = #{cslNo}
+	]]>
+	</update>
+
+	<select id="cslIdv.getCslIdvSeq" resultType="String">
+	<![CDATA[
+		SELECT /* cslIdv.getCslIdvSeq */
+			   CONCAT('C', DATE_FORMAT(NOW(), '%Y%m%d%H'), LPAD(IFNULL(MAX(CAST(SUBSTR(CSL_NO, 12) AS UNSIGNED)), 0) + 1, 4, '0')) AS rcpSeq
+		  FROM CSL_IDV
+		 WHERE CSL_NO LIKE CONCAT('C', DATE_FORMAT(NOW(), '%Y%m%d%H'), '%')
+	]]>
+	</select>
+
+	<delete id="cslIdv.deleteCslIdv" parameterType="String">
+	<![CDATA[
+		DELETE /* cslIdv.deleteCslIdv */ FROM CSL_IDV
+		 WHERE CSL_NO = #{cslNo}
+	]]>
+	</delete>
 </mapper>

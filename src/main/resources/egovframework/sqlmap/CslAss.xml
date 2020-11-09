@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cslAss">
+	<select id="cslAss.getCslAssInfo" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslAss.getCslAssInfo */
+			   MBR_NO		, FST_DRUG_CD	, FST_DRUG		, MAIN_DRUG_CD	, MAIN_DRUG
+			 , FST_AGE		, USE_TERM		, USE_FRQ_CD	, USE_CAU_CD	, USE_CAU_ETC
+			 , LAW_PBM_CD	, LAW_PBM_ETC	, PHYS_PBM		, SPRT_PBM_CD	, SPRT_PBM_ETC
+			 , MSR_INF		, LST_AGE		, PRSN_CD		, EMTN_CD		, ACTN_CD
+			 , FMLY_CD		, IT_RL_CD		, MI_ETC		, SVR_RCG_DGR	, EXP_EFC
+			 , MI_MEMO		, CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+		  FROM CSL_ASS
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</select>
+
+	<insert id="cslAss.insertCslAss" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* cslAss.insertCslAss */ INTO CSL_ASS(
+			   MBR_NO		, FST_DRUG_CD	, FST_DRUG		, MAIN_DRUG_CD	, MAIN_DRUG
+			 , FST_AGE		, USE_TERM		, USE_FRQ_CD	, USE_CAU_CD	, USE_CAU_ETC
+			 , LAW_PBM_CD	, LAW_PBM_ETC	, PHYS_PBM		, SPRT_PBM_CD	, SPRT_PBM_ETC
+			 , MSR_INF		, LST_AGE		, PRSN_CD		, EMTN_CD		, ACTN_CD
+			 , FMLY_CD		, IT_RL_CD		, MI_ETC		, SVR_RCG_DGR	, EXP_EFC
+			 , MI_MEMO		, CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+		)VALUES(
+			   #{mbrNo}		, #{fstDrugCd}	, #{fstDrug}	, #{mainDrugCd}	, #{mainDrug}
+			 , #{fstAge}	, #{useTerm}	, #{useFrqCd}	, #{useCauCd}	, #{useCauEtc}
+			 , #{lawPbmCd}	, #{lawPbmEtc}	, #{physPbm}	, #{sprtPbmCd}	, #{sprtPbmEtc}
+			 , #{msrInf}	, #{lstAge}		, #{prsnCd}		, #{emtnCd}		, #{actnCd}
+			 , #{fmlyCd}	, #{itRlCd}		, #{miEtc}		, #{svrRcgDgr}	, #{expEfc}
+			 , #{miMemo}	, #{creId}		, NOW()			, #{creId}		, NOW()
+		)
+	]]>
+	</insert>
+
+	<update id="cslAss.updateCslAss" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* cslAss.updateCslAss */ CSL_ASS
+		   SET FST_DRUG_CD = #{fstDrugCd}		, FST_DRUG = #{fstDrug}
+			 , MAIN_DRUG_CD = #{mainDrugCd}		, MAIN_DRUG = #{mainDrug}
+			 , FST_AGE = #{fstAge}				, USE_TERM = #{useTerm}
+			 , USE_FRQ_CD = #{useFrqCd}			, USE_CAU_CD = #{useCauCd}
+			 , USE_CAU_ETC = #{useCauEtc}		, LAW_PBM_CD = #{lawPbmCd}
+			 , LAW_PBM_ETC = #{lawPbmEtc}		, PHYS_PBM = #{physPbm}
+			 , SPRT_PBM_CD = #{sprtPbmCd}		, SPRT_PBM_ETC = #{sprtPbmEtc}
+			 , MSR_INF = #{msrInf}				, LST_AGE = #{lstAge}
+			 , PRSN_CD = #{prsnCd}				, EMTN_CD = #{emtnCd}
+			 , ACTN_CD = #{actnCd}				, FMLY_CD = #{fmlyCd}
+			 , IT_RL_CD = #{itRlCd}				, MI_ETC = #{miEtc}
+			 , SVR_RCG_DGR = #{svrRcgDgr}		, EXP_EFC = #{expEfc}
+			 , MI_MEMO = #{miMemo}				, UPD_ID = #{creId}
+			 , UPD_DT = NOW()
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</update>
+</mapper>

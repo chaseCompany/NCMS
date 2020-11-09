@@ -11,4 +11,5 @@ public class ConstantObject {
 	public static final String LOGIN_SESSEION_INFO = "Usr_Session_Info";
 
 	public static final String Y = "Y";
+	public static final String N = "N";
 }

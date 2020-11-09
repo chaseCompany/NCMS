@@ -52,14 +52,14 @@
 				url : '/ajaxCounselAdd.do',
 				type : 'POST',
 				data : $('#counselForm').serialize(),
-				success : function(data){
-					if(data.err != "Y"){
+				success : function(res){
+					if(res.err != "Y"){
 						alert("등록 완료");
 					}else{
-						alert(data.MSG);
+						alert(res.MSG);
 
-						if(data.actUrl != "" && data.actUrl != undefined){
-							window.location.href = data.actUrl;
+						if(res.actUrl != "" && res.actUrl != undefined){
+							window.location.href = res.actUrl;
 						}
 					}
 				},
@@ -85,14 +85,14 @@
 				data : {
 					rcpNo : $("input[name='rcpNo']").val()
 				},
-				success : function(data){
-					if(data.err != "Y"){
+				success : function(res){
+					if(res.err != "Y"){
 						alert("삭제 완료");
 					}else{
-						alert(data.MSG);
+						alert(res.MSG);
 
-						if(data.actUrl != "" && data.actUrl != undefined){
-							window.location.href = data.actUrl;
+						if(res.actUrl != "" && res.actUrl != undefined){
+							window.location.href = res.actUrl;
 						}
 					}
 				},
