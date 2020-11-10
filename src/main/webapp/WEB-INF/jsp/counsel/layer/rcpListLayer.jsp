@@ -1,29 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script>
 	$(document).ready(function(){
 		$(".datepicker").datepicker();
 
-		$("input[name='schStrCslDt']").datepicker('setDate', '-3M');
-		$("input[name='schEndCslDt']").datepicker('setDate', 'today');
-
 		<%-- 페이지 이동 --%>
 		goPage = function(pageNo){
-			$("input[name='pageNo']").val(pageNo);
+			$("input[name='rcpPageNo']").val(pageNo);
 			getRcpNo();
 		},
 		<%-- 날짜 셋팅 --%>
 		setStrDt = function(obj){
-			var endDt = new Date($("input[name='schEndCslDt']").datepicker("getDate"));
+			var endDt = new Date($("input[name='rcpSchEndCslDt']").datepicker("getDate"));
 			endDt.setMonth(endDt.getMonth() - $(obj).val());
-			$("input[name='schStrCslDt']").datepicker('setDate', endDt);
+			$("input[name='rcpSchStrCslDt']").datepicker('setDate', endDt);
 		},
 		<%-- 검색 --%>
 		schRcpNo = function(){
-			$("input[name='pageNo']").val("1");
+			$("input[name='rcpPageNo']").val("1");
 			getRcpNo();
 		}
+
+		var setNewStrDt = new Date('<c:out value="${fn:substring(schStrCslDt, 0, 4)}" />', '<c:out value="${fn:substring(schStrCslDt, 4, 6)}" />', '<c:out value="${fn:substring(schStrCslDt, 6, 8)}" />');
+		var setNewEndDt = new Date('<c:out value="${fn:substring(schEndCslDt, 0, 4)}" />', '<c:out value="${fn:substring(schEndCslDt, 4, 6)}" />', '<c:out value="${fn:substring(schEndCslDt, 6, 8)}" />')
+		setNewStrDt.setMonth(setNewStrDt.getMonth() - 1);
+		setNewEndDt.setMonth(setNewEndDt.getMonth() - 1);
+		$("input[name='rcpSchStrCslDt']").datepicker('setDate', setNewStrDt);
+		$("input[name='rcpSchEndCslDt']").datepicker('setDate', setNewEndDt);
 	});
 </script>
 <!-- 접수번호 검색 팝업 -->
@@ -39,34 +44,34 @@
 		<table class="w-auto">
 			<tbody>
 				<form name="rcpNoSchForm" id="rcpNoSchForm">
-				<input type="hidden" name="pageNo" value="1" />
+				<input type="hidden" name="rcpPageNo" value="<c:out value='${pageNo}' />" />
 				<tr>
 					<th><span class="required">*</span> 상담일자</th>
 					<td>
 						<div class="dat-pk">
 							<i class="el-input__icon el-icon-date"></i>
-							<input type="text" name="schStrCslDt" class="el-input__inner datepicker" style="width: 130px;">
+							<input type="text" name="rcpSchStrCslDt" class="el-input__inner datepicker" style="width: 130px;">
 						</div>
 						<span>~</span>
 						<div class="dat-pk">
 							<i class="el-input__icon el-icon-date"></i>
-							<input type="text" name="schEndCslDt" class="el-input__inner datepicker" style="width: 130px;">
+							<input type="text" name="rcpSchEndCslDt" class="el-input__inner datepicker" style="width: 130px;">
 						</div>
 						<div class="dsp-ibk">
-							<select name="schMth" style="width: 80px;" onchange="javaScript:setStrDt(this);">
+							<select name="rcpSchMth" style="width: 80px;" onchange="javaScript:setStrDt(this);">
 								<option value="">선택</option>
-								<option value="1">1개월</option>
-								<option value="3">3개월</option>
-								<option value="6">6개월</option>
-								<option value="12">1년</option>
+								<option value="1"<c:if test="${schMth eq '1'}"> selected</c:if>>1개월</option>
+								<option value="3"<c:if test="${schMth eq '3'}"> selected</c:if>>3개월</option>
+								<option value="6"<c:if test="${schMth eq '6'}"> selected</c:if>>6개월</option>
+								<option value="12"<c:if test="${schMth eq '12'}"> selected</c:if>>1년</option>
 							</select>
-							<select name="schGb" style="width: 110px;">
+							<select name="rcpSchGb" style="width: 110px;">
 								<option value="">전체</option>
-								<option value="0">상담자</option>
-								<option value="1">정보제공자</option>
-								<option value="2">대상자</option>
+								<option value="0"<c:if test="${schGb eq '0'}"> selected</c:if>>상담자</option>
+								<option value="1"<c:if test="${schGb eq '1'}"> selected</c:if>>정보제공자</option>
+								<option value="2"<c:if test="${schGb eq '2'}"> selected</c:if>>대상자</option>
 							</select>
-							<input type="text" name="schNm" class="el-input__inner" style="width: 120px;">
+							<input type="text" name="rcpSchNm" value="<c:out value='${schNm}' />" class="el-input__inner" style="width: 120px;">
 							<button type="button" onclick="javaScript:schRcpNo();" class="el-button el-button--primary el-button--small is-plain" style="height:32px;margin-left: 8px;">
 								<i class="el-icon-search"></i> <span>검색</span>
 							</button>
