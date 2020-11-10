@@ -65,8 +65,8 @@
 							<span><i class="el-submenu__icon-arrow el-icon-arrow-down"></i></span>
 						</a>
 						<ul>
-							<li><a href="사용자관리.html">사용자 관리</a></li>
-							<li><a href="코드관리.html">코드 관리</a></li>
+							<li><a href="javaScript:goPage('/adminUser.do');" class="on">사용자 관리</a></li>
+							<li><a href="javaScript:goPage('/adminCode.do');" class="on">코드 관리</a></li>
 						</ul>
 					</li>
 				</ul>
