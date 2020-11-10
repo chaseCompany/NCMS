@@ -61,22 +61,21 @@
 	<![CDATA[
 		SELECT /* cslRcp.getCslRcpListCount */ COUNT(RCP_NO) AS CNT
 		  FROM CSL_RCP
+		 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="schGb != null or schGb != ''">
-				<choose>
-					<when test="schGb == 0">
+		<if test="schGb != null or schGb != ''">
+			<choose>
+				<when test="schGb == 0">
 		   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-					</when>
-					<when test="schGb == 1">
+				</when>
+				<when test="schGb == 1">
 		   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-					</when>
-					<when test="schGb == 2">
+				</when>
+				<when test="schGb == 2">
 		   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-					</when>
-				</choose>
-			</if>
-		</trim>
+				</when>
+			</choose>
+		</if>
 	</select>
 
 	<select id="cslRcp.getCslRcpList" parameterType="hashMap" resultType="hashMap">
@@ -88,22 +87,21 @@
 						SELECT RCP_NO			, CSL_DT		, CSL_FM_TM		, CSL_TO_TM			, CSL_TERM_TM
 							 , CSL_NM			, IFP_NM		, TGP_NM		, CRE_DT
 						  FROM CSL_RCP
+						 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="schGb != null or schGb != ''">
-				<choose>
-					<when test="schGb == 0">
+		<if test="schGb != null or schGb != ''">
+			<choose>
+				<when test="schGb == 0">
 						   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-					</when>
-					<when test="schGb == 1">
+				</when>
+				<when test="schGb == 1">
 						   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-					</when>
-					<when test="schGb == 2">
+				</when>
+				<when test="schGb == 2">
 						   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-					</when>
-				</choose>
-			</if>
-		</trim>
+				</when>
+			</choose>
+		</if>
 	<![CDATA[
 						 ORDER BY CRE_DT DESC
 				  ) T,(SELECT @RNUM := 0) RNUM

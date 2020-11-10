@@ -11,7 +11,13 @@
 	<tiles:insertAttribute name="head" />
 </head>
 <body>
-	<tiles:insertAttribute name="topmenu" />
-	<tiles:insertAttribute name="content" />
+	<!-- content -->
+	<div id="content">
+		<tiles:insertAttribute name="topmenu" />
+		<tiles:insertAttribute name="content" />
+
+		<div class="layerpopup" id="layerpopup"></div>
+	</div>
+	<!-- // content -->
 </body>
 </html>

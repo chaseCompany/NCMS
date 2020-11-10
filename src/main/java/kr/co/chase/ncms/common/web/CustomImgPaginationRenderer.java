@@ -13,29 +13,26 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.AbstractPaginationRenderer;
  * @author jhg
  */
 public class CustomImgPaginationRenderer extends AbstractPaginationRenderer implements ServletContextAware{
-
-	@SuppressWarnings("unused")
-	private ServletContext servletContext;
-
 	public CustomImgPaginationRenderer() {
 		// no-op
 	}
 
 	/**
 	* PaginationRenderer
+	*
+	* @see 개발프레임웍크 실행환경 개발팀
 	*/
 	public void initVariables() {
-		firstPageLabel = "<a class=\"fst\" href=\"#\" onclick=\"{0}({1}); return false;\"></a>&#160;";
-		previousPageLabel = "<a class=\"prv\" href=\"#\" onclick=\"{0}({1}); return false;\"></a>&#160;";
-		currentPageLabel = "<a class=\"on\" href=\"#\">{0}</a>&#160;";
-		otherPageLabel = "<a href=\"#\" onclick=\"{0}({1}); return false;\">{2}</a>&#160;";
-		nextPageLabel = "<a class=\"nxt\" href=\"#\" onclick=\"{0}({1}); return false;\"></a>&#160;";
-		lastPageLabel = "<a class=\"lst\" href=\"#\" onclick=\"{0}({1}); return false;\"></a>&#160;";
+		firstPageLabel = "";
+		previousPageLabel = "<a href=\"javaScript:{0}({1});\"><i class=\"el-icon el-icon-arrow-left\"></i></a>&#160;";
+		currentPageLabel = "<a href=\"#\" class=\"active\">{0}</a>&#160;";
+		otherPageLabel = "<a href=\"javaScript:{0}({1});\">{2}</a>&#160;";
+		nextPageLabel = "<a href=\"javaScript:{0}({1});\"><i class=\"el-icon el-icon-arrow-right\"></i></a>&#160;";
+		lastPageLabel = "";
 	}
 
 	@Override
 	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
 		initVariables();
 	}
 }

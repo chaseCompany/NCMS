@@ -9,6 +9,11 @@
 		<put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
 	</definition>
 
+	<definition name="onlyBody-layout" template="/WEB-INF/jsp/layouts/onlyBody.jsp" />
+	<definition name="*/layer/*" extends="onlyBody-layout">
+		<put-attribute name="content" value="/WEB-INF/jsp/{1}/layer/{2}.jsp" />
+	</definition>
+
 	<definition name="default-layout" template="/WEB-INF/jsp/layouts/defalut.jsp">
 		<put-attribute name="head" value="/WEB-INF/jsp/layouts/head.jsp" />
 		<put-attribute name="topmenu" value="/WEB-INF/jsp/layouts/topMenu.jsp" />

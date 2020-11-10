@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.SysCodeService;
+import kr.co.chase.ncms.common.util.DateUtil;
 import kr.co.chase.ncms.counsel.service.CounselService;
 import kr.co.chase.ncms.vo.CslRcpVO;
 
@@ -301,37 +302,52 @@ public class CounselController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/getClsRcpList.do")
-	public @ResponseBody ModelAndView getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		ModelAndView resultView = new ModelAndView("jsonView");
+	public String getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "");
-		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), "");
+		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
 		PaginationInfo paginginfo = new PaginationInfo();
 		if(currentPageNo == "" || recordCountPerPage == ""){
 			paginginfo.setCurrentPageNo(1);
-			paginginfo.setPageSize(10);
-			paginginfo.setRecordCountPerPage(10);
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.parseInt(ConstantObject.defaultRowSize));
 		} else {
 			paginginfo.setCurrentPageNo(Integer.valueOf(currentPageNo));
-			paginginfo.setPageSize(10);
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
 			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
 		}
 
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
 		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
 
+		String schStrCslDt = StringUtils.defaultIfEmpty((String)reqMap.get("schStrCslDt"), "");
+		String schEndCslDt = StringUtils.defaultIfEmpty((String)reqMap.get("schEndCslDt"), "");
+		String schMth = StringUtils.defaultIfEmpty((String)reqMap.get("schMth"), "");
+		String schGb = StringUtils.defaultIfEmpty((String)reqMap.get("schGb"), "");
+		String schNm = StringUtils.defaultIfEmpty((String)reqMap.get("schNm"), "");
+		if(!"".equals(schStrCslDt)) {
+			reqMap.put("schStrCslDt", schStrCslDt.replaceAll("-", ""));
+		}else{
+			reqMap.put("schStrCslDt", DateUtil.getFormattedDateMonthAdd(DateUtil.getToday("yyyyMMdd"), "yyyyMMdd", "yyyyMMdd", -3));
+		}
+		if(!"".equals(schEndCslDt)) {
+			reqMap.put("schEndCslDt", schEndCslDt.replaceAll("-", ""));
+		}else{
+			reqMap.put("schEndCslDt", DateUtil.getToday("yyyyMMdd"));
+		}
+
 		int totalCount = counselService.getCslRcpListCount(reqMap);
 		paginginfo.setTotalRecordCount(totalCount);
 
-		resultView.addObject("totalCount", totalCount);
-		resultView.addObject("paginationInfo", paginginfo);
+		model.put("totalCount", totalCount);
+		model.put("paginationInfo", paginginfo);
 
 		if(totalCount > 0) {
 			List<HashMap<String, Object>> resultList = counselService.getCslRcpList(reqMap);
-			resultView.addObject("resultList", resultList);
+			model.put("resultList", resultList);
 		}
 
-		return resultView;
+		return "counsel/layer/rcpListLayer";
 	}
 
 	/**
@@ -408,8 +424,7 @@ public class CounselController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/ajaxMstMbrList.do")
-	public @ResponseBody ModelAndView ajaxMstMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		ModelAndView resultView = new ModelAndView("jsonView");
+	public String ajaxMstMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "");
 		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), "");
 
@@ -430,14 +445,14 @@ public class CounselController {
 		int totalCount = counselService.getMstMbrListCount(reqMap);
 		paginginfo.setTotalRecordCount(totalCount);
 
-		resultView.addObject("totalCount", totalCount);
-		resultView.addObject("paginationInfo", paginginfo);
+		model.put("totalCount", totalCount);
+		model.put("paginationInfo", paginginfo);
 
 		if(totalCount > 0) {
 			List<HashMap<String, Object>> resultList = counselService.getMstMbrList(reqMap);
-			resultView.addObject("resultList", resultList);
+			model.put("resultList", resultList);
 		}
 
-		return resultView;
+		return "counsel/layer/mbrSearchLayer";
 	}
 }

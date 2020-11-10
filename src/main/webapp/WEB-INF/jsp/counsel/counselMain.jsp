@@ -109,15 +109,12 @@
 			$.ajax({
 				url : '/getClsRcpList.do',
 				type : 'POST',
-				data : $('#counselForm').serialize(),
+				data : $('#rcpNoSchForm').serialize(),
 				success : function(res){
-					if(res.totalCount > 0){
-						alert("조회 완료");
-						console.log(res.resultList);
-						counselInfoViewSet(res.resultList[0].RCP_NO);
-					}else{
-						alert("목록 없음");
-					}
+					$("div[id='layerpopup']").html(res);
+					$("div[id='layerpopup']").attr("data-popup", "rcptPopUp");
+
+					layerPopupOpen('rcptPopUp');
 				},
 				error : function(xhr, status){
 					console.log(xhr);
@@ -132,8 +129,11 @@
 				type : 'POST',
 				data : {},
 				success : function(res){
+					$("div[id='layerpopup']").html(res);
+					$("div[id='layerpopup']").attr("data-popup", "memberPopUp");
+					layerPopupOpen('memberPopUp');
+/*
 					if(res.totalCount > 0){
-						console.log(res.resultList);
 
 						tagMbrInfo = res.resultList[0];
 						(new Function(resFuct + "('" + res.resultList[0].MBR_NO + "');"))();
@@ -141,6 +141,7 @@
 						tagMbrInfo = "";
 						console.log("회원 정보 없음");
 					}
+*/
 				},
 				error : function(xhr, status){
 					tagMbrInfo = "";
@@ -241,6 +242,8 @@
 						$("select[name='rskbTpCd']").val(res.cslRcpInfo.RSKB_TP_CD).prop("selected", true);
 						$("select[name='rskcTpCd']").val(res.cslRcpInfo.RSKC_TP_CD).prop("selected", true);
 						$("textarea[name='cslCtnt']").val(res.cslRcpInfo.CSL_CTNT);
+
+						layerPopupClose('rcptPopUp');
 					}else{
 						console.log("상세내용 조회 오류");
 					}
@@ -249,118 +252,416 @@
 					console.log(xhr);
 				}
 			});
+		},
+		<%-- 상담내용보기 --%>
+		ctntPopup = function(){
+			$("div[id='layerpopup']").html(res);
+			$("div[id='layerpopup']").attr("data-popup", "counwrite");
+			layerPopupOpen('counwrite');
 		}
 	});
 </script>
-<br/>
+<!-- 페이지 타이틀 -->
+<div class="tit-area">
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 일반 상담</h1>
+</div>
+<!-- // 페이지 타이틀 -->
 <form name="counselForm" id="counselForm">
-일반상담			<a href="javaScript:counselSave();">저장</a> <a href="javaScript:counselNew();">신규</a> <a href="javaScript:counselCopy();">복사</a> <a href="javaScript:counselDel();">삭제</a> <a href="javaScript:counselExel();">엑셀다운로드</a><br/>
-접수번호			<form:input path="cslRcpInfo.rcpNo" cssClass="txt" readonly="true" placeholder="저장시 자동 생성" /><a href="javaScript:getRcpNo();">조회</a><br/>
-*상담일시			<form:input path="cslRcpInfo.cslDt" cssClass="txt" format="yyyy-MM-dd" placeholder="날짜 선택" maxlength="8" />
-				<form:input path="cslRcpInfo.cslFmTm" cssClass="txt" format="HH:mm" placeholder="시작" maxlength="4" /> ~ <form:input path="cslRcpInfo.cslToTm" cssClass="txt" format="HH:mm" placeholder="종료" maxlength="4" />
-				<span id="cslTermTm">0</span>분 소요<br/>
-상담자			<form:input path="cslRcpInfo.cslId" cssClass="txt" readonly="true" /><form:input path="cslRcpInfo.cslNm" cssClass="txt" readonly="true" /><br/>
-*정보제공자/본인여부	<c:forEach var="result" items="${ifpGbList}" varStatus="status">
-					<input type="radio" name="ifpGbCd" value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslRcpInfo.ifpGbCd}"> checked</c:if> /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				<form:input path="cslRcpInfo.ifpGbEtc" cssClass="txt" placeholder="기타 선택시 입력 가능" /><br/>
-정보 제공자<br/>
-*성명				<form:input path="cslRcpInfo.ifpNm" cssClass="txt" placeholder="정보제공자 성명" /><a href="javaScript:mstMbrSearchPopup('ifpMbrSearchPopup');">조회</a>
-회원번호			<form:input path="cslRcpInfo.ifpMbrNo" cssClass="txt" placeholder="회원번호" readonly="true"/>
-*성별				<input type="radio" name="ifpGendCd" value="M"<c:if test="${cslRcpInfo.ifpGendCd eq 'M'}"> checked</c:if> />남
-				<input type="radio" name="ifpGendCd" value="F"<c:if test="${cslRcpInfo.ifpGendCd eq 'F'}"> checked</c:if> />여
-*연령				<form:input path="cslRcpInfo.ifpAge" cssClass="txt" placeholder="연령" maxlength="3" /></br>
-*연락처			<form:input path="cslRcpInfo.ifpTelNo1" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.ifpTelNo2" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.ifpTelNo3" cssClass="txt" maxlength="4" />
-*직업				<select name="ifpJobCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${jobList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select>
-*지역				<select name="ifpAreaCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${areaList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select>
-				<form:input path="cslRcpInfo.ifpAreaEtc" cssClass="txt" placeholder="기타 선택시 입력 가능" /><br/>
-<a href="javaScript:ifpCopy();">▶▶ 정보제공자와 동일</a><br/>
-대상자<br/>
-*성명				<form:input path="cslRcpInfo.tgpNm" cssClass="txt" placeholder="대상자 성명" /><a href="javaScript:mstMbrSearchPopup('tgpMbrSearchPopup');">조회</a>
-회원번호			<form:input path="cslRcpInfo.tgpMbrNo" cssClass="txt" placeholder="회원번호" readonly="true" />
-*성별				<input type="radio" name="tgpGendCd" value="M"<c:if test="${cslRcpInfo.tgpGendCd eq 'M'}"> checked</c:if> />남
-				<input type="radio" name="tgpGendCd" value="F"<c:if test="${cslRcpInfo.tgpGendCd eq 'F'}"> checked</c:if> />여
-*연령				<form:input path="cslRcpInfo.tgpAge" cssClass="txt" maxlength="3" placeholder="연령" /><br/>
-*연락처			<form:input path="cslRcpInfo.tgpTelNo1" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.tgpTelNo2" cssClass="txt" maxlength="4" />-<form:input path="cslRcpInfo.tgpTelNo3" cssClass="txt" maxlength="4" />
-*직업				<select name="tgpJobCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${jobList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select>
-*내/외국인			<input type="radio" name="tgpFrgCd" value="LO"<c:if test="${cslRcpInfo.tgpFrgCd eq 'LO'}"> checked</c:if> />내국인
-				<input type="radio" name="tgpFrgCd" value="FO"<c:if test="${cslRcpInfo.tgpFrgCd eq 'FO'}"> checked</c:if> />외국인<br/>
-*지역				<select name="tgpAreaCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${areaList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select>
-				<form:input path="cslRcpInfo.tgpAreaEtc" cssClass="txt" placeholder="기타 선택시 입력 가능" /><br/>
-*정보취득경로		<select name="ifPathCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${pathList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select>
-*주호소문제			<select name="pbmKndCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${kndList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select>
-*상담유형			<select name="cslTpCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${tpList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select><br/>
-*최초사용약물		<select name="fstDrugCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${fstDrugList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select><br/>
-*주요사용약물		<select name="mainDrugCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${mainDrugList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select><br/>
-				<form:input path="cslRcpInfo.mainDrug" cssClass="txt" placeholder="주요사용약물 입력" /><br/>
-*주요조치			<select name="mjrMngCd">
-					<option value="" />선택
-				<c:forEach var="result" items="${mjrMngList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select><br/>
-ASSIST 점수		<form:input path="cslRcpInfo.astSco" cssClass="txt" maxlength="4" /><br/>
-*위기분류척도 점수	<form:input path="cslRcpInfo.rskSco" cssClass="txt" /><br/>
-Rating A: 위험성	<select name="rskaTpCd">
-				<c:forEach var="result" items="${rskaTpList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select><br/>
-Rating B: 지지체계	<select name="rskbTpCd">
-				<c:forEach var="result" items="${rskbTpList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select><br/>
-Rating C: 협조능력	<select name="rskcTpCd">
-				<c:forEach var="result" items="${rskcTpList}" varStatus="status">
-					<option value="<c:out value="${result.CD_ID}"/>" /><c:out value="${result.CD_NM}" />
-				</c:forEach>
-				</select><br/>
-상담내용 <a href="javaScript:ctntPopup();">팝업</a>
-				<textarea name="cslCtnt" placeholder="상담 내용"></textarea>
+<!-- 상단 버튼 -->
+<div class="top-right-btn">
+	<button type="button" onclick="javaScript:counselSave();" class="el-button normal el-button--primary el-button--small is-plain"><i class="el-icon-download"></i><span>저장</span></button>
+	<button type="button" onclick="javaScript:counselNew();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;"><i class="el-icon-circle-plus-outline"></i><span>신규</span></button>
+	<button type="button" onclick="javaScript:counselCopy();" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
+	<button type="button" onclick="javaScript:counselDel();" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
+	<button type="button" onclick="javaScript:counselExel();" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
+	<button disabled="disabled" type="button" class="el-button normal el-button--default el-button--small is-disabled is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
+	<button disabled="disabled" type="button" class="el-button normal el-button--default el-button--small is-disabled is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
+	<button disabled="disabled" type="button" class="el-button normal el-button--default el-button--small is-disabled is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
+</div>
+<!-- // 상단 버튼 -->
+
+<div class="formline">
+	<!-- 접수번호, 상담일시, 상담자 -->
+	<div class="section">
+		<table class="w-auto">
+			<tbody>
+				<tr>
+					<th>접수번호</th>
+					<td>
+						<div class="search-input tac">
+							<form:input path="cslRcpInfo.rcpNo" cssClass="el-input__inner" readonly="true" placeholder="저장시 자동 생성" style="width: 142px;" />
+							<button type="button" onclick="javaScript:getRcpNo();"><i class="el-icon-search"></i></button>
+						</div>
+					</td>
+					<th><span class="required">*</span> 상담일시</th>
+					<td>
+						<div class="dat-pk">
+							<i class="el-input__icon el-icon-date"></i>
+							<form:input path="cslRcpInfo.cslDt" cssClass="el-input__inner datepicker" format="yyyy-MM-dd" placeholder="날짜 선택" maxlength="8" style="width: 130px;" />
+						</div>
+						<div class="time-box">
+							<div class="tm-in">
+								<i class="el-input__icon el-icon-time"></i>
+								<form:input path="cslRcpInfo.cslFmTm" cssClass="el-input__inner timepicker" format="HH:mm" placeholder="시작" maxlength="4" style="width: 96px;" />
+							</div>
+							<span>~</span>
+							<div class="tm-in">
+								<i class="el-input__icon el-icon-time"></i>
+								<form:input path="cslRcpInfo.cslToTm" cssClass="el-input__inner timepicker" format="HH:mm" placeholder="종료" maxlength="4" style="width: 96px;" />
+							</div>
+							<div class="t-min">
+								<span class="readonly" id="cslTermTm">0</span> 분 소요
+							</div>
+						</div>
+					</td>
+					<th>상담자</th>
+					<td>
+						<span class="tac"><form:input path="cslRcpInfo.cslId" cssClass="el-input__inner" readonly="true" style="width: 100px;" /></span>
+						<span class="tac"><form:input path="cslRcpInfo.cslNm" cssClass="el-input__inner" readonly="true" style="width:150px" /></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- // 접수번호, 상담일시, 상담자 -->
+
+	<!-- 정보제공자/본인여부-->
+	<div class="section">
+		<table class="w-auto">
+			<tbody>
+				<tr>
+					<th>정보제공자/본인여부</th>
+					<td>
+<c:forEach var="result" items="${ifpGbList}" varStatus="status">
+						<span class="ck-bx">
+							<input type="radio" class="el-radio__original" name="ifpGbCd" id="ifpGbCd-<c:out value='${status.count}'/>" value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslRcpInfo.ifpGbCd}"> checked</c:if> />
+							<label for="ifpGbCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span><c:out value="${result.CD_NM}" /></label>
+						</span>
+</c:forEach>
+						<div class="etc-txt">
+							<form:input path="cslRcpInfo.ifpGbEtc" cssClass="el-input__inner" placeholder="기타 선택시 입력 가능" disabled="true" style="width: 256px;" />
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- // 정보제공자/본인여부-->
+
+	<!-- 정보 제공자 / 대상자 -->
+	<div class="el-row" style="min-width: 1880px;">
+		<div class="sec-inr">
+			<div class="section pdn">
+				<div class="el-card_header">
+					<h2>
+						<i class="el-icon-s-opportunity"></i> 정보 제공자
+					</h2>
+				</div>
+				<div class="el-card_body">
+					<table class="w-auto wr-form">
+						<tbody>
+							<tr>
+								<th><span class="required">*</span> 성명</th>
+								<td>
+									<div class="search-input">
+										<form:input path="cslRcpInfo.ifpNm" cssClass="el-input__inner" placeholder="정보제공자 성명" style="width: 142px;" />
+										<button type="button" onclick="javaScript:mstMbrSearchPopup('ifpMbrSearchPopup');"><i class="el-icon-search"></i></button>
+									</div>
+								</td>
+								<th>회원번호</th>
+								<td>
+									<span class="tac">
+										<form:input path="cslRcpInfo.ifpMbrNo" cssClass="el-input__inner" placeholder="회원번호" disabled="true" style="width: 140px;" />
+									</span>
+								</td>
+								<th><span class="required">*</span> 성별</th>
+								<td>
+									<div class="gen-check">
+										<span>
+											<input type="radio" class="el-radio-button__orig-radio" name="ifpGendCd" id="ifpGendCd-1" value="M"<c:if test="${cslRcpInfo.ifpGendCd eq 'M'}"> checked</c:if> />
+											<label for="ifpGendCd-1" class="el-radio-button el-radio-button--small">
+												<span class="el-radio-button__inner">남</span>
+											</label>
+										</span>
+										<span>
+											<input type="radio" class="el-radio-button__orig-radio" name="ifpGendCd" id="ifpGendCd-2" value="F"<c:if test="${cslRcpInfo.ifpGendCd eq 'F'}"> checked</c:if> />
+											<label for="ifpGendCd-2" class="el-radio-button el-radio-button--small">
+												<span class="el-radio-button__inner">여</span>
+											</label>
+										</span>
+									</div>
+								</td>
+								<th><span class="required">*</span> 연령</th>
+								<td class="tac"><form:input path="cslRcpInfo.ifpAge" cssClass="el-input__inner" placeholder="연령" maxlength="3" style="width: 60px;" /></td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> 연락처</th>
+								<td>
+									<div class="dsp-ibk"><form:input path="cslRcpInfo.ifpTelNo1" cssClass="el-input__inner" maxlength="4" style="width:54px" /></div>
+									<span>-</span>
+									<div class="dsp-ibk"><form:input path="cslRcpInfo.ifpTelNo2" cssClass="el-input__inner" maxlength="4" style="width:54px" /></div>
+									<span>-</span>
+									<div class="dsp-ibk"><form:input path="cslRcpInfo.ifpTelNo3" cssClass="el-input__inner" maxlength="4" style="width:53px" /></div>
+								</td>
+								<th><span class="required">*</span> 직업</th>
+								<td>
+									<select name="ifpJobCd" style="width: 140px;">
+										<option value="">선택</option>
+<c:forEach var="result" items="${jobList}" varStatus="status">
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> 지역</th>
+								<td colspan="4">
+									<span class="el-inp mgr3">
+										<select name="ifpAreaCd" style="width: 178px;">
+											<option value="">선택</option>
+<c:forEach var="result" items="${areaList}" varStatus="status">
+											<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+										</select>
+									</span>
+									<span class="dsp-ibk">
+										<form:input path="cslRcpInfo.ifpAreaEtc" cssClass="el-input__inner" placeholder="기타 선택시 입력 가능" disabled="true" style="width: 220px;" />
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="cn-arw">
+			<button type="button" onclick="javaScript:ifpCopy();" class="el-button normal el-button--primary el-button--small is-plain"> <span>▶▶<br><br>정보제공자와<br>동일</span> </button>
+		</div>
+		<div class="sec-inr">
+			<div class="section pdn">
+				<div class="el-card_header">
+					<h2> <i class="el-icon-s-opportunity"></i> 대상자 </h2>
+				</div>
+				<div class="el-card_body">
+					<table class="w-auto wr-form">
+						<tbody>
+							<tr>
+								<th><span class="required">*</span> 성명</th>
+								<td>
+									<div class="search-input">
+										<form:input path="cslRcpInfo.tgpNm" cssClass="el-input__inner" placeholder="대상자 성명" style="width: 142px;" />
+										<button type="button" onclick="javaScript:mstMbrSearchPopup('tgpMbrSearchPopup');"><i class="el-icon-search"></i></button>
+									</div>
+								</td>
+								<th>회원번호</th>
+								<td>
+									<span class="dsp-ibk tac">
+										<form:input path="cslRcpInfo.tgpMbrNo" cssClass="el-input__inner" placeholder="회원번호" disabled="true" style="width: 140px;" />
+									</span>
+								</td>
+								<th><span class="required">*</span> 성별</th>
+								<td>
+									<div class="gen-check">
+										<span>
+											<input type="radio" class="el-radio-button__orig-radio" name="tgpGendCd" value="M" id="tgpGendCd-1"<c:if test="${cslRcpInfo.tgpGendCd eq 'M'}"> checked</c:if> />
+											<label for="tgpGendCd-1" class="el-radio-button el-radio-button--small">
+												<span class="el-radio-button__inner">남</span>
+											</label>
+										</span>
+										<span>
+											<input type="radio" class="el-radio-button__orig-radio" name="tgpGendCd" value="F" id="tgpGendCd-2"<c:if test="${cslRcpInfo.tgpGendCd eq 'F'}"> checked</c:if> />
+											<label for="tgpGendCd-2" class="el-radio-button el-radio-button--small">
+												<span class="el-radio-button__inner">여</span>
+											</label>
+										</span>
+									</div>
+								</td>
+								<th><span class="required">*</span> 연령</th>
+								<td class="tac"><form:input path="cslRcpInfo.tgpAge" cssClass="el-input__inner" maxlength="3" placeholder="연령" style="width: 60px;" /></td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> 연락처</th>
+								<td>
+									<div class="dsp-ibk"><form:input path="cslRcpInfo.tgpTelNo1" cssClass="el-input__inner" maxlength="4" style="width:54px" /></div>
+									<span>-</span>
+									<div class="dsp-ibk"><form:input path="cslRcpInfo.tgpTelNo2" cssClass="el-input__inner" maxlength="4" style="width:54px" /></div>
+									<span>-</span>
+									<div class="dsp-ibk"><form:input path="cslRcpInfo.tgpTelNo3" cssClass="el-input__inner" maxlength="4" style="width:53px" /></div>
+								</td>
+								<th><span class="required">*</span> 직업</th>
+								<td>
+									<select name="tgpJobCd" style="width: 140px;">
+										<option value="">선택</option>
+<c:forEach var="result" items="${jobList}" varStatus="status">
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+									</select>
+								</td>
+								<th><span class="required">*</span> 내/외국인</th>
+								<td>
+									<span class="ck-bx">
+										<input type="radio" class="el-radio__original" name="tgpFrgCd" id="tgpFrgCd1" value="LO"<c:if test="${cslRcpInfo.tgpFrgCd eq 'LO'}"> checked</c:if> />
+										<label for="tgpFrgCd1"><span class="el-radio__input"><span class="el-radio__inner"></span></span> 내국인</label>
+									</span>
+									<span class="ck-bx">
+										<input type="radio" class="el-radio__original" name="tgpFrgCd" id="tgpFrgCd2" value="FO"<c:if test="${cslRcpInfo.tgpFrgCd eq 'FO'}"> checked</c:if> />
+										<label for="tgpFrgCd2"><span class="el-radio__input"><span class="el-radio__inner"></span></span> 외국인</label>
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> 지역</th>
+								<td colspan="4">
+									<span class="el-inp mgr3">
+										<select name="tgpAreaCd" style="width: 178px;">
+											<option value="">선택</option>
+<c:forEach var="result" items="${areaList}" varStatus="status">
+											<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+										</select>
+									</span>
+									<span class="dsp-ibk">
+										<form:input path="cslRcpInfo.tgpAreaEtc" cssClass="el-input__inner" placeholder="기타 선택시 입력 가능" style="width: 220px;" disabled="true" />
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- // 정보 제공자 / 대상자 -->
+
+	<!-- 정보취득경로 ~ 위기분류척도 / 상담내용-->
+	<div class="section el-row">
+		<div class="row">
+			<table class="w-auto wr-form">
+				<tbody>
+					<tr>
+						<th><span class="required">*</span> 정보취득경로</th>
+						<td>
+							<select name="ifPathCd" style="width: 132px;">
+								<option value="">선택</option>
+<c:forEach var="result" items="${pathList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+						<th><span class="required">*</span> 주호소문제</th>
+						<td>
+							<select name="pbmKndCd" style="width: 112px;">
+								<option value="">선택</option>
+<c:forEach var="result" items="${kndList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+						<th><span class="required">*</span> 상담유형</th>
+						<td>
+							<select name="cslTpCd" style="width: 100px;">
+								<option value="">선택</option>
+<c:forEach var="result" items="${tpList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th><span class="required">*</span> 최초사용약물</th>
+						<td colspan="5">
+							<select name="fstDrugCd" style="width: 100%;">
+								<option value="">선택</option>
+<c:forEach var="result" items="${fstDrugList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th><span class="required">*</span> 주요사용약물</th>
+						<td colspan="5">
+							<select name="mainDrugCd" style="width: 100%;">
+								<option value="">선택</option>
+<c:forEach var="result" items="${mainDrugList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+							<div style="margin-top:5px"><form:input path="cslRcpInfo.mainDrug" cssClass="el-input__inner" placeholder="주요사용약물 입력" style="width: 100%;" /></div>
+						</td>
+					</tr>
+					<tr>
+						<th class="v-top"><span class="required">*</span> 주요조치</th>
+						<td colspan="5">
+							<select name="mjrMngCd" style="width: 132px;">
+								<option value="">선택</option>
+<c:forEach var="result" items="${mjrMngList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>ASSIST 점수</th>
+						<td colspan="5"><form:input path="cslRcpInfo.astSco" cssClass="el-input__inner" maxlength="4" style="width:75px" /></td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="w-auto wr-form">
+				<tbody>
+					<tr>
+						<th><span class="required">*</span> 위기분류척도</th>
+						<td>
+							<span class="el-tag">Rating A: 위험성</span>
+							<select name="rskaTpCd" style="width: 690px;">
+<c:forEach var="result" items="${rskaTpList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="txt-center">점수</th>
+						<td>
+							<span class="el-tag">Rating B: 지지체계</span>
+							<select name="rskbTpCd" style="width: 690px;">
+<c:forEach var="result" items="${rskbTpList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="txt-center"><span class="el-tag-danger"><c:out value="${cslRcpInfo.rskSco}"/></span></th>
+						<td>
+							<span class="el-tag">Rating B: 지지체계</span>
+							<select name="rskcTpCd" style="width: 690px;">
+<c:forEach var="result" items="${rskcTpList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="row">
+			<table class="wr-form sig-form">
+				<colgroup><col style="width: 76px;"><col></colgroup>
+				<tbody>
+					<tr>
+						<th>
+							<span class="required">*</span> 상담내용<br>
+							<button type="button" onclick="javaScript:ctntPopup();" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+								<i class="el-icon-search"></i>
+							</button>
+						</th>
+						<td><textarea name="cslCtnt" placeholder="상담 내용" style="width:99%;height:385px"></textarea></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- // 정보취득경로 ~ 위기분류척도 / 상담내용-->
 </form>
+</div>

@@ -12,4 +12,7 @@ public class ConstantObject {
 
 	public static final String Y = "Y";
 	public static final String N = "N";
+
+	public static final String defaultRowSize = "10";
+	public static final String defaultPageSize = "10";
 }
