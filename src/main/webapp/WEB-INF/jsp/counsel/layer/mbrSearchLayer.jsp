@@ -3,8 +3,31 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <script>
 	$(document).ready(function(){
+		<%-- 페이지처리 --%>
 		goPage = function(pageNo){
-			console.log(pageNo);
+			$("input[name='memPageNo']").val(pageNo);
+			mstMbrSearchPopup();
+		},
+		<%-- 검색 --%>
+		schPageList = function(){
+			$("input[name='memPageNo']").val("1");
+			mstMbrSearchPopup();
+		}
+		<%-- 회원선택 --%>
+		choiceMem = function(mbrNm, mbrNo, gendCd, age, telNo1, telNo2, telNo3, jobCd){
+			var tagMemObj = {
+				MBR_NM : mbrNm,
+				MBR_NO : mbrNo,
+				GEND_CD : gendCd,
+				AGE : age,
+				TEL_NO1 : telNo1,
+				TEL_NO2 : telNo2,
+				TEL_NO3 : telNo3,
+				JOB_CD : jobCd
+			};
+
+			eval($("input[name='reFunName']").val() + "(tagMemObj)");
+			layerPopupClose('memberPopUp');
 		}
 	});
 </script>
@@ -20,17 +43,21 @@
 	<div class="section bg">
 		<table class="w-auto">
 			<tbody>
+				<form name="rcpNoSchForm" id="rcpNoSchForm">
+				<input type="hidden" name="memPageNo" value="<c:out value='${pageNo}' />" />
+				<input type="hidden" name="reFunName" />
 				<tr>
 					<th><span class="required">*</span> 회원명</th>
-					<td><input type="text" class="el-input__inner" style="width: 120px;"></td>
+					<td><input type="text" name="memSchMbrNm" value="<c:out value='${mbrNm}' />" class="el-input__inner" style="width: 120px;"></td>
 					<th><span class="required">*</span> 연락처</th>
 					<td>
-						<input type="text" class="el-input__inner" style="width: 120px;">
-						<button type="button" class="el-button el-button--primary el-button--small is-plain" style="height:32px;margin-left: 8px;">
+						<input type="text" name="memSchTelNo" value="<c:out value='${telNo}' />" class="el-input__inner" style="width: 120px;">
+						<button type="button" onclick="javaScript:schPageList();" class="el-button el-button--primary el-button--small is-plain" style="height:32px;margin-left: 8px;">
 							<i class="el-icon-search"></i> <span>검색</span>
 						</button>
 					</td>
 				</tr>
+				</form>
 			</tbody>
 		</table>
 	</div>
@@ -84,12 +111,20 @@
 					</colgroup>
 					<tbody>
 <c:if test="${totalCount > 0}">
-<c:forEach var="result" items="${resultList}" varStatus="status">
+	<c:forEach var="result" items="${resultList}" varStatus="status">
 						<tr>
 							<td><div class="cell"><c:out value="${result.ROWNUM}" /></div></td>
 							<td>
 								<div class="cell">
-									<button type="button" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
+									<button type="button" onclick="javaScript:choiceMem('<c:out value="${result.MBR_NM}" />'
+																					  , '<c:out value="${result.MBR_NO}" />'
+																					  , '<c:out value="${result.GEND_CD}" />'
+																					  , '<c:out value="${result.AGE}" />'
+																					  , '<c:out value="${result.TEL_NO1}" />'
+																					  , '<c:out value="${result.TEL_NO2}" />'
+																					  , '<c:out value="${result.TEL_NO3}" />'
+																					  , '<c:out value="${result.JOB_CD}" />'
+																	);" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
 										<span>선택</span>
 									</button>
 								</div>
@@ -103,7 +138,7 @@
 							<td><div class="cell"><c:out value="${result.STS_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.REG_DT}" /></div></td>
 						</tr>
-</c:forEach>
+	</c:forEach>
 </c:if>
 <c:if test="${totalCount <= 0}">
 						<tr>
@@ -123,7 +158,7 @@
 	<!-- // 페이징 -->
 	<!-- 닫기 -->
 	<div class="el-dialog__footer">
-		<button type="button" class="el-button el-button--default el-button--small" onclick="layerPopupClose('memberPopUp')">
+		<button type="button" class="el-button el-button--default el-button--small" onclick="layerPopupClose('memberPopUp');">
 			<span>닫기</span>
 		</button>
 	</div>
