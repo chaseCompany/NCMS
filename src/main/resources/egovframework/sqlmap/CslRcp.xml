@@ -65,13 +65,13 @@
 	]]>
 		<if test="schGb != null or schGb != ''">
 			<choose>
-				<when test="schGb == 0">
+				<when test="schGb == 0 and schNm != ''">
 		   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 1">
+				<when test="schGb == 1 and schNm != ''">
 		   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 2">
+				<when test="schGb == 2 and schNm != ''">
 		   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 			</choose>
@@ -91,13 +91,13 @@
 	]]>
 		<if test="schGb != null or schGb != ''">
 			<choose>
-				<when test="schGb == 0">
+				<when test="schGb == 0 and schNm != ''">
 						   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 1">
+				<when test="schGb == 1 and schNm != ''">
 						   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 2">
+				<when test="schGb == 2 and schNm != ''">
 						   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 			</choose>
