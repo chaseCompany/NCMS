@@ -3,7 +3,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
-		var tagMbrInfo = "";
 		<%-- 상담정보 저장 --%>
 		counselSave = function(){
 			var str = "rcpNo:" + $("input[name='rcpNo']").val() + ", ";
@@ -109,7 +108,14 @@
 			$.ajax({
 				url : '/getClsRcpList.do',
 				type : 'POST',
-				data : $('#rcpNoSchForm').serialize(),
+				data : {
+					pageNo : $("input[name='rcpPageNo']").val(),
+					schStrCslDt : $("input[name='rcpSchStrCslDt']").val(),
+					schEndCslDt : $("input[name='rcpSchEndCslDt']").val(),
+					schMth : $("select[name='rcpSchMth']").val(),
+					schGb : $("select[name='rcpSchGb']").val(),
+					schNm : $("input[name='rcpSchNm']").val()
+				},
 				success : function(res){
 					$("div[id='layerpopup']").html(res);
 					$("div[id='layerpopup']").attr("data-popup", "rcptPopUp");
@@ -120,21 +126,24 @@
 					console.log(xhr);
 				}
 			});
-			console.log("상담조회");
 		},
 		<%-- 회원 조회 --%>
 		mstMbrSearchPopup = function(resFuct){
 			$.ajax({
 				url : '/ajaxMstMbrList.do',
 				type : 'POST',
-				data : {},
+				data : {
+					pageNo : $("input[name='memPageNo']").val(),
+					mbrNm : $("input[name='memSchMbrNm']").val(),
+					telNo : $("input[name='memSchTelNo']").val()
+				},
 				success : function(res){
 					$("div[id='layerpopup']").html(res);
 					$("div[id='layerpopup']").attr("data-popup", "memberPopUp");
+					$("input[name='reFunName']").val(resFuct);
 					layerPopupOpen('memberPopUp');
 /*
 					if(res.totalCount > 0){
-
 						tagMbrInfo = res.resultList[0];
 						(new Function(resFuct + "('" + res.resultList[0].MBR_NO + "');"))();
 					}else{
@@ -150,17 +159,15 @@
 			});
 		},
 		<%-- 정보 제공자 회원 정보 셋팅 --%>
-		ifpMbrSearchPopup = function(tagMbrMbrNo){
-			if(tagMbrInfo.MBR_NO == tagMbrMbrNo){
-				$("input[name='ifpNm']").val(tagMbrInfo.MBR_NM);
-				$("input[name='ifpMbrNo']").val(tagMbrInfo.MBR_NO);
-				$("input[name='ifpGendCd']:radio[value='" + tagMbrInfo.GEND_CD + "']").prop("checked", true);
-				$("input[name='ifpAge']").val(tagMbrInfo.AGE);
-				$("input[name='ifpTelNo1']").val(tagMbrInfo.TEL_NO1);
-				$("input[name='ifpTelNo2']").val(tagMbrInfo.TEL_NO2);
-				$("input[name='ifpTelNo3']").val(tagMbrInfo.TEL_NO3);
-				$("select[name='ifpJobCd']").val(tagMbrInfo.JOB_CD).prop("selected", true);
-			}
+		ifpMbrSearchPopup = function(obj){
+			$("input[name='ifpNm']").val(obj.MBR_NM);
+			$("input[name='ifpMbrNo']").val(obj.MBR_NO);
+			$("input[name='ifpGendCd']:radio[value='" + obj.GEND_CD + "']").prop("checked", true);
+			$("input[name='ifpAge']").val(obj.AGE);
+			$("input[name='ifpTelNo1']").val(obj.TEL_NO1);
+			$("input[name='ifpTelNo2']").val(obj.TEL_NO2);
+			$("input[name='ifpTelNo3']").val(obj.TEL_NO3);
+			$("select[name='ifpJobCd']").val(obj.JOB_CD).prop("selected", true);
 		},
 		<%-- 정보제공자 복사 --%>
 		ifpCopy = function(){
@@ -176,18 +183,16 @@
 			$("input[name='tgpAreaEtc']").val($("input[name='ifpAreaEtc']").val());
 		},
 		<%-- 대상자 회원 정보 셋팅 --%>
-		tgpMbrSearchPopup = function(tagMbrMbrNo){
-			if(tagMbrInfo.MBR_NO == tagMbrMbrNo){
-				$("input[name='tgpNm']").val(tagMbrInfo.MBR_NM);
-				$("input[name='tgpMbrNo']").val(tagMbrInfo.MBR_NO);
-				$("input[name='tgpGendCd']:radio[value='" + tagMbrInfo.GEND_CD + "']").prop("checked", true);
-				$("input[name='tgpAge']").val(tagMbrInfo.AGE);
-				$("input[name='tgpTelNo1']").val(tagMbrInfo.TEL_NO1);
-				$("input[name='tgpTelNo2']").val(tagMbrInfo.TEL_NO2);
-				$("input[name='tgpTelNo3']").val(tagMbrInfo.TEL_NO3);
-				$("select[name='tgpJobCd']").val(tagMbrInfo.JOB_CD).prop("selected", true);
-				$("input[name='tgpFrgCd']:radio[value='" + tagMbrInfo.FRG_CD + "']").prop("checked", true);
-			}
+		tgpMbrSearchPopup = function(obj){
+			$("input[name='tgpNm']").val(obj.MBR_NM);
+			$("input[name='tgpMbrNo']").val(obj.MBR_NO);
+			$("input[name='tgpGendCd']:radio[value='" + obj.GEND_CD + "']").prop("checked", true);
+			$("input[name='tgpAge']").val(obj.AGE);
+			$("input[name='tgpTelNo1']").val(obj.TEL_NO1);
+			$("input[name='tgpTelNo2']").val(obj.TEL_NO2);
+			$("input[name='tgpTelNo3']").val(obj.TEL_NO3);
+			$("select[name='tgpJobCd']").val(obj.JOB_CD).prop("selected", true);
+			$("input[name='tgpFrgCd']:radio[value='" + obj.FRG_CD + "']").prop("checked", true);
 		},
 		<%-- 상담내용 상세조회 --%>
 		counselInfoViewSet = function(tagRcpNo){
