@@ -31,7 +31,7 @@ public class CounselController {
 	private CounselService counselService;
 
 	/**
-	 * ÀÏ¹İ»ó´ã µî·ÏÈ­¸é
+	 * ì¼ë°˜ìƒë‹´ ë“±ë¡í™”ë©´
 	 * @param model
 	 * @param cslRcpVO
 	 * @param session
@@ -57,47 +57,47 @@ public class CounselController {
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
-		codeListMap.put("grpCd", "C1000");				// Á¤º¸Á¦°øÀÚ/º»ÀÎ¿©ºÎ
+		codeListMap.put("grpCd", "C1000");				// ì •ë³´ì œê³µì/ë³¸ì¸ì—¬ë¶€
 		model.put("ifpGbList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1200");				// Á÷¾÷
+		codeListMap.put("grpCd", "C1200");				// ì§ì—…
 		model.put("jobList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C3400");				// Áö¿ª
+		codeListMap.put("grpCd", "C3400");				// ì§€ì—­
 		model.put("areaList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1400");				// Á¤º¸Ãëµæ°æ·Î
+		codeListMap.put("grpCd", "C1400");				// ì •ë³´ì·¨ë“ê²½ë¡œ
 		model.put("pathList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1500");				// ÁÖÈ£¼Ò¹®Á¦
+		codeListMap.put("grpCd", "C1500");				// ì£¼í˜¸ì†Œë¬¸ì œ
 		model.put("kndList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1600");				// »ó´ãÀ¯Çü
+		codeListMap.put("grpCd", "C1600");				// ìƒë‹´ìœ í˜•
 		model.put("tpList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1800");				// ÃÖÃÊ»ç¿ë¾à¹°
+		codeListMap.put("grpCd", "C1800");				// ìµœì´ˆì‚¬ìš©ì•½ë¬¼
 		model.put("fstDrugList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1900");				// ÁÖ¿ä»ç¿ë¾à¹°
+		codeListMap.put("grpCd", "C1900");				// ì£¼ìš”ì‚¬ìš©ì•½ë¬¼
 		model.put("mainDrugList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2000");				// ÁÖ¿äÁ¶Ä¡
+		codeListMap.put("grpCd", "C2000");				// ì£¼ìš”ì¡°ì¹˜
 		model.put("mjrMngList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2100");				// Rating A: À§Çè¼º
+		codeListMap.put("grpCd", "C2100");				// Rating A: ìœ„í—˜ì„±
 		model.put("rskaTpList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2200");				// Rating B: ÁöÁöÃ¼°è
+		codeListMap.put("grpCd", "C2200");				// Rating B: ì§€ì§€ì²´ê³„
 		model.put("rskbTpList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2300");				// Rating C: ÇùÁ¶´É·Â
+		codeListMap.put("grpCd", "C2300");				// Rating C: í˜‘ì¡°ëŠ¥ë ¥
 		model.put("rskcTpList", sysCodeService.getSysCdList(codeListMap));
 
 		return "counsel/counselMain";
 	}
 
 	/**
-	 * ÀÏ¹İ»ó´ã µî·Ï Ã³¸®
+	 * ì¼ë°˜ìƒë‹´ ë“±ë¡ ì²˜ë¦¬
 	 * @param reqMap
 	 * @param session
 	 * @return
@@ -112,7 +112,7 @@ public class CounselController {
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 //			resultView.addObject("err", "Y");
-//			resultView.addObject("MSG", "·Î±×ÀÎ ÈÄ ÀÌ¿ë °¡´É ÇÕ´Ï´Ù.");
+//			resultView.addObject("MSG", "ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥ í•©ë‹ˆë‹¤.");
 //			resultView.addObject("actUrl", "/login.do");
 
 //			return resultView;
@@ -122,37 +122,37 @@ public class CounselController {
 		   StringUtils.defaultString((String)reqMap.get("cslFmTm"), "") == "" || 
 		   StringUtils.defaultString((String)reqMap.get("cslToTm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "»ó´ãÀÏ½Ã¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ìƒë‹´ì¼ì‹œë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpGbCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ/º»ÀÎ¿©ºÎ¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì/ë³¸ì¸ì—¬ë¶€ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¼º¸í¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì„±ëª…ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¼º¸í¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì„±ëª…ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpGendCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¼ºº°¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì„±ë³„ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpAge"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¿¬·É¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì—°ë ¹ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
@@ -160,44 +160,44 @@ public class CounselController {
 		   StringUtils.defaultString((String)reqMap.get("ifpTelNo2"), "") == "" ||
 		   StringUtils.defaultString((String)reqMap.get("ifpTelNo3"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¿¬¶ôÃ³¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì—°ë½ì²˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpJobCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ Á÷¾÷¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì§ì—…ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ Áö¿ª¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì§€ì—­ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}else if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "ZZZ"){
 			if(StringUtils.defaultString((String)reqMap.get("ifpAreaEtc"), "") == "") {
 				resultView.addObject("err", "Y");
-				resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ Áö¿ª¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+				resultView.addObject("MSG", "ì •ë³´ì œê³µì ì§€ì—­ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 				flag = false;
 			}
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpNm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "´ë»óÀÚ ¼º¸í¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ëŒ€ìƒì ì„±ëª…ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpGendCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "´ë»óÀÚ ¼ºº°¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ëŒ€ìƒì ì„±ë³„ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpAge"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "´ë»óÀÚ ¿¬·É¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ëŒ€ìƒì ì—°ë ¹ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
@@ -205,80 +205,80 @@ public class CounselController {
 		   StringUtils.defaultString((String)reqMap.get("tgpTelNo2"), "") == "" ||
 		   StringUtils.defaultString((String)reqMap.get("tgpTelNo3"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "´ë»óÀÚ ¿¬¶ôÃ³¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ëŒ€ìƒì ì—°ë½ì²˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpJobCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "´ë»óÀÚ Á÷¾÷¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ëŒ€ìƒì ì§ì—…ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpFrgCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "´ë»óÀÚ ³»/¿Ü±¹ÀÎ ¿©ºÎ¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ëŒ€ìƒì ë‚´/ì™¸êµ­ì¸ ì—¬ë¶€ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "´ë»óÀÚ Áö¿ª¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ëŒ€ìƒì ì§€ì—­ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}else if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "ZZZ"){
 			if(StringUtils.defaultString((String)reqMap.get("tgpAreaEtc"), "") == "") {
 				resultView.addObject("err", "Y");
-				resultView.addObject("MSG", "´ë»óÀÚ Áö¿ª¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+				resultView.addObject("MSG", "ëŒ€ìƒì ì§€ì—­ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 				flag = false;
 			}
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifPathCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "Á¤º¸Ãëµæ°æ·Î¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì •ë³´ì·¨ë“ê²½ë¡œë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 			
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("pbmKndCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ÁÖÈ£¼Ò¹®Á¦¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì£¼í˜¸ì†Œë¬¸ì œë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("cslTpCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "»ó´ãÀ¯Çü¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ìƒë‹´ìœ í˜•ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("fstDrugCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ÃÖÃÊ»ç¿ë¾à¹°À» ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ìµœì´ˆì‚¬ìš©ì•½ë¬¼ì„ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("mainDrugCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ÁÖ¿ä»ç¿ë¾à¹°À» ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì£¼ìš”ì‚¬ìš©ì•½ë¬¼ì„ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("mjrMngCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ÁÖ¿äÁ¶Ä¡¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ì£¼ìš”ì¡°ì¹˜ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("rskSco"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "À§±âºĞ·ùÃ´µµ Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ìœ„ê¸°ë¶„ë¥˜ì²™ë„ ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("cslCtnt"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "»ó´ã³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ìƒë‹´ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”.");
 
 			flag = false;
 		}
@@ -294,7 +294,7 @@ public class CounselController {
 	}
 
 	/**
-	 * ÀÏ¹İ»ó´ã ¸ñ·Ï Á¶È¸
+	 * ì¼ë°˜ìƒë‹´ ëª©ë¡ ì¡°íšŒ
 	 * @param model
 	 * @param reqMap
 	 * @param session
@@ -358,7 +358,7 @@ public class CounselController {
 	}
 
 	/**
-	 * »ó´ã³»¿ë »èÁ¦
+	 * ìƒë‹´ë‚´ìš© ì‚­ì œ
 	 * @param reqMap
 	 * @param session
 	 * @return
@@ -372,7 +372,7 @@ public class CounselController {
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 //			resultView.addObject("err", "Y");
-//			resultView.addObject("MSG", "·Î±×ÀÎ ÈÄ ÀÌ¿ë °¡´É ÇÕ´Ï´Ù.");
+//			resultView.addObject("MSG", "ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥ í•©ë‹ˆë‹¤.");
 //			resultView.addObject("actUrl", "/login.do");
 
 //			return resultView;
@@ -380,7 +380,7 @@ public class CounselController {
 
 		if(StringUtils.defaultString((String)reqMap.get("rcpNo"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "»ó´ã¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ìƒë‹´ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			return resultView;
 		}
@@ -391,7 +391,7 @@ public class CounselController {
 	}
 
 	/**
-	 * »ó´ã ³»¿ë »ó¼¼ Á¶È¸
+	 * ìƒë‹´ ë‚´ìš© ìƒì„¸ ì¡°íšŒ
 	 * @param rcpNo
 	 * @param session
 	 * @return
@@ -404,7 +404,7 @@ public class CounselController {
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 //			resultView.addObject("err", "Y");
-//			resultView.addObject("MSG", "·Î±×ÀÎ ÈÄ ÀÌ¿ë °¡´É ÇÕ´Ï´Ù.");
+//			resultView.addObject("MSG", "ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥ í•©ë‹ˆë‹¤.");
 //			resultView.addObject("actUrl", "/login.do");
 
 //			return resultView;
@@ -412,7 +412,7 @@ public class CounselController {
 
 		if(StringUtils.defaultString(rcpNo, "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "»ó´ã¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+			resultView.addObject("MSG", "ìƒë‹´ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
 
 			return resultView;
 		}
@@ -423,7 +423,7 @@ public class CounselController {
 	}
 
 	/**
-	 * È¸¿ø ¸ñ·Ï Á¶È¸
+	 * íšŒì› ëª©ë¡ ì¡°íšŒ
 	 * @param model
 	 * @param reqMap
 	 * @param session

@@ -5,7 +5,6 @@
 <script>
 	$(document).ready(function(){
 		$(".datepicker").datepicker();
-
 		<%-- 페이지 이동 --%>
 		goPage = function(pageNo){
 			$("input[name='rcpPageNo']").val(pageNo);

@@ -63,17 +63,22 @@
 		  FROM CSL_RCP
 		 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
-		<if test="schGb != null or schGb != ''">
+		<if test="(schGb != null or schGb != '') and schNm != ''">
 			<choose>
-				<when test="schGb == 0 and schNm != ''">
+				<when test="schGb == '0'">
 		   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 1 and schNm != ''">
+				<when test="schGb == '1'">
 		   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 2 and schNm != ''">
+				<when test="schGb == '2'">
 		   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
+				<otherwise>
+		   AND (CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+			OR IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+			OR TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%'))
+				</otherwise>
 			</choose>
 		</if>
 	</select>
@@ -89,17 +94,22 @@
 						  FROM CSL_RCP
 						 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
-		<if test="schGb != null or schGb != ''">
+		<if test="(schGb != null or schGb != '') and schNm != ''">
 			<choose>
-				<when test="schGb == 0 and schNm != ''">
+				<when test="schGb == '0'">
 						   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 1 and schNm != ''">
+				<when test="schGb == '1'">
 						   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
-				<when test="schGb == 2 and schNm != ''">
+				<when test="schGb == '2'">
 						   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
+				<otherwise>
+						   AND (CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+							OR IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+							OR TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%'))
+				</otherwise>
 			</choose>
 		</if>
 	<![CDATA[
