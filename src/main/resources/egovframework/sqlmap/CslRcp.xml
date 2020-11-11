@@ -63,7 +63,7 @@
 		  FROM CSL_RCP
 		 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
-		<if test="(schGb != null or schGb != '') and schNm != ''">
+		<if test="(schGb != null or schGb != '') and schNm != '' and schNm != null">
 			<choose>
 				<when test="schGb == '0'">
 		   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
@@ -94,7 +94,7 @@
 						  FROM CSL_RCP
 						 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
-		<if test="(schGb != null or schGb != '') and schNm != ''">
+		<if test="(schGb != null or schGb != '') and schNm != '' and schNm != null">
 			<choose>
 				<when test="schGb == '0'">
 						   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')

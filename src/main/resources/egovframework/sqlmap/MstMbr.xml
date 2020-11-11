@@ -12,7 +12,7 @@
 		   AND MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
 			</if>
 			<if test="telNo != null and telNo != ''">
-		   AND REPLACE(TEL_NO1 || TEL_NO2 || TEL_NO3, '-', '') LIKE CONCAT('%', #{telNo}, '%')
+		   AND REPLACE(CONCAT(TEL_NO1, TEL_NO2, TEL_NO3), '-', '') LIKE CONCAT('%', #{telNo}, '%')
 			</if>
 		</trim>
 	</select>
@@ -41,7 +41,7 @@
 						   AND MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
 			</if>
 			<if test="telNo != null and telNo != ''">
-						   AND REPLACE(TEL_NO1 || TEL_NO2 || TEL_NO3, '-', '') LIKE CONCAT('%', #{telNo}, '%')
+						   AND REPLACE(CONCAT(TEL_NO1, TEL_NO2, TEL_NO3), '-', '') LIKE CONCAT('%', #{telNo}, '%')
 			</if>
 		</trim>
 	<![CDATA[
