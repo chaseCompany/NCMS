@@ -31,7 +31,7 @@ public class CounselController {
 	private CounselService counselService;
 
 	/**
-	 * ì¼ë°˜ìƒë‹´ ë“±ë¡í™”ë©´
+	 * ÀÏ¹İ»ó´ã µî·ÏÈ­¸é
 	 * @param model
 	 * @param cslRcpVO
 	 * @param session
@@ -57,47 +57,47 @@ public class CounselController {
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
-		codeListMap.put("grpCd", "C1000");				// ì •ë³´ì œê³µì/ë³¸ì¸ì—¬ë¶€
+		codeListMap.put("grpCd", "C1000");				// Á¤º¸Á¦°øÀÚ/º»ÀÎ¿©ºÎ
 		model.put("ifpGbList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1200");				// ì§ì—…
+		codeListMap.put("grpCd", "C1200");				// Á÷¾÷
 		model.put("jobList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C3400");				// ì§€ì—­
+		codeListMap.put("grpCd", "C3400");				// Áö¿ª
 		model.put("areaList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1400");				// ì •ë³´ì·¨ë“ê²½ë¡œ
+		codeListMap.put("grpCd", "C1400");				// Á¤º¸Ãëµæ°æ·Î
 		model.put("pathList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1500");				// ì£¼í˜¸ì†Œë¬¸ì œ
+		codeListMap.put("grpCd", "C1500");				// ÁÖÈ£¼Ò¹®Á¦
 		model.put("kndList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1600");				// ìƒë‹´ìœ í˜•
+		codeListMap.put("grpCd", "C1600");				// »ó´ãÀ¯Çü
 		model.put("tpList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1800");				// ìµœì´ˆì‚¬ìš©ì•½ë¬¼
+		codeListMap.put("grpCd", "C1800");				// ÃÖÃÊ»ç¿ë¾à¹°
 		model.put("fstDrugList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C1900");				// ì£¼ìš”ì‚¬ìš©ì•½ë¬¼
+		codeListMap.put("grpCd", "C1900");				// ÁÖ¿ä»ç¿ë¾à¹°
 		model.put("mainDrugList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2000");				// ì£¼ìš”ì¡°ì¹˜
+		codeListMap.put("grpCd", "C2000");				// ÁÖ¿äÁ¶Ä¡
 		model.put("mjrMngList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2100");				// Rating A: ìœ„í—˜ì„±
+		codeListMap.put("grpCd", "C2100");				// Rating A: À§Çè¼º
 		model.put("rskaTpList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2200");				// Rating B: ì§€ì§€ì²´ê³„
+		codeListMap.put("grpCd", "C2200");				// Rating B: ÁöÁöÃ¼°è
 		model.put("rskbTpList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C2300");				// Rating C: í˜‘ì¡°ëŠ¥ë ¥
+		codeListMap.put("grpCd", "C2300");				// Rating C: ÇùÁ¶´É·Â
 		model.put("rskcTpList", sysCodeService.getSysCdList(codeListMap));
 
 		return "counsel/counselMain";
 	}
 
 	/**
-	 * ì¼ë°˜ìƒë‹´ ë“±ë¡ ì²˜ë¦¬
+	 * ÀÏ¹İ»ó´ã µî·Ï Ã³¸®
 	 * @param reqMap
 	 * @param session
 	 * @return
@@ -112,7 +112,7 @@ public class CounselController {
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 //			resultView.addObject("err", "Y");
-//			resultView.addObject("MSG", "ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥ í•©ë‹ˆë‹¤.");
+//			resultView.addObject("MSG", "·Î±×ÀÎ ÈÄ ÀÌ¿ë °¡´É ÇÕ´Ï´Ù.");
 //			resultView.addObject("actUrl", "/login.do");
 
 //			return resultView;
@@ -122,37 +122,37 @@ public class CounselController {
 		   StringUtils.defaultString((String)reqMap.get("cslFmTm"), "") == "" || 
 		   StringUtils.defaultString((String)reqMap.get("cslToTm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ìƒë‹´ì¼ì‹œë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "»ó´ãÀÏ½Ã¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpGbCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì/ë³¸ì¸ì—¬ë¶€ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ/º»ÀÎ¿©ºÎ¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì„±ëª…ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¼º¸í¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì„±ëª…ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¼º¸í¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpGendCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì„±ë³„ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¼ºº°¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpAge"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì—°ë ¹ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¿¬·É¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
@@ -160,44 +160,44 @@ public class CounselController {
 		   StringUtils.defaultString((String)reqMap.get("ifpTelNo2"), "") == "" ||
 		   StringUtils.defaultString((String)reqMap.get("ifpTelNo3"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì—°ë½ì²˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ ¿¬¶ôÃ³¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpJobCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì§ì—…ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ Á÷¾÷¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì œê³µì ì§€ì—­ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ Áö¿ª¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}else if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "ZZZ"){
 			if(StringUtils.defaultString((String)reqMap.get("ifpAreaEtc"), "") == "") {
 				resultView.addObject("err", "Y");
-				resultView.addObject("MSG", "ì •ë³´ì œê³µì ì§€ì—­ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+				resultView.addObject("MSG", "Á¤º¸Á¦°øÀÚ Áö¿ª¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 				flag = false;
 			}
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpNm"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ëŒ€ìƒì ì„±ëª…ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "´ë»óÀÚ ¼º¸í¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpGendCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ëŒ€ìƒì ì„±ë³„ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "´ë»óÀÚ ¼ºº°¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpAge"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ëŒ€ìƒì ì—°ë ¹ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "´ë»óÀÚ ¿¬·É¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
@@ -205,80 +205,80 @@ public class CounselController {
 		   StringUtils.defaultString((String)reqMap.get("tgpTelNo2"), "") == "" ||
 		   StringUtils.defaultString((String)reqMap.get("tgpTelNo3"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ëŒ€ìƒì ì—°ë½ì²˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "´ë»óÀÚ ¿¬¶ôÃ³¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpJobCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ëŒ€ìƒì ì§ì—…ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "´ë»óÀÚ Á÷¾÷¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpFrgCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ëŒ€ìƒì ë‚´/ì™¸êµ­ì¸ ì—¬ë¶€ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "´ë»óÀÚ ³»/¿Ü±¹ÀÎ ¿©ºÎ¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ëŒ€ìƒì ì§€ì—­ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "´ë»óÀÚ Áö¿ª¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}else if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "ZZZ"){
 			if(StringUtils.defaultString((String)reqMap.get("tgpAreaEtc"), "") == "") {
 				resultView.addObject("err", "Y");
-				resultView.addObject("MSG", "ëŒ€ìƒì ì§€ì—­ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+				resultView.addObject("MSG", "´ë»óÀÚ Áö¿ª¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 				flag = false;
 			}
 		}
 		if(StringUtils.defaultString((String)reqMap.get("ifPathCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì •ë³´ì·¨ë“ê²½ë¡œë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "Á¤º¸Ãëµæ°æ·Î¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 			
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("pbmKndCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì£¼í˜¸ì†Œë¬¸ì œë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "ÁÖÈ£¼Ò¹®Á¦¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("cslTpCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ìƒë‹´ìœ í˜•ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "»ó´ãÀ¯Çü¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("fstDrugCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ìµœì´ˆì‚¬ìš©ì•½ë¬¼ì„ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "ÃÖÃÊ»ç¿ë¾à¹°À» ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("mainDrugCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì£¼ìš”ì‚¬ìš©ì•½ë¬¼ì„ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "ÁÖ¿ä»ç¿ë¾à¹°À» ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("mjrMngCd"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ì£¼ìš”ì¡°ì¹˜ë¥¼ ì„ íƒí•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "ÁÖ¿äÁ¶Ä¡¸¦ ¼±ÅÃÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("rskSco"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ìœ„ê¸°ë¶„ë¥˜ì²™ë„ ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "À§±âºĞ·ùÃ´µµ Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
 		if(StringUtils.defaultString((String)reqMap.get("cslCtnt"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ìƒë‹´ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "»ó´ã³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			flag = false;
 		}
@@ -294,7 +294,7 @@ public class CounselController {
 	}
 
 	/**
-	 * ì¼ë°˜ìƒë‹´ ëª©ë¡ ì¡°íšŒ
+	 * ÀÏ¹İ»ó´ã ¸ñ·Ï Á¶È¸
 	 * @param model
 	 * @param reqMap
 	 * @param session
@@ -303,7 +303,7 @@ public class CounselController {
 	 */
 	@RequestMapping(value="/getClsRcpList.do")
 	public String getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "");
+		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
 		PaginationInfo paginginfo = new PaginationInfo();
@@ -316,9 +316,6 @@ public class CounselController {
 			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
 			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
 		}
-
-		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
-		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
 
 		String schStrCslDt = StringUtils.defaultIfEmpty((String)reqMap.get("schStrCslDt"), "");
 		String schEndCslDt = StringUtils.defaultIfEmpty((String)reqMap.get("schEndCslDt"), "");
@@ -336,6 +333,16 @@ public class CounselController {
 			reqMap.put("schEndCslDt", DateUtil.getToday("yyyyMMdd"));
 		}
 
+		model.put("schStrCslDt", reqMap.get("schStrCslDt"));
+		model.put("schEndCslDt", reqMap.get("schEndCslDt"));
+		model.put("schMth", schMth);
+		model.put("schGb", schGb);
+		model.put("schNm", schNm);
+		model.put("pageNo", currentPageNo);
+
+		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
+		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
+
 		int totalCount = counselService.getCslRcpListCount(reqMap);
 		paginginfo.setTotalRecordCount(totalCount);
 
@@ -351,7 +358,7 @@ public class CounselController {
 	}
 
 	/**
-	 * ìƒë‹´ë‚´ìš© ì‚­ì œ
+	 * »ó´ã³»¿ë »èÁ¦
 	 * @param reqMap
 	 * @param session
 	 * @return
@@ -365,7 +372,7 @@ public class CounselController {
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 //			resultView.addObject("err", "Y");
-//			resultView.addObject("MSG", "ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥ í•©ë‹ˆë‹¤.");
+//			resultView.addObject("MSG", "·Î±×ÀÎ ÈÄ ÀÌ¿ë °¡´É ÇÕ´Ï´Ù.");
 //			resultView.addObject("actUrl", "/login.do");
 
 //			return resultView;
@@ -373,7 +380,7 @@ public class CounselController {
 
 		if(StringUtils.defaultString((String)reqMap.get("rcpNo"), "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ìƒë‹´ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "»ó´ã¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			return resultView;
 		}
@@ -384,7 +391,7 @@ public class CounselController {
 	}
 
 	/**
-	 * ìƒë‹´ ë‚´ìš© ìƒì„¸ ì¡°íšŒ
+	 * »ó´ã ³»¿ë »ó¼¼ Á¶È¸
 	 * @param rcpNo
 	 * @param session
 	 * @return
@@ -397,7 +404,7 @@ public class CounselController {
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 //			resultView.addObject("err", "Y");
-//			resultView.addObject("MSG", "ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥ í•©ë‹ˆë‹¤.");
+//			resultView.addObject("MSG", "·Î±×ÀÎ ÈÄ ÀÌ¿ë °¡´É ÇÕ´Ï´Ù.");
 //			resultView.addObject("actUrl", "/login.do");
 
 //			return resultView;
@@ -405,7 +412,7 @@ public class CounselController {
 
 		if(StringUtils.defaultString(rcpNo, "") == "") {
 			resultView.addObject("err", "Y");
-			resultView.addObject("MSG", "ìƒë‹´ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.");
+			resultView.addObject("MSG", "»ó´ã¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
 
 			return resultView;
 		}
@@ -416,7 +423,7 @@ public class CounselController {
 	}
 
 	/**
-	 * íšŒì› ëª©ë¡ ì¡°íšŒ
+	 * È¸¿ø ¸ñ·Ï Á¶È¸
 	 * @param model
 	 * @param reqMap
 	 * @param session
@@ -426,18 +433,24 @@ public class CounselController {
 	@RequestMapping(value="/ajaxMstMbrList.do")
 	public String ajaxMstMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "");
-		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), "");
+		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
 		PaginationInfo paginginfo = new PaginationInfo();
 		if(currentPageNo == "" || recordCountPerPage == ""){
 			paginginfo.setCurrentPageNo(1);
-			paginginfo.setPageSize(10);
-			paginginfo.setRecordCountPerPage(10);
-		} else {
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.parseInt(ConstantObject.defaultRowSize));
+		}else{
 			paginginfo.setCurrentPageNo(Integer.valueOf(currentPageNo));
-			paginginfo.setPageSize(10);
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
 			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
 		}
+
+		String mbrNm = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNm"), "");
+		String telNo = StringUtils.defaultIfEmpty((String)reqMap.get("telNo"), "").replaceAll("-", "");
+		model.put("mbrNm", mbrNm);
+		model.put("telNo", telNo);
+		model.put("pageNo", currentPageNo);
 
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
 		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
