@@ -106,9 +106,11 @@
 						   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 				<otherwise>
-						   AND (CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+						   AND (
+								CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 							OR IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-							OR TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%'))
+							OR TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+								)
 				</otherwise>
 			</choose>
 		</if>
