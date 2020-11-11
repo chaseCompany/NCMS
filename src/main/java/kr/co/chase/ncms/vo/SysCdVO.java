@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 코드 관리
  * @author ysp
  */
-public class SysCD implements Serializable {
+public class SysCdVO implements Serializable {
 	private static final long serialVersionUID = -858838578081265859L;
 
 	private String grpCd;					// 그룹 코드
