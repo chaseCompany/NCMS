@@ -252,9 +252,14 @@
 		},
 		<%-- 상담내용보기 --%>
 		ctntPopup = function(){
-			$("div[id='layerpopup']").html(res);
-			$("div[id='layerpopup']").attr("data-popup", "counwrite");
 			layerPopupOpen('counwrite');
+
+			$("textarea[name='viewCslCtnt']").val($("textarea[name='cslCtnt']").val());
+		},
+		<%-- 상담내용상세보기 확인 --%>
+		setCslCtnt = function(){
+			$("textarea[name='cslCtnt']").val($("textarea[name='viewCslCtnt']").val());
+			layerPopupClose('counwrite');
 		},
 		<%-- 위기분류척도 점수 계산--%>
 		changRating = function(){
@@ -689,3 +694,30 @@
 	<!-- // 정보취득경로 ~ 위기분류척도 / 상담내용-->
 </form>
 </div>
+<!-- 상담내용 팝업 -->
+<div class="layerpopup" data-popup="counwrite">
+	<div class="pop-header">
+		<span>상세내용</span>
+		<button type="button" class="el-dialog__headerbtn" onclick="javaScript:layerPopupClose('counwrite');">
+			<i class="el-dialog__close el-icon el-icon-close"></i>
+		</button>
+	</div>
+	<div class="pop-content">
+		<div class="section bg">
+			<textarea name="viewCslCtnt" style="height: 430px;" placeholder="상세내용을 입력하세요."></textarea>
+		</div>
+		<!-- 닫기 -->
+		<div class="el-dialog__footer">
+			<button type="button" onclick="javaScript:setCslCtnt();" class="el-button el-button--primary el-button--small is-plain">
+				<i class="el-icon-check"></i>
+				<span>확인</span>
+			</button>
+			<button type="button" onclick="javaScript:layerPopupClose('counwrite');" class="el-button el-button--default el-button--small">
+				<i class="el-icon-close"></i>
+				<span>닫기</span>
+			</button>
+		</div>
+		<!-- // 닫기 -->
+	</div>
+</div>
+<!-- // 상담내용 팝업 -->
