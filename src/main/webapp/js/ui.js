@@ -78,6 +78,7 @@ function layerPopupClose(id){
 	// }
 	// $(".layer-popup-box[data-popup="+id+"]").hide();
 	
+	$("div[id='layerpopup']").html("");
 	$(".layerpopup[data-popup="+id+"]").find('.popup').removeClass('fadeInDown').addClass('fadeInUp');
 	$(".layerpopup[data-popup="+id+"]").fadeOut(300, function(){
 		$(".layerpopup[data-popup="+id+"]").find('.popup').removeClass('fadeInUp');
