@@ -1,7 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<script>
+	$(document).ready(function(){
+		
+		<%-- 코드내용 상세조회 --%>
+		sysAdminCdView = function(tagGrpCd, tagCdId, tagCdNm, tagDpSeq, tagUseYn){
+			
+			$("input[id='grpCd']").val(tagGrpCd);
+			$("input[id='cdId']").val(tagCdId);
+			$("input[id='cdNm']").val(tagCdNm);
+			$("input[id='dpSeq']").val(tagDpSeq);
+			$("select[id='useYn']").val(tagUseYn).prop("selected", true);
+			
+		}
+		
+	});
+</script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
     <h1>
@@ -87,25 +103,27 @@
                                     <col>
                                 </colgroup>
                                 <tbody>
+<c:forEach var="result" items="${grpCdList}" varStatus="status">
                                     <tr>
                                         <td>
-                                            <div class="cell">1</div>
+                                            <div class="cell"><c:out value="${status.count}" /></div>
                                         </td>
                                         <td>
                                             <div class="cell">
-                                                <a href="#" class="row_link">C1000</a>
+                                                <a href="" onclick="javaScript:sysAdminCdView('<c:out value="${result.GRP_CD}" />', '<c:out value="${result.CD_ID}" />', '<c:out value="${result.CD_NM}" />', '<c:out value="${result.DP_SEQ}" />', '<c:out value="${result.USE_YN}" />');" class="row_link"><c:out value="${result.CD_ID}" /></a>
                                             </div>
                                         </td>
                                         <td class="txt-left">
-                                            <div class="cell">정보제공자/본인여부</div>
+                                            <div class="cell"><c:out value="${result.CD_NM}" /></div>
                                         </td>
                                         <td>
-                                            <div class="cell">1</div>
+                                            <div class="cell"><c:out value="${result.DP_SEQ}" /></div>
                                         </td>
                                         <td>
-                                            <div class="cell">Y</div>
+                                            <div class="cell"><c:out value="${result.USE_YN}" /></div>
                                         </td>
                                     </tr>
+</c:forEach>
                                 </tbody>
                             </table>
                             <!-- <div class="no-data">조회된 데이터가 없습니다.</div> -->
@@ -123,14 +141,15 @@
                                         그룹ID
                                     </th>
                                     <td>
-                                        <input type="text" class="el-input__inner" style="width:100px">
+	                                    <input type="hidden" id="grpCd"/>
+                                        <input type="text" class="el-input__inner" style="width:100px" id="cdId">
                                     </td>
                                     <th>
                                         <span class="required">*</span>
                                         그룹명
                                     </th>
                                     <td>
-                                        <input type="text" class="el-input__inner" style="width:350px">
+                                        <input type="text" class="el-input__inner" style="width:350px" id="cdNm">
                                     </td>
                                 </tr>
                                 <tr>
@@ -139,15 +158,16 @@
                                         순서
                                     </th>
                                     <td>
-                                        <input type="text" class="el-input__inner" style="width:100px">
+                                        <input type="text" class="el-input__inner" style="width:100px" id="dpSeq">
                                     </td>
                                     <th>
                                         <span class="required">*</span>
                                         사용여부
                                     </th>
                                     <td>
-                                        <select name="" id="" style="width: 100px;">
-                                            <option value="">선택</option>
+                                        <select name="" id="useYn" style="width: 100px;">
+                                        	<option value="Y">예</option>
+                                        	<option value="N">아니오</option>
                                         </select>
                                     </td>
                                 </tr>
