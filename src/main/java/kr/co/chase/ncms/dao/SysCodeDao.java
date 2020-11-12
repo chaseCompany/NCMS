@@ -34,4 +34,32 @@ public class SysCodeDao extends EgovAbstractMapper {
 	public int insertSysCd(HashMap<String, Object> map) throws SQLException{
 		return insert("sysCd.insertSysCd", map);
 	}
+
+	/**
+	 * 시스템 코드 종류를 조회한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getSysCdAdminGroupTotalList(HashMap<String, Object> map) throws SQLException{
+		return selectList("sysCd.getSysCdAdminGroupTotalList", map);
+	}
+
+	/**
+	 * 시스템 코드를 조회한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getSysCdAdminGroupCdList(String grpCd) throws SQLException{
+		return selectList("sysCd.getSysCdAdminGroupCdList", grpCd);
+	}
+
+	/**
+	 * 시스템 코드를 수정한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateSysCdAdmin(HashMap<String, Object> map) throws SQLException{
+		return update("sysCd.updateSysCdAdmin", map);
+	}
+
 }

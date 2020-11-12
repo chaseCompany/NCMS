@@ -29,4 +29,36 @@
 		)
 	]]>
 	</insert>
+
+	<select id="sysCd.getSysCdAdminGroupTotalList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysCd.getSysCdAdminGroupTotalList */
+			   GRP_CD, CD_ID, CD_NM, DP_SEQ, USE_YN
+		  FROM SYS_CD
+		  WHERE GRP_CD = #{grpCd}
+		  ORDER BY DP_SEQ
+	]]>
+	</select>
+
+	<select id="sysCd.getSysCdAdminGroupCdList" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysCd.getSysCdAdminGroupCdList */
+			   CD_ID, CD_NM, DP_SEQ, USE_YN
+		  FROM SYS_CD
+		  WHERE GRP_CD = #{grpCd}
+		  ORDER BY DP_SEQ
+	]]>
+	</select>
+
+	<update id="sysCd.updateSysCdAdmin" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* sysCd.updateSysCd */ SYS_CD
+		   SET GRP_CD			= #{grpCd}							, CD_NM				= #{cdNm}
+			 , DP_SEQ			= #{dpSeq}							, USE_YN			= #{useYn}
+			 , UPD_ID			= #{updId}			 				, UPD_DT			= NOW()
+		 WHERE	GRP_CD	= #{grpCd}
+		 AND	CD_ID	= #{cdId}
+	]]>
+	</update>
+
 </mapper>

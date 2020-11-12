@@ -2,11 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<script>
+<script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		
 		<%-- 코드내용 상세조회 --%>
-		sysAdminCdView = function(tagGrpCd, tagCdId, tagCdNm, tagDpSeq, tagUseYn){
+		sysAdminCdView = function(tagGrpCd, tagCdId, tagCdNm, tagDpSeq, tagUseYn, tagCreDt){
 			
 			$("input[id='grpCd']").val(tagGrpCd);
 			$("input[id='cdId']").val(tagCdId);
@@ -14,8 +14,68 @@
 			$("input[id='dpSeq']").val(tagDpSeq);
 			$("select[id='useYn']").val(tagUseYn).prop("selected", true);
 			
-		}
-		
+			$.ajax({
+				url : '/ajaxAdminCodeList.do',
+				type : 'POST',
+				data : {
+					cdId : tagCdId
+				},
+				success : function(res){
+					if(res.codeList != null){
+                    	var codeHtml = '';
+                    	var index = 1;
+                    	for (var i=0;i<res.codeList.length;i++) {
+                        	codeHtml += '<tr>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell">' + index + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell">' + res.codeList[i].CD_ID + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td class="txt-left">';
+                        	codeHtml += '<div class="cell">' + res.codeList[i].CD_NM + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell">' + res.codeList[i].DP_SEQ + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell">' + res.codeList[i].USE_YN + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '</tr>';
+                        	index++;
+                    	}
+                    	$("#codeDetailList").html(codeHtml);
+					}else{
+						console.log("상세내용 조회 오류");
+					}
+				},
+				error : function(xhr, status){
+					console.log(xhr);
+				}
+			});
+		},
+		codeSave = function(){
+
+			$.ajax({
+				url : '/ajaxCodeUpdate.do',
+				type : 'POST',
+				data : $('#codeForm').serialize(),
+				success : function(res){
+					if(res.err != "Y"){
+						location.reload();
+					}else{
+						alert(res.MSG);
+
+						if(res.actUrl != "" && res.actUrl != undefined){
+							window.location.href = res.actUrl;
+						}
+					}
+				},
+				error : function(xhr, status){
+				}
+			});
+
+		}		
 	});
 </script>
 <!-- 페이지 타이틀 -->
@@ -110,7 +170,7 @@
                                         </td>
                                         <td>
                                             <div class="cell">
-                                                <a href="" onclick="javaScript:sysAdminCdView('<c:out value="${result.GRP_CD}" />', '<c:out value="${result.CD_ID}" />', '<c:out value="${result.CD_NM}" />', '<c:out value="${result.DP_SEQ}" />', '<c:out value="${result.USE_YN}" />');" class="row_link"><c:out value="${result.CD_ID}" /></a>
+                                                <a href="javascript:void(0);" onclick="javaScript:sysAdminCdView('<c:out value="${result.GRP_CD}" />', '<c:out value="${result.CD_ID}" />', '<c:out value="${result.CD_NM}" />', '<c:out value="${result.DP_SEQ}" />', '<c:out value="${result.USE_YN}" />');" class="row_link"><c:out value="${result.CD_ID}" /></a>
                                             </div>
                                         </td>
                                         <td class="txt-left">
@@ -130,7 +190,7 @@
                         </div>
                     </div>
                     <!-- // 검색 결과 -->
-
+<form name="codeForm" id="codeForm">
                     <!-- 그룹정보 -->
                     <div class="section">
                         <table class="w-auto wr-form">
@@ -141,15 +201,15 @@
                                         그룹ID
                                     </th>
                                     <td>
-	                                    <input type="hidden" id="grpCd"/>
-                                        <input type="text" class="el-input__inner" style="width:100px" id="cdId">
+	                                    <input type="hidden" name="grpCd" id="grpCd"/>
+                                        <input type="text" class="el-input__inner" style="width:100px" name="cdId" id="cdId">
                                     </td>
                                     <th>
                                         <span class="required">*</span>
                                         그룹명
                                     </th>
                                     <td>
-                                        <input type="text" class="el-input__inner" style="width:350px" id="cdNm">
+                                        <input type="text" class="el-input__inner" style="width:350px" name="cdNm" id="cdNm">
                                     </td>
                                 </tr>
                                 <tr>
@@ -158,14 +218,14 @@
                                         순서
                                     </th>
                                     <td>
-                                        <input type="text" class="el-input__inner" style="width:100px" id="dpSeq">
+                                        <input type="text" class="el-input__inner" style="width:100px" name="dpSeq" id="dpSeq">
                                     </td>
                                     <th>
                                         <span class="required">*</span>
                                         사용여부
                                     </th>
                                     <td>
-                                        <select name="" id="useYn" style="width: 100px;">
+                                        <select name="useYn" id="useYn" style="width: 100px;">
                                         	<option value="Y">예</option>
                                         	<option value="N">아니오</option>
                                         </select>
@@ -175,12 +235,12 @@
                         </table>
                     </div>
                     <div class="mgt10 txt-center">
-                        <button type="button" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;">
+                        <button type="button" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;" onclick="javaScript:codeSave();">
                             <i class="el-icon-refresh-right"></i><span>저장</span>
                         </button>
                     </div>
                     <!-- // 그룹정보 -->
-
+</form>
                 </div>
             </div>
         </div>
@@ -258,58 +318,7 @@
                                     <col style="width:80px">
                                     <col>
                                 </colgroup>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="cell">1</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">10</div>
-                                        </td>
-                                        <td class="txt-left">
-                                            <div class="cell">본인</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">10</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">Y</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="cell">1</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">10</div>
-                                        </td>
-                                        <td class="txt-left">
-                                            <div class="cell">본인</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">10</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">Y</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="cell">1</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">10</div>
-                                        </td>
-                                        <td class="txt-left">
-                                            <div class="cell">본인</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">10</div>
-                                        </td>
-                                        <td>
-                                            <div class="cell">Y</div>
-                                        </td>
-                                    </tr>
+                                <tbody id="codeDetailList">
                                 </tbody>
                             </table>
                             <!-- <div class="no-data">조회된 데이터가 없습니다.</div> -->

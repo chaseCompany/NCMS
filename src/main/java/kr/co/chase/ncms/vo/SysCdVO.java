@@ -3,8 +3,6 @@ package kr.co.chase.ncms.vo;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 /**
  * 코드 관리
  * @author ysp
@@ -17,7 +15,7 @@ public class SysCdVO implements Serializable {
 	private String cdNm;					// 코드명
 	private String dpSeq;					// 보기 순서
 	private String useYn;					// 사용여부
-	private Timestamp creDt;				// 생성일자
+	private Timestamp creDt;						// 생성일자
 	private String creId;					// 생성자
 	private Timestamp updDt;				// 수정일자
 	private String updId;					// 수정자
@@ -92,12 +90,6 @@ public class SysCdVO implements Serializable {
 
 	public void setUpdId(String updId) {
 		this.updId = updId;
-	}
-
-	@Override
-	public String toString() {
-		return "SysCD [grpCd=" + grpCd + ", cdId=" + cdId + ", cdNm=" + cdNm + ", dpSeq=" + dpSeq + ", useYn=" + useYn
-				+ ", creDt=" + creDt + ", creId=" + creId + ", updDt=" + updDt + ", updId=" + updId + "]";
 	}
 
 }
