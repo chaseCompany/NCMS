@@ -284,6 +284,7 @@ public class CounselController {
 		}
 
 		if(flag){
+			reqMap.put("cslDt", ((String)reqMap.get("cslDt")).replaceAll("-", ""));
 			reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 			reqMap.put("cslNm", StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
 

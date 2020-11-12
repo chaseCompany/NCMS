@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script>
 	$(document).ready(function(){
 		<%-- 페이지처리 --%>
@@ -112,6 +113,7 @@
 					<tbody>
 <c:if test="${totalCount > 0}">
 	<c:forEach var="result" items="${resultList}" varStatus="status">
+		<fmt:parseDate value="${result.REG_DT}" var="regDt" pattern="yyyyMMdd"/>
 						<tr>
 							<td><div class="cell"><c:out value="${result.ROWNUM}" /></div></td>
 							<td>
@@ -135,8 +137,13 @@
 							<td><div class="cell"><c:out value="${result.GEND_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
 							<td><div class="cell"><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></div></td>
+		<c:if test="${result.STS_CD ne 'RG'}">
 							<td><div class="cell"><c:out value="${result.STS_NM}" /></div></td>
-							<td><div class="cell"><c:out value="${result.REG_DT}" /></div></td>
+		</c:if>
+		<c:if test="${result.STS_CD eq 'RG'}">
+							<td><div class="cell"></div></td>
+		</c:if>
+							<td><div class="cell"><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></div></td>
 						</tr>
 	</c:forEach>
 </c:if>
