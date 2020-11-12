@@ -71,3 +71,35 @@ function formatTime(time){
 
 	return [time.substr(0, 2), time.substr(2, 2)].join(':');
 }
+/**
+ * 두 시간의 분차이 계산
+ * @param fmTm 00:00
+ * @param toTm 00:00
+ */
+function needTime(fmTm, toTm){
+	if(fmTm.length != 5){
+		return;
+	}
+	if(toTm.length != 5){
+		return;
+	}
+	if(fmTm.indexOf(":") < 0){
+		return;
+	}
+	if(toTm.indexOf(":") < 0){
+		return;
+	}
+	if(toTm.replace(":") <= fmTm.replace(":")){
+		return 0;
+	}
+
+	var fmTmVal = fmTm.split(":");
+	var toTmVal = toTm.split(":");
+
+	var termTm = ((toTmVal[0] - fmTmVal[0]) * 60) + (toTmVal[1] - fmTmVal[1]);
+	if(termTm > 0){
+		return termTm;
+	}else{
+		return 0;
+	}
+}
