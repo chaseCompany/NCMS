@@ -6,7 +6,6 @@
 (function($) {
 
 	$.fn.timepicki = function(options) {
-
 		var defaults = {
 			format_output: function(tim, mini, meri) {
 			    if (settings.show_meridian) {
@@ -14,7 +13,6 @@
 			        tim = Math.min(Math.max(parseInt(tim), 1), 12);
 			        if (tim < 10)
 			            tim = "0" + tim;
-
 
 			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
 			        if (mini < 10)
@@ -28,7 +26,6 @@
 
 			        if (tim < 10)
 			            tim = "0" + tim;
-
 
 			        mini = Math.min(Math.max(parseInt(mini), 0), 59);
 			        if (mini < 10)
@@ -50,7 +47,8 @@
 			disable_keyboard_mobile: false,
 			reset: false,
 			on_change: null,
-      			input_writable: false
+			input_writable: false,
+			retrun_function: null,
 		};
 
 		var settings = $.extend({}, defaults, options);
@@ -281,6 +279,10 @@
 				}
 			});
 
+			inputs.on('focusout', function(){
+				set_value();
+			});
+
 			// allow user to increase and decrease numbers using arrow keys
 			inputs.on('keydown', function(e) {
 				var direction, input = $(this);
@@ -383,6 +385,10 @@
 
 			function close_timepicki() {
 				ele_next.fadeOut();
+
+				if(settings.retrun_function !== null){
+					get_date();
+				}
 			}
 
 			function set_date(start_time) {
@@ -437,6 +443,15 @@
 						ele_next.find(".mer_tx input").val(mer);
 					}
 				}
+			}
+
+			function get_date(){
+				var tagName = $(ele_next.parent().find("input")[0]).attr("name");
+				var tim = ele_next.find(".ti_tx input").val();
+				var mini = ele_next.find(".mi_tx input").val();
+				var meri = ele_next.find(".mer_tx input").val();
+
+				settings.retrun_function(tagName, settings.format_output(tim, mini, meri));
 			}
 
 			function change_time(cur_ele, direction) {

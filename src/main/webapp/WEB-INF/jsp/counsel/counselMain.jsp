@@ -142,18 +142,8 @@
 					$("div[id='layerpopup']").attr("data-popup", "memberPopUp");
 					$("input[name='reFunName']").val(resFuct);
 					layerPopupOpen('memberPopUp');
-/*
-					if(res.totalCount > 0){
-						tagMbrInfo = res.resultList[0];
-						(new Function(resFuct + "('" + res.resultList[0].MBR_NO + "');"))();
-					}else{
-						tagMbrInfo = "";
-						console.log("회원 정보 없음");
-					}
-*/
 				},
 				error : function(xhr, status){
-					tagMbrInfo = "";
 					console.log(xhr);
 				}
 			});
@@ -205,10 +195,11 @@
 				success : function(res){
 					if(res.cslRcpInfo != null){
 						$("input[name='rcpNo']").val(res.cslRcpInfo.RCP_NO);
-						$("input[name='cslDt']").val(res.cslRcpInfo.CSL_DT);
-						$("input[name='cslFmTm']").val(res.cslRcpInfo.CSL_FM_TM);
-						$("input[name='cslToTm']").val(res.cslRcpInfo.CSL_TO_TM);
+						$("input[name='cslDt']").val(formatDate(res.cslRcpInfo.CSL_DT));
+						$("input[name='cslFmTm']").val(formatTime(res.cslRcpInfo.CSL_FM_TM));
+						$("input[name='cslToTm']").val(formatTime(res.cslRcpInfo.CSL_TO_TM));
 						$("#cslTermTm").text(res.cslRcpInfo.CSL_TERM_TM);
+						$("input[name='cslTermTm']").val(res.cslRcpInfo.CSL_TERM_TM);
 						$("input[name='cslId']").val(res.cslRcpInfo.CSL_ID);
 						$("input[name='cslNm']").val(res.cslRcpInfo.CSL_NM);
 						$("input[name='ifpGbCd']:radio[value='" + res.cslRcpInfo.IFP_GB_CD + "']").prop("checked", true);
@@ -249,6 +240,7 @@
 						$("textarea[name='cslCtnt']").val(res.cslRcpInfo.CSL_CTNT);
 
 						layerPopupClose('rcptPopUp');
+						changRating();
 					}else{
 						console.log("상세내용 조회 오류");
 					}
@@ -260,9 +252,42 @@
 		},
 		<%-- 상담내용보기 --%>
 		ctntPopup = function(){
-			$("div[id='layerpopup']").html(res);
-			$("div[id='layerpopup']").attr("data-popup", "counwrite");
 			layerPopupOpen('counwrite');
+
+			$("textarea[name='viewCslCtnt']").val($("textarea[name='cslCtnt']").val());
+		},
+		<%-- 상담내용상세보기 확인 --%>
+		setCslCtnt = function(){
+			$("textarea[name='cslCtnt']").val($("textarea[name='viewCslCtnt']").val());
+			layerPopupClose('counwrite');
+		},
+		<%-- 위기분류척도 점수 계산--%>
+		changRating = function(){
+			var ratingNum = 0;
+
+			ratingNum += Number($("select[name='rskaTpCd'] option:selected").attr("rating"));
+			ratingNum += Number($("select[name='rskbTpCd'] option:selected").attr("rating"));
+			ratingNum += Number($("select[name='rskcTpCd'] option:selected").attr("rating"));
+
+			$("#ratingNum").text(ratingNum);
+			$("input[name='rskSco']").val(ratingNum);
+		},
+		<%-- 상담 소요시간 계산 --%>
+		changTime = function(tagName, val){
+			$("input[name='" + tagName + "']").val(val);
+
+			if($("input[name='cslFmTm']").val() != "" && $("input[name='cslToTm']").val() != ""){
+				if($("input[name='cslToTm']").val().replace(":") > $("input[name='cslFmTm']").val().replace(":")){
+					var fmTm = $("input[name='cslFmTm']").val().split(":");
+					var toTm = $("input[name='cslToTm']").val().split(":");
+
+					var termTm = ((toTm[0] - fmTm[0]) * 60) + (toTm[1] - fmTm[1]);
+					if(termTm > 0){
+						$("span#cslTermTm").text(termTm);
+						$("input[name='cslTermTm']").val(termTm);
+					}
+				}
+			}
 		}
 	});
 </script>
@@ -276,12 +301,9 @@
 <div class="top-right-btn">
 	<button type="button" onclick="javaScript:counselSave();" class="el-button normal el-button--primary el-button--small is-plain"><i class="el-icon-download"></i><span>저장</span></button>
 	<button type="button" onclick="javaScript:counselNew();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;"><i class="el-icon-circle-plus-outline"></i><span>신규</span></button>
-	<button type="button" onclick="javaScript:counselCopy();" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
-	<button type="button" onclick="javaScript:counselDel();" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
-	<button type="button" onclick="javaScript:counselExel();" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
-	<button disabled="disabled" type="button" class="el-button normal el-button--default el-button--small is-disabled is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
-	<button disabled="disabled" type="button" class="el-button normal el-button--default el-button--small is-disabled is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
-	<button disabled="disabled" type="button" class="el-button normal el-button--default el-button--small is-disabled is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
+	<button type="button" onclick="javaScript:counselCopy();" id="copyBut" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
+	<button type="button" onclick="javaScript:counselDel();" id="delBut" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
+	<button type="button" onclick="javaScript:counselExel();" id="excelBut" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
 </div>
 <!-- // 상단 버튼 -->
 
@@ -316,6 +338,7 @@
 							</div>
 							<div class="t-min">
 								<span class="readonly" id="cslTermTm">0</span> 분 소요
+								<form:input path="cslRcpInfo.cslTermTm" hidden="true" />
 							</div>
 						</div>
 					</td>
@@ -613,14 +636,15 @@
 				</tbody>
 			</table>
 			<table class="w-auto wr-form">
+				<input type="hidden" name="rskSco" value="<c:out value="${cslRcpInfo.rskSco}"/>" />
 				<tbody>
 					<tr>
 						<th><span class="required">*</span> 위기분류척도</th>
 						<td>
 							<span class="el-tag">Rating A: 위험성</span>
-							<select name="rskaTpCd" style="width: 690px;">
+							<select name="rskaTpCd" style="width: 690px;" onchange="javaScript:changRating();">
 <c:forEach var="result" items="${rskaTpList}" varStatus="status">
-								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
 							</select>
 						</td>
@@ -629,20 +653,20 @@
 						<th class="txt-center">점수</th>
 						<td>
 							<span class="el-tag">Rating B: 지지체계</span>
-							<select name="rskbTpCd" style="width: 690px;">
+							<select name="rskbTpCd" style="width: 690px;" onchange="javaScript:changRating();">
 <c:forEach var="result" items="${rskbTpList}" varStatus="status">
-								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<th class="txt-center"><span class="el-tag-danger"><c:out value="${cslRcpInfo.rskSco}"/></span></th>
+						<th class="txt-center"><span class="el-tag-danger" id="ratingNum"><c:out value="${cslRcpInfo.rskSco}"/></span></th>
 						<td>
 							<span class="el-tag">Rating B: 지지체계</span>
-							<select name="rskcTpCd" style="width: 690px;">
+							<select name="rskcTpCd" style="width: 690px;" onchange="javaScript:changRating();">
 <c:forEach var="result" items="${rskcTpList}" varStatus="status">
-								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
 							</select>
 						</td>
@@ -670,3 +694,30 @@
 	<!-- // 정보취득경로 ~ 위기분류척도 / 상담내용-->
 </form>
 </div>
+<!-- 상담내용 팝업 -->
+<div class="layerpopup" data-popup="counwrite">
+	<div class="pop-header">
+		<span>상세내용</span>
+		<button type="button" class="el-dialog__headerbtn" onclick="javaScript:layerPopupClose('counwrite');">
+			<i class="el-dialog__close el-icon el-icon-close"></i>
+		</button>
+	</div>
+	<div class="pop-content">
+		<div class="section bg">
+			<textarea name="viewCslCtnt" style="height: 430px;" placeholder="상세내용을 입력하세요."></textarea>
+		</div>
+		<!-- 닫기 -->
+		<div class="el-dialog__footer">
+			<button type="button" onclick="javaScript:setCslCtnt();" class="el-button el-button--primary el-button--small is-plain">
+				<i class="el-icon-check"></i>
+				<span>확인</span>
+			</button>
+			<button type="button" onclick="javaScript:layerPopupClose('counwrite');" class="el-button el-button--default el-button--small">
+				<i class="el-icon-close"></i>
+				<span>닫기</span>
+			</button>
+		</div>
+		<!-- // 닫기 -->
+	</div>
+</div>
+<!-- // 상담내용 팝업 -->

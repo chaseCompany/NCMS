@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script>
 	$(document).ready(function(){
 		<%-- 페이지처리 --%>
@@ -14,7 +15,7 @@
 			mstMbrSearchPopup();
 		}
 		<%-- 회원선택 --%>
-		choiceMem = function(mbrNm, mbrNo, gendCd, age, telNo1, telNo2, telNo3, jobCd){
+		choiceMem = function(mbrNm, mbrNo, gendCd, age, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm){
 			var tagMemObj = {
 				MBR_NM : mbrNm,
 				MBR_NO : mbrNo,
@@ -23,7 +24,10 @@
 				TEL_NO1 : telNo1,
 				TEL_NO2 : telNo2,
 				TEL_NO3 : telNo3,
-				JOB_CD : jobCd
+				JOB_CD : jobCd,
+				REG_DT : regDt,
+				MEDIC_CARE_NM : medicCareNm,
+				MNG_USR_NM : mngUsrNm
 			};
 
 			eval($("input[name='reFunName']").val() + "(tagMemObj)");
@@ -112,6 +116,7 @@
 					<tbody>
 <c:if test="${totalCount > 0}">
 	<c:forEach var="result" items="${resultList}" varStatus="status">
+		<fmt:parseDate value="${result.REG_DT}" var="regDt" pattern="yyyyMMdd"/>
 						<tr>
 							<td><div class="cell"><c:out value="${result.ROWNUM}" /></div></td>
 							<td>
@@ -124,6 +129,9 @@
 																					  , '<c:out value="${result.TEL_NO2}" />'
 																					  , '<c:out value="${result.TEL_NO3}" />'
 																					  , '<c:out value="${result.JOB_CD}" />'
+																					  , '<c:out value="${result.REG_DT}" />'
+																					  , '<c:out value="${result.MEDIC_CARE_NM}" />'
+																					  , '<c:out value="${result.MNG_USR_NM}" />'
 																	);" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
 										<span>선택</span>
 									</button>
@@ -135,8 +143,13 @@
 							<td><div class="cell"><c:out value="${result.GEND_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
 							<td><div class="cell"><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></div></td>
+		<c:if test="${result.STS_CD ne 'RG'}">
 							<td><div class="cell"><c:out value="${result.STS_NM}" /></div></td>
-							<td><div class="cell"><c:out value="${result.REG_DT}" /></div></td>
+		</c:if>
+		<c:if test="${result.STS_CD eq 'RG'}">
+							<td><div class="cell"></div></td>
+		</c:if>
+							<td><div class="cell"><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></div></td>
 						</tr>
 	</c:forEach>
 </c:if>

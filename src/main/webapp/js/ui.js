@@ -1,13 +1,15 @@
 $(function(){
-
-    $('.timepicker').timepicki({
-        show_meridian:false,
+	$('.timepicker').timepicki({
+		show_meridian:false,
 		min_hour_value:0,
 		max_hour_value:23,
 		step_size_minutes:1,
 		overflow_minutes:true,
 		increase_direction:'up',
 		//disable_keyboard_mobile: true
+		retrun_function: function(tagName, tagVal){
+			changTime(tagName, tagVal);
+		},
 	});
 
 	$('#header .r>.f').on('mouseenter', function(){
@@ -76,6 +78,7 @@ function layerPopupClose(id){
 	// }
 	// $(".layer-popup-box[data-popup="+id+"]").hide();
 	
+	$("div[id='layerpopup']").html("");
 	$(".layerpopup[data-popup="+id+"]").find('.popup').removeClass('fadeInDown').addClass('fadeInUp');
 	$(".layerpopup[data-popup="+id+"]").fadeOut(300, function(){
 		$(".layerpopup[data-popup="+id+"]").find('.popup').removeClass('fadeInUp');
