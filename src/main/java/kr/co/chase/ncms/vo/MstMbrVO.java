@@ -33,6 +33,7 @@ public class MstMbrVO implements Serializable {
 	private String rlgnCd;
 	private String reqPathCd;
 	private String medicCareCd;
+	private String medicCareNm;
 	private String disEtc;
 	private String regUsrId;
 	private String regDt;
@@ -341,6 +342,20 @@ public class MstMbrVO implements Serializable {
 	 */
 	public void setMedicCareCd(String medicCareCd) {
 		this.medicCareCd = medicCareCd;
+	}
+	/**
+	 * 의료보장 명
+	 * @return
+	 */
+	public String getMedicCareNm() {
+		return medicCareNm;
+	}
+	/**
+	 * 의료보장 명
+	 * @param medicCareNm
+	 */
+	public void setMedicCareNm(String medicCareNm) {
+		this.medicCareNm = medicCareNm;
 	}
 	/**
 	 * 기타장애
