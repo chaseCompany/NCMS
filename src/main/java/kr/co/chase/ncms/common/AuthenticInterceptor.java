@@ -34,8 +34,14 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 		String requestURI = request.getRequestURI(); //요청 URI
 		int requestPORT = request.getServerPort(); //요청 PORT
 		String requestHOST = request.getServerName();
-				
+
 		boolean isPermittedURL = true;
+
+		if(requestURI.indexOf("/") == 0) {
+			request.setAttribute("thisViewUrl", requestURI.substring(1));
+		}else {
+			request.setAttribute("thisViewUrl", requestURI);
+		}
 /*
 		writeVisitLog(request);
 		HttpSession session = request.getSession();

@@ -1,4 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	String thisViewUrl = StringUtils.defaultIfEmpty((String)request.getAttribute("thisViewUrl"), "");
+%>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		logOut = function(){
@@ -15,8 +20,8 @@
 	</div>
 	<div class="c">
 		<ul>
-			<li><a href="javaScript:goPage('/counselMain.do');" class="on">일반 상담</a></li>
-			<li><a href="javaScript:goPage('/individualMain.do');">개별 회복지원 서비스</a></li>
+			<li><a href="javaScript:goPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>일반 상담</a></li>
+			<li><a href="javaScript:goPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>개별 회복지원 서비스</a></li>
 			<li><a href="javaScript:goPage('/');">주간 프로그램</a></li>
 			<li><a href="javaScript:goPage('/');">회원정보 관리</a></li>
 			<li><a href="javaScript:goPage('/');">통계 관리</a></li>
