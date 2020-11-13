@@ -48,7 +48,7 @@ function gfncTimeFormatCheck(dateValue) {
  */
 function formatDate(date) {
 	if(date.length != 8){
-		return "";
+		return date;
 	}
 
 	var d = new Date(date.substr(0, 4), date.substr(4, 2), date.substr(6)), 
@@ -66,7 +66,7 @@ function formatDate(date) {
  */
 function formatTime(time){
 	if(time.length != 4){
-		return "";
+		return time;
 	}
 
 	return [time.substr(0, 2), time.substr(2, 2)].join(':');
@@ -78,16 +78,16 @@ function formatTime(time){
  */
 function needTime(fmTm, toTm){
 	if(fmTm.length != 5){
-		return;
+		return 0;
 	}
 	if(toTm.length != 5){
-		return;
+		return 0;
 	}
 	if(fmTm.indexOf(":") < 0){
-		return;
+		return 0;
 	}
 	if(toTm.indexOf(":") < 0){
-		return;
+		return 0;
 	}
 	if(toTm.replace(":") <= fmTm.replace(":")){
 		return 0;
