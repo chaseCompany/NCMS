@@ -291,6 +291,8 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	 * @throws Exception
 	 */
 	public int insertCslAssEvl(HashMap<String, Object> map) throws Exception{
+		map.put("evlSeq", this.getEvlSqeNext((String)map.get("mbrNo")));
+
 		return cslAssEvlDao.insertCslAssEvl(map);
 	}
 
@@ -317,5 +319,20 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 		resultMap.put("cslAssEvlList", this.getCslAssEvlList(mbrNo));
 
 		return resultMap;
+	}
+
+	/**
+	 * 사정 평가 내용 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int addCslAss(HashMap<String, Object> map) throws Exception{
+		int result = 0;
+
+		this.insertCslAss(map);
+		this.insertCslAssEvl(map);
+
+		return result;
 	}
 }

@@ -5,19 +5,23 @@
 	<select id="cslAssEvl.getCslAssEvlInfo" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* cslAssEvl.getCslAssEvlInfo */
-			   MBR_NO		, EVL_SEQ		, EVL_TOL_CD		, EVL_SCO		, EVL_CTNT
-		  FROM CSL_ASS_EVL
-		 WHERE MBR_NO = #{mbrNO}
-		   AND EVL_SEQ = #{evlSeq}
+			   CAE.MBR_NO		, CAE.EVL_SEQ		, CAE.EVL_SCO		, CAE.EVL_CTNT
+			 , CAE.EVL_TOL_CD	, SC.CD_NM AS EVL_TOL_NM
+		  FROM CSL_ASS_EVL CAE
+		  LEFT JOIN SYS_CD SC ON (SC.GRP_CD = 'C2400' AND SC.USE_YN = 'Y' AND CAE.EVL_TOL_CD = SC.CD_ID)
+		 WHERE CAE.MBR_NO = #{mbrNO}
+		   AND CAE.EVL_SEQ = #{evlSeq}
 	]]>
 	</select>
 
 	<select id="cslAssEvl.getCslAssEvlList" parameterType="String" resultType="hashMap">
 	<![CDATA[
 		SELECT /* cslAssEvl.getCslAssEvlList */
-			   MBR_NO		, EVL_SEQ		, EVL_TOL_CD		, EVL_SCO		, EVL_CTNT
-		  FROM CSL_ASS_EVL
-		 WHERE MBR_NO = #{mbrNO}
+			   CAE.MBR_NO		, CAE.EVL_SEQ		, CAE.EVL_SCO		, CAE.EVL_CTNT
+			 , CAE.EVL_TOL_CD	, SC.CD_NM AS EVL_TOL_NM
+		  FROM CSL_ASS_EVL CAE
+		  LEFT JOIN SYS_CD SC ON (SC.GRP_CD = 'C2400' AND SC.USE_YN = 'Y' AND CAE.EVL_TOL_CD = SC.CD_ID)
+		 WHERE CAE.MBR_NO = #{mbrNO}
 	]]>
 	</select>
 

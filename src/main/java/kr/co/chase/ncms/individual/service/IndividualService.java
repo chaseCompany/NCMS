@@ -178,4 +178,12 @@ public interface IndividualService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslAssInfoView(String mbrNo) throws Exception;
+
+	/**
+	 * 사정 평가 내용 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int addCslAss(HashMap<String, Object> map) throws Exception;
 }

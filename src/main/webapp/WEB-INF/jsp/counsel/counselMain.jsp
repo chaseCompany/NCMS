@@ -277,15 +277,11 @@
 			$("input[name='" + tagName + "']").val(val);
 
 			if($("input[name='cslFmTm']").val() != "" && $("input[name='cslToTm']").val() != ""){
-				if($("input[name='cslToTm']").val().replace(":") > $("input[name='cslFmTm']").val().replace(":")){
-					var fmTm = $("input[name='cslFmTm']").val().split(":");
-					var toTm = $("input[name='cslToTm']").val().split(":");
+				var termTm = needTime($("input[name='cslFmTm']").val(), $("input[name='cslToTm']").val());
 
-					var termTm = ((toTm[0] - fmTm[0]) * 60) + (toTm[1] - fmTm[1]);
-					if(termTm > 0){
-						$("span#cslTermTm").text(termTm);
-						$("input[name='cslTermTm']").val(termTm);
-					}
+				if(termTm > 0){
+					$("span#cslTermTm").text(termTm);
+					$("input[name='cslTermTm']").val(termTm);
 				}
 			}
 		}

@@ -1222,6 +1222,7 @@ span.readonly{display: inline-block;width:50px;border-radius: 4px;border: 1px so
 .bg-sky{background: #f9fbfc !important;}
 .bg-og{background: rgb(230, 162, 60);}
 .bg-pk{background: rgb(240, 235, 235);}
+.bg-pr{background: rgb(245, 108, 108);}
 .fadeInDown {
     animation-name: fadeInDown;
     animation-duration: .5s;

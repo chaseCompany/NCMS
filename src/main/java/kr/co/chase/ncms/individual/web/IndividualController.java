@@ -71,9 +71,6 @@ public class IndividualController {
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
-		codeListMap.put("grpCd", "C3100");				// 의료보장
-		model.put("medicCareCdList", sysCodeService.getSysCdList(codeListMap));
-
 		codeListMap.put("grpCd", "C2500");				// 상담대상
 		model.put("cslTgtCdList", sysCodeService.getSysCdList(codeListMap));
 
@@ -448,7 +445,6 @@ public class IndividualController {
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 //			resultView.addObject("err", "Y");
 //			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
@@ -464,7 +460,36 @@ public class IndividualController {
 			return resultView;
 		}
 
-		resultView.addObject("assInfo", individualService.getCslAssInfoView(mbrNo));
+		HashMap<String, Object> resultMap = individualService.getCslAssInfoView(mbrNo);
+		if(resultMap != null) {
+			resultView.addObject("cslAssInfo", resultMap.get("cslAssInfo"));
+			resultView.addObject("cslAssEvlList", resultMap.get("cslAssEvlList"));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 사정 평가 내용 등록
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCslAssAdd.do")
+	public @ResponseBody ModelAndView ajaxCslAssAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		reqMap.put("creId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 
 		return resultView;
 	}
