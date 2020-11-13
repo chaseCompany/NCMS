@@ -9,7 +9,7 @@
 		logOut = function(){
 			window.location.href = '/logout.do';
 		},
-		goPage = function(path){
+		goTopMenuPage = function(path){
 			window.location.href = path;
 		}
 	});
@@ -20,11 +20,11 @@
 	</div>
 	<div class="c">
 		<ul>
-			<li><a href="javaScript:goPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>일반 상담</a></li>
-			<li><a href="javaScript:goPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>개별 회복지원 서비스</a></li>
-			<li><a href="javaScript:goPage('/');">주간 프로그램</a></li>
-			<li><a href="javaScript:goPage('/');">회원정보 관리</a></li>
-			<li><a href="javaScript:goPage('/');">통계 관리</a></li>
+			<li><a href="javaScript:goTopMenuPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>일반 상담</a></li>
+			<li><a href="javaScript:goTopMenuPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>개별 회복지원 서비스</a></li>
+			<li><a href="javaScript:goTopMenuPage('/');">주간 프로그램</a></li>
+			<li><a href="javaScript:goTopMenuPage('/');">회원정보 관리</a></li>
+			<li><a href="javaScript:goTopMenuPage('/');">통계 관리</a></li>
 		</ul>
 	</div>
 	<div class="r">
