@@ -288,7 +288,13 @@ public class CounselController {
 			reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 			reqMap.put("cslNm", StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
 
-			counselService.counselAdd(reqMap);
+			String rcpNo = StringUtils.defaultIfEmpty(counselService.counselAdd(reqMap), "");
+			if("".equals(rcpNo)){
+				resultView.addObject("err", "Y");
+				resultView.addObject("MSG", "등록 오류");
+			}else{
+				resultView.addObject("rcpNo", rcpNo);
+			}
 		}
 
 		return resultView;

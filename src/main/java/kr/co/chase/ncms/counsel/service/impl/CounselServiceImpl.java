@@ -61,9 +61,8 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> counselAdd(HashMap<String, Object> map) throws Exception{
+	public String counselAdd(HashMap<String, Object> map) throws Exception{
 		int result = 0;
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		String rcpNo = StringUtils.defaultString(map.get("rcpNo") != null ? map.get("rcpNo").toString() : "", "");
 
 		if(rcpNo.equals("")) {
@@ -73,13 +72,11 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 			result = this.updateCslRcp(map);
 		}
 
-		if(result <= 0) {
-			
+		if(result > 0) {
+			return (String)map.get("rcpNo");
 		}else {
-			
+			return "";
 		}
-
-		return resultMap;
 	}
 
 	/**

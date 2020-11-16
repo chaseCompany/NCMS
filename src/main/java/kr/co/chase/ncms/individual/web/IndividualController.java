@@ -2,9 +2,12 @@ package kr.co.chase.ncms.individual.web;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +65,7 @@ public class IndividualController {
 		cslIdvVO.setCslTpCd("20");
 		// ISP 수립 기본값 셋팅
 		cslIspVO.setIspDt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		cslAssVO.setSvrRcgDgr("1");
 
 		model.put("mstMbrInfo", mstMbrVO);				// 회원정보
 		model.put("cslIdvInfo", cslIdvVO);				// 집중상담
@@ -194,7 +198,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "회원번호를 선택하세요.");
 
 			return resultView;
@@ -217,7 +221,7 @@ public class IndividualController {
 		ModelAndView resultView = new ModelAndView("jsonView");
 
 		if(StringUtils.defaultString(cslNo, "").equals("")) {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "상담번호를 입력하세요.");
 
 			return resultView;
@@ -243,7 +247,7 @@ public class IndividualController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			resultView.addObject("err", "Y");
+//			resultView.addObject("err", ConstantObject.Y);
 //			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 //			resultView.addObject("actUrl", "/login.do");
 
@@ -251,7 +255,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
 			return resultView;
@@ -287,7 +291,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString(reqMap.get("cslNo").toString(), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
 			return resultView;
@@ -295,7 +299,7 @@ public class IndividualController {
 
 		int resultNum = individualService.deleteCslIdv(StringUtils.defaultString(reqMap.get("cslNo").toString(), ""));
 		if(resultNum <= 0) {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "삭제 오류");
 		}
 
@@ -320,7 +324,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "회원번호를 선택하세요.");
 
 			return resultView;
@@ -349,7 +353,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
 			return resultView;
@@ -357,7 +361,7 @@ public class IndividualController {
 
 		int resultNum = individualService.deleteCslIsp(reqMap);
 		if(resultNum <= 0) {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "삭제 오류");
 		}
 
@@ -382,7 +386,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
 			return resultView;
@@ -407,7 +411,7 @@ public class IndividualController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			resultView.addObject("err", "Y");
+//			resultView.addObject("err", ConstantObject.Y);
 //			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 //			resultView.addObject("actUrl", "/login.do");
 
@@ -415,7 +419,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
 			return resultView;
@@ -446,7 +450,7 @@ public class IndividualController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			resultView.addObject("err", "Y");
+//			resultView.addObject("err", ConstantObject.Y);
 //			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 //			resultView.addObject("actUrl", "/login.do");
 
@@ -454,7 +458,7 @@ public class IndividualController {
 		}
 
 		if(StringUtils.defaultString(mbrNo, "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
 			return resultView;
@@ -477,19 +481,172 @@ public class IndividualController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/ajaxCslAssAdd.do")
-	public @ResponseBody ModelAndView ajaxCslAssAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+	public @ResponseBody ModelAndView ajaxCslAssAdd(@RequestParam HashMap<String, Object> reqMap, HttpServletRequest request, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-			resultView.addObject("err", "Y");
+			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 			resultView.addObject("actUrl", "/login.do");
 
 			return resultView;
 		}
 
+		String fstDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("fstDrugCd"), "");						// 최초 사용약물
+		String mainDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("mainDrugCd"), "");					// 주요 사용약물
+		String fstAge = StringUtils.defaultIfEmpty((String)reqMap.get("fstAge"), "");							// 최초 사용시기
+		String lstAge = StringUtils.defaultIfEmpty((String)reqMap.get("lstAge"), "");							// 마지막 사용시기
+		String useTerm = StringUtils.defaultIfEmpty((String)reqMap.get("useTerm"), "");							// 사용기간
+		String useFrqCd = StringUtils.defaultIfEmpty((String)reqMap.get("useFrqCd"), "");						// 사용빈도
+		String useCauCd = StringUtils.defaultIfEmpty((String)reqMap.get("useCauCd"), "");						// 사용원인
+		String[] lawPbmCdList = request.getParameterValues("lawPbmCd");											// 약물관련 법적문제
+		String physPbm = StringUtils.defaultIfEmpty((String)reqMap.get("physPbm"), "");							// 신체적 건강문제
+		String sprtPbmCd = StringUtils.defaultIfEmpty((String)reqMap.get("sprtPbmCd"), "");						// 정신적 건강문제
+		String[] prsnCdList = request.getParameterValues("prsnCd");												// 성격
+		String[] emtnCdList = request.getParameterValues("emtnCd");												// 정서-심리
+		String[] actnCdList = request.getParameterValues("actnCd");												// 행동
+		String[] fmlyCdList = request.getParameterValues("fmlyCd");												// 가족
+		String[] itRlCdList = request.getParameterValues("itRlCd");												// 대인관계
+		String[] evlTolCdList = request.getParameterValues("evlTolCdHidden");									// 평가 도구
+		String[] evlScoList = request.getParameterValues("evlScoHidden");										// 평가 점수
+		String[] evlCtntList = request.getParameterValues("evlCtntHidden");										// 평가 내용
+		if("".equals(fstDrugCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(mainDrugCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(fstAge)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(lstAge)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(useTerm)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(useFrqCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(useCauCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if(lawPbmCdList == null || lawPbmCdList.length <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(physPbm)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(sprtPbmCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		String lawPbmCd = "[";
+		for(String pbmCd : lawPbmCdList) {
+			lawPbmCd += pbmCd + ", ";
+		}
+		lawPbmCd = lawPbmCd.substring(0, lawPbmCd.length() - 2) + "]";
+
+		if(prsnCdList != null && prsnCdList.length > 0) {
+			String prsnCd = "[";
+			for(String cd : prsnCdList) {
+				prsnCd += cd + ", "; 
+			}
+			prsnCd = prsnCd.substring(0, prsnCd.length() - 2) + "]";
+
+			reqMap.put("prsnCd", prsnCd);
+		}
+		if(emtnCdList != null && emtnCdList.length > 0) {
+			String emtnCd = "[";
+			for(String cd : emtnCdList) {
+				emtnCd += cd + ", "; 
+			}
+			emtnCd = emtnCd.substring(0, emtnCd.length() - 2) + "]";
+
+			reqMap.put("emtnCd", emtnCd);
+		}
+		if(actnCdList != null && actnCdList.length > 0) {
+			String actnCd = "[";
+			for(String cd : actnCdList) {
+				actnCd += cd + ", "; 
+			}
+			actnCd = actnCd.substring(0, actnCd.length() - 2) + "]";
+
+			reqMap.put("actnCd", actnCd);
+		}
+		if(fmlyCdList != null && fmlyCdList.length > 0) {
+			String fmlyCd = "[";
+			for(String cd : fmlyCdList) {
+				fmlyCd += cd + ", "; 
+			}
+			fmlyCd = fmlyCd.substring(0, fmlyCd.length() - 2) + "]";
+
+			reqMap.put("fmlyCd", fmlyCd);
+		}
+		if(itRlCdList != null && itRlCdList.length > 0) {
+			String itRlCd = "[";
+			for(String cd : itRlCdList) {
+				itRlCd += cd + ", "; 
+			}
+			itRlCd = itRlCd.substring(0, itRlCd.length() - 2) + "]";
+
+			reqMap.put("itRlCd", itRlCd);
+		}
+		if(evlTolCdList != null && evlTolCdList.length > 0) {
+			List<HashMap<String, Object>> evlList = new ArrayList<HashMap<String, Object>>();
+
+			for(int i=0 ; i<evlTolCdList.length ; i++) {
+				HashMap<String, Object> assEvlMap = new HashMap<String, Object>();
+				assEvlMap.put("mbrNo", reqMap.get("mbrNo"));
+				assEvlMap.put("evlTolCd", evlTolCdList[i]);
+				assEvlMap.put("evlSco", evlScoList[i]);
+				assEvlMap.put("evlCtnt", evlCtntList[i]);
+
+				evlList.add(assEvlMap);
+			}
+
+			reqMap.put("evlList", evlList);
+		}
+
 		reqMap.put("creId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+		reqMap.put("lawPbmCd", lawPbmCd);
+
+		HashMap<String, Object> resMap = individualService.addCslAss(reqMap);
+		if(resMap != null) {
+			resultView.addObject("err", resMap.get("err"));
+			resultView.addObject("MSG", resMap.get("MSG"));
+		}
 
 		return resultView;
 	}

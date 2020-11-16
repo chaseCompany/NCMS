@@ -130,6 +130,8 @@
 						if($("#idvTableList tr").length <= 0){
 							$("div#idvList").html("<div class='no-data'>조회된 데이터가 없습니다.</div>");
 						}
+
+						newIdv();
 					}else{
 						console.log(res.MSG);
 					}
@@ -177,14 +179,28 @@
 						console.log("ERR")
 					}
 				},
-				error : function(xhr, status){
-					
-				}
+				error : function(xhr, status){}
 			});
 		},
 		<%-- 집중상담 신규 --%>
 		newIdv = function(){
-			$("#idvInfoDiv").load(window.location.href + ' #idvInfoDiv');
+			$("input[name='cslNo']").val("");
+			$("input[name='cslDt']").val("");
+			$("input[name='cslFmTm']").val("");
+			$("input[name='cslToTm']").val("");
+			$("span#cslTermTm").text("0");
+			$("input[name='cslTgtCd']:radio[value='10']").prop("checked", true);
+			$("input[name='cslTpCd']:radio[value='20']").prop("checked", true);
+			$("input[name='cslSbj']").val("");
+			$("input[name='cslTgt']").val("");
+			$("textarea[name='cslCtnt']").val("");
+			$("select[name='rskaTpCd']").val("0").prop("selected", true);
+			$("select[name='rskbTpCd']").val("0").prop("selected", true);
+			$("select[name='rskcTpCd']").val("0").prop("selected", true);
+			$("span#ratingNum").text("0");
+			$("input[name='nxtCslDt']").val("");
+			$("input[name='nxtCslTm']").val("");
+			$("textarea[name='nxtCslCtnt']").val("");
 		},
 		<%-- 집중상담 저장 --%>
 		saveIdv = function(){
@@ -192,15 +208,39 @@
 				alert("회원을 선택하세요.");
 				return;
 			}
+			if($("input[name='cslDt']").val() == ""){
+				alert("집중 상담일는 필수 입력 항목입니다.");
+				$("input[name='cslDt']").focus();					return;
+			}
+			if($("input[name='cslFmTm']").val() == ""){
+				alert("집중 상담 시간은 필수 입력 항목입니다.");
+				$("input[name='cslFmTm']").focus();					return;
+			}
+			if($("input[name='cslToTm']").val() == ""){
+				alert("집중 상담 시간은 필수 입력 항목입니다.");
+				$("input[name='cslToTm']").focus();					return;
+			}
+			if(needTime($("input[name='cslFmTm']").val(), $("input[name='cslToTm']").val()) <= 0){
+				alert("상담 소요시간은 0보다 값이 커야 합니다.");
+				$("input[name='cslToTm']").focus();					return;
+			}
+			if($("input[name='cslSbj']").val() ==""){
+				alert("상담주제는 필수 입력 항목입니다.");
+				$("input[name='cslSbj']").focus();					return;
+			}
+			if($("textarea[name='cslCtnt']").val() == ""){
+				alert("상담내용은 필수 입력 항목입니다.");
+				$("textarea[name='cslCtnt']").focus();				return;
+			}
 
 			$.ajax({
 				url : '/ajaxClsIdvAdd.do',
 				type : 'POST',
 				data : $('#cslForm').serialize(),
 				success : function(res){
-					console.log(res);
 					if(res.err != "Y"){
-						
+						alert(res.MSG);
+						getCslIdvList($("input[name='mbrNo']").val());
 					}else{
 						console.log("ERR")
 					}
@@ -279,8 +319,9 @@
 				success : function(res){
 					if(res.ispInfo != null){
 						$("input[name='newFlag']").val("N");
-						$("input[name='ispDt']").val(res.ispInfo.ISP_DT);
+						$("input[name='ispDt']").val(formatDate(res.ispInfo.ISP_DT));
 						$("input[name='mngTpNm']").val(res.ispInfo.MNG_TP_NM);
+						$("input[name='mngTpCd']").val(res.ispInfo.MNG_TP_CD);
 						$("select[name='evlItmSco01']").val(res.ispInfo.EVL_ITM_SCO01).prop("selected", true);
 						$("input[name='evlItmLnk01']").val(res.ispInfo.EVL_ITM_LNK01);
 						$("select[name='evlItmSco02']").val(res.ispInfo.EVL_ITM_SCO02).prop("selected", true);
@@ -370,14 +411,67 @@
 				type : 'POST',
 				data : $('#cslForm').serialize(),
 				success : function(res){
-					console.log(res);
+					if(res.err != "Y"){
+						alert(res.MSG);
+						getCslIspList($("input[name='mbrNo']").val());
+					}else{
+						alert(res.MSG);
+					}
 				},
 				error : function(xhr, status){}
 			});
 		},
 		<%-- ISP 신규 작성 --%>
 		newIsp = function(){
-			$("#ispInfoDiv").load(window.location.href + ' #ispInfoDiv');
+			$("input[name='newFlag']").val("Y");
+			$("input[name='ispDt']").val("");
+			$("input[name='mngTpNm']").val("일시관리");
+			$("input[name='mngTpCd']").val("10");
+			$("select[name='evlItmSco01']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk01']").val("");
+			$("select[name='evlItmSco02']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk02']").val("");
+			$("select[name='evlItmSco03']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk03']").val("");
+			$("select[name='evlItmSco04']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk04']").val("");
+			$("select[name='evlItmSco05']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk05']").val("");
+			$("select[name='evlItmSco06']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk06']").val("");
+			$("select[name='evlItmSco07']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk07']").val("");
+			$("select[name='evlItmSco08']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk08']").val("");
+			$("select[name='evlItmSco09']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk09']").val("");
+			$("select[name='evlItmSco10']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk10']").val("");
+			$("select[name='evlItmSco11']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk11']").val("");
+			$("select[name='evlItmSco12']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk12']").val("");
+			$("select[name='evlItmSco13']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk13']").val("");
+			$("select[name='evlItmSco14']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk14']").val("");
+			$("select[name='evlItmSco15']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk15']").val("");
+			$("select[name='evlItmSco16']").val("0").prop("selected", true);
+			$("input[name='evlItmLnk16']").val("");
+			$("textarea[name='ispRst']").val("");
+			$("textarea[name='tgtCtnt']").val("");
+
+			for(var i=1 ; i<=16 ; i++){
+				var tagName = "evlItmSco";
+				if(i < 10){
+					tagName = tagName + "0" + i;
+				}else{
+					tagName = tagName + i;
+				}
+
+				changEvlItemSco($("select[name='" + tagName + "']"));
+			}
 		},
 		<%-- 사정평가 이력 조회 --%>
 		getCslAssList = function(tagMbrNo){
@@ -401,20 +495,78 @@
 						$("select[name='useFrqCd']").val(resultObj.USE_FRQ_CD).prop("selected", true);
 						$("select[name='useCauCd']").val(resultObj.USE_CAU_CD).prop("selected", true);
 						$("input[name='useCauEtc']").val(resultObj.USE_CAU_ETC);
-						$("select[name='lawPbmCd']").val(resultObj.LAW_PBM_CD).prop("selected", true);		//multiple
+
+						if(resultObj.LAW_PBM_CD.indexOf(",") >= 0){
+							$.each(resultObj.LAW_PBM_CD.split(","), function(i, e){
+								var cdVal = $.trim(e).replaceAll("[", "").replaceAll("]", "");
+								$("select#lawPbmCd option[value=" + cdVal + "]").prop('selected', true);
+							});
+						}else{
+							$("select[name='lawPbmCd']").val(resultObj.LAW_PBM_CD).prop("selected", true);
+						}
+
 						$("input[name='lawPbmEtc']").val(resultObj.LAW_PBM_ETC);
 						$("input[name='physPbm']").val(resultObj.PHYS_PBM);
 						$("select[name='sprtPbmCd']").val(resultObj.SPRT_PBM_CD).prop("selected", true);
 						$("input[name='sprtPbmEtc']").val(resultObj.SPRT_PBM_ETC);
-						$("select[name='prsnCd']").val(resultObj.PRSN_CD).prop("selected", true);			//multiple
-						$("select[name='emtnCd']").val(resultObj.EMTN_CD).prop("selected", true);			//multiple
-						$("select[name='actnCd']").val(resultObj.ACTN_CD).prop("selected", true);			//multiple
-						$("select[name='fmlyCd']").val(resultObj.FMLY_CD).prop("selected", true);			//multiple
-						$("select[name='itRlCd']").val(resultObj.IT_RL_CD).prop("selected", true);			//multiple
+
+						if(resultObj.PRSN_CD != undefined){
+							if(resultObj.PRSN_CD.indexOf(",") >= 0){
+								$.each(resultObj.PRSN_CD.split(","), function(i, e){
+									var cdVal = $.trim(e).replaceAll("[", "").replaceAll("]", "");
+									$("select#prsnCd option[value=" + cdVal + "]").prop('selected', true);
+								});
+							}else{
+								$("select[name='prsnCd']").val(resultObj.PRSN_CD).prop("selected", true);
+							}
+						}
+						if(resultObj.EMTN_CD != undefined){
+							if(resultObj.EMTN_CD.indexOf(",") >= 0){
+								$.each(resultObj.EMTN_CD.split(","), function(i, e){
+									var cdVal = $.trim(e).replaceAll("[", "").replaceAll("]", "");
+									$("select#emtnCd option[value=" + cdVal + "]").prop('selected', true);
+								});
+							}else{
+								$("select[name='emtnCd']").val(resultObj.EMTN_CD).prop("selected", true);
+							}
+						}
+						if(resultObj.ACTN_CD != undefined){
+							if(resultObj.ACTN_CD.indexOf(",") >= 0){
+								$.each(resultObj.ACTN_CD.split(","), function(i, e){
+									var cdVal = $.trim(e).replaceAll("[", "").replaceAll("]", "");
+									$("select#actnCd option[value=" + cdVal + "]").prop('selected', true);
+								});
+							}else{
+								$("select[name='actnCd']").val(resultObj.ACTN_CD).prop("selected", true);
+							}
+						}
+						if(resultObj.FMLY_CD != undefined){
+							if(resultObj.FMLY_CD.indexOf(",") >= 0){
+								$.each(resultObj.FMLY_CD.split(","), function(i, e){
+									var cdVal = $.trim(e).replaceAll("[", "").replaceAll("]", "");
+									$("select#fmlyCd option[value=" + cdVal + "]").prop('selected', true);
+								});
+							}else{
+								$("select[name='fmlyCd']").val(resultObj.FMLY_CD).prop("selected", true);
+							}
+						}
+						if(resultObj.IT_RL_CD != undefined){
+							if(resultObj.IT_RL_CD.indexOf(",") >= 0){
+								$.each(resultObj.IT_RL_CD.split(","), function(i, e){
+									var cdVal = $.trim(e).replaceAll("[", "").replaceAll("]", "");
+									$("select#itRlCd option[value=" + cdVal + "]").prop('selected', true);
+								});
+							}else{
+								$("select[name='itRlCd']").val(resultObj.IT_RL_CD).prop("selected", true);
+							}
+						}
 						$("input[name='miEtc']").val(resultObj.MI_ETC);
 						$("input[name='svrRcgDgr']").val(resultObj.SVR_RCG_DGR);
 						$("textarea[name='expEfc']").val(resultObj.EXP_EFC);
 						$("textarea[name='miMemo']").val(resultObj.MI_MEMO);
+						$("select[name='evlTolCd']").val("").prop("selected", true);
+						$("input[name='evlSco']").val("");
+						$("textarea[name='evlCtnt']").val("");
 
 						$("div#assEvlList").html("");
 
@@ -457,6 +609,11 @@
 						}else{
 							$("div#assEvlList").html("<div class='no-data'>조회된 데이터가 없습니다.</div>");
 						}
+					}else{
+						$("#assDivView").load(window.location.href + ' #assDivView', function(){
+							$("button#assSaveButNo").hide();
+							$("button#assSaveButYes").show();
+						});
 					}
 				},
 				error : function(xhr, status){}
@@ -468,14 +625,58 @@
 				alert("회원을 선택하세요.");
 				return;
 			}
+			if($("select[name='fstDrugCd']").val() == ""){
+				alert("최초사용약물은 필수 입력 항목입니다.");
+				$("select[name='fstDrugCd']").focus();						return;
+			}
+			if($("select[name='mainDrugCd']").val() == ""){
+				alert("주요사용약물은 필수 입력 항목입니다.");
+				$("select[name='mainDrugCd']").focus();						return;
+			}
+			if($("input[name='fstAge']").val() == ""){
+				alert("최초사용시기는 필수 입력 항목입니다.");
+				$("input[name='fstAge']").focus();							return;
+			}
+			if($("input[name='lstAge']").val() == ""){
+				alert("마지막사용시기는 필수 입력 항목입니다.");
+				$("input[name='lstAge']").focus();							return;
+			}
+			if($("input[name='useTerm']").val() == ""){
+				alert("사용기간은 0보다 값이 커야 합니다.");
+				$("input[name='useTerm']").focus();							return;
+			}
+			if($("select[name='useFrqCd']").val() == ""){
+				alert("사용빈도는 필수 입력 항목입니다.");
+				$("select[name='useFrqCd']").focus();						return;
+			}
+			if($("select[name='useCauCd']").val() == ""){
+				alert("사용원인은 필수 입력 항목입니다.");
+				$("select[name='useCauCd']").focus();						return;
+			}
+			if($("select[name='lawPbmCd']").val() == ""){
+				alert("약물관련 법적문제는 필수 입력 항목입니다.");
+				$("select[name='lawPbmCd']").focus();						return;
+			}
+			if($("input[name='physPbm']").val() == ""){
+				alert("신체적 건강문제는 필수 입력 항목입니다.");
+				$("input[name='physPbm']").focus();							return;
+			}
+			if($("select[name='sprtPbmCd']").val() == ""){
+				alert("정신적 건강문제는 필수 입력 항목입니다.");
+				$("select[name='sprtPbmCd']").focus();						return;
+			}
 
-			console.log("SAVE");
 			$.ajax({
 				url : '/ajaxCslAssAdd.do',
 				type : 'POST',
 				data : $('#cslForm').serialize(),
 				success : function(res){
-					console.log(res);
+					if(res.err != 'Y'){
+						alert("사정평가 " + res.MSG + " 완료");
+						getCslAssList($("input[name='mbrNo']").val());
+					}else{
+						alert(res.MSG);
+					}
 				},
 				error : function(xhr, status){}
 			});
@@ -527,24 +728,56 @@
 				alert("평가내용을 입력 하세요.");					return;
 			}
 
-			inHtml = "	<tr id='" + index + "'>"
-				   + "	<input type='hidden' name='evlTolCd' value='" + evlTolCd + "' />"
-				   + "	<input type='hidden' name='evlSco' value='" + evlSco + "' />"
-				   + "	<input type='hidden' name='evlCtnt' value='" + evlCtnt + "' />"
-				   + "		<td><div class='cell'>" + (index + 1) + "</div></td>"
-				   + "		<td>"
-				   + "			<div class='cell'>"
-				   + "				<button type='button' onclick='javaScript:removeRowEval(\"" + index + "\", \"0\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
-				   + "					<i class='el-icon-delete'></i> <span>삭제</span>"
-				   + "				</button>"
-				   + "			</div>"
-				   + "		</td>"
-				   + "		<td><div class='cell'><a href='javaScript:choiceEval(\"" + evlTolCd + "\", \"" + evlSco + "\", \"" + evlCtnt + "\");' class='row_link'>" + $("select[name='evlTolCd'] option:selected").text() + "</a></div></td>"
-				   + "		<td><div class='cell'>" + evlSco + "</div></td>"
-				   + "		<td class='txt-left'><div class='cell'>" + evlCtnt + "</div></td>"
-				   + "	</tr>";
+			if($("table#assEvlTableList tr").length > 0){
+				var inHtml = "	<tr id='" + index + "'>"
+						   + "	<input type='hidden' name='evlTolCdHidden' value='" + evlTolCd + "' />"
+						   + "	<input type='hidden' name='evlScoHidden' value='" + evlSco + "' />"
+						   + "	<input type='hidden' name='evlCtntHidden' value='" + evlCtnt + "' />"
+						   + "		<td><div class='cell'>" + (index + 1) + "</div></td>"
+						   + "		<td>"
+						   + "			<div class='cell'>"
+						   + "				<button type='button' onclick='javaScript:removeRowEval(\"" + index + "\", \"0\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+						   + "					<i class='el-icon-delete'></i> <span>삭제</span>"
+						   + "				</button>"
+						   + "			</div>"
+						   + "		</td>"
+						   + "		<td><div class='cell'><a href='javaScript:choiceEval(\"" + evlTolCd + "\", \"" + evlSco + "\", \"" + evlCtnt + "\");' class='row_link'>" + $("select[name='evlTolCd'] option:selected").text() + "</a></div></td>"
+						   + "		<td><div class='cell'>" + evlSco + "</div></td>"
+						   + "		<td class='txt-left'><div class='cell'>" + evlCtnt + "</div></td>"
+						   + "	</tr>";
+	
+				$("table#assEvlTableList > tbody:last").append(inHtml);
+			}else{
+				var inHtml = "<table id='assEvlTableList'>"
+						   + "	<colgroup>"
+						   + "		<col style='width:46px'>"
+						   + "		<col style='width:90px'>"
+						   + "		<col style='width:120px'>"
+						   + "		<col style='width:100px'>"
+						   + "		<col>"
+						   + "	</colgroup>"
+						   + "	<tbody>"
+						   + "	<tr id='" + index + "'>"
+						   + "	<input type='hidden' name='evlTolCdHidden' value='" + evlTolCd + "' />"
+						   + "	<input type='hidden' name='evlScoHidden' value='" + evlSco + "' />"
+						   + "	<input type='hidden' name='evlCtntHidden' value='" + evlCtnt + "' />"
+						   + "		<td><div class='cell'>" + (index + 1) + "</div></td>"
+						   + "		<td>"
+						   + "			<div class='cell'>"
+						   + "				<button type='button' onclick='javaScript:removeRowEval(\"" + index + "\", \"0\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+						   + "					<i class='el-icon-delete'></i> <span>삭제</span>"
+						   + "				</button>"
+						   + "			</div>"
+						   + "		</td>"
+						   + "		<td><div class='cell'><a href='javaScript:choiceEval(\"" + evlTolCd + "\", \"" + evlSco + "\", \"" + evlCtnt + "\");' class='row_link'>" + $("select[name='evlTolCd'] option:selected").text() + "</a></div></td>"
+						   + "		<td><div class='cell'>" + evlSco + "</div></td>"
+						   + "		<td class='txt-left'><div class='cell'>" + evlCtnt + "</div></td>"
+						   + "	</tr>"
+						   + "	</tbody>"
+						   + "</table>";
 
-			$("table#assEvlTableList > tbody:last").append(inHtml);
+				$("div#assEvlList").html(inHtml);
+			}
 			$("input[name='evlIndex']").val(index);
 		},
 		<%-- 상담 소요시간 계산 --%>
@@ -586,13 +819,40 @@
 			var tagName = $(obj).attr("name");
 			var rating = $("select[name='" + tagName + "'] option:selected").attr("rating");
 
-			if(rating >= 2 && rating <= 3){
-				$("th#" + tagName).attr("class", "bg-og");
-			}else if(rating == 4){
+			if(rating == 4){
 				$("th#" + tagName).attr("class", "bg-pr");
+			}else if(rating >= 2 && rating <= 3){
+				$("th#" + tagName).attr("class", "bg-og");
 			}else{
 				$("th#" + tagName).attr("class", "bg-pk");
 			}
+
+			checkMngTp();
+		},
+		<%-- 관리구분명 수정 --%>
+		checkMngTp = function(){
+			var maxRating = 0;
+			var mngTpCd = Number($("input[name='mngTpCd']").val());
+
+<c:if test="${mngTpList ne null && mngTpList ne ''}">
+			var mngTpNmList = [
+	<c:forEach var="result" items="${mngTpList}" varStatus="status">
+				'<c:out value="${result.CD_NM}" />',
+	</c:forEach>
+			];
+</c:if>
+
+			$("table#mngTpTable").find("select").each(function(idx){
+				var tagName = $(this).attr("name");
+				var rating = $("select[name='" + tagName + "'] option:selected").attr("rating");
+
+				if(rating > maxRating){
+					maxRating = rating;
+				}
+			});
+
+			$("input[name='mngTpCd']").val(maxRating * 10);
+			$("input[name='mngTpNm']").val(mngTpNmList[maxRating - 1]);
 		},
 		<%-- 탭 메뉴 활성화 --%>
 		$('.el-tabs__item').on('click', function(){
@@ -933,6 +1193,7 @@
 							<td>
 								<div class="dsp-ibk is-disabled">
 									<form:input path="cslIspInfo.mngTpNm" cssClass="el-input__inner" placeholder="일시관리" readonly="true" style="width: 150px;" />
+									<form:input path="cslIspInfo.mngTpCd" style="display: none;" />
 								</div>
 							</td>
 						</tr>
@@ -940,7 +1201,7 @@
 					</table>
 				</div>
 				<div class="multi-table">
-					<table class="wr-table">
+					<table class="wr-table" id="mngTpTable">
 						<colgroup>
 							<col style="width: 8%;">
 							<col style="width: 4%;">
@@ -982,36 +1243,44 @@
 								<th id="evlItmSco01" class="bg-pk">약물사용문제</th>
 								<td>
 									<select name="evlItmSco01" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
+<c:if test="${evlItmSco01List ne null and evlItmSco01List ne ''}">
+	<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk01" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco05" class="bg-pk">자해 및 타해 위험</th>
 								<td>
 									<select name="evlItmSco05" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
+<c:if test="${evlItmSco01List ne null and evlItmSco01List ne ''}">
+	<c:forEach var="result" items="${evlItmSco01List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk05" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco10" class="bg-pk">가족관계</th>
 								<td>
 									<select name="evlItmSco10" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco10List}" varStatus="status">
+<c:if test="${evlItmSco10List ne null and evlItmSco10List ne ''}">
+	<c:forEach var="result" items="${evlItmSco10List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk10" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco12" class="bg-pk">주거</th>
 								<td>
 									<select name="evlItmSco12" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco12List}" varStatus="status">
+<c:if test="${evlItmSco12List ne null and evlItmSco12List ne ''}">
+	<c:forEach var="result" items="${evlItmSco12List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk12" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1020,36 +1289,44 @@
 								<th id="evlItmSco02" class="bg-pk">알코올사용문제</th>
 								<td>
 									<select name="evlItmSco02" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco02List}" varStatus="status">
+<c:if test="${evlItmSco02List ne null and evlItmSco02List ne ''}">
+	<c:forEach var="result" items="${evlItmSco02List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk02" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco06" class="bg-pk">정신과적 증상</th>
 								<td>
 									<select name="evlItmSco06" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco06List}" varStatus="status">
+<c:if test="${evlItmSco06List ne null and evlItmSco06List ne ''}">
+	<c:forEach var="result" items="${evlItmSco06List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk06" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco11" class="bg-pk">사회적관계</th>
 								<td>
 									<select name="evlItmSco11" style="width: 100%; onchange="javaScript:changEvlItemSco(this);"">
-<c:forEach var="result" items="${evlItmSco11List}" varStatus="status">
+<c:if test="${evlItmSco11List ne null and evlItmSco11List ne ''}">
+	<c:forEach var="result" items="${evlItmSco11List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk11" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco13" class="bg-pk">경제활동 지원</th>
 								<td>
 									<select name="evlItmSco13" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco13List}" varStatus="status">
+<c:if test="${evlItmSco13List ne null and evlItmSco13List ne ''}">
+	<c:forEach var="result" items="${evlItmSco13List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk13" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1058,18 +1335,22 @@
 								<th id="evlItmSco03" class="bg-pk">도박사용문제</th>
 								<td>
 									<select name="evlItmSco03" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco03List}" varStatus="status">
+<c:if test="${evlItmSco03List ne null and evlItmSco03List ne ''}">
+	<c:forEach var="result" items="${evlItmSco03List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk03" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco07" class="bg-pk">정신약물관리</th>
 								<td>
 									<select name="evlItmSco07" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
+<c:if test="${evlItmSco07List ne null and evlItmSco07List ne ''}">
+	<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk07" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1077,9 +1358,11 @@
 								<th id="evlItmSco14" class="bg-pk">취업 및 학업욕구</th>
 								<td>
 									<select name="evlItmSco14" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
+<c:if test="${evlItmSco07List ne null and evlItmSco07List ne ''}">
+	<c:forEach var="result" items="${evlItmSco07List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk14" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1088,18 +1371,22 @@
 								<th id="evlItmSco04" class="bg-pk">인터넷사용문제</th>
 								<td>
 									<select name="evlItmSco04" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco04List}" varStatus="status">
+<c:if test="${evlItmSco04List ne null and evlItmSco04List ne ''}">
+	<c:forEach var="result" items="${evlItmSco04List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk04" cssClass="el-input__inner" style="width: 100%;" /></td>
 								<th id="evlItmSco08" class="bg-pk">스트레스 상태</th>
 								<td>
 									<select name="evlItmSco08" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco08List}" varStatus="status">
+<c:if test="${evlItmSco08List ne null and evlItmSco08List ne ''}">
+	<c:forEach var="result" items="${evlItmSco08List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk08" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1107,9 +1394,11 @@
 								<th id="evlItmSco15" class="bg-pk">고용 및 교육가능성</th>
 								<td>
 									<select name="evlItmSco15" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco15List}" varStatus="status">
+<c:if test="${evlItmSco15List ne null and evlItmSco15List ne ''}">
+	<c:forEach var="result" items="${evlItmSco15List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk15" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1119,9 +1408,11 @@
 								<th id="evlItmSco09" class="bg-pk">신체질환</th>
 								<td>
 									<select name="evlItmSco09" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco09List}" varStatus="status">
+<c:if test="${evlItmSco09List ne null and evlItmSco09List ne ''}">
+	<c:forEach var="result" items="${evlItmSco09List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk09" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1129,9 +1420,11 @@
 								<th id="evlItmSco16" class="bg-pk">법률적 문제</th>
 								<td>
 									<select name="evlItmSco16" style="width: 100%;" onchange="javaScript:changEvlItemSco(this);">
-<c:forEach var="result" items="${evlItmSco16List}" varStatus="status">
+<c:if test="${evlItmSco16List ne null and evlItmSco16List ne ''}">
+	<c:forEach var="result" items="${evlItmSco16List}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<td><form:input path="cslIspInfo.evlItmLnk16" cssClass="el-input__inner" style="width: 100%;" /></td>
@@ -1162,7 +1455,7 @@
 			<!-- // ISP 수립-->
 
 			<!-- 사정평가 -->
-			<div id="tab-assessment" class="tab-form" style="display: none;">
+			<div id="tab-assessment" class="tab-form" style="display: none;"><div id="assDivView">
 				<div class="in-tab-btn">
 					<button disabled="disabled" type="button" id="assSaveButNo" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
 						<i class="el-icon-download"></i> <span>저장</span>
@@ -1236,7 +1529,7 @@
 									<tr>
 										<th><span class="required">*</span> 약물관련 법적문제</th>
 										<td colspan="5">
-											<select name="lawPbmCd" style="width: 150px;" multiple>
+											<select name="lawPbmCd" id="lawPbmCd" style="width: 150px;" multiple>
 <c:forEach var="result" items="${lawPbmCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
@@ -1274,7 +1567,7 @@
 									<tr>
 										<th>성격</th>
 										<td>
-											<select name="prsnCd" style="width: 220px;" multiple>
+											<select name="prsnCd" id="prsnCd" style="width: 220px;" multiple>
 												<option value="">선택</option>
 <c:forEach var="result" items="${prsnCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -1283,7 +1576,7 @@
 										</td>
 										<th>정서-심리</th>
 										<td colspan="3">
-											<select name="emtnCd" style="width: 170px;" multiple>
+											<select name="emtnCd" id="emtnCd" style="width: 170px;" multiple>
 												<option value="">선택</option>
 <c:forEach var="result" items="${emtnCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -1294,7 +1587,7 @@
 									<tr>
 										<th>행동</th>
 										<td>
-											<select name="actnCd" style="width: 170px;" multiple>
+											<select name="actnCd" id="actnCd" style="width: 170px;" multiple>
 												<option value="">선택</option>
 <c:forEach var="result" items="${actnCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -1303,7 +1596,7 @@
 										</td>
 										<th>가족</th>
 										<td>
-											<select name="fmlyCd" style="width: 170px;" multiple>
+											<select name="fmlyCd" id="fmlyCd" style="width: 170px;" multiple>
 												<option value="">선택</option>
 <c:forEach var="result" items="${fmlyCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -1312,7 +1605,7 @@
 										</td>
 										<th>대인관계</th>
 										<td>
-											<select name="itRlCd" style="width: 170px;" multiple>
+											<select name="itRlCd" id="itRlCd" style="width: 170px;" multiple>
 												<option value="">선택</option>
 <c:forEach var="result" items="${itRlCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -1326,9 +1619,9 @@
 										<th>심각성인식정도</th>
 										<td>
 											<div class="count-number">
-												<form:input path="cslAssInfo.svrRcgDgr" cssClass="el-input__inner" style="width: 80px;" />
-												<a href="#n" class="up"><i class="el-icon-arrow-up"></i></a>
-												<a href="#n" class="down"><i class="el-icon-arrow-down"></i></a>
+												<form:input path="cslAssInfo.svrRcgDgr" cssClass="el-input__inner" style="width: 80px;" maxVal="10" minVal="1" />
+												<a href="javaScript:tagNumChang('svrRcgDgr', +1);" class="up"><i class="el-icon-arrow-up"></i></a>
+												<a href="javaScript:tagNumChang('svrRcgDgr', -1);" class="down"><i class="el-icon-arrow-down"></i></a>
 											</div>
 										</td>
 									</tr>
@@ -1418,7 +1711,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div></div>
 			<!-- // 사정평가 -->
 		</div>
 	</div>

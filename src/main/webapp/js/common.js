@@ -103,3 +103,24 @@ function needTime(fmTm, toTm){
 		return 0;
 	}
 }
+/**
+ * 타겟의 값에 val 값을 더한다.
+ * @param tagName
+ * @param val
+ */
+function tagNumChang(tagName, val){
+	var num = Number($("input[name='" + tagName + "']").val()) + val;
+
+	if($("input[name='" + tagName + "']").attr("maxVal") != undefined){
+		if(Number($("input[name='" + tagName + "']").attr("maxVal")) < num){
+			num = $("input[name='" + tagName + "']").attr("maxVal");
+		}
+	}
+	if($("input[name='" + tagName + "']").attr("minVal") != undefined){
+		if(Number($("input[name='" + tagName + "']").attr("minVal")) > num){
+			num = $("input[name='" + tagName + "']").attr("minVal");
+		}
+	}
+
+	$("input[name='" + tagName + "']").val(num);
+}

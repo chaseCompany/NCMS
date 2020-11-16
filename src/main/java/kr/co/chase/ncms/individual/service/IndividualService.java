@@ -185,5 +185,5 @@ public interface IndividualService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int addCslAss(HashMap<String, Object> map) throws Exception;
+	public HashMap<String, Object> addCslAss(HashMap<String, Object> map) throws Exception;
 }

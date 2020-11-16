@@ -5,47 +5,106 @@
 	$(document).ready(function(){
 		<%-- 상담정보 저장 --%>
 		counselSave = function(){
-			var str = "rcpNo:" + $("input[name='rcpNo']").val() + ", ";
-				str += "cslDt:" + $("input[name='cslDt']").val() + ", ";
-				str += "cslFmTm:" + $("input[name='cslFmTm']").val() + ", ";
-				str += "cslToTm:" + $("input[name='cslToTm']").val() + ", ";
-				str += "ifpGbCd:" + $("input[name='ifpGbCd']:radio:checked").val() + ", ";
-				str += "ifpGbEtc:" + $("input[name='ifpGbEtc']").val() + ", ";
-				str += "ifpNm:" + $("input[name='ifpNm']").val() + ", ";
-				str += "ifpMbrNo:" + $("input[name='ifpMbrNo']").val() + ", ";
-				str += "ifpGendCd:" + $("input[name='ifpGendCd']:radio:checked").val() + ", ";
-				str += "ifpAge:" + $("input[name='ifpAge']").val() + ", ";
-				str += "ifpTelNo1:" + $("input[name='ifpTelNo1']").val() + ", ";
-				str += "ifpTelNo2:" + $("input[name='ifpTelNo2']").val() + ", ";
-				str += "ifpTelNo3:" + $("input[name='ifpTelNo3']").val() + ", ";
-				str += "ifpJobCd:" + $("select[name='ifpJobCd']").val() + ", ";
-				str += "ifpAreaCd:" + $("select[name='ifpAreaCd']").val() + ", ";
-				str += "ifpAreaEtc:" + $("input[name='ifpAreaEtc']").val() + ", ";
-				str += "tgpNm:" + $("input[name='tgpNm']").val() + ", ";
-				str += "tgpMbrNo:" + $("input[name='tgpMbrNo']").val() + ", ";
-				str += "tgpGendCd:" + $("input[name='tgpGendCd']:radio:checked").val() + ", ";
-				str += "tgpAge:" + $("input[name='tgpAge']").val() + ", ";
-				str += "tgpTelNo1:" + $("input[name='tgpTelNo1']").val() + ", ";
-				str += "tgpTelNo2:" + $("input[name='tgpTelNo2']").val() + ", ";
-				str += "tgpTelNo3:" + $("input[name='tgpTelNo3']").val() + ", ";
-				str += "tgpJobCd:" + $("select[name='tgpJobCd']").val() + ", ";
-				str += "tgpFrgCd:" + $("input[name='tgpFrgCd']:radio:checked").val() + ", ";
-				str += "tgpAreaCd:" + $("select[name='tgpAreaCd']").val() + ", ";
-				str += "tgpAreaEtc:" + $("input[name='tgpAreaEtc']").val() + ", ";
-				str += "ifPathCd:" + $("select[name='ifPathCd']").val() + ", ";
-				str += "pbmKndCd:" + $("select[name='pbmKndCd']").val() + ", ";
-				str += "cslTpCd:" + $("select[name='cslTpCd']").val() + ", ";
-				str += "fstDrugCd:" + $("select[name='fstDrugCd']").val() + ", ";
-				str += "mainDrugCd:" + $("select[name='mainDrugCd']").val() + ", ";
-				str += "mainDrug:" + $("input[name='mainDrug']").val() + ", ";
-				str += "mjrMngCd:" + $("select[name='mjrMngCd']").val() + ", ";
-				str += "astSco:" + $("input[name='astSco']").val() + ", ";
-				str += "rskSco:" + $("input[name='rskSco']").val() + ", ";
-				str += "rskaTpCd:" + $("select[name='rskaTpCd']").val() + ", ";
-				str += "rskbTpCd:" + $("select[name='rskbTpCd']").val() + ", ";
-				str += "rskcTpCd:" + $("select[name='rskcTpCd']").val() + ", ";
-				str += "cslCtnt:" + $("textarea[name='cslCtnt']").val() + ", ";
-			console.log(str);
+			if($("input[name='cslDt']").val() == ""){
+				alert("상담일은 필수 입력 항목입니다.");
+				$("input[name='cslDt']").focus();			return;
+			}
+			if($("input[name='cslFmTm']").val() == ""){
+				alert("상담시는 필수 입력 항목입니다.");
+				$("input[name='cslFmTm']").focus();			return;
+			}
+			if($("input[name='cslToTm']").val() == ""){
+				alert("상담종료시 필수 입력 항목입니다.");
+				$("input[name='cslToTm']").focus();			return;
+			}
+			if(needTime($("input[name='cslFmTm']").val(), $("input[name='cslToTm']").val()) <= 0){
+				alert("상담 소요시간은 0보다 값이 커야 합니다.");
+				$("input[name='cslToTm']").focus();			return;
+			}
+			if($("input[name='ifpNm']").val() == ""){
+				alert("정보제공자 성명은 필수 입력 항목입니다.");
+				$("input[name='ifpNm']").focus();			return;
+			}
+			if($("input[name='ifpAge']").val() == ""){
+				alert("정보제공자 연령은 필수 입력 항목입니다.");
+				$("input[name='ifpAge']").focus();			return;
+			}
+			if($("input[name='ifpTelNo1']").val() == ""){
+				alert("정보제공자 전화번호1는 필수 입력 항목입니다.");
+				$("input[name='ifpTelNo1']").focus();		return;
+			}
+			if($("input[name='ifpTelNo2']").val() == ""){
+				alert("정보제공자 전화번호2는 필수 입력 항목입니다.");
+				$("input[name='ifpTelNo2']").focus();		return;
+			}
+			if($("input[name='ifpTelNo3']").val() == ""){
+				alert("정보제공자 전화번호3는 필수 입력 항목입니다.");
+				$("input[name='ifpTelNo3']").focus();		return;
+			}
+			if($("select[name='ifpJobCd']").val() == ""){
+				alert("정보제공자 직업은 필수 입력 항목입니다.");
+				$("select[name='ifpJobCd']").focus();		return;
+			}
+			if($("select[name='ifpAreaCd']").val() == ""){
+				alert("정보제공자의 지역은 필수 입력 항목입니다.");
+				$("select[name='ifpAreaCd']").focus();		return;
+			}
+			if($("input[name='tgpNm']").val() == ""){
+				alert("대상자 성명은 필수 입력 항목입니다.");
+				$("input[name='tgpNm']").focus();			return;
+			}
+			if($("input[name='tgpAge']").val() == ""){
+				alert("대상자 연령은 필수 입력 항목입니다.");
+				$("input[name='tgpAge']").focus();			return;
+			}
+			if($("input[name='tgpTelNo1']").val() == ""){
+				alert("대상자 전화번호1는 필수 입력 항목입니다.");
+				$("input[name='tgpTelNo1']").focus();		return;
+			}
+			if($("input[name='tgpTelNo2']").val() == ""){
+				alert("대상자 전화번호2는 필수 입력 항목입니다.");
+				$("input[name='tgpTelNo2']").focus();		return;
+			}
+			if($("input[name='tgpTelNo3']").val() == ""){
+				alert("대상자 전화번호3는 필수 입력 항목입니다.");
+				$("input[name='tgpTelNo3']").focus();		return;
+			}
+			if($("select[name='tgpJobCd']").val() == ""){
+				alert("대상자 직업은 필수 입력 항목입니다.");
+				$("select[name='tgpJobCd']").focus();		return;
+			}
+			if($("select[name='tgpAreaCd']").val() == ""){
+				alert("대상자 지역은 필수 입력 항목입니다.");
+				$("select[name='tgpAreaCd']").focus();		return;
+			}
+			if($("select[name='ifPathCd']").val() == ""){
+				alert("정보취득경로는 필수 입력 항목입니다.");
+				$("select[name='ifPathCd']").focus();		return;
+			}
+			if($("select[name='pbmKndCd']").val() == ""){
+				alert("주호소문제는 필수 입력 항목입니다.");
+				$("select[name='pbmKndCd']").focus();		return;
+			}
+			if($("select[name='cslTpCd']").val() == ""){
+				alert("상담유형은 필수 입력 항목입니다.");
+				$("select[name='cslTpCd']").focus();		return;
+			}
+			if($("select[name='fstDrugCd']").val() == ""){
+				alert("최초사용약물은 필수 입력 항목입니다.");
+				$("select[name='fstDrugCd']").focus();		return;
+			}
+			if($("select[name='mainDrugCd']").val() == ""){
+				alert("주사용약물은 필수 입력 항목입니다.");
+				$("select[name='mainDrugCd']").focus();		return;
+			}
+			if($("select[name='mjrMngCd']").val() == ""){
+				alert("주요조치는 필수 입력 항목입니다.");
+				$("select[name='mjrMngCd']").focus();		return;
+			}
+			if($("textarea[name='cslCtnt']").val() == ""){
+				alert("상담내용은 필수 입력 항목입니다.");
+				$("textarea[name='cslCtnt']").focus();		return;
+			}
 
 			$.ajax({
 				url : '/ajaxCounselAdd.do',
@@ -53,7 +112,8 @@
 				data : $('#counselForm').serialize(),
 				success : function(res){
 					if(res.err != "Y"){
-						alert("등록 완료");
+						alert("상담 등록 완료");
+						counselInfoViewSet(res.rcpNo);
 					}else{
 						alert(res.MSG);
 
@@ -62,11 +122,8 @@
 						}
 					}
 				},
-				error : function(xhr, status){
-				}
+				error : function(xhr, status){}
 			});
-
-			console.log("저장");
 		},
 		<%-- 신규 --%>
 		counselNew = function(){
@@ -75,6 +132,9 @@
 		<%-- 복사 --%>
 		counselCopy = function(){
 			$("input[name='rcpNo']").val("");
+
+			$("button#delButNo").show();
+			$("button#delButYes").hide();
 		},
 		<%-- 상담 내용 삭제 --%>
 		counselDel = function(){
@@ -87,6 +147,8 @@
 				success : function(res){
 					if(res.err != "Y"){
 						alert("삭제 완료");
+
+						counselNew();
 					}else{
 						alert(res.MSG);
 
@@ -241,6 +303,13 @@
 
 						layerPopupClose('rcptPopUp');
 						changRating();
+
+						$("button#copyButNo").hide();
+						$("button#copyButYes").show();
+						$("button#delButNo").hide();
+						$("button#delButYes").show();
+						$("button#excelButNo").hide();
+						$("button#excelButYes").show();
 					}else{
 						console.log("상세내용 조회 오류");
 					}
@@ -297,9 +366,12 @@
 <div class="top-right-btn">
 	<button type="button" onclick="javaScript:counselSave();" class="el-button normal el-button--primary el-button--small is-plain"><i class="el-icon-download"></i><span>저장</span></button>
 	<button type="button" onclick="javaScript:counselNew();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;"><i class="el-icon-circle-plus-outline"></i><span>신규</span></button>
-	<button type="button" onclick="javaScript:counselCopy();" id="copyBut" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
-	<button type="button" onclick="javaScript:counselDel();" id="delBut" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
-	<button type="button" onclick="javaScript:counselExel();" id="excelBut" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
+	<button type="button" id="copyButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
+	<button type="button" onclick="javaScript:counselCopy();" id="copyButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;"><i class="el-icon-document-copy"></i><span>복사</span></button>
+	<button type="button" id="delButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
+	<button type="button" onclick="javaScript:counselDel();" id="delButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
+	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
+	<button type="button" onclick="javaScript:counselExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
 </div>
 <!-- // 상단 버튼 -->
 

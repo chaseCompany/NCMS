@@ -1,5 +1,6 @@
 package kr.co.chase.ncms.individual.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -327,12 +328,46 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	 * @return
 	 * @throws Exception
 	 */
-	public int addCslAss(HashMap<String, Object> map) throws Exception{
+	public HashMap<String, Object> addCslAss(HashMap<String, Object> map) throws Exception{
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		int result = 0;
 
-		this.insertCslAss(map);
-		this.insertCslAssEvl(map);
+		HashMap<String, Object> cslAssInfo = this.getCslAssInfo((String)map.get("mbrNo"));
+		if(cslAssInfo != null) {
+			result = this.updateCslAss(map);
+			resultMap.put("MSG", "수정");
+		}else {
+			result = this.insertCslAss(map);
+			resultMap.put("MSG", "등록");
+		}
 
-		return result;
+		if(result > 0) {
+			if(map.get("evlList") != null && ((ArrayList<HashMap<String, Object>>)map.get("evlList")).size() > 0) {
+				for(HashMap evlMap : (ArrayList<HashMap<String, Object>>)map.get("evlList")){
+					this.insertCslAssEvl(evlMap);
+				}
+			}
+		}
+
+		String deleteEvlSeq = StringUtils.defaultIfEmpty((String)map.get("deleteEvlSeq"), "");				// 삭제대상 평가
+		if(!"".equals(deleteEvlSeq)){
+			if(deleteEvlSeq.indexOf(",") >= 0) {
+				for(String evlSeq : deleteEvlSeq.split(",")){
+					map.put("evlSeq", evlSeq);
+					this.deleteCslAssEvl(map);
+				}
+			}else {
+				map.put("evlSeq", deleteEvlSeq);
+				this.deleteCslAssEvl(map);
+			}
+		}
+
+		if(result > 0) {
+			resultMap.put("err", ConstantObject.N);
+		}else {
+			resultMap.put("err", ConstantObject.Y);
+		}
+
+		return resultMap;
 	}
 }

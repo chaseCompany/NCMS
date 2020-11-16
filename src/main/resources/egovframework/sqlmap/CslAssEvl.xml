@@ -45,7 +45,7 @@
 
 	<delete id="cslAssEvl.deleteCslAssEvl" parameterType="hashMap">
 	<![CDATA[
-		DELETE /* cslAssEvl.deleteCslAssEvl */ CSL_ASS_EVL
+		DELETE /* cslAssEvl.deleteCslAssEvl */ FROM CSL_ASS_EVL
 		 WHERE MBR_NO = #{mbrNo}
 		   AND EVL_SEQ = #{evlSeq}
 	]]>

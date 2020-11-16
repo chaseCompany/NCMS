@@ -34,7 +34,7 @@ public interface CounselService {
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> counselAdd(HashMap<String, Object> map) throws Exception;
+	public String counselAdd(HashMap<String, Object> map) throws Exception;
 
 	/**
 	 * 상담이력 목록 카운트
