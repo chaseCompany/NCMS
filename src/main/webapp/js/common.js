@@ -51,10 +51,10 @@ function formatDate(date) {
 		return date;
 	}
 
-	var d = new Date(date.substr(0, 4), date.substr(4, 2), date.substr(6)), 
-		month = '' + (d.getMonth() + 1), 
-		day = '' + d.getDate(), 
-		year = d.getFullYear();
+	var d = new Date(date.substr(0, 4), date.substr(4, 2), date.substr(6));
+	var month = '' + d.getMonth();
+	var day = '' + d.getDate();
+	var year = d.getFullYear();
 
 	if (month.length < 2) month = '0' + month;
 	if (day.length < 2) day = '0' + day;
