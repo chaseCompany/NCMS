@@ -393,7 +393,16 @@
 
 			function set_date(start_time) {
 				var d, ti, mi, mer;
+				
+				if($(ele_par.find("input")[0]).val() != undefined && $(ele_par.find("input")[0]).val() != ''){
+					var defaultVal = $(ele_par.find("input")[0]).val().split(":");
 
+					ti = Number(defaultVal[0]);
+					mi = Number(defaultVal[1]);
+					if(settings.show_meridian){
+						mer = defaultVal[2];
+					}
+				}else
 				// if a value was already picked we will remember that value
 				if (ele.is('[data-timepicki-tim]')) {
 					ti = Number(ele.attr('data-timepicki-tim'));

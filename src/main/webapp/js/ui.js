@@ -8,8 +8,10 @@ $(function(){
 		increase_direction:'up',
 		//disable_keyboard_mobile: true
 		retrun_function: function(tagName, tagVal){
-			changTime(tagName, tagVal);
-		},
+			if(typeof changTime !== 'undefined'){
+				changTime(tagName, tagVal);
+			}
+		}
 	});
 
 	$('#header .r>.f').on('mouseenter', function(){
