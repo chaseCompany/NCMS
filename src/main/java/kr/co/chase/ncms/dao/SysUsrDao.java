@@ -16,8 +16,8 @@ public class SysUsrDao extends EgovAbstractMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<HashMap<String, Object>> getSysUsrList() throws SQLException{
-		return selectList("sysUsr.getSysUsrList");
+	public List<HashMap<String, Object>> getSysUsrList(HashMap<String, Object> map) throws SQLException{
+		return selectList("sysUsr.getSysUsrList", map);
 	}
 
 	/**

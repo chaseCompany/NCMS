@@ -10,7 +10,7 @@ public interface LoginService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<HashMap<String, Object>> getSysUsrList() throws Exception;
+	public List<HashMap<String, Object>> getSysUsrList(HashMap<String, Object> map) throws Exception;
 
 	/**
 	 * 회원 정보 조회
