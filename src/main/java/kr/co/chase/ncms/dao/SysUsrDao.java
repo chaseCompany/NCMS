@@ -10,10 +10,22 @@ import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 
 @Repository("sysUsrDao")
 public class SysUsrDao extends EgovAbstractMapper {
-	public List<HashMap<String, Object>> getSysUsrList(HashMap<String, Object> map) throws SQLException{
-		return selectList("sysUsr.getSysUsrList", map);
+	/**
+	 * 관리자 목록 조회
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<HashMap<String, Object>> getSysUsrList() throws SQLException{
+		return selectList("sysUsr.getSysUsrList");
 	}
 
+	/**
+	 * 관리자 로그인 정보 조회
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
 	public HashMap<String, Object> getSysUsrInfo(HashMap<String, Object> map) throws SQLException{
 		return selectOne("sysUsr.getSysUsrInfo", map);
 	}

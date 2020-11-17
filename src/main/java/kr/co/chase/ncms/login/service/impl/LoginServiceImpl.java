@@ -27,8 +27,8 @@ public class LoginServiceImpl extends EgovAbstractServiceImpl implements LoginSe
 	 * @return
 	 * @throws Exception
 	 */
-	public List<HashMap<String, Object>> getSysUsrList(HashMap<String, Object> map) throws Exception{
-		return sysUsrDao.getSysUsrList(map);
+	public List<HashMap<String, Object>> getSysUsrList() throws Exception{
+		return sysUsrDao.getSysUsrList();
 	}
 
 	/**
