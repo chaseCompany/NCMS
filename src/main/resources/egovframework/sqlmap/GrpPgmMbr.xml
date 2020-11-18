@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="grpPgmMbr">
+	<select id="grpPgmMbr.getGrpPgmMbrList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* grpPgmMbr.getGrpPgmMbrList */
+			   GPM.PGM_DT	, GPM.PGM_CD	, GPM.SEQ_NO	, GPM.MBR_NO	, GPM.MBR_CTNT
+			 , MM.MBR_NM	, SC.CD_NM AS JOB_NM
+		  FROM GRP_PGM_MBR GPM
+		  LEFT JOIN MST_MBR MM ON (GPM.MBR_NO = MM.MBR_NO)
+		  LEFT JOIN SYS_CD SC ON (MM.JOB_CD = SC.CD_ID AND SC.GRP_CD = 'C1200')
+		 WHERE GPM.PGM_DT = #{pgmDt}
+		   AND GPM.PGM_CD = #{pgmCd}
+		 ORDER BY GPM.SEQ_NO ASC
+	]]>
+	</select>
+
+	<select id="grpPgmMbr.getNextSeqNo" parameterType="hashMap" resultType="int">
+	<![CDATA[
+		SELECT /* grpPgmMbr.getNextSeqNo */ IFNULL(MAX(SEQ_NO), 0) + 1 AS nextSeqNo
+		  FROM GRP_PGM_MBR
+		 WHERE PGM_DT = #{pgmDt}
+		   AND PGM_CD = #{pgmCd}
+	]]>
+	</select>
+
+	<insert id="grpPgmMbr.insertGrpPgmMbr" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* grpPgmMbr.insertGrpPgmMbr */ INTO GRP_PGM_MBR(
+			   PGM_DT	, PGM_CD	, SEQ_NO						, MBR_NO	, MBR_CTNT
+		)VALUES(
+			   #{pgmDt}	, #{pgmCd}	, CAST(#{seqNo} AS UNSIGNED)	, #{mbrNo}	, #{mbrCtnt}
+		)
+	]]>
+	</insert>
+
+	<update id="grpPgmMbr.updateGrpPgmMbrMbrCtnt" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* grpPgmMbr.updateGrpPgmMbrMbrCtnt */ GRP_PGM_MBR
+		   SET MBR_CTNT = #{mbrCtnt}
+		 WHERE PGM_DT = #{pgmDt}
+		   AND PGM_CD = #{pgmCd}
+		   AND SEQ_NO = #{seqNo}
+	]]>
+	</update>
+
+	<delete id="grpPgmMbr.deleteGrpPgmMbr" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* grpPgmMbr.deleteGrpPgmMbr */ FROM GRP_PGM_MBR
+		 WHERE PGM_DT = #{pgmDt}
+		   AND PGM_CD = #{pgmCd}
+	]]>
+		<if test="seqNo != null and seqNo != ''">
+		   AND SEQ_NO = #{seqNo}
+		</if>
+	</delete>
+</mapper>
