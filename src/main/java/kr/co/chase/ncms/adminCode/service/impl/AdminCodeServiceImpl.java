@@ -64,4 +64,16 @@ public class AdminCodeServiceImpl extends EgovAbstractServiceImpl implements Adm
 
 		return resultMap;
 	}
+
+	/**
+	 * 코드그룹 검색
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<HashMap<String, Object>> getSysGroupCdSearchList(HashMap<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		return sysCodeDao.getSysGroupCdSearchList(map);
+	}
 }

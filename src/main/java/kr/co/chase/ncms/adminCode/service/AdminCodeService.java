@@ -29,4 +29,13 @@ public interface AdminCodeService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> updateSysCdAdmin(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 전체 코드 목록 검색
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getSysGroupCdSearchList(HashMap<String, Object> map) throws Exception;
+	
 }

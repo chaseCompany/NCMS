@@ -62,4 +62,13 @@ public class SysCodeDao extends EgovAbstractMapper {
 		return update("sysCd.updateSysCdAdmin", map);
 	}
 
+	/**
+	 * 시스템 그룹 코드를 검색한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getSysGroupCdSearchList(HashMap<String, Object> map) throws SQLException{
+		return selectList("sysCd.getSysGroupCdSearchList", map);
+	}
+
 }

@@ -61,4 +61,21 @@
 	]]>
 	</update>
 
+	<select id="sysCd.getSysGroupCdSearchList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysCd.getSysGroupCdSearchList */
+			   GRP_CD, CD_ID, CD_NM, DP_SEQ, USE_YN
+		  FROM SYS_CD
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+		  	AND	GRP_CD	= #{grpCd}
+			<if test="cdId != null or cdId != ''">
+			AND CD_ID LIKE CONCAT('%', REPLACE(#{cdId}, ' ', ''), '%')
+			</if>
+			<if test="cdNm != null or cdNm != ''">
+			AND CD_NM LIKE CONCAT('%', REPLACE(#{cdNm}, ' ', ''), '%')
+			</if>
+		</trim>
+	</select>
+
 </mapper>

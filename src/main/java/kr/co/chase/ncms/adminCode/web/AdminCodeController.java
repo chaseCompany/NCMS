@@ -34,7 +34,6 @@ public class AdminCodeController {
 	private Logger LOGGER = LoggerFactory.getLogger(AdminCodeController.class);
 
 	/**
-	 * 일반상담 등록화면
 	 * @param model
 	 * @param sysCdVO
 	 * @param session
@@ -100,7 +99,6 @@ public class AdminCodeController {
 	 */
 	@RequestMapping(value="/ajaxCodeUpdate.do")
 	public @ResponseBody ModelAndView ajaxCodeUpdate(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-//  public @ResponseBody ModelAndView ajaxCounselAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
 		boolean flag = true;
 
@@ -151,6 +149,39 @@ public class AdminCodeController {
 			adminCodeService.updateSysCdAdmin(reqMap);
 		}
 
+		return resultView;
+	}
+
+	/**
+	 * 코드 목록 검색
+	 * @param map
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxAdminCodeGroupSearch.do")
+	public @ResponseBody ModelAndView ajaxAdminCodeGroupSearch(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		String groupCdSearchID = StringUtils.defaultIfEmpty((String)reqMap.get("groupCdSearchID"), "");
+		String groupCdSearchName = StringUtils.defaultIfEmpty((String)reqMap.get("groupCdSearchName"), "");
+		model.put("grpCd", "C0000");
+		model.put("cdId", groupCdSearchID);
+		model.put("cdNm", groupCdSearchName);
+
+		resultView.addObject("groupSearchList", adminCodeService.getSysGroupCdSearchList(model));
+		LOGGER.debug(adminCodeService.getSysGroupCdSearchList(model).toString());
 		return resultView;
 	}
 
