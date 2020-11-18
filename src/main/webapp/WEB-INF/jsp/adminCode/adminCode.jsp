@@ -75,7 +75,47 @@
 				}
 			});
 
-		}		
+		},
+		sysAdminGroupCdSearch = function(){
+			
+			$.ajax({
+				url : '/ajaxAdminCodeGroupSearch.do',
+				type : 'POST',
+				data : $('#groupCdSearch').serialize(),
+				success : function(res){
+					if(res.groupSearchList != null){
+                    	var codeHtml = '';
+                    	var index = 1;
+                    	for (var i=0;i<res.groupSearchList.length;i++) {
+                        	codeHtml += '<tr>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell">' + index + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell"><a href="javascript:void(0);" onclick="javaScript:sysAdminCdView(' + res.groupSearchList[i].GRP_CD + ', ' + res.groupSearchList[i].CD_ID + ', ' + res.groupSearchList[i].CD_NM + ', ' + res.groupSearchList[i].DP_SEQ + ', ' + res.groupSearchList[i].USE_YN + ');" class="row_link">' + res.groupSearchList[i].CD_ID + '</a></div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td class="txt-left">';
+                        	codeHtml += '<div class="cell">' + res.groupSearchList[i].CD_NM + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell">' + res.groupSearchList[i].DP_SEQ + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '<td>';
+                        	codeHtml += '<div class="cell">' + res.groupSearchList[i].USE_YN + '</div>';
+                        	codeHtml += '</td>';
+                        	codeHtml += '</tr>';
+                        	index++;
+                    	}
+                    	$("#codeGroup").html(codeHtml);
+					}else{
+						$("#codeGroup").html(codeHtml);
+					}
+				},
+				error : function(xhr, status){
+					console.log(xhr);
+				}
+			});
+		}
 	});
 </script>
 <!-- 페이지 타이틀 -->
@@ -111,23 +151,25 @@
 
                     <!-- 검색 -->
                     <div class="section bg-sky">
+                    	<form name="groupCdSearch" id="groupCdSearch">
                         <table class="w-auto">
                             <tbody>
                                 <tr>
                                     <th>그룹ID</th>
                                     <td>
-                                        <input type="text" class="el-input__inner" style="width:100px">
+                                        <input type="text" class="el-input__inner" style="width:100px" name="groupCdSearchID" id="groupCdSearchID">
                                     </td>
                                     <th>그룹명</th>
                                     <td>
-                                        <input type="text" class="el-input__inner" style="width:100px">
-                                        <button type="button" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;">
+                                        <input type="text" class="el-input__inner" style="width:100px" name="groupCdSearchName" id="groupCdSearchName">
+                                        <button type="button" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;" id="codeGroupSearch" onclick="javaScript:sysAdminGroupCdSearch()">
                                             <i class="el-icon-search"></i><span>검색</span>
                                         </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        </form>
                     </div>
                     <!-- // 검색 -->
 
@@ -162,7 +204,7 @@
                                     <col style="width:80px">
                                     <col>
                                 </colgroup>
-                                <tbody>
+                                <tbody id="codeGroup">
 <c:forEach var="result" items="${grpCdList}" varStatus="status">
                                     <tr>
                                         <td>
