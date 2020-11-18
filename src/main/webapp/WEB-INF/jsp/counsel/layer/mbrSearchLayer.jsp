@@ -15,7 +15,7 @@
 			mstMbrSearchPopup();
 		}
 		<%-- 회원선택 --%>
-		choiceMem = function(mbrNm, mbrNo, gendCd, age, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm){
+		choiceMem = function(mbrNm, mbrNo, gendCd, age, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm){
 			var tagMemObj = {
 				MBR_NM : mbrNm,
 				MBR_NO : mbrNo,
@@ -27,11 +27,14 @@
 				JOB_CD : jobCd,
 				REG_DT : regDt,
 				MEDIC_CARE_NM : medicCareNm,
-				MNG_USR_NM : mngUsrNm
+				MNG_USR_NM : mngUsrNm,
+				JOB_NM : jobNm
 			};
 
 			eval($("input[name='reFunName']").val() + "(tagMemObj)");
+<c:if test="${closeFlg ne 'N'}">
 			layerPopupClose('memberPopUp');
+</c:if>
 		}
 	});
 </script>
@@ -118,7 +121,7 @@
 	<c:forEach var="result" items="${resultList}" varStatus="status">
 		<fmt:parseDate value="${result.REG_DT}" var="regDt" pattern="yyyyMMdd"/>
 						<tr>
-							<td><div class="cell"><c:out value="${result.ROWNUM}" /></div></td>
+							<td><div class="cell"><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></div></td>
 							<td>
 								<div class="cell">
 									<button type="button" onclick="javaScript:choiceMem('<c:out value="${result.MBR_NM}" />'
@@ -132,6 +135,7 @@
 																					  , '<c:out value="${result.REG_DT}" />'
 																					  , '<c:out value="${result.MEDIC_CARE_NM}" />'
 																					  , '<c:out value="${result.MNG_USR_NM}" />'
+																					  , '<c:out value="${result.JOB_NM}" />'
 																	);" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
 										<span>선택</span>
 									</button>
