@@ -16,5 +16,8 @@ public class ConstantObject {
 	public static final String defaultRowSize = "10";
 	public static final String defaultPageSize = "10";
 
+	/**
+	 * 회원 등록 상태값
+	 */
 	public static final String defaultMemStsCd = "RG";
 }
