@@ -16,6 +16,7 @@
 		   AND USE_YN = #{useYn}
 			</if>
 		</trim>
+		 ORDER BY DP_SEQ ASC
 	</select>
 
 	<insert id="sysCd.insertSysCd" parameterType="hashMap">
