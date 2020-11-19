@@ -22,7 +22,7 @@
 		<ul>
 			<li><a href="javaScript:goTopMenuPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>일반 상담</a></li>
 			<li><a href="javaScript:goTopMenuPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>개별 회복지원 서비스</a></li>
-			<li><a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>주간 프로그램</a></li>
+			<li><a href="javaScript:goTopMenuPage('/');">주간 프로그램</a></li>
 			<li><a href="javaScript:goTopMenuPage('/');">회원정보 관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/');">통계 관리</a></li>
 		</ul>
@@ -70,8 +70,8 @@
 							<span><i class="el-submenu__icon-arrow el-icon-arrow-down"></i></span>
 						</a>
 						<ul>
-							<li><a href="javaScript:goPage('/adminUsr.do');" class="on">사용자 관리</a></li>
-							<li><a href="javaScript:goPage('/adminCode.do');" class="on">코드 관리</a></li>
+							<li><a href="javaScript:goTopMenuPage('/adminUsr.do');" class="on">사용자 관리</a></li>
+							<li><a href="javaScript:goTopMenuPage('/adminCode.do');" class="on">코드 관리</a></li>
 						</ul>
 					</li>
 				</ul>
