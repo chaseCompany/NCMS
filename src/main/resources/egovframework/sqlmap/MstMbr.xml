@@ -14,6 +14,9 @@
 			<if test="telNo != null and telNo != ''">
 		   AND REPLACE(CONCAT(TEL_NO1, TEL_NO2, TEL_NO3), '-', '') LIKE CONCAT('%', #{telNo}, '%')
 			</if>
+			<if test="juminNo1 != null and juminNo1 != ''">
+		   AND JUMIN_NO1 = #{juminNo1}
+			</if>
 		</trim>
 	</select>
 
@@ -45,6 +48,9 @@
 			<if test="telNo != null and telNo != ''">
 						   AND REPLACE(CONCAT(TEL_NO1, TEL_NO2, TEL_NO3), '-', '') LIKE CONCAT('%', #{telNo}, '%')
 			</if>
+			<if test="juminNo1 != null and juminNo1 != ''">
+						   AND JUMIN_NO1 = #{juminNo1}
+			</if>
 		</trim>
 	<![CDATA[
 						 ORDER BY CRE_DT DESC
@@ -56,4 +62,74 @@
 		 LIMIT #{recordCountPerPage}
 	]]>
 	</select>
+
+	<select id="mstMbr.getMstMbr" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* mstMbr.getMstMbr */
+			   MM.MBR_NO		, MM.MBR_NM		, MM.GEND_CD	, MM.AGE			, MM.JUMIN_NO1
+			 , MM.FRG_CD		, MM.TEL_NO1	, MM.TEL_NO2	, MM.TEL_NO3		, MM.JOB_CD
+			 , MM.ZIP_CD		, MM.ADDR1		, MM.ADDR2		, MM.MBR_TP_CD		, MM.DRG_USE_CD
+			 , MM.MRG_CD		, MM.EDU_CD		, MM.RLGN_CD	, MM.REQ_PATH_CD	, MM.MEDIC_CARE_CD
+			 , MM.DIS_ETC		, MM.REG_USR_ID	, MM.REG_DT		, MM.STP_DT			, MM.FMLY_RMK
+			 , MM.RMK			, MM.MNG_USR_ID	, MM.LST_UPD_ID	, MM.LST_UPD_DT		, MM.STS_CD
+			 , MM.CRE_ID		, MM.CRE_DT		, MM.UPD_DT
+			 , MM.UPD_ID		, SU.USR_NM AS UPD_NM
+		  FROM MST_MBR MM
+		  LEFT JOIN SYS_USR SU ON (MM.UPD_ID = SU.USR_ID AND SU.USE_YN = 'Y')
+		 WHERE MM.MBR_NO = #{mbrNo}
+	]]>
+	</select>
+
+	<select id="mstMbr.getMbrNoSeq" resultType="String">
+	<![CDATA[
+		SELECT /* mstMbr.getMbrNoSeq */
+			   CONCAT('M', DATE_FORMAT(NOW(), '%Y%m%d%H'), LPAD(IFNULL(MAX(CAST(SUBSTR(MBR_NO, 12) AS UNSIGNED)), 0) + 1, 4, '0')) AS newMbrNo
+		  FROM MST_MBR
+		 WHERE MBR_NO LIKE CONCAT('M', DATE_FORMAT(NOW(), '%Y%m%d%H'), '%')
+	]]>
+	</select>
+
+	<insert id="mstMbr.insertMstMbr" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* mstMbr.insertMstMbr */ INTO MST_MBR(
+			   MBR_NO		, MBR_NM		, GEND_CD		, AGE			, JUMIN_NO1
+			 , FRG_CD		, TEL_NO1		, TEL_NO2		, TEL_NO3		, JOB_CD
+			 , ZIP_CD		, ADDR1			, ADDR2			, MBR_TP_CD		, DRG_USE_CD
+			 , MRG_CD		, EDU_CD		, RLGN_CD		, REQ_PATH_CD	, MEDIC_CARE_CD
+			 , DIS_ETC		, REG_USR_ID	, REG_DT		, STP_DT		, FMLY_RMK
+			 , RMK			, MNG_USR_ID	, LST_UPD_ID	, LST_UPD_DT	, STS_CD
+			 , CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+		)VALUES(
+			   #{mbrNo}		, #{mbrNm}		, #{gendCd}		, #{age}		, #{juminNo1}
+			 , #{frgCd}		, #{telNo1}		, #{telNo2}		, #{telNo3}		, #{jobCd}
+			 , #{zipCd}		, #{addr1}		, #{addr2}		, #{mbrTpCd}	, #{drgUseCd}
+			 , #{mrgCd}		, #{eduCd}		, #{rlgnCd}		, #{reqPathCd}	, #{medicCareCd}
+			 , #{disEtc}	, #{regUsrId}	, #{regDt}		, #{stpDt}		, #{fmlyRmk}
+			 , #{rmk}		, #{mngUsrId}	, #{lstUpdId}	, #{lstUpdDt}	, #{stsCd}
+			 , #{creId}		, NOW()			, #{creId}		, NOW()
+		)
+	]]>
+	</insert>
+
+	<update id="mstMbr.updateMstMbr" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* mstMbr.updateMstMbr */ FROM MST_MBR
+		   SET MBR_NM = #{mbrNm}				, GEND_CD = #{gendCd}
+			 , AGE = #{age}						, JUMIN_NO1 = #{juminNo1}
+			 , FRG_CD = #{frgCd}				, TEL_NO1 = #{telNo1}
+			 , TEL_NO2 = #{telNo2}				, TEL_NO3 = #{telNo3}
+			 , JOB_CD = #{jobCd}				, ZIP_CD = #{zipCd}
+			 , ADDR1 = #{addr1}					, ADDR2 = #{addr2}
+			 , MBR_TP_CD = #{mbrTpCd}			, DRG_USE_CD = #{drgUseCd}
+			 , MRG_CD = #{mrgCd}				, EDU_CD = #{eduCd}
+			 , RLGN_CD = #{rlgnCd}				, REQ_PATH_CD = #{reqPathCd}
+			 , MEDIC_CARE_CD = #{medicCareCd}	, DIS_ETC = #{disEtc}
+			 , REG_USR_ID = #{regUsrId}			, STP_DT = #{stpDt}
+			 , FMLY_RMK = #{fmlyRmk}			, RMK = #{rmk}
+			 , MNG_USR_ID = #{mngUsrId}			, LST_UPD_ID = #{lstUpdId}
+			 , LST_UPD_DT = #{lstUpdDt}			, STS_CD = #{stsCd}
+			 , UPD_ID = #{creId}				, UPD_DT = NOW()
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</update>
 </mapper>
