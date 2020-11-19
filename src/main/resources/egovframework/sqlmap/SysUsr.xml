@@ -35,4 +35,76 @@
 		   AND USE_YN = 'Y'
 	]]>
 	</select>
+
+	<select id="sysUsr.getAdminUsrList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysUsr.getAdminUsrList */
+			   USR_ID
+			   , USR_NM
+			   , SITE_CD	, SC01.CD_NM AS SITE_NM
+			   , ROLE_CD	, SC02.CD_NM AS ROLE_NM
+			   , SU.USE_YN
+			   , REG_DT
+		  FROM SYS_USR SU
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SU.SITE_CD = SC01.CD_ID AND SC01.USE_YN = 'Y')
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3600' AND SU.ROLE_CD = SC02.CD_ID AND SC02.USE_YN = 'Y')
+	]]>
+	</select>
+
+	<select id="sysUsr.getAdminUsrView" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysUsr.getAdminUsrView */
+			   USR_ID
+			   , USR_NM
+			   , SITE_CD
+			   , ROLE_CD
+			   , USE_YN
+			   , REG_DT
+		  FROM SYS_USR
+		  WHERE USR_ID = #{usrId}
+	]]>
+	</select>
+
+	<update id="sysUsr.updateSysUsrAdmin" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* sysUsr.updateSysUsrAdmin */ SYS_USR
+		   SET USR_NM			= #{usrNm}							, ROLE_CD			= #{roleCd}
+			 , SITE_CD			= #{siteCd}							, USE_YN			= #{useYn}
+			 , UPD_ID			= #{updId}			 				, UPD_DT			= NOW()
+		 WHERE	GRP_CD	= #{usrId}
+	]]>
+	</update>
+
+	<select id="sysUsr.getSysUsrSearchList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysUsr.getSysUsrSearchList */
+			   USR_ID
+			   , USR_NM
+			   , SITE_CD	, SC01.CD_NM AS SITE_NM
+			   , ROLE_CD	, SC02.CD_NM AS ROLE_NM
+			   , SU.USE_YN
+			   , REG_DT
+		  FROM SYS_USR SU
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SU.SITE_CD = SC01.CD_ID AND SC01.USE_YN = 'Y')
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3600' AND SU.ROLE_CD = SC02.CD_ID AND SC02.USE_YN = 'Y')
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="usrId != null or usrId != ''">
+				AND SU.USR_ID LIKE CONCAT('%', REPLACE(#{usrId}, ' ', ''), '%')
+			</if>
+			<if test="usrNm != null or usrNm != ''">
+				AND SU.USR_NM LIKE CONCAT('%', REPLACE(#{usrNm}, ' ', ''), '%')
+			</if>
+			<if test="roleCd !=null or roleCd != ''">
+				AND SU.ROLE_CD = #{roleCd}
+			</if>
+			<if test="siteCd != null or siteCd != ''">
+				AND SU.SITE_CD = #{siteCd}
+			</if>
+			<if test="useYn != null or useYn != ''">
+				AND SU.USE_YN = #{useYn}
+			</if>
+		</trim>
+	</select>
+
 </mapper>

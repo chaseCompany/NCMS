@@ -181,7 +181,7 @@ public class AdminCodeController {
 		model.put("cdNm", groupCdSearchName);
 
 		resultView.addObject("groupSearchList", adminCodeService.getSysGroupCdSearchList(model));
-		LOGGER.debug(adminCodeService.getSysGroupCdSearchList(model).toString());
+
 		return resultView;
 	}
 

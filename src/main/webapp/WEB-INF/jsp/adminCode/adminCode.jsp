@@ -115,6 +115,10 @@
 					console.log(xhr);
 				}
 			});
+		},
+		<%-- 초기화 --%>
+		codeNew = function(){
+			window.location.reload();
 		}
 	});
 </script>
@@ -133,7 +137,7 @@
     <div class="el-row">
         <div class="row2">
             <div class="top-right-btn">
-                <button type="button" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;">
+                <button type="button" onclick="javaScript:codeNew();" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;">
                     <i class="el-icon-refresh-right"></i><span>초기화</span>
                 </button>
                 <button type="button" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;">
@@ -288,7 +292,7 @@
         </div>
         <div class="row2">
             <div class="top-right-btn">
-                <button type="button" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;">
+                <button type="button" onclick="javaScript:codeNew();" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px;">
                     <i class="el-icon-refresh-right"></i><span>초기화</span>
                 </button>
             </div>

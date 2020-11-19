@@ -29,4 +29,43 @@ public class SysUsrDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getSysUsrInfo(HashMap<String, Object> map) throws SQLException{
 		return selectOne("sysUsr.getSysUsrInfo", map);
 	}
+
+	/**
+	 * 관리자 전체 사용자 목록 조회
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<HashMap<String, Object>> getAdminUsrList(HashMap<String, Object> map) throws SQLException{
+		return selectList("sysUsr.getAdminUsrList", map);
+	}
+
+	/**
+	 * 관리자 단일 사용자 조회
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public HashMap<String, Object> getAdminUsrView(String usrId) throws SQLException{
+		return selectOne("sysUsr.getAdminUsrView", usrId);
+	}
+
+	/**
+	 * 시스템 사용자를 수정한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateSysUsrAdmin(HashMap<String, Object> map) throws SQLException{
+		return update("sysUsr.updateSysUsrAdmin", map);
+	}
+
+	/**
+	 * 시스템 사용자를 검색한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getSysUsrSearchList(HashMap<String, Object> map) throws SQLException{
+		return selectList("sysUsr.getSysUsrSearchList", map);
+	}
+
 }
