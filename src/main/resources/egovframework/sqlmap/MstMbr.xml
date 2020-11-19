@@ -104,8 +104,8 @@
 			 , #{frgCd}		, #{telNo1}		, #{telNo2}		, #{telNo3}		, #{jobCd}
 			 , #{zipCd}		, #{addr1}		, #{addr2}		, #{mbrTpCd}	, #{drgUseCd}
 			 , #{mrgCd}		, #{eduCd}		, #{rlgnCd}		, #{reqPathCd}	, #{medicCareCd}
-			 , #{disEtc}	, #{regUsrId}	, #{regDt}		, #{stpDt}		, #{fmlyRmk}
-			 , #{rmk}		, #{mngUsrId}	, #{lstUpdId}	, #{lstUpdDt}	, #{stsCd}
+			 , #{disEtc}	, #{creId}		, #{regDt}		, #{stpDt}		, #{fmlyRmk}
+			 , #{rmk}		, #{mngUsrId}	, #{creId}		, NOW()			, #{stsCd}
 			 , #{creId}		, NOW()			, #{creId}		, NOW()
 		)
 	]]>
@@ -132,4 +132,5 @@
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</update>
+
 </mapper>

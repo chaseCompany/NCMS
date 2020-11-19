@@ -54,12 +54,12 @@ public class IndividualController {
 			, @ModelAttribute("cslAssVO") CslAssVO cslAssVO) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
 			return "redirect:/login.do";
 		}
 
 		// 집중상담 기본값 셋팅
-		cslIdvVO.setCslNm(StringUtils.defaultString(usrInfo.get("USR_ID").toString(), ""));
+		cslIdvVO.setCslNm(StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 		cslIdvVO.setCslDt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		cslIdvVO.setCslTgtCd("10");
 		cslIdvVO.setCslTpCd("20");
@@ -192,9 +192,12 @@ public class IndividualController {
 		ModelAndView resultView = new ModelAndView("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
 
-		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
-//			return "redirect:/login.do";
+			return resultView;
 		}
 
 		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "") {
@@ -247,21 +250,21 @@ public class IndividualController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			resultView.addObject("err", ConstantObject.Y);
-//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-//			resultView.addObject("actUrl", "/login.do");
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
 
-//			return resultView;
+			return resultView;
 		}
 
-		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "") {
+		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
 			return resultView;
 		}
 
-		reqMap.put("cslDt", StringUtils.defaultIfEmpty(reqMap.get("cslDt").toString(), "").replaceAll("-", ""));
+		reqMap.put("cslDt", StringUtils.defaultIfEmpty((String)reqMap.get("cslDt"), "").replaceAll("-", ""));
 		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 
 		HashMap<String, Object> resMap = individualService.cslIdvAdd(reqMap);
@@ -286,8 +289,12 @@ public class IndividualController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
-//			return "redirect:/login.do";
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
 		}
 
 		if(StringUtils.defaultString(reqMap.get("cslNo").toString(), "") == "") {
@@ -319,18 +326,22 @@ public class IndividualController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
-//			return "redirect:/login.do";
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
 		}
 
-		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "") {
+		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "회원번호를 선택하세요.");
 
 			return resultView;
 		}
 
-		resultView.addObject("clsIspList", individualService.getCslIspList(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "")));
+		resultView.addObject("clsIspList", individualService.getCslIspList(StringUtils.defaultString((String)reqMap.get("mbrNo"), "")));
 
 		return resultView;
 	}
@@ -348,11 +359,15 @@ public class IndividualController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
-//			return "redirect:/login.do";
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
 		}
 
-		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
+		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "" && StringUtils.defaultString((String)reqMap.get("ispDt"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
 
@@ -382,7 +397,11 @@ public class IndividualController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString(usrInfo.get("USR_ID").toString(), "") == "") {
-//			return "redirect:/login.do";
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
 		}
 
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
@@ -411,11 +430,11 @@ public class IndividualController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			resultView.addObject("err", ConstantObject.Y);
-//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-//			resultView.addObject("actUrl", "/login.do");
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
 
-//			return resultView;
+			return resultView;
 		}
 
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
@@ -450,11 +469,11 @@ public class IndividualController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			resultView.addObject("err", ConstantObject.Y);
-//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-//			resultView.addObject("actUrl", "/login.do");
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
 
-//			return resultView;
+			return resultView;
 		}
 
 		if(StringUtils.defaultString(mbrNo, "") == "") {

@@ -29,4 +29,43 @@ public class MstMbrDao extends EgovAbstractMapper {
 	public List<HashMap<String, Object>> getMstMbrList(HashMap<String, Object> map) throws SQLException{
 		return selectList("mstMbr.getMstMbrList", map);
 	}
+
+	/**
+	 * 회원 정보 조회
+	 * @param mbrNo
+	 * @return
+	 * @throws SQLException
+	 */
+	public HashMap<String, Object> getMstMbr(String mbrNo) throws SQLException{
+		return selectOne("mstMbr.getMstMbr", mbrNo);
+	}
+
+	/**
+	 * 회원 번호 생성
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getMbrNoSeq() throws SQLException{
+		return selectOne("mstMbr.getMbrNoSeq");
+	}
+
+	/**
+	 * 회원 정보 등록
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int insertMstMbr(HashMap<String, Object> map) throws SQLException{
+		return insert("mstMbr.insertMstMbr", map);
+	}
+
+	/**
+	 * 회원 정보 수정
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int updateMstMbr(HashMap<String, Object> map) throws SQLException{
+		return update("mstMbr.updateMstMbr", map);
+	}
 }
