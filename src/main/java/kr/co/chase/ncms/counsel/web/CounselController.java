@@ -43,7 +43,7 @@ public class CounselController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			return "redirect:/login.do";
+			return "redirect:/login.do";
 		}
 
 		cslRcpVO.setCslId(StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
@@ -350,11 +350,11 @@ public class CounselController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-//			resultView.addObject("err", ConstantObject.Y);
-//			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-//			resultView.addObject("actUrl", "/login.do");
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
 
-//			return resultView;
+			return resultView;
 		}
 
 		if(StringUtils.defaultString((String)reqMap.get("rcpNo"), "") == "") {
