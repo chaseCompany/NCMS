@@ -45,6 +45,11 @@ public class WeeklyPrgController {
 	 */
 	@RequestMapping(value="/weeklyPrgMain.do")
 	public String weeklyPrgMain(ModelMap model, @ModelAttribute("cslRcpVO") CslRcpVO cslRcpVO, HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			return "redirect:/login.do";
+		}
 
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
