@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="kr.co.chase.ncms.common.ConstantObject" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -148,7 +149,7 @@
 							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
 							<td><div class="cell"><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></div></td>
 		<c:if test="${result.STS_CD ne 'RG'}">
-							<td><div class="cell"><c:out value="${result.STS_NM}" /></div></td>
+							<td><div class="cell"<c:if test="${result.STS_CD eq ConstantObject.rlMemStsCd}"> style="color: red;"</c:if>><c:out value="${result.STS_NM}" /></div></td>
 		</c:if>
 		<c:if test="${result.STS_CD eq 'RG'}">
 							<td><div class="cell"></div></td>
