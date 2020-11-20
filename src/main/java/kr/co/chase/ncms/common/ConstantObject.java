@@ -20,4 +20,6 @@ public class ConstantObject {
 	 * 회원 등록 상태값 
 	 */
 	public static final String defaultMemStsCd = "RG";
+	public static final String rlMemStsCd = "RL";
+	public static final String rrMemStsCd = "RR";
 }
