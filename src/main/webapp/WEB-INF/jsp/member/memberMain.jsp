@@ -1,8 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="kr.co.chase.ncms.common.ConstantObject" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
+		$("input[name='stpDt']").datepicker('setDate', 'today');
+<c:if test="${mbrInfo eq null or mbrInfo eq ''}">
+		$("input[name='regDt']").datepicker('setDate', 'today');
+</c:if>
 		<%-- 회원 조회 --%>
 		mstMbrSearchPopup = function(){
 			$.ajax({
@@ -23,37 +29,174 @@
 					console.log(xhr);
 				}
 			});
-		},
+		}
 		<%-- 정보 저장 --%>
 		infoSave = function(){
+			if($("input[name='mbrNm']").val() == ""){
+				alert("성명은 필수 입력 항목입니다.");
+				$("input[name='mbrNm']").focus();					return;
+			}
+			if($("input[name='juminNo1']").val() == ""){
+				alert("생년월일은 필수 입력 항목입니다.");
+				$("input[name='juminNo1']").focus();				return;
+			}
+			if($("input[name='age']").val() == ""){
+				alert("연령은 필수 입력 항목입니다.");
+				$("input[name='age']").focus();						return;
+			}
+			if($("input[name='telNo1']").val() == ""){
+				alert("연락처1는 필수 입력 항목입니다.");
+				$("input[name='telNo1']").focus();					return;
+			}
+			if($("input[name='telNo2']").val() == ""){
+				alert("연락처2는 필수 입력 항목입니다.");
+				$("input[name='telNo2']").focus();					return;
+			}
+			if($("input[name='telNo3']").val() == ""){
+				alert("연락처3는 필수 입력 항목입니다.");
+				$("input[name='telNo3']").focus();					return;
+			}
+			if($("input[name='zipCd']").val() == ""){
+				alert("주소는 필수 입력 항목입니다.");						return;
+			}
+			if($("select[name='mbrTpCd']").val() == ""){
+				alert("회원구분은 필수 입력 항목입니다.");
+				$("select[name='mbrTpCd']").focus();				return;
+			}
+			if($("select[name='medicCareCd']").val() == ""){
+				alert("의료보장은 필수 입력 항목입니다.");
+				$("select[name='medicCareCd']").focus();			return;
+			}
+			if($("select[name='mngUsrId']").val() == ""){
+				alert("사례관리자는 필수 입력 항목입니다.");
+				$("select[name='mngUsrId']").focus();				return;
+			}
+			if($("input[name='regDt']").val() == ""){
+				alert("최초등록일자는 필수 입력 항목입니다.");
+				$("input[name='regDt']").focus();					return;
+			}
+
 			$.ajax({
-				url : '/addMstMbr.do',
+				url : '/ajaxMstMbrAdd.do',
 				type : 'POST',
 				data : $("form#mbrInfoForm").serialize(),
 				success : function(res){
-					console.log(res);
+					if(res.err != "Y"){
+						alert(res.MSG + " 성공");
+
+						getMemInfo(res.mbrNo);
+					}else{
+						alert(res.MSG);
+					}
 				},
 				error : function(xhr, status){
 					console.log(xhr);
 				}
 			});
-		},
+		}
 		<%-- 회원 정보 삭제 --%>
 		delMemInfo = function(){
-		},
+			if(confirm("정말로 삭제하시겠습니까?\n삭제한 데이터는 복구가 불가합니다.")){
+				$.ajax({
+					url : '/ajaxMstMbrDel.do',
+					type : 'POST',
+					data : {
+						mbrNo : $("input[name='mbrNo']").val()
+					},
+					success : function(res){
+						if(res.err != "Y"){
+							alert("삭제 성공");
+	
+							getMemInfo("");
+						}else{
+							alert(res.MSG);
+						}
+					},
+					error : function(xhr, status){
+						console.log(xhr);
+					}
+				});
+			}
+		}
+		<%-- 퇴록 처리 팝업 --%>
+		openStsPage = function(type, sts){
+			if(type == "V"){
+				$("button#stsSubButYes").hide();
+				$("button#stsSubButNo").show();
+
+				$("textarea[name='dtlCtnt']").val(($("textarea[name='" + sts + "']").val()));
+				$("input[name='stpDt']").val($("div#" + sts + "").text());
+			}else{
+				$("button#stsSubButNo").hide();
+				$("button#stsSubButYes").show();
+
+				$("input[name='stsCd']").val(sts);
+				$("textarea[name='dtlCtnt']").val("");
+				$("input[name='stpDt']").datepicker('setDate', 'today');
+			}
+
+			layerPopupOpen('RegRlsPopUp');
+		}
 		<%-- 퇴록 처리 --%>
 		changStsMem = function(){
+			$("input[name='stsMbrNo']").val($("input[name='mbrNo']").val());
+
+			$.ajax({
+				url : '/ajaxMstMbrStsCdUpdate.do',
+				type : 'POST',
+				data : $("form#stsChangForm").serialize(),
+				success : function(res){
+					if(res.err != "Y"){
+						alert(res.MSG + " 성공");
+
+						getMemInfo($("input[name='mbrNo']").val());
+					}else{
+						alert(res.MSG);
+					}
+				},
+				error : function(xhr, status){
+					console.log(xhr);
+				}
+			});
 		}
 		<%-- 회원 정보 페이지 로딩 --%>
 		getMemInfo = function(obj){
-			$("input[name='mbrNo']").val(obj.MBR_NO);
+			if(obj != null && typeof obj === 'object'){
+				$("input[name='mbrNo']").val(obj.MBR_NO);
+			}else{
+				$("input[name='mbrNo']").val(obj);
+			}
+
 			document.mbrInfoForm.submit();
-		},
+		}
 		<%-- 신규작성 --%>
 		newMemInfo = function(){
-			$("input[name='mbrNo']").val("");
-			document.mbrInfoForm.submit();
-		},
+			getMemInfo("");
+		}
+		checkAge = function(){
+			var juminNo = $("input[name='juminNo1']").val();
+			if(juminNo.length < 6){
+				alert("생년월일을 정확히 입력해 주세요.");
+				$("input[name='juminNo1']").focus();			return;
+			}
+
+			var year = Number(juminNo.substr(0, 2));
+			var day = Number(juminNo.substr(2, 4));
+			var dDayYear = Number(String(new Date().getFullYear()).substr(2, 2));
+			var dDayDate = Number(String(new Date().getMonth() + 1) + String(new Date().getDate()));
+			var age = 0;
+
+			if(dDayYear > year){
+				age = dDayYear - year;
+			}else{
+				age = dDayYear + 100 - year;
+			}
+			if(dDayDate < day){
+				age = age - 1;
+			}
+
+			$("input[name='age']").val(age);
+		}
 		<%-- 버튼 활성화 --%>
 		setButton = function(flag){
 			if(flag == 'L'){
@@ -74,6 +217,15 @@
 <c:if test="${mbrInfo eq null or mbrInfo eq ''}">
 		setButton('');
 </c:if>
+		<%-- 우편번호 검색창 오픈 --%>
+		zipCodePop = function(){
+			new daum.Postcode({
+				oncomplete: function(data) {
+					$("input[name='zipCd']").val(data.zonecode);
+					$("input[name='addr1']").val(data.roadAddress);
+				}
+			}).open();
+		}
 	});
 </script>
 <!-- 페이지 타이틀 -->
@@ -98,9 +250,18 @@
 	<button disabled="disabled" id="stsButNo" type="button" class="el-button normal el-button--danger el-button--small is-disabled is-plain" style="margin-left: 8px;">
 		<i class="el-icon-s-claim"></i><span>퇴록 처리</span>
 	</button>
-	<button type="button" id="stsButYes" onclick="javaScript:changStsMem();" class="el-button normal el-button--danger el-button--small is-plain" style="margin-left: 8px;display:none;">
+<c:if test="${mbrInfo ne null and mbrInfo ne ''}">
+	<c:if test="${mbrInfo.STS_CD eq ConstantObject.defaultMemStsCd or mbrInfo.STS_CD eq ConstantObject.rrMemStsCd}">
+	<button type="button" id="stsButYes" onclick="javaScript:openStsPage('A', '<%=ConstantObject.rlMemStsCd%>');" class="el-button normal el-button--danger el-button--small is-plain" style="margin-left: 8px;display:none;">
 		<i class="el-icon-s-claim"></i><span>퇴록 처리</span>
 	</button>
+	</c:if>
+	<c:if test="${mbrInfo.STS_CD eq ConstantObject.rlMemStsCd}">
+	<button type="button" id="stsButYes" onclick="javaScript:openStsPage('A', '<%=ConstantObject.rrMemStsCd%>');" class="el-button normal el-button--danger el-button--small is-plain" style="margin-left: 8px;display:none;">
+		<i class="el-icon-s-claim"></i><span>재등록 처리</span>
+	</button>
+	</c:if>
+</c:if>
 </div>
 <!-- // 상단 버튼 -->
 <div class="formline" style="min-width: 1600px;">
@@ -170,7 +331,7 @@
 							<th content="저장시 성명과 생년월일(6자)로 중복 체크"><span class="required">*</span> 생년월일</th>
 							<td>
 								<input name="juminNo1" value="<c:out value="${mbrInfo.JUMIN_NO1}" />" type="text" class="el-input__inner" style="width: 90px;" placeholder="6자리">
-								<button type="button" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 10px 8px;">
+								<button type="button" onclick="javaScript:checkAge();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 10px 8px;">
 									<i class="el-icon-d-arrow-right"></i>
 								</button>
 							</td>
@@ -189,7 +350,7 @@
 							<th class="v-top"><span class="required">*</span> 주소</th>
 							<td colspan="7">
 								<input type="text" name="zipCd" value="<c:out value="${mbrInfo.ZIP_CD}" />" class="el-input__inner" readonly style="width: 65px;">
-								<button type="button" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 12px 8px;">
+								<button type="button" onclick="javaScript:zipCodePop();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 12px 8px;">
 									<i class="el-icon-search"></i>
 								</button>
 								<input name="addr1" value="<c:out value="${mbrInfo.ADDR1}" />" type="text" class="el-input__inner" readonly style="width: 525px;">
@@ -421,20 +582,21 @@
 					</colgroup>
 					<tbody>
 	<c:forEach var="result" items="${mstRegHisList}" varStatus="status">
-		<fmt:parseDate value="${result.CRE_DT}" var="mstCreDt" pattern="yyyy-MM-dd HH:mm:ss.s" />
+		<fmt:parseDate value="${result.REG_RLS_DT}" var="regRlsDt" pattern="yyyyMMdd" />
 					<tr>
 						<td><div class="cell"><c:out value="${status.count}" /></div></td>
-						<td><div class="cell"><c:out value="${result.REG_RLS_NM}" /></div></td>
-						<td><div class="cell"><i class="el-icon-time"></i><fmt:formatDate value="${mstCreDt}" pattern="yyyy-MM-dd" /></div></td>
+						<td><div class="cell"<c:if test="${result.REG_RLS_CD eq ConstantObject.rlMemStsCd}"> style="color: red;"</c:if>><c:out value="${result.REG_RLS_NM}" /></div></td>
+						<td><div class="cell" id="viewDtlCtnt_<c:out value="${status.count}" />"><i class="el-icon-time"></i><fmt:formatDate value="${regRlsDt}" pattern="yyyy-MM-dd" /></div></td>
 						<td class="txt-left"><div class="cell"><c:out value="${result.DTL_CTNT}" /></div></td>
 						<td>
 							<div class="cell">
-								<button type="button" onclick="layerPopupOpen('RegRlsPopUp');" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
+								<button type="button" onclick="javaScript:openStsPage('V', 'viewDtlCtnt_<c:out value="${status.count}" />');" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
 									<span>보기</span>
 								</button>
 							</div>
 						</td>
 					</tr>
+					<textarea name="viewDtlCtnt_<c:out value="${status.count}" />" style="display:none;"><c:out value="${result.DTL_CTNT}" /></textarea>
 	</c:forEach>
 					</tbody>
 				</table>
@@ -447,3 +609,56 @@
 	</div>
 	<!-- // 등/퇴록 내역 -->
 </div>
+<!-- 등록 처리 팝업 -->
+<form name="stsChangForm" id="stsChangForm">
+<input type="hidden" name="stsCd" value="" />
+<input type="hidden" name="stsMbrNo" value="" />
+<div class="layerpopup" data-popup="RegRlsPopUp">
+	<div class="popup RegRlsPopUp">
+		<div class="pop-header">
+			<span>등록 처리</span>
+			<button type="button" class="el-dialog__headerbtn" onclick="layerPopupClose('RegRlsPopUp');">
+				<i class="el-dialog__close el-icon el-icon-close"></i>
+			</button>
+		</div>
+		<div class="pop-content">
+			<div class="section">
+				<table class="wr-form sig-form">
+					<colgroup>
+						<col style="width:80px">
+						<col>
+					</colgroup>
+					<tbody>
+					<tr>
+						<th><span class="required">*</span> 처리일자</th>
+						<td>
+							<div class="dat-pk">
+								<i class="el-input__icon el-icon-date"></i>
+								<input type="text" name="stpDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 130px;">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><textarea name="dtlCtnt" style="height:178px;" placeholder="상세내용을 입력하세요."></textarea></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 닫기 -->
+			<div class="el-dialog__footer">
+				<button id="stsSubButYes" onclick="javaScript:changStsMem();" type="button" class="el-button el-button--primary el-button--small is-plain" style="display:none;">
+					<i class="el-icon-check"></i><span>저장</span>
+				</button>
+				<button id="stsSubButNo" type="button" class="el-button el-button--primary el-button--small is-disabled is-plain" disabled="disabled" style="display:none;">
+					<i class="el-icon-check"></i><span>저장</span>
+				</button>
+				<button type="button" onclick="layerPopupClose('RegRlsPopUp');" class="el-button el-button--default el-button--small">
+					<i class="el-icon-close"></i><span>닫기</span>
+				</button>
+			</div>
+			<!-- // 닫기 -->
+		</div>
+	</div>
+</div>
+</form>
+<!-- // 등록 처리 팝업 -->

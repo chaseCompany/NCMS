@@ -91,8 +91,8 @@ public class MemberController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/addMstMbr.do")
-	public @ResponseBody ModelAndView addMstMbr(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+	@RequestMapping(value="/ajaxMstMbrAdd.do")
+	public @ResponseBody ModelAndView ajaxMstMbrAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
@@ -122,91 +122,76 @@ public class MemberController {
 		if("".equals(mbrNm)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(gendCd)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(frgCd)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(juminNo1)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(age)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(telNo1)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(telNo2)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(telNo3)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(zipCd)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
-//			return resultView;
+			return resultView;
 		}
 		if("".equals(addr1)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
-//			return resultView;
+			return resultView;
 		}
 		if("".equals(mbrTpCd)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(drgUseCd)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(medicCareCd)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(mngUsrId)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 		if("".equals(regDt)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 
@@ -214,7 +199,100 @@ public class MemberController {
 		reqMap.put("regDt", regDt);
 		reqMap.put("creId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 
-		memberService.saveMstMbr(reqMap);
+		HashMap<String, Object> resultMap = memberService.saveMstMbr(reqMap);
+		if(resultMap != null) {
+			resultView.addObject("err", resultMap.get("err"));
+			resultView.addObject("MSG", resultMap.get("MSG"));
+			resultView.addObject("mbrNo", resultMap.get("mbrNo"));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 회원 정보 삭제
+	 * @param mbrNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxMstMbrDel.do")
+	public @ResponseBody ModelAndView ajaxMstMbrDel(@RequestParam String mbrNo, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		int result = memberService.mstMbrDel(mbrNo);
+		if(result <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "탈퇴 처리 오류");
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 회원 퇴록/재등록 처리
+	 * @param mbrNo
+	 * @param stsCd
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxMstMbrStsCdUpdate.do")
+	public @ResponseBody ModelAndView ajaxMstMbrStsCdUpdate(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("stsMbrNo"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("stsCd"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("stpDt"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		reqMap.put("mbrNo", StringUtils.defaultIfEmpty((String)reqMap.get("stsMbrNo"), ""));
+		reqMap.put("stpDt", StringUtils.defaultIfEmpty((String)reqMap.get("stpDt"), "").replaceAll("-", ""));
+		reqMap.put("creId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+
+		int reuslt = memberService.StsCdUpdate(reqMap);
+		if(reuslt > 0) {
+			if(ConstantObject.rlMemStsCd.equals(StringUtils.defaultIfEmpty((String)reqMap.get("stsCd"), ""))) {
+				resultView.addObject("MSG", "퇴록");
+			}else {
+				resultView.addObject("MSG", "재등록");
+			}
+		}else{
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "처리 오류");
+		}
 
 		return resultView;
 	}

@@ -96,24 +96,24 @@
 			 , FRG_CD		, TEL_NO1		, TEL_NO2		, TEL_NO3		, JOB_CD
 			 , ZIP_CD		, ADDR1			, ADDR2			, MBR_TP_CD		, DRG_USE_CD
 			 , MRG_CD		, EDU_CD		, RLGN_CD		, REQ_PATH_CD	, MEDIC_CARE_CD
-			 , DIS_ETC		, REG_USR_ID	, REG_DT		, STP_DT		, FMLY_RMK
-			 , RMK			, MNG_USR_ID	, LST_UPD_ID	, LST_UPD_DT	, STS_CD
-			 , CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+			 , DIS_ETC		, REG_USR_ID	, REG_DT		, FMLY_RMK		, RMK
+			 , MNG_USR_ID	, LST_UPD_ID	, LST_UPD_DT	, STS_CD		, CRE_ID
+			 , CRE_DT		, UPD_ID		, UPD_DT
 		)VALUES(
 			   #{mbrNo}		, #{mbrNm}		, #{gendCd}		, #{age}		, #{juminNo1}
 			 , #{frgCd}		, #{telNo1}		, #{telNo2}		, #{telNo3}		, #{jobCd}
 			 , #{zipCd}		, #{addr1}		, #{addr2}		, #{mbrTpCd}	, #{drgUseCd}
 			 , #{mrgCd}		, #{eduCd}		, #{rlgnCd}		, #{reqPathCd}	, #{medicCareCd}
-			 , #{disEtc}	, #{creId}		, #{regDt}		, #{stpDt}		, #{fmlyRmk}
-			 , #{rmk}		, #{mngUsrId}	, #{creId}		, NOW()			, #{stsCd}
-			 , #{creId}		, NOW()			, #{creId}		, NOW()
+			 , #{disEtc}	, #{creId}		, #{regDt}		, #{fmlyRmk}	, #{rmk}
+			 , #{mngUsrId}	, #{creId}		, NOW()			, #{stsCd}		, #{creId}
+			 , NOW()		, #{creId}		, NOW()
 		)
 	]]>
 	</insert>
 
 	<update id="mstMbr.updateMstMbr" parameterType="hashMap">
 	<![CDATA[
-		UPDATE /* mstMbr.updateMstMbr */ FROM MST_MBR
+		UPDATE /* mstMbr.updateMstMbr */ MST_MBR
 		   SET MBR_NM = #{mbrNm}				, GEND_CD = #{gendCd}
 			 , AGE = #{age}						, JUMIN_NO1 = #{juminNo1}
 			 , FRG_CD = #{frgCd}				, TEL_NO1 = #{telNo1}
@@ -121,16 +121,32 @@
 			 , JOB_CD = #{jobCd}				, ZIP_CD = #{zipCd}
 			 , ADDR1 = #{addr1}					, ADDR2 = #{addr2}
 			 , MBR_TP_CD = #{mbrTpCd}			, DRG_USE_CD = #{drgUseCd}
-			 , MRG_CD = #{mrgCd}				, EDU_CD = #{eduCd}
-			 , RLGN_CD = #{rlgnCd}				, REQ_PATH_CD = #{reqPathCd}
-			 , MEDIC_CARE_CD = #{medicCareCd}	, DIS_ETC = #{disEtc}
-			 , REG_USR_ID = #{regUsrId}			, STP_DT = #{stpDt}
+			 , MRG_CD = #{mrgCd}				, REG_DT = #{regDt}
+			 , EDU_CD = #{eduCd}				, RLGN_CD = #{rlgnCd}
+			 , REQ_PATH_CD = #{reqPathCd}		, MEDIC_CARE_CD = #{medicCareCd}
+			 , DIS_ETC = #{disEtc}				, REG_USR_ID = #{regUsrId}
 			 , FMLY_RMK = #{fmlyRmk}			, RMK = #{rmk}
-			 , MNG_USR_ID = #{mngUsrId}			, LST_UPD_ID = #{lstUpdId}
-			 , LST_UPD_DT = #{lstUpdDt}			, STS_CD = #{stsCd}
-			 , UPD_ID = #{creId}				, UPD_DT = NOW()
+			 , MNG_USR_ID = #{mngUsrId}			, LST_UPD_ID = #{creId}
+			 , LST_UPD_DT = NOW()				, UPD_ID = #{creId}
+			 , UPD_DT = NOW()
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</update>
 
+	<delete id="mstMbr.deleteMstMbr" parameterType="String">
+	<![CDATA[
+		DELETE /* mstMbr.deleteMstMbr */ FROM MST_MBR
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</delete>
+
+	<update id="mstMbr.updateMstMbrStsCd" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* mstMbr.updateMstMbrStsCd */ MST_MBR
+		   SET STS_CD = #{stsCd}				, LST_UPD_ID = #{creId}
+			 , LST_UPD_DT = NOW()				, UPD_ID = #{creId}
+			 , UPD_DT = NOW()
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</update>
 </mapper>

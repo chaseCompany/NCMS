@@ -33,11 +33,11 @@ function gfncTimeFormatCheck(dateValue) {
 	}
 	var hh = tmp.substring(0,2);
 	if(parseInt(hh, 10) < 0 || parseInt(hh, 10) >= 24){
-		return false
+		return false;
 	}
 	var mm = tmp.substring(2,4);
 	if(parseInt(mm, 10) < 0 || parseInt(mm, 10) >= 60){
-		return false
+		return false;
 	}
 	return true;
 }

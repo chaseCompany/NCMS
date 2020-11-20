@@ -68,4 +68,24 @@ public class MstMbrDao extends EgovAbstractMapper {
 	public int updateMstMbr(HashMap<String, Object> map) throws SQLException{
 		return update("mstMbr.updateMstMbr", map);
 	}
+
+	/**
+	 * 회원 정보 삭제
+	 * @param mbrNo
+	 * @return
+	 * @throws SQLException
+	 */
+	public int deleteMstMbr(String mbrNo) throws SQLException{
+		return delete("mstMbr.deleteMstMbr", mbrNo);
+	}
+
+	/**
+	 * 회원 퇴록 정보 수정
+	 * @param map
+	 * @return
+	 * @throws SQLException
+	 */
+	public int updateMstMbrStsCd(HashMap<String, Object> map) throws SQLException{
+		return update("mstMbr.updateMstMbrStsCd", map);
+	}
 }

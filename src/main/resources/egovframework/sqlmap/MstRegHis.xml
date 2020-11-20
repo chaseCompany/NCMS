@@ -5,11 +5,17 @@
 	<insert id="mstRegHis.insertMstRegHis" parameterType="hashMap">
 	<![CDATA[
 		INSERT /* mstRegHis.insertMstRegHis */ INTO MST_REG_HIS(
-			   MBR_NO		, HIS_DT		, REG_RLS_DT		, REG_RLS_CD		, DTL_CTNT
-			 , CRE_ID		, CRE_DT		, UPD_ID			, UPD_DT
+			   MBR_NO												, HIS_DT
+			 , REG_RLS_DT											, REG_RLS_CD
+			 , DTL_CTNT												, CRE_ID
+			 , CRE_DT												, UPD_ID
+			 , UPD_DT
 		)VALUES(
-			   #{mbrNo}		, DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')	, DATE_FORMAT(NOW(), '%Y%m%d')		, #{regRlsCd}		, #{dtlCtnt}
-			 , #{creId}		, NOW()			, #{creId}			, NOW()
+			   #{mbrNo}												, DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')
+			 , IFNULL(#{regRlsDt}, DATE_FORMAT(NOW(), '%Y%m%d'))	, #{regRlsCd}
+			 , #{dtlCtnt}											, #{creId}
+			 , NOW()												, #{creId}
+			 , NOW()
 		)
 	]]>
 	</insert>

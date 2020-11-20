@@ -58,4 +58,44 @@ public interface MemberService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> saveMstMbr(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 회원 이력 삭제
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteMstRegHis(String mbrNo) throws Exception;
+
+	/**
+	 * 회원 정보 삭제
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteMstMbr(String mbrNo) throws Exception;
+
+	/**
+	 * 회원 정보/이력 삭제 처리
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int mstMbrDel(String mbrNo) throws Exception;
+
+	/**
+	 * 회원 퇴록 정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMstMbrStsCd(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 회원 퇴록/재등록 처리
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int StsCdUpdate(HashMap<String, Object> map) throws Exception;
 }

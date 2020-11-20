@@ -130,17 +130,20 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 
 			int memCnt = counselService.getMstMbrListCount(sechMap);
 			if(memCnt <= 0){
-				map.put("mbrNo", this.getMbrNoSeq());
+				String newMbrNo = this.getMbrNoSeq();
+				map.put("mbrNo", newMbrNo);
 				map.put("stsCd", ConstantObject.defaultMemStsCd);
 				result = this.insertMstMbr(map);
 
 				if(result > 0) {
 					map.put("regRlsCd", ConstantObject.defaultMemStsCd);
+					map.put("regRlsDt", map.get("regDt"));
 					map.put("dtlCtnt", "최초등록");
 					this.insertMstRegHis(map);
 				}
 
 				resultMap.put("MSG", "등록");
+				resultMap.put("mbrNo", newMbrNo);
 			}else{
 				resultMap.put("err", ConstantObject.Y);
 				resultMap.put("MSG", "동일 회원 정보 존재");
@@ -148,6 +151,7 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		}else{
 			result = this.updateMstMbr(map);
 			resultMap.put("MSG", "수정");
+			resultMap.put("mbrNo", map.get("mbrNo"));
 		}
 
 		if(result <= 0) {
@@ -155,5 +159,82 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		}
 
 		return resultMap;
+	}
+
+	/**
+	 * 회원 이력 삭제
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteMstRegHis(String mbrNo) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty(mbrNo, ""))) {
+			throw new Exception("MemberServiceImpl.deleteMstRegHis mbrNo 필수값 누락");
+		}
+
+		return mstRegHisDao.deleteMstRegHis(mbrNo);
+	}
+
+	/**
+	 * 회원 정보 삭제
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteMstMbr(String mbrNo) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty(mbrNo, ""))) {
+			throw new Exception("MemberServiceImpl.deleteMstMbr mbrNo 필수값 누락");
+		}
+
+		return mstMbrDao.deleteMstMbr(mbrNo);
+	} 
+
+	/**
+	 * 회원 정보/이력 삭제 처리
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int mstMbrDel(String mbrNo) throws Exception{
+		int result = 0;
+
+		result = this.deleteMstRegHis(mbrNo);
+		if(result > 0) {
+			result = this.deleteMstMbr(mbrNo);
+		}
+
+		return result;
+	}
+
+	/**
+	 * 회원 퇴록 정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMstMbrStsCd(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
+			throw new Exception("MemberServiceImpl.deleteMstMbr mbrNo 필수값 누락");
+		}
+
+		return mstMbrDao.updateMstMbrStsCd(map);
+	}
+
+	/**
+	 * 회원 퇴록/재등록 처리
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int StsCdUpdate(HashMap<String, Object> map) throws Exception{
+		int result = this.updateMstMbrStsCd(map);
+		if(result > 0){
+			map.put("regRlsCd", map.get("stsCd"));
+			map.put("regRlsDt", map.get("stpDt"));
+
+			this.insertMstRegHis(map);
+		}
+
+		return result;
 	}
 }
