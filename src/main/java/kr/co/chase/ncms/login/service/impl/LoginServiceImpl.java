@@ -39,10 +39,10 @@ public class LoginServiceImpl extends EgovAbstractServiceImpl implements LoginSe
 	 */
 	public HashMap<String, Object> getSysUsrInfo(HashMap<String, Object> map) throws Exception{
 		if(StringUtils.defaultIfEmpty((String)map.get("usrId"), "").equals("")){
-			throw processException("로그인 아이디를 입력하세요.");
+			throw new Exception("로그인 아이디를 입력하세요.");
 		}
 		if(StringUtils.defaultIfEmpty((String)map.get("passwd"), "").equals("")) {
-			throw processException("로그인 패스워드를 입력하세요.");
+			throw new Exception("로그인 패스워드를 입력하세요.");
 		}
 
 		return sysUsrDao.getSysUsrInfo(map);

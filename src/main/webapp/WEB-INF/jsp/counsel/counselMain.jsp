@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
+		$("input[name='cslDt']").datepicker('setDate', 'today');
 		<%-- 상담정보 저장 --%>
 		counselSave = function(){
 			if($("input[name='cslDt']").val() == ""){
@@ -397,12 +398,12 @@
 						<div class="time-box">
 							<div class="tm-in">
 								<i class="el-input__icon el-icon-time"></i>
-								<form:input path="cslRcpInfo.cslFmTm" cssClass="el-input__inner timepicker" format="HH:mm" placeholder="시작" maxlength="4" style="width: 96px;" />
+								<form:input path="cslRcpInfo.cslFmTm" value="09:00" cssClass="el-input__inner timepicker" format="HH:mm" placeholder="시작" maxlength="4" style="width: 96px;" />
 							</div>
 							<span>~</span>
 							<div class="tm-in">
 								<i class="el-input__icon el-icon-time"></i>
-								<form:input path="cslRcpInfo.cslToTm" cssClass="el-input__inner timepicker" format="HH:mm" placeholder="종료" maxlength="4" style="width: 96px;" />
+								<form:input path="cslRcpInfo.cslToTm" value="09:00" cssClass="el-input__inner timepicker" format="HH:mm" placeholder="종료" maxlength="4" style="width: 96px;" />
 							</div>
 							<div class="t-min">
 								<span class="readonly" id="cslTermTm">0</span> 분 소요

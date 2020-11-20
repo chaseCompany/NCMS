@@ -1015,12 +1015,12 @@
 								<div class="time-box">
 									<div class="tm-in">
 										<i class="el-input__icon el-icon-time"></i>
-										<form:input path="cslIdvInfo.cslFmTm" cssClass="el-input__inner timepicker" placeholder="시작" style="width: 96px;" />
+										<form:input path="cslIdvInfo.cslFmTm" value="09:00" cssClass="el-input__inner timepicker" placeholder="시작" style="width: 96px;" />
 									</div>
 									<span>~</span>
 									<div class="tm-in">
 										<i class="el-input__icon el-icon-time"></i>
-										<form:input path="cslIdvInfo.cslToTm" cssClass="el-input__inner timepicker" placeholder="종료" style="width: 96px;" />
+										<form:input path="cslIdvInfo.cslToTm" value="09:00" cssClass="el-input__inner timepicker" placeholder="종료" style="width: 96px;" />
 									</div>
 									<div class="t-min">
 										<span class="readonly" id="cslTermTm">0</span> 분 소요
