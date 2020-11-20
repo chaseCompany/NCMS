@@ -68,4 +68,40 @@ public class SysUsrDao extends EgovAbstractMapper {
 		return selectList("sysUsr.getSysUsrSearchList", map);
 	}
 
+	/**
+	 * 시스템 사용자 비밀번호를 초기화한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public int updatePwdReset(HashMap<String, Object> map) throws SQLException{
+		return update("sysUsr.updatePwdReset", map);
+	}
+
+	/**
+	 * 시스템 사용자 비밀번호를 초기화한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteSysUsr(String usrId) throws SQLException{
+		return update("sysUsr.deleteSysUsr", usrId);
+	}
+
+	/**
+	 * 현재 지부의 최대 아이디값을 검색한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> findMaxSiteUserId(String siteCd) throws SQLException{
+		return selectOne("sysUsr.findMaxSiteUserId", siteCd);
+	}
+
+	/**
+	 * 신규 사용자를 등록한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertSysUsr(HashMap<String, Object> map) throws SQLException{
+		return insert("sysUsr.insertSysUsr", map);
+	}
+
 }

@@ -71,7 +71,7 @@
 		   SET USR_NM			= #{usrNm}							, ROLE_CD			= #{roleCd}
 			 , SITE_CD			= #{siteCd}							, USE_YN			= #{useYn}
 			 , UPD_ID			= #{updId}			 				, UPD_DT			= NOW()
-		 WHERE	GRP_CD	= #{usrId}
+		 WHERE	USR_ID	= #{usrId}
 	]]>
 	</update>
 
@@ -89,22 +89,64 @@
 		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3600' AND SU.ROLE_CD = SC02.CD_ID AND SC02.USE_YN = 'Y')
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="usrId != null or usrId != ''">
+			<if test="usrId != null and usrId != ''">
 				AND SU.USR_ID LIKE CONCAT('%', REPLACE(#{usrId}, ' ', ''), '%')
 			</if>
-			<if test="usrNm != null or usrNm != ''">
+			<if test="usrNm != null and usrNm != ''">
 				AND SU.USR_NM LIKE CONCAT('%', REPLACE(#{usrNm}, ' ', ''), '%')
 			</if>
-			<if test="roleCd !=null or roleCd != ''">
+			<if test="roleCd !=null and roleCd != ''">
 				AND SU.ROLE_CD = #{roleCd}
 			</if>
-			<if test="siteCd != null or siteCd != ''">
+			<if test="siteCd != null and siteCd != ''">
 				AND SU.SITE_CD = #{siteCd}
 			</if>
-			<if test="useYn != null or useYn != ''">
+			<if test="useYn != null and useYn != ''">
 				AND SU.USE_YN = #{useYn}
 			</if>
 		</trim>
 	</select>
+
+	<update id="sysUsr.updatePwdReset" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* sysUsr.updatePwdReset */ SYS_USR
+		   SET PASSWD			= '12345'
+			 , UPD_ID			= #{updId}			 				, UPD_DT			= NOW()
+		 WHERE	USR_ID = #{usrId}
+	]]>
+	</update>
+
+	<delete id="sysUsr.deleteSysUsr" parameterType="String">
+	<![CDATA[
+		DELETE /* sysUsr.deleteSysUsr */
+		FROM	SYS_USR
+		WHERE	USR_ID = #{usrId}
+	]]>
+	</delete>
+
+	<select id="sysUsr.findMaxSiteUserId" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* sysUsr.findMaxSiteUserId */
+			   USR_ID
+		  FROM SYS_USR
+		  WHERE SITE_CD = #{siteCd}
+		  ORDER BY USR_ID DESC
+		  LIMIT 1
+	]]>
+	</select>
+
+	<insert id="sysUsr.insertSysUsr" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* sysUsr.insertSysUsr */ INTO SYS_USR(
+			  USR_ID			, USR_NM			, PASSWD			, ROLE_CD
+			, SITE_CD			, USE_YN			, REG_DT			, CRE_DT
+			, CRE_ID			, UPD_DT			, UPD_ID
+		)VALUES(
+			  #{usrId}			, #{usrNm}			, #{passWd}			, #{roleCd}
+			, #{siteCd}			, #{useYn}			, NOW()				, NOW()
+			, #{creId}			, NOW()				, #{updId}
+		)
+	]]>
+	</insert>
 
 </mapper>

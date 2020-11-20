@@ -60,4 +60,59 @@ public class AdminUsrServiceImpl extends EgovAbstractServiceImpl implements Admi
 	public List<HashMap<String, Object>> getSysUsrSearchList(HashMap<String, Object> map) throws Exception {
 		return sysUsrDao.getSysUsrSearchList(map);
 	}
+
+	@Override
+	public HashMap<String, Object> updatePwdReset(HashMap<String, Object> map) throws Exception {
+
+		int result = 0;
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		result = sysUsrDao.updatePwdReset(map);
+
+		if(result <= 0) {
+			
+		}else {
+			
+		}
+
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> deleteSysUsr(String usrId) throws Exception {
+		int result = 0;
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		result = sysUsrDao.deleteSysUsr(usrId);
+
+		if(result <= 0) {
+			
+		}else {
+			
+		}
+
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> findMaxSiteUserId(String siteCd) throws Exception {
+		return sysUsrDao.findMaxSiteUserId(siteCd);
+	}
+
+	@Override
+	public HashMap<String, Object> insertSysUsr(HashMap<String, Object> map) throws Exception {
+		int result = 0;
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		result = sysUsrDao.insertSysUsr(map);
+
+		if(result <= 0) {
+			
+		}else {
+			
+		}
+
+		return resultMap;
+	}
+
 }

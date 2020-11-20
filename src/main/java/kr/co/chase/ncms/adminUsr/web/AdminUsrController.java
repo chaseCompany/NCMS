@@ -119,27 +119,25 @@ public class AdminUsrController {
 			return resultView;
 		}
 		
-		LOGGER.debug("reqMap={}", reqMap.toString());
-		
-		if(StringUtils.defaultString((String)reqMap.get("iUsrNm"), "") == "") {
+		if(StringUtils.defaultString((String)reqMap.get("usrNm"), "") == "") {
 			resultView.addObject("err", "Y");
 			resultView.addObject("MSG", "사용자 이름을 입력하세요.");
 
 			flag = false;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("iSiteCd"), "") == "") {
+		if(StringUtils.defaultString((String)reqMap.get("siteCd"), "") == "") {
 			resultView.addObject("err", "Y");
 			resultView.addObject("MSG", "소속 본부를 입력하세요.");
 
 			flag = false;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("iRoleCd"), "") == "") {
+		if(StringUtils.defaultString((String)reqMap.get("roleCd"), "") == "") {
 			resultView.addObject("err", "Y");
 			resultView.addObject("MSG", "사용자 권한을 입력하세요.");
 
 			flag = false;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("iUseYn"), "") == "") {
+		if(StringUtils.defaultString((String)reqMap.get("useYn"), "") == "") {
 			resultView.addObject("err", "Y");
 			resultView.addObject("MSG", "사용 여부를 입력하세요.");
 
@@ -198,6 +196,159 @@ public class AdminUsrController {
 		model.put("useYn", searchUseYn);
 		
 		resultView.addObject("usrSearchList", adminUsrService.getSysUsrSearchList(model));
+
+		return resultView;
+	}
+
+	/**
+	 * 유저 비밀번호 초기화
+	 * @param usrId
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxResetPwd.do")
+	public @ResponseBody ModelAndView ajaxResetPwd(@RequestParam String usrId, HttpSession session) throws Exception{
+
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+			return resultView;
+		}
+
+		if(StringUtils.defaultString(usrId, "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "사용자를 선택해 주세요.");
+
+			return resultView;
+		}
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("usrId", usrId);
+		map.put("updId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+
+		adminUsrService.updatePwdReset(map);
+
+		return resultView;
+	}
+
+	/**
+	 * 유저 삭제
+	 * @param usrId
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxDeleteSysUsr.do")
+	public @ResponseBody ModelAndView ajaxDeleteSysUsr(@RequestParam String usrId, HttpSession session) throws Exception{
+
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+			return resultView;
+		}
+
+		if(StringUtils.defaultString(usrId, "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "사용자를 선택해 주세요.");
+
+			return resultView;
+		}
+
+		adminUsrService.deleteSysUsr(usrId);
+
+		return resultView;
+	}
+
+	/**
+	 * 신규 유저 등록
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxUsrInsert.do")
+	public @ResponseBody ModelAndView ajaxUsrInsert(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+		boolean flag = true;
+		
+		LOGGER.debug("rm={}", reqMap.toString());
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+		
+		if(StringUtils.defaultString((String)reqMap.get("usrNm"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "사용자 이름을 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("siteCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "소속 본부를 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("roleCd"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "사용자 권한을 입력하세요.");
+
+			flag = false;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("useYn"), "") == "") {
+			resultView.addObject("err", "Y");
+			resultView.addObject("MSG", "사용 여부를 입력하세요.");
+
+			flag = false;
+		}
+		
+		// 지부 아이디중 최대값 찾기
+		String siteCd = (String)reqMap.get("siteCd");
+		HashMap<String, Object> maxMap = adminUsrService.findMaxSiteUserId(siteCd);
+		
+		String usrId = null;
+
+		// 해당 지부에 최초 유저일 경우
+		if (null == maxMap) {
+			usrId = "u" + siteCd + "001";
+		}
+		// 해당 지부에 유저가 있을 경우
+		else {
+			String dbMaxId = (String) maxMap.get("USR_ID");
+			int maxNo = Integer.parseInt(dbMaxId.substring(4));
+			maxNo ++;
+			
+			String maxId = String.format("%03d", maxNo);
+			
+			usrId = "u" + siteCd + maxId;
+		}
+		
+		if(flag){
+			reqMap.put("usrId", usrId);
+			reqMap.put("passWd", "12345");
+			reqMap.put("creId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+			reqMap.put("updId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+
+			adminUsrService.insertSysUsr(reqMap);
+		}
 
 		return resultView;
 	}

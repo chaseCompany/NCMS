@@ -92,7 +92,7 @@
                         	codeHtml += '<div class="cell">' + index + '</div>';
                         	codeHtml += '</td>';
                         	codeHtml += '<td>';
-                        	codeHtml += '<div class="cell"><a href="javascript:void(0);" onclick="javaScript:sysAdminCdView(' + res.groupSearchList[i].GRP_CD + ', ' + res.groupSearchList[i].CD_ID + ', ' + res.groupSearchList[i].CD_NM + ', ' + res.groupSearchList[i].DP_SEQ + ', ' + res.groupSearchList[i].USE_YN + ');" class="row_link">' + res.groupSearchList[i].CD_ID + '</a></div>';
+                        	codeHtml += '<div class="cell"><a href="javascript:void(0);" onclick="javaScript:sysAdminCdView(\'' + res.groupSearchList[i].GRP_CD + '\', \'' + res.groupSearchList[i].CD_ID + '\', \'' + res.groupSearchList[i].CD_NM + '\', \'' + res.groupSearchList[i].DP_SEQ + '\', \'' + res.groupSearchList[i].USE_YN + '\');" class="row_link">' + res.groupSearchList[i].CD_ID + '</a></div>';
                         	codeHtml += '</td>';
                         	codeHtml += '<td class="txt-left">';
                         	codeHtml += '<div class="cell">' + res.groupSearchList[i].CD_NM + '</div>';

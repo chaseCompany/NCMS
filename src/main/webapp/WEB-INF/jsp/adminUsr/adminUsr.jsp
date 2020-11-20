@@ -22,6 +22,10 @@
 						$("select[id='roleCd']").val(res.usrView.ROLE_CD);
 						$("input[name='useYn']:radio[value='" + res.usrView.USE_YN + "']").prop("checked", true);
 						$("input[id='regDt']").val(res.usrView.REG_DT);
+						$('#iInitializePwdDefault').hide();
+						$('#iInitializePwdActive').show();
+						$('#deleteBtnDefault').hide();
+						$('#deleteBtnActive').show();
 					}else{
 						console.log("상세내용 조회 오류");
 					}
@@ -32,24 +36,47 @@
 			});
 		},
 		usrUpdate = function(){
-
-			$.ajax({
-				url : '/ajaxUsrUpdate.do',
-				type : 'POST',
-				data : $('#formUsrUpdate').serialize(),
-				success : function(res){
-					if(res.err != "Y"){
-						location.reload();
-					}else{
-						alert(res.MSG);
-						if(res.actUrl != "" && res.actUrl != undefined){
-							window.location.href = res.actUrl;
+			
+			var uiFlag = $("input[id='uiFlag']").val();
+			
+			if (uiFlag == "U") {
+				$.ajax({
+					url : '/ajaxUsrUpdate.do',
+					type : 'POST',
+					data : $('#formUsrUpdate').serialize(),
+					success : function(res){
+						if(res.err != "Y"){
+							location.reload();
+						}else{
+							alert(res.MSG);
+							if(res.actUrl != "" && res.actUrl != undefined){
+								window.location.href = res.actUrl;
+							}
 						}
+					},
+					error : function(xhr, status){
 					}
-				},
-				error : function(xhr, status){
-				}
-			});
+				});
+			}
+			else if (uiFlag == "I") {
+				$.ajax({
+					url : '/ajaxUsrInsert.do',
+					type : 'POST',
+					data : $('#formUsrUpdate').serialize(),
+					success : function(res){
+						if(res.err != "Y"){
+							location.reload();
+						}else{
+							alert(res.MSG);
+							if(res.actUrl != "" && res.actUrl != undefined){
+								window.location.href = res.actUrl;
+							}
+						}
+					},
+					error : function(xhr, status){
+					}
+				});
+			}
 
 		},
 		sysAdminUsrSearch = function(){
@@ -59,7 +86,42 @@
 				type : 'POST',
 				data : $('#usrSearch').serialize(),
 				success : function(res){
-					console.log(res.usrSearchList);
+					if(res.usrSearchList != null){
+                    	var resultHtml = '';
+                    	var index = 1;
+                    	for (var i=0;i<res.usrSearchList.length;i++) {
+                    		resultHtml += '<tr>';
+                    		resultHtml += '<td>';
+                        	resultHtml += '<div class="cell">' + index + '</div>';
+                        	resultHtml += '</td>';
+                        	resultHtml += '<td>';
+                        	resultHtml += '<div class="cell"><a href="javascript:void(0);" onclick="javaScript:sysAdminUsrView(\'' + res.usrSearchList[i].USR_ID + '\');" class="row_link">' + res.usrSearchList[i].USR_ID + '</a></div>';
+                        	resultHtml += '</td>';
+                        	resultHtml += '<td>';
+                        	resultHtml += '<div class="cell">' + res.usrSearchList[i].USR_NM + '</div>';
+                        	resultHtml += '</td>';
+                        	resultHtml += '<td>';
+                        	resultHtml += '<div class="cell">' + res.usrSearchList[i].SITE_NM + '</div>';
+                        	resultHtml += '</td>';
+                        	resultHtml += '<td>';
+                        	resultHtml += '<div class="cell">' + res.usrSearchList[i].ROLE_NM + '</div>';
+                        	resultHtml += '</td>';
+                        	resultHtml += '<td>';
+							if (res.usrSearchList[i].USE_YN == "Y")
+	                        	resultHtml += '<div class="cell">예</div>';
+	                        else
+	                        	resultHtml += '<div class="cell">아니요</div>';
+                        	resultHtml += '</td>';
+                        	resultHtml += '<td>';
+                        	resultHtml += '<div class="cell">' + res.usrSearchList[i].REG_DT + '</div>';
+                        	resultHtml += '</td>';
+                        	resultHtml += '</tr>';
+                        	index++;
+                    	}
+                    	$("#usrGroup").html(resultHtml);
+					}else{
+						$("#usrGroup").html(resultHtml);
+					}
 				},
 				error : function(xhr, status){
 					console.log(xhr);
@@ -69,7 +131,77 @@
 		<%-- 초기화 --%>
 		usrNew = function(){
 			window.location.reload();
+		},
+		resetPwd = function(){
+
+			var result = confirm("사용자 비밀번호를 초기화 하시겠습니까?");
+			if (result) {
+				var tagUsrId = $("input[id='usrId']").val();
+				
+				$.ajax({
+					url : '/ajaxResetPwd.do',
+					type : 'POST',
+					data : {
+						usrId : tagUsrId
+					},
+					success : function(res){
+						if(res.err != "Y"){
+							location.reload();
+						}else{
+							alert(res.MSG);
+							if(res.actUrl != "" && res.actUrl != undefined){
+								window.location.href = res.actUrl;
+							}
+						}
+					},
+					error : function(xhr, status){
+					}
+				});
+			}
+		},
+		deleteSysUsr = function(){
+
+			var tagUsrId = $("input[id='usrId']").val();
+			var result = confirm("사용자(" + tagUsrId + ")를 삭제하시겠습니까?");
+			if (result) {
+				
+				$.ajax({
+					url : '/ajaxDeleteSysUsr.do',
+					type : 'POST',
+					data : {
+						usrId : tagUsrId
+					},
+					success : function(res){
+						if(res.err != "Y"){
+							location.reload();
+						}else{
+							alert(res.MSG);
+							if(res.actUrl != "" && res.actUrl != undefined){
+								window.location.href = res.actUrl;
+							}
+						}
+					},
+					error : function(xhr, status){
+					}
+				});
+			}
+		},
+		usrInsert = function(){
+			
+			$("input[id='uiFlag']").val("I");
+
+			$("input[id='usrId']").val("");
+			$("input[id='usrNm']").val("");
+			$("select[id='siteCd']").val("");
+			$("select[id='roleCd']").val("");
+			$("input[name='useYn']:radio[value='Y']").prop("checked", true);
+			$("input[id='regDt']").val("");
+
 		}
+
+		$('#iInitializePwdActive').hide();
+		$('#deleteBtnActive').hide();
+		$('#uiFlag').val("U");
 	});
 </script>
 <!-- 페이지 타이틀 -->
@@ -235,13 +367,13 @@
                 <button type="button" class="el-button el-button--primary el-button--small is-plain" onclick="javaScript:usrUpdate();">
                     <i class="el-icon-download"></i><span>저장</span>
                 </button>
-                <button type="button" class="el-button el-button--primary el-button--small is-plain">
+                <button type="button" class="el-button el-button--primary el-button--small is-plain" onclick="javaScript:usrInsert();">
                     <i class="el-icon-circle-plus-outline"></i><span>신규</span>
                 </button>
-                <button disabled="disabled" type="button" class="el-button el-button--primary el-button--small is-disabled is-plain">
+                <button disabled="disabled" type="button" class="el-button el-button--primary el-button--small is-disabled is-plain" id="deleteBtnDefault">
                     <i class="el-icon-delete"></i><span>삭제</span>
                 </button>
-                <button type="button" class="el-button el-button--primary el-button--small is-plain">
+                <button type="button" class="el-button el-button--primary el-button--small is-plain" id="deleteBtnActive" onclick="javaScript:deleteSysUsr();">
                     <i class="el-icon-delete"></i><span>삭제</span>
                 </button>
             </div>
@@ -262,6 +394,7 @@
                                     사용자 ID
                                 </th>
                                 <td>
+                                	<input type="hidden" value="U" id="uiFlag"/>
                                     <input type="text" class="el-input__inner v-md" readonly style="width: 200px;" placeholder="자동생성(u+지부코드+순번)" name="usrId" id="usrId">
                                     <span class="dsp ibk text">예시) u01001</span>
                                 </td>
@@ -284,7 +417,7 @@
                                     <button disabled="disabled" type="button" class="el-button el-button--danger el-button--small is-disabled is-plain" style="padding: 9px 10px 8px; margin-left: 4px;" id="iInitializePwdDefault" >
                                         <i class="el-icon-refresh-left"></i><span>비밀번호 초기화</span>
                                     </button>
-                                    <button type="button" class="el-button el-button--danger el-button--small is-plain" style="padding: 9px 10px 8px; margin-left: 4px;" id="iInitializePwdActive">
+                                    <button type="button" class="el-button el-button--danger el-button--small is-plain" style="padding: 9px 10px 8px; margin-left: 4px;" id="iInitializePwdActive" onclick="javaScript:resetPwd();">
                                         <i class="el-icon-refresh-left"></i><span>비밀번호 초기화</span>
                                     </button>
                                     <div role="alert" class="el-alert el-alert--info is-light mgt10" style="width: 196px;">
@@ -329,14 +462,14 @@
                                 </th>
                                 <td>
                                     <span class="ck-bx">
-                                        <input type="radio" class="el-radio__original" value="Y" name="useYn" id="useYn1">
+                                        <input type="radio" class="el-radio__original" value="Y" name="useYn" id="ck1-1">
                                         <label for="ck1-1">
                                             <span class="el-radio__input"><span class="el-radio__inner"></span></span>
                                             예
                                         </label>
                                     </span>
                                     <span class="ck-bx">
-                                        <input type="radio" class="el-radio__original" value="N" name="useYn" id="useYn2">
+                                        <input type="radio" class="el-radio__original" value="N" name="useYn" id="ck1-2">
                                         <label for="ck1-2">
                                             <span class="el-radio__input"><span class="el-radio__inner"></span></span>
                                             아니요
