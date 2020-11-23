@@ -8,6 +8,7 @@
 			window.location.reload();
 		},
 		individualExel = function(){
+			alert('준비중 입니다.');
 			console.log("엑셀다운로드");
 		},
 		<%-- 회원 조회 --%>
@@ -45,6 +46,8 @@
 			getCslIspList(obj.MBR_NO);
 			getCslAssList(obj.MBR_NO);
 
+			$("button#excelNo").hide();
+			$("button#excelYes").show();
 			$("button#idvSaveBtnNo").hide();
 			$("button#idvSaveBtnYes").show();
 			$("button#ispSaveButNo").hide();
@@ -874,7 +877,10 @@
 	<button type="button" onclick="javaScript:individualNew();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;">
 		<i class="el-icon-refresh"></i> <span>초기화</span>
 	</button>
-	<button type="button" onclick="javaScript:individualExel();" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
+	<button id="excelNo" type="button" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
+		<i class="el-icon-document"></i> <span>엑셀다운로드</span>
+	</button>
+	<button id="excelYes" onclick="javaScript:individualExel();" type="button" class="el-button normal el-button--default el-button--small is-plain" style="display:none;">
 		<i class="el-icon-document"></i> <span>엑셀다운로드</span>
 	</button>
 </div>

@@ -164,6 +164,7 @@
 			console.log("삭제");
 		},
 		counselExel = function(){
+			alert('준비중 입니다.');
 			console.log("엑셀다운로드");
 		},
 		<%-- 상담 목록 조회 --%>
