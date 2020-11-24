@@ -303,6 +303,8 @@
 						}else{
 							$("div#ispList").html("<div class='no-data'>조회된 데이터가 없습니다.</div>");
 						}
+
+						newIsp();
 					}else{
 						console.log("ERR")
 					}
