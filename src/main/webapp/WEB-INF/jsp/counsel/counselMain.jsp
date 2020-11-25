@@ -515,7 +515,7 @@
 								<th><span class="required">*</span> 지역</th>
 								<td colspan="4">
 									<span class="el-inp mgr3">
-										<select name="ifpAreaCd" style="width: 178px;">
+										<select name="ifpAreaCd" style="width: 178px;" onchange="javaScript:inputDisabledChang(this, 'ifpAreaEtc');">
 											<option value="">선택</option>
 <c:forEach var="result" items="${areaList}" varStatus="status">
 											<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -611,7 +611,7 @@
 								<th><span class="required">*</span> 지역</th>
 								<td colspan="4">
 									<span class="el-inp mgr3">
-										<select name="tgpAreaCd" style="width: 178px;">
+										<select name="tgpAreaCd" style="width: 178px;" onchange="javaScript:inputDisabledChang(this, 'tgpAreaEtc');">
 											<option value="">선택</option>
 <c:forEach var="result" items="${areaList}" varStatus="status">
 											<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>

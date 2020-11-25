@@ -124,6 +124,19 @@ function tagNumChang(tagName, val){
 
 	$("input[name='" + tagName + "']").val(num);
 }
+/**
+ * 객체의 값이 ZZZ일 경우 타겟 입력 활성화
+ * @param obj
+ * @param tagName
+ */
+function inputDisabledChang(obj, tagName){
+	if($(obj).val().indexOf("ZZ") >= 0){
+		$("input[name='" + tagName + "']").attr("disabled", false);
+	}else{
+		$("input[name='" + tagName + "']").val("");
+		$("input[name='" + tagName + "']").attr("disabled", true);
+	}
+}
 
 function nl2br(str, is_xhtml){
 	var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';

@@ -1525,7 +1525,7 @@
 										</td>
 										<th><span class="required">*</span> 사용원인</th>
 										<td colspan="3">
-											<select name="useCauCd" style="width: 150px;">
+											<select name="useCauCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'useCauEtc');">
 												<option value="">선택</option>
 <c:forEach var="result" items="${useCauCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -1537,7 +1537,7 @@
 									<tr>
 										<th><span class="required">*</span> 약물관련 법적문제</th>
 										<td colspan="5">
-											<select name="lawPbmCd" id="lawPbmCd" style="width: 150px;" multiple>
+											<select name="lawPbmCd" id="lawPbmCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');" multiple>
 <c:forEach var="result" items="${lawPbmCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
@@ -1552,7 +1552,7 @@
 									<tr>
 										<th><span class="required">*</span> 정신적 건강문제</th>
 										<td colspan="5">
-											<select name="sprtPbmCd" style="width: 150px;">
+											<select name="sprtPbmCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'sprtPbmEtc');">
 												<option value="">선택</option>
 <c:forEach var="result" items="${sprtPbmCdList}" varStatus="status">
 												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
