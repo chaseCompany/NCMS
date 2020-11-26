@@ -507,7 +507,8 @@
 								$("select#lawPbmCd option[value=" + cdVal + "]").prop('selected', true);
 							});
 						}else{
-							$("select[name='lawPbmCd']").val(resultObj.LAW_PBM_CD).prop("selected", true);
+							var cdVal = $.trim(resultObj.LAW_PBM_CD).replaceAll("[", "").replaceAll("]", "");
+							$("select[name='lawPbmCd']").val(cdVal).prop("selected", true);
 						}
 
 						$("input[name='lawPbmEtc']").val(resultObj.LAW_PBM_ETC);
@@ -522,7 +523,8 @@
 									$("select#prsnCd option[value=" + cdVal + "]").prop('selected', true);
 								});
 							}else{
-								$("select[name='prsnCd']").val(resultObj.PRSN_CD).prop("selected", true);
+								var cdVal = $.trim(resultObj.PRSN_CD).replaceAll("[", "").replaceAll("]", "");
+								$("select[name='prsnCd']").val(cdVal).prop("selected", true);
 							}
 						}
 						if(resultObj.EMTN_CD != undefined){
@@ -532,7 +534,8 @@
 									$("select#emtnCd option[value=" + cdVal + "]").prop('selected', true);
 								});
 							}else{
-								$("select[name='emtnCd']").val(resultObj.EMTN_CD).prop("selected", true);
+								var cdVal = $.trim(resultObj.EMTN_CD).replaceAll("[", "").replaceAll("]", "");
+								$("select[name='emtnCd']").val(cdVal).prop("selected", true);
 							}
 						}
 						if(resultObj.ACTN_CD != undefined){
@@ -542,7 +545,8 @@
 									$("select#actnCd option[value=" + cdVal + "]").prop('selected', true);
 								});
 							}else{
-								$("select[name='actnCd']").val(resultObj.ACTN_CD).prop("selected", true);
+								var cdVal = $.trim(resultObj.ACTN_CD).replaceAll("[", "").replaceAll("]", "");
+								$("select[name='actnCd']").val(cdVal).prop("selected", true);
 							}
 						}
 						if(resultObj.FMLY_CD != undefined){
@@ -552,7 +556,8 @@
 									$("select#fmlyCd option[value=" + cdVal + "]").prop('selected', true);
 								});
 							}else{
-								$("select[name='fmlyCd']").val(resultObj.FMLY_CD).prop("selected", true);
+								var cdVal = $.trim(resultObj.FMLY_CD).replaceAll("[", "").replaceAll("]", "");
+								$("select[name='fmlyCd']").val(cdVal).prop("selected", true);
 							}
 						}
 						if(resultObj.IT_RL_CD != undefined){
@@ -562,7 +567,8 @@
 									$("select#itRlCd option[value=" + cdVal + "]").prop('selected', true);
 								});
 							}else{
-								$("select[name='itRlCd']").val(resultObj.IT_RL_CD).prop("selected", true);
+								var cdVal = $.trim(resultObj.IT_RL_CD).replaceAll("[", "").replaceAll("]", "");
+								$("select[name='itRlCd']").val(cdVal).prop("selected", true);
 							}
 						}
 						$("input[name='miEtc']").val(resultObj.MI_ETC);
