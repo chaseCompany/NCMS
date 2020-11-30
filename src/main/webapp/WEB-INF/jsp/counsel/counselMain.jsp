@@ -360,7 +360,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 일반 상담</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 중독 예방 상담</h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <form name="counselForm" id="counselForm">
@@ -432,7 +432,7 @@
 					<td>
 <c:forEach var="result" items="${ifpGbList}" varStatus="status">
 						<span class="ck-bx">
-							<input type="radio" class="el-radio__original" name="ifpGbCd" id="ifpGbCd-<c:out value='${status.count}'/>" value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslRcpInfo.ifpGbCd}"> checked</c:if> />
+							<input type="radio" class="el-radio__original" name="ifpGbCd" id="ifpGbCd-<c:out value='${status.count}'/>" value="${result.CD_ID}" onchange="javaScript:inputDisabledChang(this, 'ifpGbEtc');"<c:if test="${result.CD_ID eq cslRcpInfo.ifpGbCd}"> checked</c:if> />
 							<label for="ifpGbCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span><c:out value="${result.CD_NM}" /></label>
 						</span>
 </c:forEach>

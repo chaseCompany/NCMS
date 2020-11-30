@@ -20,9 +20,10 @@
 	</div>
 	<div class="c">
 		<ul>
-			<li><a href="javaScript:goTopMenuPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>일반 상담</a></li>
-			<li><a href="javaScript:goTopMenuPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>개별 회복지원 서비스</a></li>
-			<li><a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>주간 프로그램</a></li>
+			<li><a href="javaScript:goTopMenuPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>중독 예방 상담</a></li>
+			<li><a href="javaScript:goTopMenuPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>사례관리</a></li>
+			<li><a href="javaScript:alert('준비중');">심리치유</a></li>
+			<li><a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>주간 이용 프로그램</a></li>
 			<li><a href="javaScript:goTopMenuPage('/memberMain.do');"<c:if test="${thisViewUrl eq 'memberMain.do'}"> class="on"</c:if>>회원정보 관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/reportMain.do');"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계 관리</a></li>
 		</ul>

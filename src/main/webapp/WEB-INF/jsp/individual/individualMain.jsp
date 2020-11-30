@@ -318,7 +318,7 @@
 				url : '/ajaxClsIspInfo.do',
 				type : 'POST',
 				data : {
-					mbrNo : tagMbrNo, 
+					mbrNo : tagMbrNo,
 					ispDt : tagIspDt
 				},
 				success : function(res){
@@ -383,7 +383,7 @@
 				url : '/ajaxClsIspDel.do',
 				type : 'POST',
 				data : {
-					mbrNo : tagMbrNo, 
+					mbrNo : tagMbrNo,
 					ispDt : tagIspDt
 				},
 				success : function(res){
@@ -756,7 +756,7 @@
 						   + "		<td><div class='cell'>" + evlSco + "</div></td>"
 						   + "		<td class='txt-left'><div class='cell'>" + evlCtnt + "</div></td>"
 						   + "	</tr>";
-	
+
 				$("table#assEvlTableList > tbody:last").append(inHtml);
 			}else{
 				var inHtml = "<table id='assEvlTableList'>"
@@ -877,7 +877,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 개별 회복지원 서비스 	</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 사례관리 </h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
@@ -949,13 +949,25 @@
 			<div class="el-tabs__nav-scroll">
 				<div role="tablist" class="el-tabs__nav is-top">
 					<div class="el-tabs__item is-top is-active" data-id="tab-focus">
-						<span><i class="el-icon-s-help"></i> 집중상담</span>
+						<span><i class="el-icon-s-help"></i> 사례관리 상담</span>
 					</div>
 					<div class="el-tabs__item is-top" data-id="tab-isp">
-						<span><i class="el-icon-s-management"></i> ISP 수립</span>
+						<span><i class="el-icon-s-management"></i> ISP 수립/욕구항목</span>
 					</div>
 					<div class="el-tabs__item is-top" data-id="tab-assessment">
-						<span><i class="el-icon-platform-eleme"></i> 사정평가</span>
+						<span><i class="el-icon-platform-eleme"></i> 병력정보</span>
+					</div>
+					<div class="el-tabs__item is-top" data-id="tab-test">
+						<span><i class="el-icon-platform-eleme"></i> 인적정보</span>
+					</div>
+					<div class="el-tabs__item is-top" data-id="tab-test">
+						<span><i class="el-icon-platform-eleme"></i> 퇴록관리</span>
+					</div>
+					<div class="el-tabs__item is-top" data-id="tab-test">
+						<span><i class="el-icon-platform-eleme"></i> 치료 재활정보</span>
+					</div>
+					<div class="el-tabs__item is-top" data-id="tab-test">
+						<span><i class="el-icon-platform-eleme"></i> ISP 수립</span>
 					</div>
 				</div>
 			</div>

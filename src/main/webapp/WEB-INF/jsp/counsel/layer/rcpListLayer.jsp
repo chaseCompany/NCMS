@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script>
 	$(document).ready(function(){
 		$(".datepicker").datepicker();
@@ -130,7 +131,7 @@
 <c:if test="${totalCount > 0}">
 	<c:forEach var="result" items="${resultList}" varStatus="status">
 						<tr>
-							<td><div class="cell"><c:out value="${result.ROWNUM}" /></div></td>
+							<td><div class="cell"><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></div></td>
 							<td>
 								<div class="cell">
 									<button type="button" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;" onclick="javaScript:counselInfoViewSet('<c:out value="${result.RCP_NO}" />');">
