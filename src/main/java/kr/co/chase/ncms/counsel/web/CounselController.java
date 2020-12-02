@@ -256,11 +256,11 @@ public class CounselController {
 			resultView.addObject("MSG", "위기분류척도 점수를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslCtnt"), "") == "") {
+/*		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslCtnt"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "상담내용을 입력하세요.");
 			return resultView;
-		}
+		}*/
 		if(StringUtils.defaultIfEmpty((String)reqMap.get("ursCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "URS를 선택하세요.");

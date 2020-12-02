@@ -102,10 +102,6 @@
 				alert("주요조치는 필수 입력 항목입니다.");
 				$("select[name='mjrMngCd']").focus();		return;
 			}
-			if($("textarea[name='cslCtnt']").val() == ""){
-				alert("상담내용은 필수 입력 항목입니다.");
-				$("textarea[name='cslCtnt']").focus();		return;
-			}
 			if($("select[name='ursCd']").val() == ""){
 				alert("URS은 필수 입력 항목입니다.");
 				$("select[name='ursCd']").focus();			return;
@@ -137,6 +133,8 @@
 		<%-- 복사 --%>
 		counselCopy = function(){
 			$("input[name='rcpNo']").val("");
+			$("input[name='cslId']").val("<c:out value="${cslRcpVO.cslId}" />");
+			$("input[name='cslNm']").val("<c:out value="${cslRcpVO.cslNm}" />");
 
 			$("button#delButNo").show();
 			$("button#delButYes").hide();
