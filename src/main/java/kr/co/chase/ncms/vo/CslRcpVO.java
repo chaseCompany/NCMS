@@ -19,6 +19,7 @@ public class CslRcpVO implements Serializable {
 	private int cslTermTm;					// 소요시간
 	private String cslId;					// 상담사ID
 	private String cslNm;					// 상담사명
+	private String cslSite;					// 상담 기관
 	private String ifpGbCd;					// 정보제공자/본인여부
 	private String ifpGbEtc;				// 정보제공자/본인여부(기타)
 	private String ifpMbrNo;				// 정보제공자 회원정보 번호
@@ -45,14 +46,18 @@ public class CslRcpVO implements Serializable {
 	private String cslTpCd;					// 상담유형
 	private String cslHisCd;				// 상담이력코드
 	private String fstDrugCd;				// 최초사용약물
+	private String fstDrug;					// 최초 사용 약물(입력)
 	private String mainDrugCd;				// 주요사용약물 분류
 	private String mainDrug;				// 주요사용약물
 	private String cslCtnt;					// 상담내용
+	private String cslRst;					// 상담 결과
+	private String cslEmer;					// 위기 상담
 	private String mjrMngCd;				// 주요조치
 	private int astSco;						// ASSIST 점수
 	private String rskaTpCd;				// 위기분류척도 Rating A-위험성
 	private String rskbTpCd;				// 위기분류척도 Rating B-지지체계
 	private String rskcTpCd;				// 위기분류척도 Rating C-협조능력
+	private String ursCd;					// URS
 	private int rskSco;						// 위기분류척도 점수
 	private String creId;					// 생성자
 	private Timestamp creDt;				// 생성일자
@@ -144,6 +149,20 @@ public class CslRcpVO implements Serializable {
 	 */
 	public void setCslNm(String cslNm) {
 		this.cslNm = cslNm;
+	}
+	/**
+	 * 상담 기관
+	 * @return
+	 */
+	public String getCslSite() {
+		return cslSite;
+	}
+	/**
+	 * 상담 기관
+	 * @param cslSite
+	 */
+	public void setCslSite(String cslSite) {
+		this.cslSite = cslSite;
 	}
 	/**
 	 * 정보제공자/본인여부
@@ -458,6 +477,20 @@ public class CslRcpVO implements Serializable {
 		this.fstDrugCd = fstDrugCd;
 	}
 	/**
+	 * 최초 사용 약물(입력)
+	 * @return
+	 */
+	public String getFstDrug() {
+		return fstDrug;
+	}
+	/**
+	 * 최초 사용 약물(입력)
+	 * @param fstDrug
+	 */
+	public void setFstDrug(String fstDrug) {
+		this.fstDrug = fstDrug;
+	}
+	/**
 	 * 주요사용약물 분류
 	 */
 	public String getMainDrugCd() {
@@ -492,6 +525,34 @@ public class CslRcpVO implements Serializable {
 	 */
 	public void setCslCtnt(String cslCtnt) {
 		this.cslCtnt = cslCtnt;
+	}
+	/**
+	 * 상담 결과
+	 * @return
+	 */
+	public String getCslRst() {
+		return cslRst;
+	}
+	/**
+	 * 상담 결과
+	 * @param cslRst
+	 */
+	public void setCslRst(String cslRst) {
+		this.cslRst = cslRst;
+	}
+	/**
+	 * 위기 상담
+	 * @return
+	 */
+	public String getCslEmer() {
+		return cslEmer;
+	}
+	/**
+	 * 위기 상담
+	 * @param cslEmer
+	 */
+	public void setCslEmer(String cslEmer) {
+		this.cslEmer = cslEmer;
 	}
 	/**
 	 * 주요조치
@@ -552,6 +613,20 @@ public class CslRcpVO implements Serializable {
 	 */
 	public void setRskcTpCd(String rskcTpCd) {
 		this.rskcTpCd = rskcTpCd;
+	}
+	/**
+	 * URS
+	 * @return
+	 */
+	public String getUrsCd() {
+		return ursCd;
+	}
+	/**
+	 * URS
+	 * @param ursCd
+	 */
+	public void setUrsCd(String ursCd) {
+		this.ursCd = ursCd;
 	}
 	/**
 	 * 위기분류척도 점수

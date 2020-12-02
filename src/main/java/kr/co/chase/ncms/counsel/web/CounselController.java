@@ -42,12 +42,12 @@ public class CounselController {
 	public String counselMain(ModelMap model, @ModelAttribute("cslRcpVO") CslRcpVO cslRcpVO, HttpSession session) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
 			return "redirect:/login.do";
 		}
 
-		cslRcpVO.setCslId(StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
-		cslRcpVO.setCslNm(StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
+		cslRcpVO.setCslId(StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
+		cslRcpVO.setCslNm(StringUtils.defaultIfEmpty((String)usrInfo.get("USR_NM"), ""));
 		cslRcpVO.setIfpGbCd("10");
 		cslRcpVO.setIfpGendCd("M");
 		cslRcpVO.setTgpFrgCd("LO");
@@ -56,6 +56,9 @@ public class CounselController {
 
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
+
+		codeListMap.put("grpCd", "C3500");				// 기관명
+		model.put("cslSiteList", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C1000");				// 정보제공자/본인여부
 		model.put("ifpGbList", sysCodeService.getSysCdList(codeListMap));
@@ -93,6 +96,9 @@ public class CounselController {
 		codeListMap.put("grpCd", "C2300");				// Rating C: 협조능력
 		model.put("rskcTpList", sysCodeService.getSysCdList(codeListMap));
 
+		codeListMap.put("grpCd", "C5600");				// URS
+		model.put("ursCdList", sysCodeService.getSysCdList(codeListMap));
+
 		return "counsel/counselMain";
 	}
 
@@ -109,7 +115,7 @@ public class CounselController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 			resultView.addObject("actUrl", "/login.do");
@@ -117,149 +123,153 @@ public class CounselController {
 			return resultView;
 		}
 
-		if(StringUtils.defaultString((String)reqMap.get("cslDt"), "") == "" || 
-		   StringUtils.defaultString((String)reqMap.get("cslFmTm"), "") == "" || 
-		   StringUtils.defaultString((String)reqMap.get("cslToTm"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslDt"), "") == "" ||
+		   StringUtils.defaultIfEmpty((String)reqMap.get("cslFmTm"), "") == "" ||
+		   StringUtils.defaultIfEmpty((String)reqMap.get("cslToTm"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "상담일시를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpGbCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpGbCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자/본인여부를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpNm"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자 성명를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpNm"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpNm"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자 성명를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpGendCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpGendCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자 성별를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpAge"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpAge"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자 연령를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpTelNo1"), "") == "" ||
-		   StringUtils.defaultString((String)reqMap.get("ifpTelNo2"), "") == "" ||
-		   StringUtils.defaultString((String)reqMap.get("ifpTelNo3"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpTelNo1"), "") == "" ||
+		   StringUtils.defaultIfEmpty((String)reqMap.get("ifpTelNo2"), "") == "" ||
+		   StringUtils.defaultIfEmpty((String)reqMap.get("ifpTelNo3"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자 연락처를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpJobCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpJobCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자 직업를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpAreaCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보제공자 지역를 선택하세요.");
 			return resultView;
-		}else if(StringUtils.defaultString((String)reqMap.get("ifpAreaCd"), "") == "ZZZ"){
-			if(StringUtils.defaultString((String)reqMap.get("ifpAreaEtc"), "") == "") {
+		}else if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpAreaCd"), "") == "ZZZ"){
+			if(StringUtils.defaultIfEmpty((String)reqMap.get("ifpAreaEtc"), "") == "") {
 				resultView.addObject("err", ConstantObject.Y);
 				resultView.addObject("MSG", "정보제공자 지역를 입력하세요.");
 				return resultView;
 			}
 		}
-		if(StringUtils.defaultString((String)reqMap.get("tgpNm"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpNm"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "대상자 성명를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("tgpGendCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpGendCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "대상자 성별를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("tgpAge"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpAge"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "대상자 연령를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("tgpTelNo1"), "") == "" ||
-		   StringUtils.defaultString((String)reqMap.get("tgpTelNo2"), "") == "" ||
-		   StringUtils.defaultString((String)reqMap.get("tgpTelNo3"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpTelNo1"), "") == "" ||
+		   StringUtils.defaultIfEmpty((String)reqMap.get("tgpTelNo2"), "") == "" ||
+		   StringUtils.defaultIfEmpty((String)reqMap.get("tgpTelNo3"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "대상자 연락처를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("tgpJobCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpJobCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "대상자 직업를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("tgpFrgCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpFrgCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "대상자 내/외국인 여부를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpAreaCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "대상자 지역를 선택하세요.");
 			return resultView;
-		}else if(StringUtils.defaultString((String)reqMap.get("tgpAreaCd"), "") == "ZZZ"){
-			if(StringUtils.defaultString((String)reqMap.get("tgpAreaEtc"), "") == "") {
+		}else if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpAreaCd"), "") == "ZZZ"){
+			if(StringUtils.defaultIfEmpty((String)reqMap.get("tgpAreaEtc"), "") == "") {
 				resultView.addObject("err", ConstantObject.Y);
 				resultView.addObject("MSG", "대상자 지역를 입력하세요.");
 				return resultView;
 			}
 		}
-		if(StringUtils.defaultString((String)reqMap.get("ifPathCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ifPathCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "정보취득경로를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("pbmKndCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("pbmKndCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "주호소문제를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("cslTpCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslTpCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "상담유형를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("fstDrugCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("fstDrugCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "최초사용약물을 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("mainDrugCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("mainDrugCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "주요사용약물을 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("mjrMngCd"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("mjrMngCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "주요조치를 선택하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("rskSco"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("rskSco"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "위기분류척도 점수를 입력하세요.");
 			return resultView;
 		}
-		if(StringUtils.defaultString((String)reqMap.get("cslCtnt"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslCtnt"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "상담내용을 입력하세요.");
 			return resultView;
 		}
-
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("ursCd"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "URS를 선택하세요.");
+			return resultView;
+		}
 
 		reqMap.put("cslDt", ((String)reqMap.get("cslDt")).replaceAll("-", ""));
-		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
-		reqMap.put("cslNm", StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
+		reqMap.put("cslId", StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
+		reqMap.put("cslNm", StringUtils.defaultIfEmpty((String)usrInfo.get("USR_NM"), ""));
 
 		String rcpNo = StringUtils.defaultIfEmpty(counselService.counselAdd(reqMap), "");
 		if("".equals(rcpNo)){
@@ -282,8 +292,8 @@ public class CounselController {
 	 */
 	@RequestMapping(value="/getClsRcpList.do")
 	public String getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
-		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
+		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "1");
+		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
 		PaginationInfo paginginfo = new PaginationInfo();
 		if(currentPageNo == "" || recordCountPerPage == ""){
@@ -349,7 +359,7 @@ public class CounselController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 			resultView.addObject("actUrl", "/login.do");
@@ -357,14 +367,14 @@ public class CounselController {
 			return resultView;
 		}
 
-		if(StringUtils.defaultString((String)reqMap.get("rcpNo"), "") == "") {
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("rcpNo"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "상담번호를 입력하세요.");
 
 			return resultView;
 		}
 
-		int result = counselService.deleteCslRcp(StringUtils.defaultString((String)reqMap.get("rcpNo"), ""));
+		int result = counselService.deleteCslRcp(StringUtils.defaultIfEmpty((String)reqMap.get("rcpNo"), ""));
 
 		return resultView;
 	}
@@ -381,7 +391,7 @@ public class CounselController {
 		ModelAndView resultView = new ModelAndView("jsonView");
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 			resultView.addObject("actUrl", "/login.do");
@@ -389,7 +399,7 @@ public class CounselController {
 			return resultView;
 		}
 
-		if(StringUtils.defaultString(rcpNo, "") == "") {
+		if(StringUtils.defaultIfEmpty(rcpNo, "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "상담번호를 입력하세요.");
 
@@ -411,8 +421,8 @@ public class CounselController {
 	 */
 	@RequestMapping(value="/ajaxMstMbrList.do")
 	public String ajaxMstMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "");
-		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
+		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "");
+		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
 		PaginationInfo paginginfo = new PaginationInfo();
 		if(currentPageNo == "" || recordCountPerPage == ""){

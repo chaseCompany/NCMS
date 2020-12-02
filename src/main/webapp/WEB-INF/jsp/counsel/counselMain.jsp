@@ -106,6 +106,10 @@
 				alert("상담내용은 필수 입력 항목입니다.");
 				$("textarea[name='cslCtnt']").focus();		return;
 			}
+			if($("select[name='ursCd']").val() == ""){
+				alert("URS은 필수 입력 항목입니다.");
+				$("select[name='ursCd']").focus();			return;
+			}
 
 			$.ajax({
 				url : '/ajaxCounselAdd.do',
@@ -263,6 +267,7 @@
 						$("input[name='cslFmTm']").val(formatTime(res.cslRcpInfo.CSL_FM_TM));
 						$("input[name='cslToTm']").val(formatTime(res.cslRcpInfo.CSL_TO_TM));
 						$("#cslTermTm").text(res.cslRcpInfo.CSL_TERM_TM);
+						$("select[name='cslSite']").val(res.cslRcpInfo.CSL_SITE).prop("selected", true);
 						$("input[name='cslTermTm']").val(res.cslRcpInfo.CSL_TERM_TM);
 						$("input[name='cslId']").val(res.cslRcpInfo.CSL_ID);
 						$("input[name='cslNm']").val(res.cslRcpInfo.CSL_NM);
@@ -293,6 +298,7 @@
 						$("select[name='pbmKndCd']").val(res.cslRcpInfo.PBM_KND_CD).prop("selected", true);
 						$("select[name='cslTpCd']").val(res.cslRcpInfo.CSL_TP_CD).prop("selected", true);
 						$("select[name='fstDrugCd']").val(res.cslRcpInfo.FST_DRUG_CD).prop("selected", true);
+						$("input[name='fstDrug']").val(res.cslRcpInfo.FST_DRUG);
 						$("select[name='mainDrugCd']").val(res.cslRcpInfo.MAIN_DRUG_CD).prop("selected", true);
 						$("input[name='mainDrug']").val(res.cslRcpInfo.MAIN_DRUG);
 						$("select[name='mjrMngCd']").val(res.cslRcpInfo.MJR_MNG_CD).prop("selected", true);
@@ -301,7 +307,10 @@
 						$("select[name='rskaTpCd']").val(res.cslRcpInfo.RSKA_TP_CD).prop("selected", true);
 						$("select[name='rskbTpCd']").val(res.cslRcpInfo.RSKB_TP_CD).prop("selected", true);
 						$("select[name='rskcTpCd']").val(res.cslRcpInfo.RSKC_TP_CD).prop("selected", true);
+						$("input[name='cslEmer']").val(res.cslRcpInfo.CSL_EMER);
+						$("select[name='ursCd']").val(res.cslRcpInfo.URS_CD).prop("selected", true);
 						$("textarea[name='cslCtnt']").val(res.cslRcpInfo.CSL_CTNT);
+						$("textarea[name='cslRst']").val(res.cslRcpInfo.CSL_RST);
 
 						layerPopupClose('rcptPopUp');
 						changRating();
@@ -322,14 +331,14 @@
 			});
 		},
 		<%-- 상담내용보기 --%>
-		ctntPopup = function(){
+		areaPopup = function(tagName){
 			layerPopupOpen('counwrite');
-
-			$("textarea[name='viewCslCtnt']").val($("textarea[name='cslCtnt']").val());
+			$("input[name='viewTagName']").val(tagName);
+			$("textarea[name='viewCslCtnt']").val($("textarea[name='" + tagName + "']").val());
 		},
 		<%-- 상담내용상세보기 확인 --%>
 		setCslCtnt = function(){
-			$("textarea[name='cslCtnt']").val($("textarea[name='viewCslCtnt']").val());
+			$("textarea[name='" + $("input[name='viewTagName']").val() + "']").val($("textarea[name='viewCslCtnt']").val());
 			layerPopupClose('counwrite');
 		},
 		<%-- 위기분류척도 점수 계산--%>
@@ -364,6 +373,7 @@
 </div>
 <!-- // 페이지 타이틀 -->
 <form name="counselForm" id="counselForm">
+<input type="hidden" name="viewTagName" value="" />
 <!-- 상단 버튼 -->
 <div class="top-right-btn">
 	<button type="button" onclick="javaScript:counselSave();" class="el-button normal el-button--primary el-button--small is-plain">
@@ -430,11 +440,18 @@
 					</td>
 					<th>기관명</th>
 					<td>
-						<span class="tac">&nbsp;</span>
+						<select name="cslSite" style="width: 140px;">
+							<option value="">선택</option>
+<c:if test="${cslSiteList ne null and cslSiteList ne ''}">
+	<c:forEach var="result" items="${cslSiteList}" varStatus="status">
+							<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+						</select>
 					</td>
 					<th>상담자</th>
 					<td>
-						<span class="tac"><form:input path="cslRcpInfo.cslId" cssClass="el-input__inner" readonly="true" style="width: 100px;" /></span>
+						<span class="tac"><form:input path="cslRcpInfo.cslId" cssClass="el-input__inner" readonly="true" style="width:100px;" /></span>
 						<span class="tac"><form:input path="cslRcpInfo.cslNm" cssClass="el-input__inner" readonly="true" style="width:150px" /></span>
 					</td>
 				</tr>
@@ -450,12 +467,14 @@
 				<tr>
 					<th>정보제공자/본인여부</th>
 					<td>
-<c:forEach var="result" items="${ifpGbList}" varStatus="status">
+<c:if test="${ifpGbList ne null and ifpGbList ne ''}">
+	<c:forEach var="result" items="${ifpGbList}" varStatus="status">
 						<span class="ck-bx">
 							<input type="radio" class="el-radio__original" name="ifpGbCd" id="ifpGbCd-<c:out value='${status.count}'/>" value="${result.CD_ID}" onchange="javaScript:inputDisabledChang(this, 'ifpGbEtc');"<c:if test="${result.CD_ID eq cslRcpInfo.ifpGbCd}"> checked</c:if> />
 							<label for="ifpGbCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span><c:out value="${result.CD_NM}" /></label>
 						</span>
-</c:forEach>
+	</c:forEach>
+</c:if>
 						<div class="etc-txt">
 							<form:input path="cslRcpInfo.ifpGbEtc" cssClass="el-input__inner" placeholder="기타 선택시 입력 가능" disabled="true" style="width: 256px;" />
 						</div>
@@ -525,9 +544,11 @@
 								<td>
 									<select name="ifpJobCd" style="width: 140px;">
 										<option value="">선택</option>
-<c:forEach var="result" items="${jobList}" varStatus="status">
+<c:if test="${jobList ne null and jobList ne ''}">
+	<c:forEach var="result" items="${jobList}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 							</tr>
@@ -537,9 +558,11 @@
 									<span class="el-inp mgr3">
 										<select name="ifpAreaCd" style="width: 178px;" onchange="javaScript:inputDisabledChang(this, 'ifpAreaEtc');">
 											<option value="">선택</option>
-<c:forEach var="result" items="${areaList}" varStatus="status">
+<c:if test="${areaList ne null and areaList ne ''}">
+	<c:forEach var="result" items="${areaList}" varStatus="status">
 											<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 										</select>
 									</span>
 									<span class="dsp-ibk">
@@ -610,9 +633,11 @@
 								<td>
 									<select name="tgpJobCd" style="width: 140px;">
 										<option value="">선택</option>
-<c:forEach var="result" items="${jobList}" varStatus="status">
+<c:if test="${jobList ne null and jobList ne ''}">
+	<c:forEach var="result" items="${jobList}" varStatus="status">
 										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 									</select>
 								</td>
 								<th><span class="required">*</span> 내/외국인</th>
@@ -633,9 +658,11 @@
 									<span class="el-inp mgr3">
 										<select name="tgpAreaCd" style="width: 178px;" onchange="javaScript:inputDisabledChang(this, 'tgpAreaEtc');">
 											<option value="">선택</option>
-<c:forEach var="result" items="${areaList}" varStatus="status">
+<c:if test="${areaList ne null and areaList ne ''}">
+	<c:forEach var="result" items="${areaList}" varStatus="status">
 											<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 										</select>
 									</span>
 									<span class="dsp-ibk">
@@ -660,27 +687,32 @@
 						<td>
 							<select name="ifPathCd" style="width: 132px;">
 								<option value="">선택</option>
-<c:forEach var="result" items="${pathList}" varStatus="status">
+<c:if test="${pathList ne null and pathList ne ''}">
+	<c:forEach var="result" items="${pathList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 						<th><span class="required">*</span> 주호소문제</th>
 						<td>
 							<select name="pbmKndCd" style="width: 112px;">
 								<option value="">선택</option>
-<c:forEach var="result" items="${kndList}" varStatus="status">
+<c:if test="${kndList ne null and kndList ne ''}">
+	<c:forEach var="result" items="${kndList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 						<th><span class="required">*</span> 상담유형</th>
 						<td>
 							<select name="cslTpCd" style="width: 100px;">
-								<option value="">선택</option>
-<c:forEach var="result" items="${tpList}" varStatus="status">
+<c:if test="${tpList ne null and tpList ne ''}">
+	<c:forEach var="result" items="${tpList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 					</tr>
@@ -689,11 +721,13 @@
 						<td colspan="5">
 							<select name="fstDrugCd" style="width: 100%;">
 								<option value="">선택</option>
-<c:forEach var="result" items="${fstDrugList}" varStatus="status">
+<c:if test="${fstDrugList ne null and fstDrugList ne ''}">
+	<c:forEach var="result" items="${fstDrugList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
-							<div style="margin-top:5px"><input type="text" name="" class="el-input__inner" placeholder="최초사용약물 입력" style="width: 100%;" /></div>
+							<div style="margin-top:5px"><form:input path="cslRcpInfo.fstDrug" cssClass="el-input__inner" placeholder="최초사용약물 입력" style="width: 100%;" /></div>
 						</td>
 					</tr>
 					<tr>
@@ -701,9 +735,11 @@
 						<td colspan="5">
 							<select name="mainDrugCd" style="width: 100%;">
 								<option value="">선택</option>
-<c:forEach var="result" items="${mainDrugList}" varStatus="status">
+<c:if test="${mainDrugList ne null and mainDrugList ne ''}">
+	<c:forEach var="result" items="${mainDrugList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 							<div style="margin-top:5px"><form:input path="cslRcpInfo.mainDrug" cssClass="el-input__inner" placeholder="주요사용약물 입력" style="width: 100%;" /></div>
 						</td>
@@ -713,9 +749,11 @@
 						<td colspan="5">
 							<select name="mjrMngCd" style="width: 132px;">
 								<option value="">선택</option>
-<c:forEach var="result" items="${mjrMngList}" varStatus="status">
+<c:if test="${mjrMngList ne null and mjrMngList ne ''}">
+	<c:forEach var="result" items="${mjrMngList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 					</tr>
@@ -733,9 +771,11 @@
 						<td>
 							<span class="el-tag">Rating A: 위험성</span>
 							<select name="rskaTpCd" style="width: 690px;" onchange="javaScript:changRating();">
-<c:forEach var="result" items="${rskaTpList}" varStatus="status">
+<c:if test="${rskaTpList ne null and rskaTpList ne ''}">
+	<c:forEach var="result" items="${rskaTpList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 					</tr>
@@ -744,9 +784,11 @@
 						<td>
 							<span class="el-tag">Rating B: 지지체계</span>
 							<select name="rskbTpCd" style="width: 690px;" onchange="javaScript:changRating();">
-<c:forEach var="result" items="${rskbTpList}" varStatus="status">
+<c:if test="${rskbTpList ne null and rskbTpList ne ''}">
+	<c:forEach var="result" items="${rskbTpList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 					</tr>
@@ -755,9 +797,11 @@
 						<td>
 							<span class="el-tag">Rating B: 지지체계</span>
 							<select name="rskcTpCd" style="width: 690px;" onchange="javaScript:changRating();">
-<c:forEach var="result" items="${rskcTpList}" varStatus="status">
+<c:if test="${rskcTpList ne null and rskcTpList ne ''}">
+	<c:forEach var="result" items="${rskcTpList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 					</tr>
@@ -766,16 +810,19 @@
 			<table class="w-auto wr-form">
 				<tbody>
 					<tr>
+						<th>위기상담</th>
+						<td><form:input path="cslRcpInfo.cslEmer" cssClass="el-input__inner" placeholder="위기상담" style="width: 100%;"/></td>
+					</tr>
+					<tr>
 						<th><span class="required">*</span> URS</th>
 						<td>
-							<select  style="width: 100%;">
-								<option>A. 즉각적인 서비스가 필요. 입원조치 필요</option>
-								<option>B. 2시간 이내 접촉 필요. 입원이 가능할 수 있으며, 외래를 이용한 치료 권유</option>
-								<option>C. 12시간 이내의 접촉필요. 외래를 이용한 치료 권유</option>
-								<option>D. 48시간 이내의 개입필요</option>
-								<option>E. 2주 이내의 개입필요</option>
-								<option>G. 개입 종료</option>
-								<option>없음. 해당 없음</option>
+							<select name="ursCd" style="width: 100%;">
+								<option value="">선택</option>
+<c:if test="${ursCdList ne null and ursCdList ne ''}">
+	<c:forEach var="result" items="${ursCdList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
 							</select>
 						</td>
 					</tr>
@@ -787,22 +834,20 @@
 				<colgroup><col style="width: 76px;"><col></colgroup>
 				<tbody>
 					<tr>
-						<th>
-							<span class="required">*</span> 상담내용<br>
-							<button type="button" onclick="javaScript:ctntPopup();" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+						<th>상담내용<br>
+							<button type="button" onclick="javaScript:areaPopup('cslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 								<i class="el-icon-search"></i>
 							</button>
 						</th>
 						<td><textarea name="cslCtnt" placeholder="상담내용" style="width:99%;height:195px"></textarea></td>
 					</tr>
 					<tr>
-						<th>
-							<span class="required">*</span> 상담결과<br>
-							<button type="button" onclick="javaScript:ctntPopup();" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+						<th>상담결과<br>
+							<button type="button" onclick="javaScript:areaPopup('cslRst');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 								<i class="el-icon-search"></i>
 							</button>
 						</th>
-						<td><textarea name="" placeholder="상담결과" style="width:99%;height:295px"></textarea></td>
+						<td><textarea name="cslRst" placeholder="상담결과" style="width:99%;height:295px"></textarea></td>
 					</tr>
 				</tbody>
 			</table>
