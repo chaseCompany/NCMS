@@ -366,14 +366,30 @@
 <form name="counselForm" id="counselForm">
 <!-- 상단 버튼 -->
 <div class="top-right-btn">
-	<button type="button" onclick="javaScript:counselSave();" class="el-button normal el-button--primary el-button--small is-plain"><i class="el-icon-download"></i><span>저장</span></button>
-	<button type="button" onclick="javaScript:counselNew();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;"><i class="el-icon-circle-plus-outline"></i><span>신규</span></button>
-	<button type="button" id="copyButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document-copy"></i><span>복사</span></button>
-	<button type="button" onclick="javaScript:counselCopy();" id="copyButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;"><i class="el-icon-document-copy"></i><span>복사</span></button>
-	<button type="button" id="delButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
-	<button type="button" onclick="javaScript:counselDel();" id="delButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;"><i class="el-icon-delete-solid"></i><span>삭제</span></button>
-	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
-	<button type="button" onclick="javaScript:counselExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;"><i class="el-icon-document"></i><span>엑셀다운로드</span></button>
+	<button type="button" onclick="javaScript:counselSave();" class="el-button normal el-button--primary el-button--small is-plain">
+		<i class="el-icon-download"></i><span>저장</span>
+	</button>
+	<button type="button" onclick="javaScript:counselNew();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;">
+		<i class="el-icon-circle-plus-outline"></i><span>신규</span>
+	</button>
+	<button type="button" id="copyButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain"><i class="el-icon-document-copy">
+		</i><span>복사</span>
+	</button>
+	<button type="button" onclick="javaScript:counselCopy();" id="copyButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+		<i class="el-icon-document-copy"></i><span>복사</span>
+	</button>
+	<button type="button" id="delButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain">
+		<i class="el-icon-delete-solid"></i><span>삭제</span>
+	</button>
+	<button type="button" onclick="javaScript:counselDel();" id="delButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+		<i class="el-icon-delete-solid"></i><span>삭제</span>
+	</button>
+	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain">
+		<i class="el-icon-document"></i><span>엑셀다운로드</span>
+	</button>
+	<button type="button" onclick="javaScript:counselExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+		<i class="el-icon-document"></i><span>엑셀다운로드</span>
+	</button>
 </div>
 <!-- // 상단 버튼 -->
 
@@ -411,6 +427,10 @@
 								<form:input path="cslRcpInfo.cslTermTm" hidden="true" />
 							</div>
 						</div>
+					</td>
+					<th>기관명</th>
+					<td>
+						<span class="tac">&nbsp;</span>
 					</td>
 					<th>상담자</th>
 					<td>
@@ -630,7 +650,6 @@
 		</div>
 	</div>
 	<!-- // 정보 제공자 / 대상자 -->
-
 	<!-- 정보취득경로 ~ 위기분류척도 / 상담내용-->
 	<div class="section el-row">
 		<div class="row">
@@ -674,6 +693,7 @@
 								<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
 							</select>
+							<div style="margin-top:5px"><input type="text" name="" class="el-input__inner" placeholder="최초사용약물 입력" style="width: 100%;" /></div>
 						</td>
 					</tr>
 					<tr>
@@ -743,6 +763,24 @@
 					</tr>
 				</tbody>
 			</table>
+			<table class="w-auto wr-form">
+				<tbody>
+					<tr>
+						<th><span class="required">*</span> URS</th>
+						<td>
+							<select  style="width: 100%;">
+								<option>A. 즉각적인 서비스가 필요. 입원조치 필요</option>
+								<option>B. 2시간 이내 접촉 필요. 입원이 가능할 수 있으며, 외래를 이용한 치료 권유</option>
+								<option>C. 12시간 이내의 접촉필요. 외래를 이용한 치료 권유</option>
+								<option>D. 48시간 이내의 개입필요</option>
+								<option>E. 2주 이내의 개입필요</option>
+								<option>G. 개입 종료</option>
+								<option>없음. 해당 없음</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="row">
 			<table class="wr-form sig-form">
@@ -755,7 +793,16 @@
 								<i class="el-icon-search"></i>
 							</button>
 						</th>
-						<td><textarea name="cslCtnt" placeholder="상담 내용" style="width:99%;height:385px"></textarea></td>
+						<td><textarea name="cslCtnt" placeholder="상담내용" style="width:99%;height:195px"></textarea></td>
+					</tr>
+					<tr>
+						<th>
+							<span class="required">*</span> 상담결과<br>
+							<button type="button" onclick="javaScript:ctntPopup();" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+								<i class="el-icon-search"></i>
+							</button>
+						</th>
+						<td><textarea name="" placeholder="상담결과" style="width:99%;height:295px"></textarea></td>
 					</tr>
 				</tbody>
 			</table>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String thisViewUrl = StringUtils.defaultIfEmpty((String)request.getAttribute("thisViewUrl"), "");
+	String loginUserNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserNm"), "");
 %>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
@@ -23,13 +24,13 @@
 			<li><a href="javaScript:goTopMenuPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>중독 예방 상담</a></li>
 			<li><a href="javaScript:goTopMenuPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>사례관리</a></li>
 			<li><a href="javaScript:alert('준비중');">심리치유</a></li>
-			<li><a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>주간 이용 프로그램</a></li>
+			<li><a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>주간 재활 프로그램</a></li>
 			<li><a href="javaScript:goTopMenuPage('/memberMain.do');"<c:if test="${thisViewUrl eq 'memberMain.do'}"> class="on"</c:if>>회원정보 관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/reportMain.do');"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계 관리</a></li>
 		</ul>
 	</div>
 	<div class="r">
-		<a href="#" class="f">관리자님<i class="el-icon-arrow-down el-icon--right"></i>
+		<a href="#" class="f"><%=loginUserNm%>님<i class="el-icon-arrow-down el-icon--right"></i>
 			<div class="pwd-layer">
 				<ul class="el-dropdown-menu el-popper" id="dropdown-menu-133">
 					<li tabindex="-1" class="el-dropdown-menu__item"><i class="el-icon-lock"></i>비밀번호 변경</li>

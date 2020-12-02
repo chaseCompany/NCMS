@@ -58,7 +58,7 @@
 			<td class="txt-left"><div class="cell" id="ctntView"><c:out value="${result.MBR_CTNT}" /></div></td>
 			<td>
 				<div class="cell">
-					<button type="button" onclick="javaScript:viewCtnt('mbrCtnt', '<c:out value="${status.index}" />');" class="el-button el-button--success el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
+					<button type="button" onclick="javaScript:viewCtnt('mbrCtnt', '<c:out value="${status.index + 1}" />');" class="el-button el-button--success el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
 						<i class="el-icon-search"></i>
 					</button>
 				</div>

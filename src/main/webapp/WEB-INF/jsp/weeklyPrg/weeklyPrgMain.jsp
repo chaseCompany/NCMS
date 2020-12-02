@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	String loginUserId = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserId"), "");
+%>
+<c:set var="loginUserId" value="<%=loginUserId%>" />
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		$("input[name='schStrDt']").datepicker('setDate', '-3M');
@@ -24,6 +29,7 @@
 				}
 			});
 		},
+		<%-- 검색버튼 클릭 --%>
 		seachPrgList = function(){
 			$("input[name='pgmPageNo']").val('1');
 			getWeeklyPrgList();
@@ -87,6 +93,8 @@
 			if(obj == undefined){
 				$("button#delBtnYes").hide();
 				$("button#delBtnNo").show();
+				$("button#excelButNo").show();
+				$("button#excelButYes").hide();
 
 				$("select[name='pgmCd']").val("").prop("selected", true);
 				$("input[name='pgmDt']").datepicker('setDate', 'today');
@@ -98,6 +106,8 @@
 			}else{
 				$("button#delBtnYes").show();
 				$("button#delBtnNo").hide();
+				$("button#excelButNo").hide();
+				$("button#excelButYes").show();
 
 				var setDt = new Date(obj.pgmDt.substr(0, 4), obj.pgmDt.substr(4, 2), obj.pgmDt.substr(6, 2));
 				setDt.setMonth(setDt.getMonth() - 1);
@@ -194,7 +204,7 @@
 					   + "		<td class='txt-left'><div class='cell' id='ctntView'></div></td>"
 					   + "		<td>"
 					   + "			<div class='cell'>"
-					   + "				<button type='button' onclick='layerPopupOpen('counwrite');' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+					   + "				<button type='button' onclick='javaScript:viewCtnt(\"mbrCtnt\", \"" + pgmMemCount + "\");' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
 					   + "					<i class='el-icon-search'></i>"
 					   + "				</button>"
 					   + "			</div>"
@@ -222,7 +232,7 @@
 					   + "		<td class='txt-left'><div class='cell' id='ctntView'></div></td>"
 					   + "		<td>"
 					   + "			<div class='cell'>"
-					   + "				<button type='button' onclick='layerPopupOpen('counwrite');' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+					   + "				<button type='button' onclick='javaScript:viewCtnt(\"mbrCtnt\", \"" + pgmMemCount + "\");' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
 					   + "					<i class='el-icon-search'></i>"
 					   + "				</button>"
 					   + "			</div>"
@@ -240,7 +250,7 @@
 			var value;
 			if(num != undefined && num != ''){
 				$("textarea[name='" + tagName + "']").each(function(idx){
-					if(num == idx){
+					if(num == (idx + 1)){
 						value = $(this).val();
 					}
 				});
@@ -261,7 +271,7 @@
 
 			if(tagNum != ""){
 				$("textarea[name='" + tagName + "']").each(function(idx){
-					if(idx == tagNum){
+					if((idx + 1) == tagNum){
 						$("div#ctntView").eq(idx).html($("textarea[name='viewText']").val());
 						$(this).val($("textarea[name='viewText']").val());
 					}
@@ -308,6 +318,10 @@
 					}
 				});
 			}
+		},
+		<%-- 엑셀다운로드 --%>
+		weeklyExel = function(){
+			alert("준비중");
 		}
 
 		getWeeklyPrgList();
@@ -316,7 +330,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 주간 이용 프로그램</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 주간 재활 프로그램</h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
@@ -336,6 +350,12 @@
 	<button type="button" onclick="javaScript:pageRest();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;">
 		<i class="el-icon-refresh"></i> <span>초기화</span>
 	</button>
+	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain">
+		<i class="el-icon-document"></i><span>엑셀다운로드</span>
+	</button>
+	<button type="button" onclick="javaScript:weeklyExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+		<i class="el-icon-document"></i><span>엑셀다운로드</span>
+	</button>
 </div>
 <!-- // 상단 버튼 -->
 <div class="formline">
@@ -351,17 +371,25 @@
 						<td>
 							<div class="dat-pk">
 								<i class="el-input__icon el-icon-date"></i>
-								<input type="text" name="schStrDt" class="el-input__inner datepicker" placeholder="시작" style="width: 130px;">
+								<input type="text" name="schStrDt" class="el-input__inner datepicker" placeholder="시작" style="width: 105px;">
 							</div>
 							<span>~</span>
 							<div class="dat-pk">
 								<i class="el-input__icon el-icon-date"></i>
-								<input type="text" name="schEndDt" class="el-input__inner datepicker" placeholder="종료" style="width: 130px;">
+								<input type="text" name="schEndDt" class="el-input__inner datepicker" placeholder="종료" style="width: 105px;">
 							</div>
 						</td>
 						<th>프로그램</th>
 						<td>
-							<select name="schPgmCd" style="width:140px">
+							<select name="schTpCd" style="width:100px">
+								<option value="">선택</option>
+<c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
+	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
+								<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+							</select>
+							<select name="schPgmCd" style="width:110px">
 								<option value="">선택</option>
 <c:if test="${pgmCdList ne null and pgmCdList ne ''}">
 	<c:forEach var="result" items="${pgmCdList}" varStatus="status">
@@ -392,7 +420,18 @@
 					<table class="w-auto wr-form">
 						<tbody>
 						<tr>
-							<th><span class="required">*</span> 분류</th>
+							<th>대분류</th>
+							<td>
+								<select name="pgmTpCd" style="width: 140px;">
+									<option value="">선택</option>
+<c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
+	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+							<th>중분류</th>
 							<td>
 								<select name="pgmCd" style="width: 140px;">
 									<option value="">선택</option>
@@ -421,24 +460,13 @@
 									</div>
 								</div>
 							</td>
-							<th>구분</th>
-							<td>
-								<select name="pgmTpCd" style="width: 140px;">
-									<option value="">선택</option>
-<c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
-	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-								</select>
-							</td>
 							<th><span class="required">*</span> 담당자</th>
 							<td>
 								<select name="mngUsrId" style="width: 140px;">
 									<option value="">선택</option>
 <c:if test="${sysMbrList ne null and sysMbrList ne ''}">
 	<c:forEach var="result" items="#{sysMbrList}" varStatus="status">
-									<option value="<c:out value="${result.USR_ID}" />"><c:out value="${result.USR_NM}" />(<c:out value="${result.USR_ID}" />)</option>
+									<option value="<c:out value="${result.USR_ID}" />"<c:if test="${result.USR_ID eq loginUserId}"> selected</c:if>><c:out value="${result.USR_NM}" />(<c:out value="${result.USR_ID}" />)</option>
 	</c:forEach>
 </c:if>
 								</select>
@@ -454,12 +482,30 @@
 						<tbody>
 						<tr>
 							<th>
+								<span class="required">*</span> 회기<br>
+								<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+									<i class="el-icon-search"></i>
+								</button>
+							</th>
+							<td><textarea name="" placeholder="회기" style="height: 110px;"></textarea></td>
+						</tr>
+						<tr>
+							<th>
 								<span class="required">*</span> 내용<br>
 								<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td><textarea name="pgmCtnt" placeholder="내용" style="height: 162px;"></textarea></td>
+							<td><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
+						</tr>
+						<tr>
+							<th>
+								<span class="required">*</span> 결과<br>
+								<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+									<i class="el-icon-search"></i>
+								</button>
+							</th>
+							<td><textarea name="" placeholder="결과" style="height: 110px;"></textarea></td>
 						</tr>
 						</tbody>
 					</table>
