@@ -4,8 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String loginUserId = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserId"), "");
+	String loginSiteNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginSiteNm"), "");
 %>
 <c:set var="loginUserId" value="<%=loginUserId%>" />
+<c:set var="loginSiteNm" value="<%=loginSiteNm%>" />
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		$("input[name='schStrDt']").datepicker('setDate', '-3M');

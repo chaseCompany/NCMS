@@ -47,7 +47,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value="/ajaxLogin.do")
 	public @ResponseBody ModelAndView ajaxLogin(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
-		ModelAndView resultView = new ModelAndView ("jsonView"); 
+		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		String usrId = StringUtils.defaultString((String)reqMap.get("usrId"), "");
 		String passwd = StringUtils.defaultString((String)reqMap.get("passwd"), "");

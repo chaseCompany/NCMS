@@ -63,21 +63,7 @@ public class WeeklyPrgController {
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("grpCd", "NOT");
 		paramMap.put("roleCd", new String[]{"90"});
-		List<HashMap<String, Object>> sysUsrList = loginService.getSysUsrList(paramMap);
-
-		model.put("sysMbrList", sysUsrList);
-
-		if(sysUsrList != null) {
-			String loginUsrId = StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "");
-
-			for(HashMap<String, Object> info : sysUsrList) {
-				String infoUsrId = StringUtils.defaultIfEmpty((String)info.get("USR_ID"), "");
-
-				if(loginUsrId.equals(infoUsrId)) {
-					model.put("loginSiteNm", StringUtils.defaultIfEmpty((String)info.get("SITE_NM"), ""));
-				}
-			}
-		}
+		model.put("sysMbrList", loginService.getSysUsrList(paramMap));
 
 		return "weeklyPrg/weeklyPrgMain";
 	}
