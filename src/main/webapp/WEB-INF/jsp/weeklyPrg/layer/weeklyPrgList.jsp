@@ -10,15 +10,10 @@
 			getWeeklyPrgList();
 		},
 		<%-- 프로그램정보 상세 보기 --%>
-		viewPrgRow = function(PGM_CD, PGM_DT, PGM_FM_TM, PGM_TO_TM, PGM_TP_CD, MNG_USR_ID, PGM_CTNT){
+		viewPrgRow = function(PGM_CD, PGM_DT){
 			var pgmObj = {
 				pgmCd : PGM_CD,
-				pgmDt : PGM_DT,
-				pgmFmTm : PGM_FM_TM,
-				pgmToTm : PGM_TO_TM,
-				pgmTpCd : PGM_TP_CD,
-				mngUsrId : MNG_USR_ID,
-				pgmCtnt : PGM_CTNT
+				pgmDt : PGM_DT
 			}
 
 			reSetPgmForm(pgmObj);
@@ -29,18 +24,20 @@
 	<div class="el-table_header-wrapper">
 		<table>
 			<colgroup>
-				<col style="width:46px">
-				<col style="width:100px">
-				<col style="width:230px">
-				<col style="width:150px">
+				<col style="width:44px">
+				<col style="width:130px">
+				<col style="width:95px">
+				<col style="width:130px">
+				<col style="width:220px">
 				<col>
 			</colgroup>
 			<thead>
 			<tr>
 				<th>#</th>
+				<th>기관명</th>
 				<th>실시 일자</th>
-				<th>주관 프로그램</th>
 				<th>담당자</th>
+				<th>주관 프로그램</th>
 				<th>회원수</th>
 			</tr>
 			</thead>
@@ -50,10 +47,11 @@
 <c:if test="${totalCount > 0}">
 		<table>
 			<colgroup>
-				<col style="width:46px">
-				<col style="width:100px">
-				<col style="width:230px">
-				<col style="width:150px">
+				<col style="width:44px">
+				<col style="width:130px">
+				<col style="width:95px">
+				<col style="width:130px">
+				<col style="width:220px">
 				<col>
 			</colgroup>
 			<tbody>
@@ -61,15 +59,15 @@
 		<fmt:parseDate value="${result.PGM_DT}" var="regDt" pattern="yyyyMMdd"/>
 			<tr>
 				<td><div class="cell"><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></div></td>
+				<td><div class="cell"><c:out value="${result.SITE_NM}" /></div></td>
 				<td><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></td>
-				<td class='txt-left'><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
-																  , "<c:out value="${result.PGM_DT}"/>"
-																  , "<c:out value="${result.PGM_FM_TM}"/>"
-																  , "<c:out value="${result.PGM_TO_TM}"/>"
-																  , "<c:out value="${result.PGM_TP_CD}"/>"
-																  , "<c:out value="${result.MNG_USR_ID}"/>"
-																  , "<c:out value="${result.PGM_CTNT}"/>");' class='row_link'><c:out value="${result.PGM_NM}" /></a></td>
 				<td><div class="cell"><c:out value="${result.MNG_USR_NM}" /></div></td>
+				<td class='txt-left'><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
+																  , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
+<c:if test="${result.PGM_TP_NM ne null and result.PGM_TP_NM ne ''}">
+					<c:out value="${result.PGM_TP_NM}" /> >
+</c:if>
+					<c:out value="${result.PGM_NM}" /></a></td>
 				<td><div class="cell"><c:out value="${result.MBR_CNT}" /></div></td>
 			</tr>
 	</c:forEach>

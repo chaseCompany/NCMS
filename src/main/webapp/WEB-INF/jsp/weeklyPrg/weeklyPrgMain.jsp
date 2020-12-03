@@ -101,24 +101,44 @@
 				$("input[name='pgmFmTm']").val("09:00");
 				$("input[name='pgmToTm']").val("18:00");
 				$("select[name='pgmTpCd']").val("").prop("selected", true);
-				$("select[name='mngUsrId']").val("").prop("selected", true);
+				$("select[name='mngUsrId']").val("<c:out value="${loginUserId}" />").prop("selected", true);
+				$("input[name='siteNm']").val("<c:out value="${loginSiteNm}" />");
+				$("input[name='pgmSession']").val("");
 				$("textarea[name='pgmCtnt']").val("");
+				$("textarea[name='pgmRst']").val("");
 			}else{
-				$("button#delBtnYes").show();
-				$("button#delBtnNo").hide();
-				$("button#excelButNo").hide();
-				$("button#excelButYes").show();
+				$.ajax({
+					url : '/ajaxGetWeeklyPrg.do',
+					type : 'POST',
+					data : {
+						pgmDt : obj.pgmDt,
+						pgmCd : obj.pgmCd
+					},
+					success : function(res){
+						$("button#delBtnYes").show();
+						$("button#delBtnNo").hide();
+						$("button#excelButNo").hide();
+						$("button#excelButYes").show();
 
-				var setDt = new Date(obj.pgmDt.substr(0, 4), obj.pgmDt.substr(4, 2), obj.pgmDt.substr(6, 2));
-				setDt.setMonth(setDt.getMonth() - 1);
+						var prgInfo = res.prgInfo;
+						var setDt = new Date(prgInfo.PGM_DT.substr(0, 4), prgInfo.PGM_DT.substr(4, 2), prgInfo.PGM_DT.substr(6, 2));
+						setDt.setMonth(setDt.getMonth() - 1);
 
-				$("select[name='pgmCd']").val(obj.pgmCd).prop("selected", true);
-				$("input[name='pgmDt']").datepicker('setDate', setDt);
-				$("input[name='pgmFmTm']").val(obj.pgmFmTm);
-				$("input[name='pgmToTm']").val(obj.pgmToTm);
-				$("select[name='pgmTpCd']").val(obj.pgmTpCd).prop("selected", true);
-				$("select[name='mngUsrId']").val(obj.mngUsrId).prop("selected", true);
-				$("textarea[name='pgmCtnt']").val(obj.pgmCtnt);
+						$("select[name='pgmCd']").val(prgInfo.PGM_CD).prop("selected", true);
+						$("input[name='pgmDt']").datepicker('setDate', setDt);
+						$("input[name='pgmFmTm']").val(prgInfo.PGM_FM_TM);
+						$("input[name='pgmToTm']").val(prgInfo.PGM_TO_TM);
+						$("select[name='pgmTpCd']").val(prgInfo.PGM_TP_CD).prop("selected", true);
+						$("select[name='mngUsrId']").val(prgInfo.MNG_USR_ID).prop("selected", true);
+						$("input[name='siteNm']").val(prgInfo.SITE_NM);
+						$("input[name='pgmSession']").val(prgInfo.PGM_SESSION);
+						$("textarea[name='pgmCtnt']").val(prgInfo.PGM_CTNT);
+						$("textarea[name='pgmRst']").val(prgInfo.PGM_RST);
+					},
+					error : function(xhr, status){
+						console.log(xhr);
+					}
+				});
 
 				getPgmMemList(obj.pgmDt, obj.pgmCd);
 			}
@@ -319,6 +339,10 @@
 				});
 			}
 		},
+		<%-- 담당자 변경에 따른 기관명 변경 --%>
+		changSiteNm = function(obj){
+			$("input[name='siteNm']").val($("select[name='" + $(obj).attr("name") + "'] option:selected").attr("siteNm"));
+		},
 		<%-- 엑셀다운로드 --%>
 		weeklyExel = function(){
 			alert("준비중");
@@ -422,7 +446,7 @@
 						<tr>
 							<th>대분류</th>
 							<td>
-								<select name="pgmTpCd" style="width: 140px;">
+								<select name="pgmTpCd" style="width: 130px;">
 									<option value="">선택</option>
 <c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
 	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
@@ -433,7 +457,7 @@
 							</td>
 							<th>중분류</th>
 							<td>
-								<select name="pgmCd" style="width: 140px;">
+								<select name="pgmCd" style="width: 150px;">
 									<option value="">선택</option>
 <c:if test="${pgmCdList ne null and pgmCdList ne ''}">
 	<c:forEach var="result" items="${pgmCdList}" varStatus="status">
@@ -446,30 +470,34 @@
 							<td>
 								<div class="dat-pk">
 									<i class="el-input__icon el-icon-date"></i>
-									<input type="text" name="pgmDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 130px;">
+									<input type="text" name="pgmDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 110px;">
 								</div>
 								<div class="time-box">
 									<div class="tm-in">
 										<i class="el-input__icon el-icon-time"></i>
-										<input type="text" name="pgmFmTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 96px;">
+										<input type="text" name="pgmFmTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 75px;">
 									</div>
 									<span>~</span>
 									<div class="tm-in">
 										<i class="el-input__icon el-icon-time"></i>
-										<input type="text" name="pgmToTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 96px;">
+										<input type="text" name="pgmToTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 75px;">
 									</div>
 								</div>
 							</td>
 							<th><span class="required">*</span> 담당자</th>
 							<td>
-								<select name="mngUsrId" style="width: 140px;">
+								<select name="mngUsrId" style="width: 140px;" onchange="javaScrpt:changSiteNm(this);">
 									<option value="">선택</option>
 <c:if test="${sysMbrList ne null and sysMbrList ne ''}">
 	<c:forEach var="result" items="#{sysMbrList}" varStatus="status">
-									<option value="<c:out value="${result.USR_ID}" />"<c:if test="${result.USR_ID eq loginUserId}"> selected</c:if>><c:out value="${result.USR_NM}" />(<c:out value="${result.USR_ID}" />)</option>
+									<option value="<c:out value="${result.USR_ID}" />" siteNm="<c:out value="${result.SITE_NM}" />"<c:if test="${result.USR_ID eq loginUserId}"> selected</c:if>><c:out value="${result.USR_NM}" />(<c:out value="${result.USR_ID}" />)</option>
 	</c:forEach>
 </c:if>
 								</select>
+							</td>
+							<th>기관명</th>
+							<td>
+								<span class="tac"><input type="text" name="siteNm" value="<c:out value="${loginSiteNm}" />" class="el-input__inner" readonly style="width:100px;" /></span>
 							</td>
 						</tr>
 						</tbody>
@@ -481,13 +509,8 @@
 						</colgroup>
 						<tbody>
 						<tr>
-							<th>
-								<span class="required">*</span> 회기<br>
-								<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
-									<i class="el-icon-search"></i>
-								</button>
-							</th>
-							<td><textarea name="" placeholder="회기" style="height: 110px;"></textarea></td>
+							<th><span class="required">*</span> 회기</th>
+							<td><input type="text" name="pgmSession" placeholder="회기" style="width: 100%;" /></td>
 						</tr>
 						<tr>
 							<th>
@@ -501,11 +524,11 @@
 						<tr>
 							<th>
 								<span class="required">*</span> 결과<br>
-								<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+								<button type="button" onclick="javaScript:viewCtnt('pgmRst', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td><textarea name="" placeholder="결과" style="height: 110px;"></textarea></td>
+							<td><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
 						</tr>
 						</tbody>
 					</table>

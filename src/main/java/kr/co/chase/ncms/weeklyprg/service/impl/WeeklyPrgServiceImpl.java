@@ -53,6 +53,13 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getGrpPgm(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("pgmDt"), ""))) {
+			throw new Exception("WeeklyPrgServiceImp.getGrpPgm pgmDt 필수 값 누락");
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("pgmCd"), ""))) {
+			throw new Exception("WeeklyPrgServiceImp.getGrpPgm pgmCd 필수 값 누락");
+		}
+
 		return grpPgmDao.getGrpPgm(map);
 	}
 
@@ -161,7 +168,7 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 		}
 
 		return grpPgmMbrDao.getNextSeqNo(map);
-	} 
+	}
 
 	/**
 	 * 주간 프로그램 참여자 조회

@@ -5,24 +5,25 @@
 	<select id="sysUsr.getSysUsrList" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* sysUsr.getSysUsrList */
-			   USR_ID, USR_NM, REG_DT
-		  FROM SYS_USR
+			   SU.USR_ID		, SU.USR_NM			, SU.REG_DT			, SC01.CD_NM AS SITE_NM
+		  FROM SYS_USR SU
+		  LEFT JOIN SYS_CD SC01 ON (SU.SITE_CD = SC01.CD_ID AND SC01.GRP_CD = 'C3500')
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="(grpCd != null or grpCD != '') and (roleCd != null or roleCd != '')">
 				<if test="grpCd == 'IN'">
-					<foreach item="cd" index="index" collection="roleCd" open=" AND ROLE_CD IN (" separator="," close=")">
+					<foreach item="cd" index="index" collection="roleCd" open=" AND SU.ROLE_CD IN (" separator="," close=")">
 				#{cd}
 					</foreach>
 				</if>
 				<if test="grpCd == 'NOT'">
-					<foreach item="cd" index="index" collection="roleCd" open=" AND ROLE_CD NOT IN (" separator="," close=")">
+					<foreach item="cd" index="index" collection="roleCd" open=" AND SU.ROLE_CD NOT IN (" separator="," close=")">
 				#{cd}
 					</foreach>
 				</if>
 			</if>
 		</trim>
-		 ORDER BY CRE_DT ASC
+		 ORDER BY SU.CRE_DT ASC
 	</select>
 
 	<select id="sysUsr.getSysUsrInfo" parameterType="hashMap" resultType="hashMap">
@@ -32,7 +33,7 @@
 		  FROM SYS_USR
 		 WHERE USR_ID = #{usrId}
 		   AND PASSWD = #{passwd}
-		   AND USE_YN = 'Y'
+		   AND USE_YN = 'Y' 
 	]]>
 	</select>
 

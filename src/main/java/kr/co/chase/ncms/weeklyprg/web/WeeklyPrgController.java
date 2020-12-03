@@ -47,7 +47,7 @@ public class WeeklyPrgController {
 	public String weeklyPrgMain(ModelMap model, @ModelAttribute("cslRcpVO") CslRcpVO cslRcpVO, HttpSession session) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
-		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
 			return "redirect:/login.do";
 		}
 
@@ -63,7 +63,21 @@ public class WeeklyPrgController {
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("grpCd", "NOT");
 		paramMap.put("roleCd", new String[]{"90"});
-		model.put("sysMbrList", loginService.getSysUsrList(paramMap));
+		List<HashMap<String, Object>> sysUsrList = loginService.getSysUsrList(paramMap);
+
+		model.put("sysMbrList", sysUsrList);
+
+		if(sysUsrList != null) {
+			String loginUsrId = StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "");
+
+			for(HashMap<String, Object> info : sysUsrList) {
+				String infoUsrId = StringUtils.defaultIfEmpty((String)info.get("USR_ID"), "");
+
+				if(loginUsrId.equals(infoUsrId)) {
+					model.put("loginSiteNm", StringUtils.defaultIfEmpty((String)info.get("SITE_NM"), ""));
+				}
+			}
+		}
 
 		return "weeklyPrg/weeklyPrgMain";
 	}
@@ -120,6 +134,50 @@ public class WeeklyPrgController {
 		return "weeklyPrg/layer/weeklyPrgList";
 	}
 
+	/**
+	 * 주간 프로그램 상세 정보 조회
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxGetWeeklyPrg.do")
+	public @ResponseBody ModelAndView ajaxGetWeeklyPrg(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		String pgmDt = StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), "");
+		String pgmCd = StringUtils.defaultIfEmpty((String)reqMap.get("pgmCd"), "");
+
+		if(!"".equals(pgmDt) && !"".equals(pgmCd)) {
+			resultView.addObject("err", ConstantObject.N);
+			resultView.addObject("prgInfo", weeklyPrgService.getGrpPgm(reqMap));
+		}else {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수 입력 누락입니다.");
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 주간 프로그램 등록
+	 * @param reqMap
+	 * @param request
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/ajaxWeeklyPrgAdd.do")
 	public @ResponseBody ModelAndView ajaxWeeklyPrgAdd(@RequestParam HashMap<String, Object> reqMap, HttpServletRequest request, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
@@ -179,6 +237,7 @@ public class WeeklyPrgController {
 		reqMap.put("pgmDt", pgmDt);
 		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 
+		// 회원 목록
 		if(pgmMbrNoList != null && pgmMbrNoList.length > 0) {
 			List<HashMap<String, Object>> mbrList = new ArrayList<HashMap<String, Object>>();
 
