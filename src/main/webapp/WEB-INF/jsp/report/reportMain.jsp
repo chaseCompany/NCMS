@@ -13,7 +13,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 통계 관리</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 통계관리</h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <div class="formline">

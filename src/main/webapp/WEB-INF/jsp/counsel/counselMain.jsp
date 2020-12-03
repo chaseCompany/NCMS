@@ -367,7 +367,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 중독 예방 상담</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 중독예방상담</h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <form name="counselForm" id="counselForm">

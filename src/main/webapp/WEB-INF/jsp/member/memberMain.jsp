@@ -106,7 +106,7 @@
 					success : function(res){
 						if(res.err != "Y"){
 							alert("삭제 성공");
-	
+
 							getMemInfo("");
 						}else{
 							alert(res.MSG);
@@ -230,7 +230,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 회원정보 관리</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 회원정보관리</h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
