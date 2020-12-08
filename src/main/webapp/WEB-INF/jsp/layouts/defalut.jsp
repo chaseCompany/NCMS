@@ -19,5 +19,6 @@
 		<div class="layerpopup" id="layerpopup"></div>
 	</div>
 	<!-- // content -->
+	<form name="excelForm" id="excelForm" method="post"></form>
 </body>
 </html>
