@@ -8,9 +8,6 @@
 				<map>
 					<entry key="systemNm" value="운영"/>
 
-					<entry key="pageUnit" value="10"/>
-					<entry key="pageSize" value="10"/>
-
 					<!-- 시스템별 환경 설정정보 -->
 					<entry key="uploadFile" value="/data/KVA_Project/upload/"/>
 				</map>
@@ -24,9 +21,6 @@
 				<map>
 					<entry key="systemNm" value="개발"/>
 
-					<entry key="pageUnit" value="10"/>
-					<entry key="pageSize" value="10"/>
-
 					<!-- 시스템별 환경 설정정보 -->
 					<entry key="uploadFile" value="/data/KVA_Project/upload/"/>
 				</map>
@@ -39,9 +33,6 @@
 			<property name="properties">
 				<map>
 					<entry key="systemNm" value="로컬"/>
-
-					<entry key="pageUnit" value="10"/>
-					<entry key="pageSize" value="10"/>
 
 					<!-- 시스템별 환경 설정정보 -->
 					<entry key="uploadFile" value="D:\\git\\NCMS\\src\\main\\webapp\\uploadfile\\"/>
