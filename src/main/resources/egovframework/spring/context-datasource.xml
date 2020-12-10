@@ -2,67 +2,65 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-        http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd">
-        
-  	<beans profile="prod">
-    	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+						http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd">
+
+	<beans profile="prod">
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			<property name="maxActive" value="50"/> <!--  50 -->
 			<property name="maxIdle" value="50"/>
 			<property name="minIdle" value="50"/>
 			<property name="maxWait" value="5000"/>
 			<property name="initialSize" value="50"/>
-			
+
 			<property name="validationQuery" value="select 1 from dual" />
 			<property name="testOnBorrow" value="false" />
 			<property name="testWhileIdle" value="true" />
 			<property name="numTestsPerEvictionRun" value="3" />
 			<property name="timeBetweenEvictionRunsMillis" value="10000" />
-	        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	        <property name="url" value="jdbc:mysql://211.192.104.44:3306/sbirt?useUnicode=true&amp;characterEncoding=utf8" />
-	      	<property name="username" value="sbirt"/>
-	      	<property name="password" value="Cpdltm123!@#"/>
-    	</bean>  
-  	</beans>
-
-  	<beans profile="beta">
-    	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-      		<property name="maxActive" value="3"/>
-      		<property name="maxIdle" value="3"/>
-		      <property name="minIdle" value="3"/>
-		      <property name="maxWait" value="300"/>
-		      <property name="initialSize" value="3"/>
-
-		      <property name="validationQuery" value="select 1 from dual" />
-		      <property name="testOnBorrow" value="false" />
-		      <property name="testWhileIdle" value="true" />
-		      <property name="numTestsPerEvictionRun" value="3" />
-		      <property name="timeBetweenEvictionRunsMillis" value="10000" />
-		      <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		      <property name="url" value="jdbc:mysql://211.192.104.44:3306/sbirtbeta?useUnicode=true&amp;characterEncoding=utf8" />
-	          <property name="username" value="sbirtbeta"/>
-	      	  <property name="password" value="Cpdltm123!@#"/>
-      	</bean>
-    </beans>
-
-	<beans profile="locdev">
-		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-	      	<property name="maxActive" value="3"/>
-	      	<property name="maxIdle" value="3"/>
-	      	<property name="minIdle" value="3"/>
-	      	<property name="maxWait" value="300"/>
-	      	<property name="initialSize" value="3"/>
-	
-	      	<property name="validationQuery" value="select 1 from dual" />
-	      	<property name="testOnBorrow" value="false" />
-	      	<property name="testWhileIdle" value="true" />
-	      	<property name="numTestsPerEvictionRun" value="3" />
-	      	<property name="timeBetweenEvictionRunsMillis" value="10000" />
-	      	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	      	<property name="url" value="jdbc:mysql://192.168.0.2:3306/drugfree_cnsl?useUnicode=true&amp;characterEncoding=utf8" />
-	      	<property name="username" value="drugfree"/>
-	      	<property name="password" value="Cpdltm123!@#"/>
-	  	</bean>
-	  	
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://211.192.104.44:3306/sbirt?useUnicode=true&amp;characterEncoding=utf8" />
+			<property name="username" value="sbirt"/>
+			<property name="password" value="Cpdltm123!@#"/>
+		</bean>
 	</beans>
-    
-  </beans>
+
+	<beans profile="dev">
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+			<property name="maxActive" value="3"/>
+			<property name="maxIdle" value="3"/>
+			<property name="minIdle" value="3"/>
+			<property name="maxWait" value="300"/>
+			<property name="initialSize" value="3"/>
+
+			<property name="validationQuery" value="select 1 from dual" />
+			<property name="testOnBorrow" value="false" />
+			<property name="testWhileIdle" value="true" />
+			<property name="numTestsPerEvictionRun" value="3" />
+			<property name="timeBetweenEvictionRunsMillis" value="10000" />
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://192.168.0.2:3306/drugfree_cnsl?useUnicode=true&amp;characterEncoding=utf8" />
+			<property name="username" value="drugfree"/>
+			<property name="password" value="Cpdltm123!@#"/>
+		</bean>
+	</beans>
+
+	<beans profile="local">
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+			<property name="maxActive" value="3"/>
+			<property name="maxIdle" value="3"/>
+			<property name="minIdle" value="3"/>
+			<property name="maxWait" value="300"/>
+			<property name="initialSize" value="3"/>
+
+			<property name="validationQuery" value="select 1 from dual" />
+			<property name="testOnBorrow" value="false" />
+			<property name="testWhileIdle" value="true" />
+			<property name="numTestsPerEvictionRun" value="3" />
+			<property name="timeBetweenEvictionRunsMillis" value="10000" />
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://192.168.0.2:3306/drugfree_cnsl?useUnicode=true&amp;characterEncoding=utf8" />
+			<property name="username" value="drugfree"/>
+			<property name="password" value="Cpdltm123!@#"/>
+		</bean>
+	</beans>
+</beans>
