@@ -165,9 +165,15 @@
 			});
 			console.log("삭제");
 		},
+		<%-- 엑셀다운로드 --%>
 		counselExel = function(){
-			alert('준비중 입니다.');
-			console.log("엑셀다운로드");
+			if($("input[name='rcpNo']").val() != ""){
+				$("form#excelForm").append("<input type='hidden' name='rcpNo' value='" + $("input[name='rcpNo']").val() + "' />");
+				$("form#excelForm").attr("action", "/counselExelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("접수번호를 선택 하세요.");
+			}
 		},
 		<%-- 상담 목록 조회 --%>
 		getRcpNo = function(){

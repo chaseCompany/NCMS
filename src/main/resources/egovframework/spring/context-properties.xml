@@ -35,7 +35,7 @@
 					<entry key="systemNm" value="로컬"/>
 
 					<!-- 시스템별 환경 설정정보 -->
-					<entry key="uploadFile" value="D:\\git\\NCMS\\src\\main\\webapp\\uploadfile\\"/>
+					<entry key="uploadFile" value="D:\git\NCMS\src\main\webapp\uploadfile\"/>
 				</map>
 			</property>
 		</bean>

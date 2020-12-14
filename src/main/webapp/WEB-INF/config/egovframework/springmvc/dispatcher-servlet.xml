@@ -7,118 +7,118 @@
                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
                 http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
-    <context:component-scan base-package="kr.co.chase.ncms">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
-    </context:component-scan>
+	<context:component-scan base-package="kr.co.chase.ncms">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan>
 
 	<bean class="kr.co.chase.ncms.common.AuthenticInterceptor" id="AuthenticInterceptor"></bean>
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="webBindingInitializer">
-            <bean class="kr.co.chase.ncms.common.web.BindingInitializer"/>
-        </property>
-    </bean>
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="localeChangeInterceptor" />
-                <ref bean="AuthenticInterceptor" />
-            </list>
-        </property>
-    </bean>
-    
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
-    <!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="language" />
-    </bean>
-    
- 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		    <property name="prefix" value="/WEB-INF/jsp/" />
-		    <property name="suffix" value=".jsp" />
-		    <property name="order" value="2" />
-	</bean>	
-	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="kr.co.chase.ncms.common.web.BindingInitializer"/>
+		</property>
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+				<ref bean="AuthenticInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+	<!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="language" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="2" />
+	</bean>
+
 	<!-- Tiles 뷰 리졸버 -->
 	<bean id="tielsViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		    <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
-		    <property name="order" value="1" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
+		<property name="order" value="1" />
 	</bean>
-	
+
 	<!-- Tiles 설정 파일 -->
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>
 				<value>/WEB-INF/tiles/tiles.xml</value>
-		    </list>
+			</list>
 		</property>
 	</bean>
-	
-    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
-	    p:viewClass="org.springframework.web.servlet.view.JstlView"
-	    p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
-	    
+
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+		  p:viewClass="org.springframework.web.servlet.view.JstlView"
+		  p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0" />
 
 	<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" id="jsonView">
-	    <property name="contentType" value="application/json;charset=UTF-8"></property>
+		<property name="contentType" value="application/json;charset=UTF-8"></property>
 	</bean>
-	
-    <!-- For Pagination Tag -->
-    <bean id="imageRenderer" class="kr.co.chase.ncms.common.web.CustomImgPaginationRenderer"/>
 
-    <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
-        <property name="rendererType">
-            <map>
-                <entry key="image" value-ref="imageRenderer"/>
-            </map>
-        </property>
-    </bean>
+	<!-- For Pagination Tag -->
+	<bean id="imageRenderer" class="kr.co.chase.ncms.common.web.CustomImgPaginationRenderer"/>
+
+	<bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+		<property name="rendererType">
+			<map>
+				<entry key="image" value-ref="imageRenderer"/>
+			</map>
+		</property>
+	</bean>
 	<!-- /For Pagination Tag -->
-	
+
 	<!-- for Jackson  -->
 	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-	    <property name="messageConverters">
-	        <list>
-	            <ref bean="jacksonMessageConverter" />
-	      </list>
-	    </property>
+		<property name="messageConverters">
+			<list>
+				<ref bean="jacksonMessageConverter" />
+			</list>
+		</property>
 	</bean>
-	
+
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="webBindingInitializer">
-            <!-- <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>-->
-            <bean class="kr.co.chase.ncms.common.web.BindingInitializer"/>
-        </property>
-        <!-- jackson 처리용 메세지 컨버터 --> 
-        <property name="messageConverters">
+		<property name="webBindingInitializer">
+			<!-- <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>-->
+			<bean class="kr.co.chase.ncms.common.web.BindingInitializer"/>
+		</property>
+		<!-- jackson 처리용 메세지 컨버터 -->
+		<property name="messageConverters">
 			<list>
 				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 				<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" >
-				    <property name = "supportedMediaTypes">
-					    <list>
-					        <value>*/*;charset=UTF-8</value>
-					    </list>
-					</property>	
+					<property name = "supportedMediaTypes">
+						<list>
+							<value>*/*;charset=UTF-8</value>
+						</list>
+					</property>
 				</bean>
 			</list>
 		</property>
-    </bean>
+	</bean>
 
-    <!-- jackson spring version에 따른 클래스명 주의!!-->
-    <bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-    
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="localeChangeInterceptor" />
-            </list>
-        </property>
-    </bean>
+	<!-- jackson spring version에 따른 클래스명 주의!!-->
+	<bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 
-    <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
-    
-    
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+			</list>
+		</property>
+	</bean>
+	<!-- 엑셀다운로드 -->
+	<bean id="counselExel" class="kr.co.chase.ncms.common.excel.CounselExel" />
+
+	<mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>
