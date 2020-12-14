@@ -30,11 +30,14 @@
 				<prop key="output.encoding">EUC-KR</prop>
 			</props>
 		</property>
-	</bean> 
+	</bean>
 
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/kr/co/chase/ncms/**" />
+			<mvc:mapping path="/*.do" />
+			<mvc:mapping path="/**/*.do" />
+			<mvc:exclude-mapping path="/index.jsp" />
+			<mvc:exclude-mapping path="/login.do" />
 			<bean class="kr.co.chase.ncms.common.AuthenticInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
