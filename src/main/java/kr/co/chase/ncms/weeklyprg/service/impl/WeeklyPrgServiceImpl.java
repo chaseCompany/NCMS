@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.co.chase.ncms.common.ConstantObject;
+import kr.co.chase.ncms.common.service.FileInfoService;
+import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.dao.GrpPgmDao;
 import kr.co.chase.ncms.dao.GrpPgmMbrDao;
 import kr.co.chase.ncms.weeklyprg.service.WeeklyPrgService;
@@ -25,6 +27,12 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 
 	@Resource(name="grpPgmMbrDao")
 	private GrpPgmMbrDao grpPgmMbrDao;
+
+	@Resource(name="fileInfoService")
+	private FileInfoService fileInfoService;
+
+	@Resource(name = "FileManagerUtil")
+	private FileManagerUtil fileUtil;
 
 	/**
 	 * 주간프로그램 목록 조회 카운트
@@ -60,7 +68,18 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 			throw new Exception("WeeklyPrgServiceImp.getGrpPgm pgmCd 필수 값 누락");
 		}
 
-		return grpPgmDao.getGrpPgm(map);
+		HashMap<String, Object> result = grpPgmDao.getGrpPgm(map);
+		if(!result.isEmpty()) {
+			String fileId = StringUtils.defaultIfEmpty((String)result.get("FILE_ID"), "");
+			if(!"".equals(fileId)) {
+				HashMap<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("fileId", fileId);
+
+				result.put("fileList", fileInfoService.getFileList(paramMap));
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -104,12 +123,33 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> addWeeklyPrg(HashMap<String, Object> map) throws Exception{
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		int result = 0;
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		String deletePgmSeq = StringUtils.defaultIfEmpty((String)map.get("deletePgmSeq"), "");
+
+		if(map.get("fileList") != null) {
+			List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)map.get("fileList");
+
+			for(HashMap<String, Object> info : fileList){
+				fileInfoService.insertFileInfo(info);
+ 			}
+		}
 
 		HashMap<String, Object> grpInfoMap = this.getGrpPgm(map);
 		if(grpInfoMap != null){
+			String oldFileId = StringUtils.defaultIfEmpty((String)grpInfoMap.get("FILE_ID"), "");
+
+			if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))){
+				if(!"".equals(oldFileId)) {
+					grpInfoMap.put("fileId", oldFileId);
+
+					fileUtil.deleteFile(oldFileId);
+					fileInfoService.deleteFileInfo(grpInfoMap);
+				}
+			}else if(!"".equals(oldFileId)) {
+				map.put("fileId", oldFileId);
+			}
+
 			result = this.updateGrpPgm(map);
 			resultMap.put("MSG", "수정");
 		}else{

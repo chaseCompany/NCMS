@@ -1,9 +1,12 @@
 package kr.co.chase.ncms.counsel.web;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -458,5 +461,31 @@ public class CounselController {
 		}
 
 		return "counsel/layer/mbrSearchLayer";
+	}
+
+	/**
+	 * 중독예방상담 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/counselExelDownload.do")
+	public String counselExelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response) throws Exception {
+		String title = "중독예방상담";
+		String rcpNo = StringUtils.defaultIfEmpty((String)reqMap.get("rcpNo"), "");
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + rcpNo + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> cslInfo = counselService.getCslRcp(rcpNo);
+
+		modelMap.put("cslInfo", cslInfo);
+
+		return "counselExel";
 	}
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fileInfo">
+	<select id="fileInfo.getFileInfoId" resultType="String">
+	<![CDATA[
+		SELECT /* fileInfo.getFileInfoId */
+			   CONCAT(DATE_FORMAT(NOW(), '%Y%m%d'), LPAD(IFNULL(MAX(CAST(SUBSTR(FILE_ID, 9) AS UNSIGNED)), 0) + 1, 4, '0')) AS fileId
+		  FROM FILE_INFO
+		 WHERE FILE_ID LIKE CONCAT(DATE_FORMAT(NOW(), '%Y%m%d'), '%')
+	]]>
+	</select>
+
+	<insert id="fileInfo.insertFileInfo" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* fileInfo.insertFileInfo */ INTO FILE_INFO (
+			   FILE_ID			, FILE_SEQ			, FILE_EXTSN	, FILE_STRE_COURS		, FILE_MG
+			 , ORIGNL_FILE_NM	, STRE_FILE_NM		, CRE_ID		, CRE_DT
+		) VALUES (
+			   #{fileId}		, #{fileSeq}		, #{fileExtsn}	, #{fileStreCours}		, #{fileMg}
+			 , #{orignlFileNm}	, #{streFileNm}		, #{creId}		, NOW()
+		)
+	]]>
+	</insert>
+
+	<delete id="fileInfo.deleteFileInfo" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* fileInfo.deleteFileInfo */
+		  FROM FILE_INFO
+		 WHERE FILE_ID = #{fileId}
+	]]>
+		<if test="fileSeq != null and fileSeq != ''">
+		   AND FILE_SEQ = #{fileSeq}
+		</if>
+	</delete>
+
+	<select id="fileInfo.getFileInfo" resultType="hashMap" parameterType="hashMap">
+	<![CDATA[
+		SELECT /* fileInfo.getFileInfo */
+			   FILE_ID			, FILE_SEQ			, FILE_EXTSN	, FILE_STRE_COURS		, FILE_MG
+			 , ORIGNL_FILE_NM	, STRE_FILE_NM		, CRE_ID		, CRE_DT
+		  FROM FILE_INFO
+		 WHERE FILE_ID = #{fileId}
+	]]>
+		<if test="fileSeq != null and fileSeq != ''">
+		   AND FILE_SEQ = #{fileSeq}
+		</if>
+	</select>
+</mapper>

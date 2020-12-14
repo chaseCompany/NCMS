@@ -3,9 +3,9 @@ package kr.co.chase.ncms.weeklyprg.web;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.SysCodeService;
+import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.login.service.LoginService;
 import kr.co.chase.ncms.vo.CslRcpVO;
 import kr.co.chase.ncms.weeklyprg.service.WeeklyPrgService;
@@ -34,6 +37,9 @@ public class WeeklyPrgController {
 
 	@Resource(name="weeklyPrgService")
 	private WeeklyPrgService weeklyPrgService;
+
+	@Resource(name = "FileManagerUtil")
+	private FileManagerUtil fileUtil;
 
 	/**
 	 * 주간 프로그램 메인 페이지
@@ -165,7 +171,7 @@ public class WeeklyPrgController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/ajaxWeeklyPrgAdd.do")
-	public @ResponseBody ModelAndView ajaxWeeklyPrgAdd(@RequestParam HashMap<String, Object> reqMap, HttpServletRequest request, HttpSession session) throws Exception{
+	public @ResponseBody ModelAndView ajaxWeeklyPrgAdd(@RequestParam HashMap<String, Object> reqMap, MultipartHttpServletRequest multiRequest, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
@@ -214,14 +220,31 @@ public class WeeklyPrgController {
 			return resultView;
 		}
 
+		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
 		String pgmDt = StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), "").replaceAll("-", "");
 		String pgmCd = StringUtils.defaultIfEmpty((String)reqMap.get("pgmCd"), "");
-		String[] pgmMbrNoList = request.getParameterValues("pgmMbrNo");
-		String[] mbrSeqNoList = request.getParameterValues("mbrSeqNo");
-		String[] mbrCtntList = request.getParameterValues("mbrCtnt");
+		String[] pgmMbrNoList = multiRequest.getParameterValues("pgmMbrNo");
+		String[] mbrSeqNoList = multiRequest.getParameterValues("mbrSeqNo");
+		String[] mbrCtntList = multiRequest.getParameterValues("mbrCtnt");
 
 		reqMap.put("pgmDt", pgmDt);
-		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+		reqMap.put("cslId", cslId);
+
+		// 첨부 파일 정보
+		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		if (!files.isEmpty()) {
+			boolean flag = fileUtil.checkFiles(files);
+
+			if(flag) {
+				HashMap<String, Object> fileMng = fileUtil.parseFileInf(files, "WEEK", cslId);
+				if(!fileMng.isEmpty()) {
+					List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)fileMng.get("fileList");
+
+					reqMap.put("fileList", fileList);
+					reqMap.put("fileId", StringUtils.defaultIfEmpty((String)fileMng.get("fileId"), ""));
+				}
+			}
+		}
 
 		// 회원 목록
 		if(pgmMbrNoList != null && pgmMbrNoList.length > 0) {

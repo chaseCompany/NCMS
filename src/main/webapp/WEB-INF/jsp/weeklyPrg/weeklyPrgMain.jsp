@@ -8,6 +8,7 @@
 %>
 <c:set var="loginUserId" value="<%=loginUserId%>" />
 <c:set var="loginSiteNm" value="<%=loginSiteNm%>" />
+<script type="text/javascript" language="javascript" charset="utf-8" src="<c:url value='/js/jquery.form.js'/>"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		$("input[name='schStrDt']").datepicker('setDate', '-3M');
@@ -70,7 +71,9 @@
 			$.ajax({
 				url : '/ajaxWeeklyPrgAdd.do',
 				type : 'POST',
-				data : $("#pgmInfoForm").serialize(),
+				processData: false,
+				contentType: false,
+				data : new FormData($("#pgmInfoForm")[0]),
 				success : function(res){
 					if(res.err != "Y"){
 						alert(res.MSG + " 성공");
@@ -108,6 +111,8 @@
 				$("input[name='pgmSession']").val("");
 				$("textarea[name='pgmCtnt']").val("");
 				$("textarea[name='pgmRst']").val("");
+				$("input[name='file']").val("");
+				$("div#fileName").text("");
 			}else{
 				$.ajax({
 					url : '/ajaxGetWeeklyPrg.do',
@@ -136,6 +141,14 @@
 						$("input[name='pgmSession']").val(prgInfo.PGM_SESSION);
 						$("textarea[name='pgmCtnt']").val(prgInfo.PGM_CTNT);
 						$("textarea[name='pgmRst']").val(prgInfo.PGM_RST);
+
+						if(prgInfo.fileList != undefined && prgInfo.fileList != ''){
+							for(let i=0 ; i<prgInfo.fileList.length ; i++){
+								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + prgInfo.fileList[i].FILE_ID + "\", \"" + prgInfo.fileList[i].FILE_SEQ + "\");'>" + prgInfo.fileList[i].ORIGNL_FILE_NM + "</a>");
+							}
+						}else{
+							$("div#fileName").text("");
+						}
 					},
 					error : function(xhr, status){
 						console.log(xhr);
@@ -348,6 +361,9 @@
 		<%-- 엑셀다운로드 --%>
 		weeklyExel = function(){
 			alert("준비중");
+		},
+		downloadFile = function(tagId, tagSeq){
+			window.open("<c:url value='/fileDown.do?fileId="+tagId+"&fileSeq="+tagSeq+"'/>");
 		}
 
 		getWeeklyPrgList();
@@ -437,7 +453,7 @@
 		</form>
 		<div class="r">
 			<!-- 프로그램 정보 -->
-			<form name="pgmInfoForm" id="pgmInfoForm">
+			<form name="pgmInfoForm" id="pgmInfoForm" enctype="multipart/form-data">
 			<div class="section pdn">
 				<div class="el-card_header">
 					<h2><i class="el-icon-s-opportunity"></i> 프로그램 정보</h2>
@@ -511,7 +527,7 @@
 						</colgroup>
 						<tbody>
 						<tr>
-							<th><span class="required">*</span> 회기</th>
+							<th>회기</th>
 							<td><input type="text" name="pgmSession" placeholder="회기" style="width: 100%;" /></td>
 						</tr>
 						<tr>
@@ -524,13 +540,16 @@
 							<td><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
 						</tr>
 						<tr>
-							<th>
-								<span class="required">*</span> 결과<br>
+							<th>결과<br>
 								<button type="button" onclick="javaScript:viewCtnt('pgmRst', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
 							<td><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
+						</tr>
+						<tr>
+							<th>첨부</th>
+							<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
 						</tr>
 						</tbody>
 					</table>
