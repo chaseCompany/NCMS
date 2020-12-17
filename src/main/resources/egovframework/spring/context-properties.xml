@@ -15,7 +15,7 @@
 		</bean>
 	</beans>
 
-	<beans profile="beta">
+	<beans profile="dev">
 		<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
 			<property name="properties">
 				<map>
@@ -28,7 +28,7 @@
 		</bean>
 	</beans>
 
-	<beans profile="locdev">
+	<beans profile="loacl">
 		<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
 			<property name="properties">
 				<map>

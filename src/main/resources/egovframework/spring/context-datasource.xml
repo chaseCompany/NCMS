@@ -24,7 +24,7 @@
 		</bean>
 	</beans>
 
-	<beans profile="beta">
+	<beans profile="dev">
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			<property name="maxActive" value="3"/>
 			<property name="maxIdle" value="3"/>
@@ -44,7 +44,7 @@
 		</bean>
 	</beans>
 
-	<beans profile="locdev">
+	<beans profile="loacl">
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			<property name="maxActive" value="3"/>
 			<property name="maxIdle" value="3"/>
