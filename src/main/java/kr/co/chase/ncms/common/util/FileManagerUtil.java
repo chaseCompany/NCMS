@@ -71,7 +71,7 @@ public class FileManagerUtil {
 
 		int fileKey = 1;
 		String timeStamp = this.getTimeStamp();
-		String storePathString = propertiesService.getString("uploadFile") + this.getDirTime(timeStamp);
+		String storePathString = propertiesService.getString("uploadFile") + this.getDirTime(timeStamp, propertiesService.getString("dirPartition"));
 		String fileId = fileInfoService.getFileInfoId();
 
 		File saveFolder = new File(WebUtil.filePathBlackList(storePathString));
@@ -195,7 +195,7 @@ public class FileManagerUtil {
 	 * @param str
 	 * @return
 	 */
-	private static String getDirTime(String str) {
+	private static String getDirTime(String str, String partition) {
 		if("".equals(StringUtils.defaultIfEmpty(str, ""))) {
 			return str;
 		}
@@ -203,6 +203,6 @@ public class FileManagerUtil {
 			return str;
 		}
 
-		return str.substring(0, 4) + "\\" + str.substring(4, 6) + "\\" + str.substring(6, 8) + "\\";
+		return str.substring(0, 4) + partition + str.substring(4, 6) + partition + str.substring(6, 8) + partition;
 	}
 }

@@ -55,10 +55,6 @@
 				alert("프로그램 실시 종료시간은 필수 입력 항목입니다.");
 				$("input[name='pgmToTm']").focus();					return;
 			}
-			if($("input[name='pgmToTm']").val() == ""){
-				alert("프로그램 실시 종료시간은 필수 입력 항목입니다.");
-				$("input[name='pgmToTm']").focus();					return;
-			}
 			if($("select[name='mngUsrId']").val() == ""){
 				alert("담당자는 필수 입력 항목입니다.");
 				$("select[name='mngUsrId']").focus();				return;
@@ -71,8 +67,9 @@
 			$.ajax({
 				url : '/ajaxWeeklyPrgAdd.do',
 				type : 'POST',
-				processData: false,
-				contentType: false,
+				processData : false,
+				contentType : false,
+				enctype : 'multipart/form-data',
 				data : new FormData($("#pgmInfoForm")[0]),
 				success : function(res){
 					if(res.err != "Y"){

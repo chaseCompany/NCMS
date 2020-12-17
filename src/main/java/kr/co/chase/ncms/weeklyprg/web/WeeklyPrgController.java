@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -171,7 +172,7 @@ public class WeeklyPrgController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/ajaxWeeklyPrgAdd.do")
-	public @ResponseBody ModelAndView ajaxWeeklyPrgAdd(@RequestParam HashMap<String, Object> reqMap, MultipartHttpServletRequest multiRequest, HttpSession session) throws Exception{
+	public @ResponseBody ModelAndView ajaxWeeklyPrgAdd(final MultipartHttpServletRequest multiRequest, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
@@ -197,11 +198,6 @@ public class WeeklyPrgController {
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmFmTm"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "프로그램 실시 시작시간은 필수 입력 항목입니다.");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmToTm"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 실시 종료시간은 필수 입력 항목입니다.");
 			return resultView;
 		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmToTm"), ""))) {
