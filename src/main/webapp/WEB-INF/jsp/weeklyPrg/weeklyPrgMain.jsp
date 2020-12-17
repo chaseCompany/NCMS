@@ -372,7 +372,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 주간이용 프로그램</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 주간재활 프로그램</h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->

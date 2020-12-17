@@ -45,7 +45,7 @@
 	<filter-mapping>
 	        <filter-name>ajaxSessionExpirationFilter</filter-name>
 	        <url-pattern>*.ajax</url-pattern>
-	</filter-mapping>	
+	</filter-mapping>
     <filter>
 		<filter-name>DisableUrlSessionFilter</filter-name>
 		<filter-class>kr.co.chase.ncms.common.DisableUrlSessionFilter</filter-class>
@@ -54,7 +54,7 @@
 	        <filter-name>DisableUrlSessionFilter</filter-name>
 	        <url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<!-- XSS 취약점 제거 설정 -->
 	<filter>
 		<filter-name>XSS</filter-name>
@@ -64,27 +64,27 @@
 		<filter-name>XSS</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:egovframework/spring/context-*.xml</param-value>
 	</context-param>
-    
+
     <!-- 2015.10.30 rcw 추가 -->
-	<context-param>  
-    	<param-name>spring.profiles.default</param-name>  
-    	<param-value>locdev</param-value>  
+	<context-param>
+    	<param-name>spring.profiles.default</param-name>
+    	<param-value>dev</param-value>
 	</context-param>
-	<context-param>  
-	    <param-name>spring.liveBeansView.mbeanDomain</param-name>  
-	    <param-value>dev</param-value>  
+	<context-param>
+	    <param-name>spring.liveBeansView.mbeanDomain</param-name>
+	    <param-value>dev</param-value>
 	</context-param>
 	<!--  -->
-	 
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-    
+
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -94,7 +94,7 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-    
+
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
@@ -103,15 +103,15 @@
 	    <servlet-name>action</servlet-name>
 	    <url-pattern>*.ajax</url-pattern>
 	</servlet-mapping>
-    
+
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-    
+
 	<login-config>
 		<auth-method>BASIC</auth-method>
 	</login-config>
-    
+
     <!-- Error Page -->
 	<error-page>
 		<error-code>400</error-code>
