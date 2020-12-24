@@ -187,7 +187,7 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		}
 
 		return mstMbrDao.deleteMstMbr(mbrNo);
-	} 
+	}
 
 	/**
 	 * 회원 정보/이력 삭제 처리
@@ -236,5 +236,29 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		}
 
 		return result;
+	}
+
+	/**
+	 * 미등록 회원 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public String saveMstMbrEt(HashMap<String, Object> map) throws Exception{
+		int result = 0;
+
+		String newMbrNo = this.getMbrNoSeq();
+		map.put("mbrNo", newMbrNo);
+		map.put("stsCd", ConstantObject.etMemStsCd);
+		result = this.insertMstMbr(map);
+
+		if(result > 0) {
+			map.put("regRlsCd", ConstantObject.etMemStsCd);
+			map.put("regRlsDt", map.get("regDt"));
+			map.put("dtlCtnt", "최초등록");
+			this.insertMstRegHis(map);
+		}
+
+		return newMbrNo;
 	}
 }

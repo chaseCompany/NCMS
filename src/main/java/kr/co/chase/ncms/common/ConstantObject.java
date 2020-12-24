@@ -19,7 +19,8 @@ public class ConstantObject {
 	/**
 	 * 회원 등록 상태값
 	 */
-	public static final String defaultMemStsCd = "RG";
-	public static final String rlMemStsCd = "RL";
-	public static final String rrMemStsCd = "RR";
+	public static final String defaultMemStsCd = "RG";		// 등록
+	public static final String rlMemStsCd = "RL";			// 퇴록
+	public static final String rrMemStsCd = "RR";			// 재등록
+	public static final String etMemStsCd = "ET";			// 미등록
 }

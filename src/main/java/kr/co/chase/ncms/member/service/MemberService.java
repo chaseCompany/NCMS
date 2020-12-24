@@ -98,4 +98,12 @@ public interface MemberService {
 	 * @throws Exception
 	 */
 	public int StsCdUpdate(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 미등록 회원 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public String saveMstMbrEt(HashMap<String, Object> map) throws Exception;
 }

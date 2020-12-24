@@ -243,6 +243,11 @@
 			$("select[name='tgpJobCd']").val($("select[name='ifpJobCd']").val()).prop("selected", true);
 			$("select[name='tgpAreaCd']").val($("select[name='ifpAreaCd']").val()).prop("selected", true);
 			$("input[name='tgpAreaEtc']").val($("input[name='ifpAreaEtc']").val());
+			if($("select[name='ifpAreaCd']").val() == "ZZZ"){
+				$("input[name='tgpAreaEtc']").attr("disabled", false);
+			}else{
+				$("input[name='tgpAreaEtc']").attr("disabled", true);
+			}
 		},
 		<%-- 대상자 회원 정보 셋팅 --%>
 		tgpMbrSearchPopup = function(obj){
@@ -286,7 +291,10 @@
 						$("input[name='ifpTelNo3']").val(res.cslRcpInfo.IFP_TEL_NO3);
 						$("select[name='ifpJobCd']").val(res.cslRcpInfo.IFP_JOB_CD).prop("selected", true);
 						$("select[name='ifpAreaCd']").val(res.cslRcpInfo.IFP_AREA_CD).prop("selected", true);
-						$("input[name='ifpAreaEtc']").val(res.cslRcpInfo.IFP_AREA_ETC);
+						if(res.cslRcpInfo.IFP_AREA_CD == "ZZZ"){
+							$("input[name='ifpAreaEtc']").attr("disabled", false);
+							$("input[name='ifpAreaEtc']").val(res.cslRcpInfo.IFP_AREA_ETC);
+						}
 						$("input[name='tgpNm']").val(res.cslRcpInfo.TGP_NM);
 						$("input[name='tgpMbrNo']").val(res.cslRcpInfo.TGP_MBR_NO);
 						$("input[name='tgpGendCd']:radio[value='" + res.cslRcpInfo.TGP_GEND_CD + "']").prop("checked", true);
@@ -297,7 +305,10 @@
 						$("select[name='tgpJobCd']").val(res.cslRcpInfo.TGP_JOB_CD).prop("selected", true);
 						$("input[name='tgpFrgCd']:radio[value='" + res.cslRcpInfo.TGP_FRG_CD + "']").prop("checked", true);
 						$("select[name='tgpAreaCd']").val(res.cslRcpInfo.TGP_AREA_CD).prop("selected", true);
-						$("input[name='tgpAreaEtc']").val(res.cslRcpInfo.TGP_AREA_ETC);
+						if(res.cslRcpInfo.TGP_AREA_CD == "ZZZ"){
+							$("input[name='tgpAreaEtc']").attr("disabled", false);
+							$("input[name='tgpAreaEtc']").val(res.cslRcpInfo.TGP_AREA_ETC);
+						}
 						$("select[name='ifPathCd']").val(res.cslRcpInfo.IF_PATH_CD).prop("selected", true);
 						$("select[name='pbmKndCd']").val(res.cslRcpInfo.PBM_KND_CD).prop("selected", true);
 						$("select[name='cslTpCd']").val(res.cslRcpInfo.CSL_TP_CD).prop("selected", true);
@@ -315,6 +326,7 @@
 						$("select[name='ursCd']").val(res.cslRcpInfo.URS_CD).prop("selected", true);
 						$("textarea[name='cslCtnt']").val(res.cslRcpInfo.CSL_CTNT);
 						$("textarea[name='cslRst']").val(res.cslRcpInfo.CSL_RST);
+						$("select[name='ursCd']").val(res.cslRcpInfo.URS_CD).prop("selected", true);
 
 						layerPopupClose('rcptPopUp');
 						changRating();
@@ -512,7 +524,7 @@
 								<th>회원번호</th>
 								<td>
 									<span class="tac">
-										<form:input path="cslRcpInfo.ifpMbrNo" cssClass="el-input__inner" placeholder="회원번호" disabled="true" style="width: 140px;" />
+										<form:input path="cslRcpInfo.ifpMbrNo" cssClass="el-input__inner" placeholder="회원번호" readonly="true" style="width: 140px;" />
 									</span>
 								</td>
 								<th><span class="required">*</span> 성별</th>
@@ -601,7 +613,7 @@
 								<th>회원번호</th>
 								<td>
 									<span class="dsp-ibk tac">
-										<form:input path="cslRcpInfo.tgpMbrNo" cssClass="el-input__inner" placeholder="회원번호" disabled="true" style="width: 140px;" />
+										<form:input path="cslRcpInfo.tgpMbrNo" cssClass="el-input__inner" placeholder="회원번호" style="width: 140px;" />
 									</span>
 								</td>
 								<th><span class="required">*</span> 성별</th>

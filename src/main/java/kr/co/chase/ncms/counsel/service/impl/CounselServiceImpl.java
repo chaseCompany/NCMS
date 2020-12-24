@@ -15,10 +15,14 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.co.chase.ncms.counsel.service.CounselService;
 import kr.co.chase.ncms.dao.CslRcpDao;
 import kr.co.chase.ncms.dao.MstMbrDao;
+import kr.co.chase.ncms.member.service.MemberService;
 
 @Service("counselService")
 public class CounselServiceImpl extends EgovAbstractServiceImpl implements CounselService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CounselServiceImpl.class);
+
+	@Resource(name="memberService")
+	private MemberService memberService;
 
 	@Resource(name="cslRcpDao")
 	private CslRcpDao cslRcpDao;
@@ -66,9 +70,26 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 		String rcpNo = StringUtils.defaultString(map.get("rcpNo") != null ? map.get("rcpNo").toString() : "", "");
 
 		if(rcpNo.equals("")) {
+			String tgpMbrNo = StringUtils.defaultIfEmpty((String)map.get("tgpMbrNo"), "");
+			if("".equals(tgpMbrNo)){
+				map.put("mbrNm", StringUtils.defaultIfEmpty((String)map.get("tgpNm"), ""));
+				map.put("gendCd", StringUtils.defaultIfEmpty((String)map.get("tgpGendCd"), ""));
+				map.put("age", StringUtils.defaultIfEmpty((String)map.get("tgpAge"), ""));
+				map.put("telNo1", StringUtils.defaultIfEmpty((String)map.get("tgpTelNo1"), ""));
+				map.put("telNo2", StringUtils.defaultIfEmpty((String)map.get("tgpTelNo2"), ""));
+				map.put("telNo3", StringUtils.defaultIfEmpty((String)map.get("tgpTelNo3"), ""));
+				map.put("jobCd", StringUtils.defaultIfEmpty((String)map.get("tgpJobCd"), ""));
+				map.put("frgCd", StringUtils.defaultIfEmpty((String)map.get("tgpFrgCd"), ""));
+				map.put("addr1", StringUtils.defaultIfEmpty((String)map.get("tgpAreaCd"), ""));
+				map.put("addr2", StringUtils.defaultIfEmpty((String)map.get("tgpAreaEtc"), ""));
+				map.put("creId", StringUtils.defaultString((String)map.get("cslId"), ""));
+
+				map.put("tgpMbrNo", memberService.saveMstMbrEt(map));
+			}
+
 			map.put("rcpNo", this.getCslRcpSeq());
 			result = this.insertCslRcp(map);
-		}else {
+		}else{
 			result = this.updateCslRcp(map);
 		}
 
@@ -87,7 +108,7 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 */
 	public int getCslRcpListCount(HashMap<String, Object> map) throws Exception{
 		return cslRcpDao.getCslRcpListCount(map);
-	} 
+	}
 
 	/**
 	 * 상담이력 목록 조회
