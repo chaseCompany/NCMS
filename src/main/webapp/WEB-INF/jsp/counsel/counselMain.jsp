@@ -613,7 +613,7 @@
 								<th>회원번호</th>
 								<td>
 									<span class="dsp-ibk tac">
-										<form:input path="cslRcpInfo.tgpMbrNo" cssClass="el-input__inner" placeholder="회원번호" style="width: 140px;" />
+										<form:input path="cslRcpInfo.tgpMbrNo" cssClass="el-input__inner" placeholder="회원번호" readonly="true" style="width: 140px;" />
 									</span>
 								</td>
 								<th><span class="required">*</span> 성별</th>
