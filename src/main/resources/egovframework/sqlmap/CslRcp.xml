@@ -59,7 +59,7 @@
 			 , #{pbmKndCd}				, #{cslTpCd}					, #{cslHisCd}			, #{fstDrugCd}			, #{fstDrug}
 			 , #{mainDrugCd}			, #{mainDrug}					, #{cslCtnt}			, #{cslRst}				, #{cslEmer}
 			 , #{mjrMngCd}				, CAST(#{astSco} AS UNSIGNED)	, #{rskaTpCd}			, #{rskbTpCd}			, #{rskcTpCd}
-			 , #{usrCd}					, CAST(#{rskSco} AS UNSIGNED)	, #{cslId}				, NOW()					, #{cslId}
+			 , #{ursCd}					, CAST(#{rskSco} AS UNSIGNED)	, #{cslId}				, NOW()					, #{cslId}
 			 , NOW()					, #{ifpAreaEtc}					, #{tgpAreaEtc}
 		)
 	]]>
