@@ -8,12 +8,12 @@
 		<%-- 페이지처리 --%>
 		goPage = function(pageNo){
 			$("input[name='memPageNo']").val(pageNo);
-			mstMbrSearchPopup();
+			mstMbrSearchPopup($("input[name='reFunName']").val());
 		},
 		<%-- 검색 --%>
 		schPageList = function(){
 			$("input[name='memPageNo']").val("1");
-			mstMbrSearchPopup();
+			mstMbrSearchPopup($("input[name='reFunName']").val());
 		}
 		<%-- 회원선택 --%>
 		choiceMem = function(mbrNm, mbrNo, gendCd, age, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm){
