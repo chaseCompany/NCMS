@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.co.chase.ncms.common.ConstantObject;
+import kr.co.chase.ncms.common.service.FileInfoService;
+import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.dao.CslAssDao;
 import kr.co.chase.ncms.dao.CslAssEvlDao;
 import kr.co.chase.ncms.dao.CslIdvDao;
@@ -35,6 +37,12 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	@Resource(name="cslAssEvlDao")
 	private CslAssEvlDao cslAssEvlDao;
 
+	@Resource(name="fileInfoService")
+	private FileInfoService fileInfoService;
+
+	@Resource(name = "FileManagerUtil")
+	private FileManagerUtil fileUtil;
+
 	/**
 	 * 회원별 집중상담 이력 조회
 	 * @param map
@@ -52,7 +60,19 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslIdv(String cslNo) throws Exception{
-		return cslIdvDao.getCslIdv(cslNo);
+		HashMap<String, Object> result = cslIdvDao.getCslIdv(cslNo);
+
+		if(!result.isEmpty()) {
+			String fileId = StringUtils.defaultIfEmpty((String)result.get("FILE_ID"), "");
+			if(!"".equals(fileId)) {
+				HashMap<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("fileId", fileId);
+
+				result.put("fileList", fileInfoService.getFileList(paramMap));
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -94,6 +114,14 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		String cslNo = StringUtils.defaultIfEmpty(map.get("cslNo").toString(), "");
 
+		if(map.get("fileList") != null) {
+			List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)map.get("fileList");
+
+			for(HashMap<String, Object> info : fileList){
+				fileInfoService.insertFileInfo(info);
+ 			}
+		}
+
 		if("".equals(cslNo)){
 			map.put("cslNo", this.getCslIdvSeq());
 
@@ -106,6 +134,23 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 				resultMap.put("MSG", "집중 상담 등록 실패");
 			}
 		}else{
+			HashMap<String, Object> cslIdvInfo = this.getCslIdv(cslNo);
+
+			if(!cslIdvInfo.isEmpty() && cslIdvInfo != null) {
+				String oldFileId = StringUtils.defaultIfEmpty((String)cslIdvInfo.get("FILE_ID"), "");
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))) {
+					if(!"".equals(oldFileId)) {
+						cslIdvInfo.put("fileId", oldFileId);
+
+						fileUtil.deleteFile(oldFileId);
+						fileInfoService.deleteFileInfo(cslIdvInfo);
+					}
+				}else if(!"".equals(oldFileId)) {
+					map.put("fileId", oldFileId);
+				}
+			}
+
 			int result = this.updateCslIdv(map);
 			if(result > 0){
 				resultMap.put("err", "N");

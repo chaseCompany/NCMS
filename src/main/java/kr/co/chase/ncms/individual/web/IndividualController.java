@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.SysCodeService;
+import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.individual.service.IndividualService;
 import kr.co.chase.ncms.vo.CslAssVO;
 import kr.co.chase.ncms.vo.CslIdvVO;
@@ -34,6 +38,9 @@ public class IndividualController {
 
 	@Resource(name="individualService")
 	private IndividualService individualService;
+
+	@Resource(name = "FileManagerUtil")
+	private FileManagerUtil fileUtil;
 
 	/**
 	 * 개별 회원 복지 서비스 메인
@@ -177,6 +184,21 @@ public class IndividualController {
 		codeListMap.put("grpCd", "C2400");				// 평가도구
 		model.put("evlTolCdList", sysCodeService.getSysCdList(codeListMap));
 
+		codeListMap.put("grpCd", "C5600");				// URS
+		model.put("ursCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C5700");				// 치료력
+		model.put("cureCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C5800");				// 선택
+		model.put("selCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C5900");				// 시도횟수
+		model.put("actCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C6000");				// 시도방법
+		model.put("actWayCdList", sysCodeService.getSysCdList(codeListMap));
+
 		return "individual/individualMain";
 	}
 
@@ -243,9 +265,8 @@ public class IndividualController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="ajaxClsIdvAdd.do")
-	public @ResponseBody ModelAndView ajaxClsIdvAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+	public @ResponseBody ModelAndView ajaxClsIdvAdd(final MultipartHttpServletRequest multiRequest, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
-		boolean flag = true;
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
@@ -253,19 +274,84 @@ public class IndividualController {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
 			resultView.addObject("actUrl", "/login.do");
-
 			return resultView;
 		}
 
 		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslDt"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslFmTm"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslToTm"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslSbj"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("rskaTpCd"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("rskbTpCd"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("rskcTpCd"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("ursCd"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslCtnt"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+			return resultView;
+		}
+		if(StringUtils.defaultString((String)reqMap.get("cslRst"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
 			return resultView;
 		}
 
+		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
 		reqMap.put("cslDt", StringUtils.defaultIfEmpty((String)reqMap.get("cslDt"), "").replaceAll("-", ""));
-		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+		reqMap.put("cslId", cslId);
+
+		// 첨부 파일 정보
+		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		if (!files.isEmpty()) {
+			boolean flag = fileUtil.checkFiles(files);
+
+			if(flag) {
+				HashMap<String, Object> fileMng = fileUtil.parseFileInf(files, "IDV", cslId);
+				if(!fileMng.isEmpty()) {
+					List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)fileMng.get("fileList");
+
+					reqMap.put("fileList", fileList);
+					reqMap.put("fileId", StringUtils.defaultIfEmpty((String)fileMng.get("fileId"), ""));
+				}
+			}
+		}
 
 		HashMap<String, Object> resMap = individualService.cslIdvAdd(reqMap);
 		if(resMap != null) {
@@ -600,7 +686,7 @@ public class IndividualController {
 		if(prsnCdList != null && prsnCdList.length > 0) {
 			String prsnCd = "[";
 			for(String cd : prsnCdList) {
-				prsnCd += cd + ", "; 
+				prsnCd += cd + ", ";
 			}
 			prsnCd = prsnCd.substring(0, prsnCd.length() - 2) + "]";
 
@@ -609,7 +695,7 @@ public class IndividualController {
 		if(emtnCdList != null && emtnCdList.length > 0) {
 			String emtnCd = "[";
 			for(String cd : emtnCdList) {
-				emtnCd += cd + ", "; 
+				emtnCd += cd + ", ";
 			}
 			emtnCd = emtnCd.substring(0, emtnCd.length() - 2) + "]";
 
@@ -618,7 +704,7 @@ public class IndividualController {
 		if(actnCdList != null && actnCdList.length > 0) {
 			String actnCd = "[";
 			for(String cd : actnCdList) {
-				actnCd += cd + ", "; 
+				actnCd += cd + ", ";
 			}
 			actnCd = actnCd.substring(0, actnCd.length() - 2) + "]";
 
@@ -627,7 +713,7 @@ public class IndividualController {
 		if(fmlyCdList != null && fmlyCdList.length > 0) {
 			String fmlyCd = "[";
 			for(String cd : fmlyCdList) {
-				fmlyCd += cd + ", "; 
+				fmlyCd += cd + ", ";
 			}
 			fmlyCd = fmlyCd.substring(0, fmlyCd.length() - 2) + "]";
 
@@ -636,7 +722,7 @@ public class IndividualController {
 		if(itRlCdList != null && itRlCdList.length > 0) {
 			String itRlCd = "[";
 			for(String cd : itRlCdList) {
-				itRlCd += cd + ", "; 
+				itRlCd += cd + ", ";
 			}
 			itRlCd = itRlCd.substring(0, itRlCd.length() - 2) + "]";
 

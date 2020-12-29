@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script type="text/javascript" language="javascript" charset="utf-8" src="<c:url value='/js/jquery.form.js'/>"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		<%-- 초기화 --%>
@@ -17,6 +18,7 @@
 				url : '/ajaxMstMbrList.do',
 				type : 'POST',
 				data : {
+					listType : "MEDIC",
 					pageNo : $("input[name='memPageNo']").val(),
 					mbrNm : $("input[name='memSchMbrNm']").val(),
 					telNo : $("input[name='memSchTelNo']").val()
@@ -152,24 +154,44 @@
 				},
 				success : function(res){
 					if(res.err != "Y"){
-						$("input[name='cslNo']").val(res.clsIdvInfo.CSL_NO);
-						$("input[name='cslNm']").val(res.clsIdvInfo.CSL_NM);
-						$("input[name='cslDt']").val(formatDate(res.clsIdvInfo.CSL_DT));
-						$("input[name='cslFmTm']").val(res.clsIdvInfo.CSL_FM_TM);
-						$("input[name='cslToTm']").val(res.clsIdvInfo.CSL_TO_TM);
-						$("input[name='cslTermTm']").val(res.clsIdvInfo.CSL_TERM_TM);
-						$("input[name='cslTgtCd']:radio[value='" + res.clsIdvInfo.CSL_TGT_CD + "']").prop("checked", true);
-						$("input[name='cslTpCd']:radio[value='" + res.clsIdvInfo.CSL_TP_CD + "']").prop("checked", true);
-						$("input[name='cslSbj']").val(res.clsIdvInfo.CSL_SBJ);
-						$("input[name='cslTgt']").val(res.clsIdvInfo.CSL_TGT);
-						$("textarea[name='cslCtnt']").val(res.clsIdvInfo.CSL_CTNT);
-						$("input[name='rskSco']").val(res.clsIdvInfo.RSK_SCO);
-						$("select[name='rskaTpCd']").val(res.clsIdvInfo.RSKA_TP_CD).prop("selected", true);
-						$("select[name='rskbTpCd']").val(res.clsIdvInfo.RSKB_TP_CD).prop("selected", true);
-						$("select[name='rskcTpCd']").val(res.clsIdvInfo.RSKC_TP_CD).prop("selected", true);
-						$("input[name='nxtCslDt']").val(formatDate(res.clsIdvInfo.NXT_CSL_DT));
-						$("input[name='nxtCslTm']").val(res.clsIdvInfo.NXT_CSL_TM);
-						$("textarea[name='nxtCslCtnt']").val(res.clsIdvInfo.NXT_CSL_CTNT);
+						var dataInfo = res.clsIdvInfo;
+						$("input[name='cslNo']").val(dataInfo.CSL_NO);
+						$("input[name='cslNm']").val(dataInfo.CSL_NM);
+						$("input[name='cslDt']").val(formatDate(dataInfo.CSL_DT));
+						$("input[name='cslFmTm']").val(dataInfo.CSL_FM_TM);
+						$("input[name='cslToTm']").val(dataInfo.CSL_TO_TM);
+						$("input[name='cslTermTm']").val(dataInfo.CSL_TERM_TM);
+						$("input[name='cslTgtCd']:radio[value='" + dataInfo.CSL_TGT_CD + "']").prop("checked", true);
+						$("input[name='cslTpCd']:radio[value='" + dataInfo.CSL_TP_CD + "']").prop("checked", true);
+						$("input[name='cslSbj']").val(dataInfo.CSL_SBJ);
+						$("input[name='cslTgt']").val(dataInfo.CSL_TGT);
+						$("select[name='rskaTpCd']").val(dataInfo.RSKA_TP_CD).prop("selected", true);
+						$("select[name='rskbTpCd']").val(dataInfo.RSKB_TP_CD).prop("selected", true);
+						$("select[name='rskcTpCd']").val(dataInfo.RSKC_TP_CD).prop("selected", true);
+						$("input[name='rskSco']").val(dataInfo.RSK_SCO);
+						$("input[name='crisisCounsel']").val(dataInfo.CRISIS_COUNSEL);
+						$("select[name='ursCd']").val(dataInfo.URS_CD).prop("selected", true);
+						$("select[name='cureCd']").val(dataInfo.CURE_CD).prop("selected", true);
+						$("select[name='drugUseCd']").val(dataInfo.DRUG_USE_CD).prop("selected", true);
+						$("select[name='oldActCd']").val(dataInfo.OLD_ACT_CD).prop("selected", true);
+						$("select[name='actCd']").val(dataInfo.ACT_CD).prop("selected", true);
+						$("select[name='aroundSuicideCd']").val(dataInfo.AROUND_SUICIDE_CD).prop("selected", true);
+						$("select[name='suicidePlanCd']").val(dataInfo.SUICIDE_PLAN_CD).prop("selected", true);
+						$("select[name='oldActWayCd']").val(dataInfo.OLD_ACT_WAY_CD).prop("selected", true);
+						$("select[name='actWayCd']").val(dataInfo.ACT_WAY_CD).prop("selected", true);
+						$("textarea[name='cslCtnt']").val(dataInfo.CSL_CTNT);
+						$("textarea[name='cslRst']").val(dataInfo.CSL_RST);
+						$("input[name='nxtCslDt']").val(formatDate(dataInfo.NXT_CSL_DT));
+						$("input[name='nxtCslTm']").val(dataInfo.NXT_CSL_TM);
+						$("textarea[name='nxtCslCtnt']").val(dataInfo.NXT_CSL_CTNT);
+
+						if(dataInfo.fileList != undefined && dataInfo.fileList != ''){
+							for(let i=0 ; i<dataInfo.fileList.length ; i++){
+								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + dataInfo.fileList[i].FILE_ID + "\", \"" + dataInfo.fileList[i].FILE_SEQ + "\");'>" + dataInfo.fileList[i].ORIGNL_FILE_NM + "</a>");
+							}
+						}else{
+							$("div#fileName").text("");
+						}
 
 						var termTm = needTime($("input[name='cslFmTm']").val(), $("input[name='cslToTm']").val());
 						if(termTm > 0){
@@ -212,40 +234,64 @@
 				return;
 			}
 			if($("input[name='cslDt']").val() == ""){
-				alert("집중 상담일는 필수 입력 항목입니다.");
+				alert("상담일는 필수 입력 항목입니다.");
 				$("input[name='cslDt']").focus();					return;
 			}
 			if($("input[name='cslFmTm']").val() == ""){
-				alert("집중 상담 시간은 필수 입력 항목입니다.");
+				alert("상담 시간은 필수 입력 항목입니다.");
 				$("input[name='cslFmTm']").focus();					return;
 			}
 			if($("input[name='cslToTm']").val() == ""){
-				alert("집중 상담 시간은 필수 입력 항목입니다.");
+				alert("상담 시간은 필수 입력 항목입니다.");
 				$("input[name='cslToTm']").focus();					return;
 			}
 			if(needTime($("input[name='cslFmTm']").val(), $("input[name='cslToTm']").val()) <= 0){
 				alert("상담 소요시간은 0보다 값이 커야 합니다.");
 				$("input[name='cslToTm']").focus();					return;
 			}
-			if($("input[name='cslSbj']").val() ==""){
+			if($("input[name='cslSbj']").val() == ""){
 				alert("상담주제는 필수 입력 항목입니다.");
 				$("input[name='cslSbj']").focus();					return;
+			}
+			if($("select[name='rskaTpCd']").val() == ""){
+				alert("위기분류척도 Rating A: 위험성은 필수 입력 항목입니다.");
+				$("select[name='rskaTpCd']").focus();				return;
+			}
+			if($("select[name='rskbTpCd']").val() == ""){
+				alert("위기분류척도 Rating B: 지지체계는 필수 입력 항목입니다.");
+				$("select[name='rskbTpCd']").focus();				return;
+			}
+			if($("select[name='rskcTpCd']").val() == ""){
+				alert("위기분류척도 Rating C: 협조능력는 필수 입력 항목입니다.");
+				$("select[name='rskcTpCd']").focus();				return;
+			}
+			if($("select[name='ursCd']").val() == ""){
+				alert("USR은 필수 입력 항목입니다.");
+				$("select[name='ursCd']").focus();					return;
 			}
 			if($("textarea[name='cslCtnt']").val() == ""){
 				alert("상담내용은 필수 입력 항목입니다.");
 				$("textarea[name='cslCtnt']").focus();				return;
 			}
+			if($("textarea[name='cslRst']").val() == ""){
+				alert("상담결과는 필수 입력 항목입니다.");
+				$("textarea[name='cslRst']").focus();				return;
+			}
 
 			$.ajax({
 				url : '/ajaxClsIdvAdd.do',
 				type : 'POST',
-				data : $('#cslForm').serialize(),
+				processData : false,
+				contentType : false,
+				enctype : 'multipart/form-data',
+				data : new FormData($("#cslForm")[0]),
 				success : function(res){
 					if(res.err != "Y"){
 						alert(res.MSG);
 						getCslIdvList($("input[name='mbrNo']").val());
+						viewIdvRow($("input[name='cslNo']").val());
 					}else{
-						console.log("ERR")
+						alert(res.MSG);
 					}
 				},
 				error : function(xhr, status){}
@@ -893,7 +939,7 @@
 	</button>
 </div>
 <!-- // 상단 버튼 -->
-<form name="cslForm" id="cslForm">
+<form name="cslForm" id="cslForm" enctype="multipart/form-data">
 <form:input path="cslIdvInfo.cslNo" hidden="true" />
 <form:input path="cslIdvInfo.cslTermTm" hidden="true" />
 <input type="hidden" name="newFlag" value="Y" />
@@ -1022,7 +1068,7 @@
 					<table class="w-auto wr-form">
 						<tbody>
 						<tr>
-							<th>상담자</th>
+							<th> 사례관리자</th>
 							<td>
 								<div class="dsp-ibk is-disabled"><form:input path="cslIdvInfo.cslNm" cssClass="el-input__inner" readonly="true" style="width: 120px;" /></div>
 							</td>
@@ -1077,25 +1123,10 @@
 							<td colspan="3"><form:input path="cslIdvInfo.cslTgt" cssClass="el-input__inner" placeholder="상담목표" style="width: 680px;" /></td>
 						</tr>
 						<tr>
-							<th class="v-top">
-								<span class="required">*</span> 상담내용<br>
-								<button type="button" onclick="javaScript:ctntPopup('cslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
-									<i class="el-icon-search"></i>
-								</button>
-							</th>
-							<td colspan="3"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:385px">${cslIdvInfo.cslCtnt}</textarea></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="row">
-					<table class="w-auto wr-form">
-						<tbody>
-						<tr>
 							<th><span class="required">*</span> 위기분류척도</th>
-							<td>
+							<td colspan="3">
 								<span class="el-tag">Rating A: 위험성</span>
-								<select name="rskaTpCd" style="width: 690px;" onchange="javaScript:changRating();">
+								<select name="rskaTpCd" style="width: 555px;" onchange="javaScript:changRating();">
 <c:forEach var="result" items="${rskaTpList}" varStatus="status">
 									<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
@@ -1104,9 +1135,9 @@
 						</tr>
 						<tr>
 							<th class="txt-center">점수</th>
-							<td>
+							<td colspan="3">
 								<span class="el-tag">Rating B: 지지체계</span>
-								<select name="rskbTpCd" style="width: 690px;" onchange="javaScript:changRating();">
+								<select name="rskbTpCd" style="width: 555px;" onchange="javaScript:changRating();">
 <c:forEach var="result" items="${rskbTpList}" varStatus="status">
 									<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
@@ -1115,14 +1146,160 @@
 						</tr>
 						<tr>
 							<th class="txt-center"> <span class="el-tag-danger" id="ratingNum"><c:out value="${cslIdvInfo.rskSco}" /></span></th>
-							<td>
-								<span class="el-tag">Rating B: 지지체계</span>
-								<select name="rskcTpCd" style="width: 690px;" onchange="javaScript:changRating();">
+							<td colspan="3">
+								<span class="el-tag">Rating C: 협조능력</span>
+								<select name="rskcTpCd" style="width: 555px;" onchange="javaScript:changRating();">
 <c:forEach var="result" items="${rskcTpList}" varStatus="status">
 									<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
 								</select>
 							</td>
+						</tr>
+						<tr>
+							<th> 위기상담</th>
+							<td colspan="3"><form:input path="cslIdvInfo.crisisCounsel" cssClass="el-input__inner" placeholder="위기상담" style="width: 680px;" /></td>
+						</tr>
+						<tr>
+							<th><span class="required">*</span> USR</th>
+							<td colspan="3">
+								<select name="ursCd" style="width: 100%;">
+									<option value="">선택</option>
+<c:if test="${ursCdList ne null and ursCdList ne ''}">
+	<c:forEach var="result" items="${ursCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th class="v-top" rowspan="8"> 자살관련</th>
+							<td colspan="3">
+								<span class="el-tag">치료력</span>
+								<select name="cureCd" title="치료력" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${cureCdList ne null and cureCdList ne ''}">
+	<c:forEach var="result" items="${cureCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<span class="el-tag">약물사용여부</span>
+								<select name="drugUseCd" title="약물사용여부" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${selCdList ne null and selCdList ne ''}">
+	<c:forEach var="result" items="${selCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<span class="el-tag">과거 자살시도력</span>
+								<select name="oldActCd" title="과거 자살시도력" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${actCdList ne null and actCdList ne ''}">
+	<c:forEach var="result" items="${actCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<span class="el-tag">시도 횟수</span>
+								<select name="actCd" title="시도 횟수" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${actCdList ne null and actCdList ne ''}">
+	<c:forEach var="result" items="${actCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<span class="el-tag">주변인 자살</span>
+								<select name="aroundSuicideCd" title="주변인 자살" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${selCdList ne null and selCdList ne ''}">
+	<c:forEach var="result" items="${selCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<span class="el-tag">자살계획</span>
+								<select name="suicidePlanCd" title="자살계획" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${selCdList ne null and selCdList ne ''}">
+	<c:forEach var="result" items="${selCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<span class="el-tag">(과거)시도방법</span>
+								<select name="oldActWayCd" title="(과거)시도방법" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${actWayCdList ne null and actWayCdList ne ''}">
+	<c:forEach var="result" items="${actWayCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<span class="el-tag">시도계획방법</span>
+								<select name="actWayCd" title="시도계획방법" style="width: 557px;">
+									<option value="">선택</option>
+<c:if test="${actWayCdList ne null and actWayCdList ne ''}">
+	<c:forEach var="result" items="${actWayCdList}" varStatus="status">
+									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+								</select>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="row">
+					<table class="w-auto wr-form">
+						<tbody>
+						<tr>
+							<th class="v-top">
+								<span class="required">*</span> 상담내용<br>
+								<button type="button" onclick="javaScript:ctntPopup('cslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+									<i class="el-icon-search"></i>
+								</button>
+							</th>
+							<td style="width:690px;"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:190px">${cslIdvInfo.cslCtnt}</textarea></td>
+						</tr>
+						<tr>
+							<th class="v-top">
+								<span class="required">*</span> 상담결과<br>
+								<button type="button" onclick="javaScript:ctntPopup('cslRst');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+									<i class="el-icon-search"></i>
+								</button>
+							</th>
+							<td style="width:690px;"><textarea name="cslRst" placeholder="상담 결과" style="width:100%;height:190px">${cslIdvInfo.cslRst}</textarea></td>
 						</tr>
 						<tr>
 							<th>다음 상담일시</th>
@@ -1146,7 +1323,11 @@
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:385px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
+							<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:190px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
+						</tr>
+						<tr>
+							<th> 첨부파일</th>
+							<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
 						</tr>
 						</tbody>
 					</table>
