@@ -4,7 +4,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.web.context.ServletContextAware;
 
-import egovframework.rte.ptl.mvc.tags.ui.pagination.AbstractPaginationRenderer;
+import kr.co.chase.ncms.common.AbstractPaginationRenderer;
 
 /**
  * @  수정일      수정자              수정내용
@@ -19,16 +19,15 @@ public class CustomImgPaginationRenderer extends AbstractPaginationRenderer impl
 
 	/**
 	* PaginationRenderer
-	*
 	* @see 개발프레임웍크 실행환경 개발팀
 	*/
 	public void initVariables() {
-		firstPageLabel = "";
+		firstPageLabel = "<a href=\"#\"><i class=\"el-icon el-icon-arrow-left\"></i></a>&#160;";
 		previousPageLabel = "<a href=\"javaScript:{0}({1});\"><i class=\"el-icon el-icon-arrow-left\"></i></a>&#160;";
 		currentPageLabel = "<a href=\"#\" class=\"active\">{0}</a>&#160;";
 		otherPageLabel = "<a href=\"javaScript:{0}({1});\">{2}</a>&#160;";
 		nextPageLabel = "<a href=\"javaScript:{0}({1});\"><i class=\"el-icon el-icon-arrow-right\"></i></a>&#160;";
-		lastPageLabel = "";
+		lastPageLabel = "<a href=\"#\"><i class=\"el-icon el-icon-arrow-right\"></i></a>&#160;";
 	}
 
 	@Override
