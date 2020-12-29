@@ -460,6 +460,8 @@ public class CounselController {
 			model.put("resultList", resultList);
 		}
 
+		model.put("listType", StringUtils.defaultIfEmpty((String)reqMap.get("listType"), ""));
+
 		return "counsel/layer/mbrSearchLayer";
 	}
 

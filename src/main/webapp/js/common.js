@@ -142,3 +142,9 @@ function nl2br(str, is_xhtml){
 	var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
 	return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
 }
+/**
+ * 파일 다운로드
+ */
+function downloadFile(tagId, tagSeq){
+	window.open("/fileDown.do?fileId=" + tagId + "&fileSeq=" + tagSeq);
+}

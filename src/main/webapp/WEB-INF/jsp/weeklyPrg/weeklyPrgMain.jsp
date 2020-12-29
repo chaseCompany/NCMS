@@ -358,9 +358,6 @@
 		<%-- 엑셀다운로드 --%>
 		weeklyExel = function(){
 			alert("준비중");
-		},
-		downloadFile = function(tagId, tagSeq){
-			window.open("<c:url value='/fileDown.do?fileId="+tagId+"&fileSeq="+tagSeq+"'/>");
 		}
 
 		getWeeklyPrgList();

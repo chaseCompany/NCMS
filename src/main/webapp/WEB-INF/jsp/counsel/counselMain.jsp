@@ -281,7 +281,13 @@
 						$("input[name='cslId']").val(res.cslRcpInfo.CSL_ID);
 						$("input[name='cslNm']").val(res.cslRcpInfo.CSL_NM);
 						$("input[name='ifpGbCd']:radio[value='" + res.cslRcpInfo.IFP_GB_CD + "']").prop("checked", true);
-						$("input[name='ifpGbEtc']").val(res.cslRcpInfo.IFP_GB_ETC);
+						if(res.cslRcpInfo.IFP_GB_CD == "ZZ"){
+							$("input[name='ifpGbEtc']").attr("disabled", false);
+							$("input[name='ifpGbEtc']").val(res.cslRcpInfo.IFP_GB_ETC);
+						}else{
+							$("input[name='ifpGbEtc']").attr("disabled", true);
+							$("input[name='ifpGbEtc']").val("");
+						}
 						$("input[name='ifpNm']").val(res.cslRcpInfo.IFP_NM);
 						$("input[name='ifpMbrNo']").val(res.cslRcpInfo.IFP_MBR_NO);
 						$("input[name='ifpGendCd']:radio[value='" + res.cslRcpInfo.IFP_GEND_CD + "']").prop("checked", true);
@@ -811,7 +817,7 @@
 					<tr>
 						<th class="txt-center"><span class="el-tag-danger" id="ratingNum"><c:out value="${cslRcpInfo.rskSco}"/></span></th>
 						<td>
-							<span class="el-tag">Rating B: 지지체계</span>
+							<span class="el-tag">Rating C: 협조능력</span>
 							<select name="rskcTpCd" style="width: 690px;" onchange="javaScript:changRating();">
 <c:if test="${rskcTpList ne null and rskcTpList ne ''}">
 	<c:forEach var="result" items="${rskcTpList}" varStatus="status">
@@ -826,8 +832,8 @@
 			<table class="w-auto wr-form">
 				<tbody>
 					<tr>
-						<th>위기상담</th>
-						<td><form:input path="cslRcpInfo.cslEmer" cssClass="el-input__inner" placeholder="위기상담" style="width: 100%;"/></td>
+						<th style="width: 109px;">위기상담</th>
+						<td style="width: 543px;"><form:input path="cslRcpInfo.cslEmer" cssClass="el-input__inner" placeholder="위기상담" style="width: 100%;"/></td>
 					</tr>
 					<tr>
 						<th><span class="required">*</span> URS</th>

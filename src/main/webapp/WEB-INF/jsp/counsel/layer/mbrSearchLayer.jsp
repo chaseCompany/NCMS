@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:set var="medicType" value="MEDIC"/>
 <script>
 	$(document).ready(function(){
 		<%-- 페이지처리 --%>
@@ -73,6 +74,97 @@
 	<!-- 목록 -->
 	<div class="result-list">
 		<div class="table-box">
+<c:if test="${listType eq medicType}">
+			<div class="el-table_header-wrapper">
+				<table>
+					<colgroup>
+						<col style="width:60px">
+						<col style="width:66px">
+						<col style="width:150px">
+						<col style="width:120px">
+						<col style="width:50px">
+						<col style="width:60px">
+						<col style="width:100px">
+						<col style="width:80px">
+						<col style="width:130px">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>선택</th>
+							<th>회원등록번호</th>
+							<th>성명</th>
+							<th>성별</th>
+							<th>연령</th>
+							<th>등록일자</th>
+							<th>의료보장</th>
+							<th>기관명</th>
+							<th>사례관리자</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="el-table_body-wrapper">
+				<table>
+					<colgroup>
+						<col style="width:60px">
+						<col style="width:66px">
+						<col style="width:150px">
+						<col style="width:120px">
+						<col style="width:50px">
+						<col style="width:60px">
+						<col style="width:100px">
+						<col style="width:80px">
+						<col style="width:130px">
+						<col>
+					</colgroup>
+					<tbody>
+	<c:if test="${totalCount > 0}">
+		<c:forEach var="result" items="${resultList}" varStatus="status">
+			<fmt:parseDate value="${result.REG_DT}" var="regDt" pattern="yyyyMMdd"/>
+						<tr>
+							<td><div class="cell"><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></div></td>
+							<td>
+								<div class="cell">
+									<button type="button" onclick="javaScript:choiceMem('<c:out value="${result.MBR_NM}" />'
+																					  , '<c:out value="${result.MBR_NO}" />'
+																					  , '<c:out value="${result.GEND_CD}" />'
+																					  , '<c:out value="${result.AGE}" />'
+																					  , '<c:out value="${result.TEL_NO1}" />'
+																					  , '<c:out value="${result.TEL_NO2}" />'
+																					  , '<c:out value="${result.TEL_NO3}" />'
+																					  , '<c:out value="${result.JOB_CD}" />'
+																					  , '<c:out value="${result.REG_DT}" />'
+																					  , '<c:out value="${result.MEDIC_CARE_NM}" />'
+																					  , '<c:out value="${result.MNG_USR_NM}" />'
+																					  , '<c:out value="${result.JOB_NM}" />'
+																	);" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
+										<span>선택</span>
+									</button>
+								</div>
+							</td>
+							<td><div class="cell"><c:out value="${result.MBR_NO}" /></div></td>
+							<td><div class="cell"><c:out value="${result.MBR_NM}" /></div></td>
+							<td><div class="cell"><c:out value="${result.GEND_NM}" /></div></td>
+							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
+							<td><div class="cell"><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></div></td>
+							<td><div class="cell"><c:out value="${result.MEDIC_CARE_NM}" /></div></td>
+							<td><div class="cell"><c:out value="${result.SITE_NM}" /></div></td>
+							<td><div class="cell"><c:out value="${result.MNG_USR_NM}" /></div></td>
+						</tr>
+		</c:forEach>
+	</c:if>
+	<c:if test="${totalCount <= 0}">
+						<tr>
+							<td colspan="10">데이터 없음</td>
+						</tr>
+	</c:if>
+					</tbody>
+				</table>
+			</div>
+</c:if>
+<c:if test="${listType ne medicType}">
 			<div class="el-table_header-wrapper">
 				<table>
 					<colgroup>
@@ -118,9 +210,9 @@
 						<col>
 					</colgroup>
 					<tbody>
-<c:if test="${totalCount > 0}">
-	<c:forEach var="result" items="${resultList}" varStatus="status">
-		<fmt:parseDate value="${result.REG_DT}" var="regDt" pattern="yyyyMMdd"/>
+	<c:if test="${totalCount > 0}">
+		<c:forEach var="result" items="${resultList}" varStatus="status">
+			<fmt:parseDate value="${result.REG_DT}" var="regDt" pattern="yyyyMMdd"/>
 						<tr>
 							<td><div class="cell"><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></div></td>
 							<td>
@@ -148,24 +240,25 @@
 							<td><div class="cell"><c:out value="${result.GEND_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
 							<td><div class="cell"><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></div></td>
-		<c:if test="${result.STS_CD ne 'RG'}">
+			<c:if test="${result.STS_CD ne 'RG'}">
 							<td><div class="cell"<c:if test="${result.STS_CD eq ConstantObject.rlMemStsCd}"> style="color: red;"</c:if>><c:out value="${result.STS_NM}" /></div></td>
-		</c:if>
-		<c:if test="${result.STS_CD eq 'RG'}">
+			</c:if>
+			<c:if test="${result.STS_CD eq 'RG'}">
 							<td><div class="cell"></div></td>
-		</c:if>
+			</c:if>
 							<td><div class="cell"><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></div></td>
 						</tr>
-	</c:forEach>
-</c:if>
-<c:if test="${totalCount <= 0}">
+		</c:forEach>
+	</c:if>
+	<c:if test="${totalCount <= 0}">
 						<tr>
 							<td colspan="10">데이터 없음</td>
 						</tr>
-</c:if>
+	</c:if>
 					</tbody>
 				</table>
 			</div>
+</c:if>
 		</div>
 	</div>
 	<!-- // 목록 -->

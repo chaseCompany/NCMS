@@ -28,8 +28,19 @@ public class CslIdvVO implements Serializable {
 	private String rskcTpCd;					// 위기분류척도 Rating C: 협조능력
 	private int rskSco;							// 위기분류척도 점수
 	private String cslSbj;						// 상담주제
+	private String crisisCounsel;				// 위기상담
+	private String ursCd;						// USR
 	private String cslTgt;						// 상담목표
+	private String cureCd;						// 치료력
+	private String drugUseCd;					// 약물사용여부
+	private String oldActCd;					// 과거 자살시도력
+	private String actCd;						// 시도 횟수
+	private String aroundSuicideCd;				// 주변인 자살
+	private String suicidePlanCd;				// 자살계획
+	private String oldActWayCd;					// 과거 시도방법
+	private String actWayCd;					// 시도계획방법
 	private String cslCtnt;						// 상담내용
+	private String cslRst;						// 상담결과
 	private String nxtCslDt;					// 다음 상담날짜
 	private String nxtCslTm;					// 다음 상담시간
 	private String nxtCslCtnt;					// 다음 상담내용
@@ -179,6 +190,118 @@ public class CslIdvVO implements Serializable {
 		this.cslTgtCd = cslTgtCd;
 	}
 	/**
+	 * 치료력
+	 * @return
+	 */
+	public String getCureCd() {
+		return cureCd;
+	}
+	/**
+	 * 치료력
+	 * @param cureCd
+	 */
+	public void setCureCd(String cureCd) {
+		this.cureCd = cureCd;
+	}
+	/**
+	 * 약물사용여부
+	 * @return
+	 */
+	public String getDrugUseCd() {
+		return drugUseCd;
+	}
+	/**
+	 * 약물사용여부
+	 * @param drugUseCd
+	 */
+	public void setDrugUseCd(String drugUseCd) {
+		this.drugUseCd = drugUseCd;
+	}
+	/**
+	 * 과거 자살시도력
+	 * @return
+	 */
+	public String getOldActCd() {
+		return oldActCd;
+	}
+	/**
+	 * 과거 자살시도력
+	 * @param oldActCd
+	 */
+	public void setOldActCd(String oldActCd) {
+		this.oldActCd = oldActCd;
+	}
+	/**
+	 * 시도 횟수
+	 * @return
+	 */
+	public String getActCd() {
+		return actCd;
+	}
+	/**
+	 * 시도 횟수
+	 * @param actCd
+	 */
+	public void setActCd(String actCd) {
+		this.actCd = actCd;
+	}
+	/**
+	 * 주변인 자살
+	 * @return
+	 */
+	public String getAroundSuicideCd() {
+		return aroundSuicideCd;
+	}
+	/**
+	 * 주변인 자살
+	 * @param aroundSuicideCd
+	 */
+	public void setAroundSuicideCd(String aroundSuicideCd) {
+		this.aroundSuicideCd = aroundSuicideCd;
+	}
+	/**
+	 * 자살계획
+	 * @return
+	 */
+	public String getSuicidePlanCd() {
+		return suicidePlanCd;
+	}
+	/**
+	 * 자살계획
+	 * @param suicidePlanCd
+	 */
+	public void setSuicidePlanCd(String suicidePlanCd) {
+		this.suicidePlanCd = suicidePlanCd;
+	}
+	/**
+	 * 과거 시도방법
+	 * @return
+	 */
+	public String getOldActWayCd() {
+		return oldActWayCd;
+	}
+	/**
+	 * 과거 시도방법
+	 * @param oldActWayCd
+	 */
+	public void setOldActWayCd(String oldActWayCd) {
+		this.oldActWayCd = oldActWayCd;
+	}
+	/**
+	 * 시도계획방법
+	 * @return
+	 */
+	public String getActWayCd() {
+		return actWayCd;
+	}
+	/**
+	 * 시도계획방법
+	 * @param actWayCd
+	 */
+	public void setActWayCd(String actWayCd) {
+		this.actWayCd = actWayCd;
+	}
+	/**
 	 * 상담유형
 	 * @return
 	 */
@@ -263,6 +386,34 @@ public class CslIdvVO implements Serializable {
 		this.cslSbj = cslSbj;
 	}
 	/**
+	 * 위기상담
+	 * @return
+	 */
+	public String getCrisisCounsel() {
+		return crisisCounsel;
+	}
+	/**
+	 * 위기상담
+	 * @param crisisCounsel
+	 */
+	public void setCrisisCounsel(String crisisCounsel) {
+		this.crisisCounsel = crisisCounsel;
+	}
+	/**
+	 * USR
+	 * @return
+	 */
+	public String getUrsCd() {
+		return ursCd;
+	}
+	/**
+	 * USR
+	 * @param ursCd
+	 */
+	public void setUrsCd(String ursCd) {
+		this.ursCd = ursCd;
+	}
+	/**
 	 * 상담목표
 	 * @return
 	 */
@@ -289,6 +440,20 @@ public class CslIdvVO implements Serializable {
 	 */
 	public void setCslCtnt(String cslCtnt) {
 		this.cslCtnt = cslCtnt;
+	}
+	/**
+	 * 상담결과
+	 * @return
+	 */
+	public String getCslRst() {
+		return cslRst;
+	}
+	/**
+	 * 상담결과
+	 * @param cslRst
+	 */
+	public void setCslRst(String cslRst) {
+		this.cslRst = cslRst;
 	}
 	/**
 	 * 다음 상담날짜

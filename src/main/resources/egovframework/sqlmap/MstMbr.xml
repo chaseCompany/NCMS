@@ -26,20 +26,21 @@
 		  FROM (
 				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
 				  FROM (
-						SELECT 
+						SELECT
 							   MM.MBR_NO		, MM.MBR_NM			, MM.JUMIN_NO1		, MM.GEND_CD		, SC01.CD_NM AS GEND_NM
 							 , MM.AGE			, MM.FRG_CD			, MM.TEL_NO1		, MM.TEL_NO2		, MM.TEL_NO3
 							 , MM.REG_DT		, MM.CRE_DT
 							 , MEDIC_CARE_CD	, SC02.CD_NM AS MEDIC_CARE_NM
-							 , MM.MNG_USR_ID	, SU.USR_NM AS MNG_USR_NM
+							 , MM.MNG_USR_ID	, SU.USR_NM AS MNG_USR_NM	, SU.SITE_CD	, SC05.CD_NM AS SITE_NM
 							 , MM.STS_CD		, SC03.CD_NM AS STS_NM
 							 , MM.JOB_CD		, SC04.CD_NM AS JOB_NM
 						  FROM MST_MBR MM
-						  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND MM.GEND_CD = SC01.CD_ID AND SC01.USE_YN = 'Y')
-						  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3100' AND MM.MEDIC_CARE_CD = SC02.CD_ID AND SC02.USE_YN = 'Y')
-						  LEFT JOIN SYS_CD SC03 ON (SC03.GRP_CD = 'C5500' AND MM.STS_CD = SC03.CD_ID AND SC03.USE_YN = 'Y')
-						  LEFT JOIN SYS_CD SC04 ON (SC04.GRP_CD = 'C1200' AND MM.JOB_CD = SC04.CD_ID AND SC04.USE_YN = 'Y')
+						  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND MM.GEND_CD = SC01.CD_ID)
+						  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3100' AND MM.MEDIC_CARE_CD = SC02.CD_ID)
+						  LEFT JOIN SYS_CD SC03 ON (SC03.GRP_CD = 'C5500' AND MM.STS_CD = SC03.CD_ID)
+						  LEFT JOIN SYS_CD SC04 ON (SC04.GRP_CD = 'C1200' AND MM.JOB_CD = SC04.CD_ID)
 						  LEFT JOIN SYS_USR SU ON (MM.MNG_USR_ID = SU.USR_ID)
+						  LEFT JOIN SYS_CD SC05 ON (SC05.GRP_CD = 'C3500' AND SU.SITE_CD = SC05.CD_ID)
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="mbrNm != null and mbrNm != ''">
@@ -58,7 +59,7 @@
 				 ORDER BY T.CRE_DT DESC
 		  ) T1
 		 WHERE ROWNUM > (#{currentPageNo}-1) * #{recordCountPerPage}
-		 ORDER BY T1.CRE_DT DESC 
+		 ORDER BY T1.CRE_DT DESC
 		 LIMIT #{recordCountPerPage}
 	]]>
 	</select>
@@ -92,21 +93,21 @@
 	<insert id="mstMbr.insertMstMbr" parameterType="hashMap">
 	<![CDATA[
 		INSERT /* mstMbr.insertMstMbr */ INTO MST_MBR(
-			   MBR_NO		, MBR_NM		, GEND_CD		, AGE			, JUMIN_NO1
-			 , FRG_CD		, TEL_NO1		, TEL_NO2		, TEL_NO3		, JOB_CD
-			 , ZIP_CD		, ADDR1			, ADDR2			, MBR_TP_CD		, DRG_USE_CD
-			 , MRG_CD		, EDU_CD		, RLGN_CD		, REQ_PATH_CD	, MEDIC_CARE_CD
-			 , DIS_ETC		, REG_USR_ID	, REG_DT		, FMLY_RMK		, RMK
-			 , MNG_USR_ID	, LST_UPD_ID	, LST_UPD_DT	, STS_CD		, CRE_ID
-			 , CRE_DT		, UPD_ID		, UPD_DT
+			   MBR_NO			, MBR_NM		, GEND_CD			, AGE				, JUMIN_NO1
+			 , FRG_CD			, TEL_NO1		, TEL_NO2			, TEL_NO3			, JOB_CD
+			 , ZIP_CD			, ADDR1			, ADDR2				, MBR_TP_CD			, DRG_USE_CD
+			 , MRG_CD			, EDU_CD		, RLGN_CD			, REQ_PATH_CD		, MEDIC_CARE_CD
+			 , DIS_ETC			, REG_USR_ID	, REG_DT			, FMLY_RMK			, RMK
+			 , MNG_USR_ID		, LST_UPD_ID	, LST_UPD_DT		, STS_CD			, CRE_ID
+			 , CRE_DT			, UPD_ID		, UPD_DT
 		)VALUES(
-			   #{mbrNo}		, #{mbrNm}		, #{gendCd}		, #{age}		, #{juminNo1}
-			 , #{frgCd}		, #{telNo1}		, #{telNo2}		, #{telNo3}		, #{jobCd}
-			 , #{zipCd}		, #{addr1}		, #{addr2}		, #{mbrTpCd}	, #{drgUseCd}
-			 , #{mrgCd}		, #{eduCd}		, #{rlgnCd}		, #{reqPathCd}	, #{medicCareCd}
-			 , #{disEtc}	, #{creId}		, #{regDt}		, #{fmlyRmk}	, #{rmk}
-			 , #{mngUsrId}	, #{creId}		, NOW()			, #{stsCd}		, #{creId}
-			 , NOW()		, #{creId}		, NOW()
+			   #{mbrNo}			, #{mbrNm}		, #{gendCd}			, #{age}			, #{juminNo1}
+			 , #{frgCd}			, #{telNo1}		, #{telNo2}			, #{telNo3}			, #{jobCd}
+			 , #{zipCd}			, #{addr1}		, #{addr2}			, #{mbrTpCd}		, #{drgUseCd}
+			 , #{mrgCd}			, #{eduCd}		, #{rlgnCd}			, #{reqPathCd}		, #{medicCareCd}
+			 , #{disEtc}		, #{creId}		, IFNULL(#{regDt}, DATE_FORMAT(NOW(), '%Y%m%d'))		, #{fmlyRmk}	, #{rmk}
+			 , IFNULL(#{mngUsrId}, #{creId})	, #{creId}			, NOW()				, #{stsCd}		, #{creId}
+			 , NOW()			, #{creId}		, NOW()
 		)
 	]]>
 	</insert>
