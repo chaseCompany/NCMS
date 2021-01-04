@@ -17,11 +17,12 @@
 			mstMbrSearchPopup($("input[name='reFunName']").val());
 		}
 		<%-- 회원선택 --%>
-		choiceMem = function(mbrNm, mbrNo, gendCd, age, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm){
+		choiceMem = function(mbrNm, mbrNo, gendCd, gendNm, age, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm){
 			var tagMemObj = {
 				MBR_NM : mbrNm,
 				MBR_NO : mbrNo,
 				GEND_CD : gendCd,
+				GEND_NM : gendNm,
 				AGE : age,
 				TEL_NO1 : telNo1,
 				TEL_NO2 : telNo2,
@@ -130,6 +131,7 @@
 									<button type="button" onclick="javaScript:choiceMem('<c:out value="${result.MBR_NM}" />'
 																					  , '<c:out value="${result.MBR_NO}" />'
 																					  , '<c:out value="${result.GEND_CD}" />'
+																					  , '<c:out value="${result.GEND_NM}" />'
 																					  , '<c:out value="${result.AGE}" />'
 																					  , '<c:out value="${result.TEL_NO1}" />'
 																					  , '<c:out value="${result.TEL_NO2}" />'
@@ -220,6 +222,7 @@
 									<button type="button" onclick="javaScript:choiceMem('<c:out value="${result.MBR_NM}" />'
 																					  , '<c:out value="${result.MBR_NO}" />'
 																					  , '<c:out value="${result.GEND_CD}" />'
+																					  , '<c:out value="${result.GEND_NM}" />'
 																					  , '<c:out value="${result.AGE}" />'
 																					  , '<c:out value="${result.TEL_NO1}" />'
 																					  , '<c:out value="${result.TEL_NO2}" />'

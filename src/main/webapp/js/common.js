@@ -51,8 +51,8 @@ function formatDate(date) {
 		return date;
 	}
 
-	var d = new Date(date.substr(0, 4), date.substr(4, 2), date.substr(6));
-	var month = '' + d.getMonth();
+	var d = new Date(date.substr(0, 4), parseInt(date.substr(4, 2)) - 1, date.substr(6));
+	var month = '' + (d.getMonth() + 1);
 	var day = '' + d.getDate();
 	var year = d.getFullYear();
 

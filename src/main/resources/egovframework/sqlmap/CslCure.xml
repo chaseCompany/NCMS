@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cslCure">
+	<select id="cslCure.getCslCureList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslCure.getCslCureList */
+			   CSL_NO		, CSL_ID		, CSL_DT		, CSL_FM_TM		, CSL_TO_TM
+			 , CSL_TERM_TM	, CSL_SBJ		, CSL_TGT		, MBR_NO
+		  FROM CSL_CURE
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNo != null or mbrNo != ''">
+		   AND MBR_NO = #{mbrNo}
+			</if>
+		</trim>
+	<![CDATA[
+		 ORDER BY CRE_DT DESC
+	]]>
+	</select>
+
+	<select id="cslCure.getCslCure" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslCure.getCslCure */
+			   CC.MBR_NO				, CC.CSL_NO					, CC.CSL_ID					, SU.USR_NM AS CSL_NM		, CC.CSL_DT
+			 , CC.CSL_FM_TM				, CC.CSL_TO_TM				, CC.CSL_TERM_TM			, CC.PGM_CD					, CC.CSL_TGT_CD
+			 , CC.CSL_TP_CD				, CC.RSKA_TP_CD				, CC.RSKB_TP_CD				, CC.RSKC_TP_CD				, CC.RSK_SCO
+			 , CC.CSL_SBJ				, CC.CRISIS_COUNSEL			, CC.URS_CD					, CC.CSL_TGT				, CC.DRUG_USE_CD
+			 , CC.OLD_ACT_CD			, CC.ACT_CD					, CC.AROUND_SUICIDE_CD		, CC.SUICIDE_PLAN_CD		, CC.OLD_ACT_WAY_CD
+			 , CC.ACT_WAY_CD			, CC.CURE_CD				, CC.CSL_CTNT				, CC.CSL_RST				, CC.NXT_CSL_DT
+			 , CC.NXT_CSL_TM			, CC.NXT_CSL_CTNT			, CC.FILE_ID				, CC.CRE_ID					, CC.CRE_DT
+			 , CC.UPD_ID				, CC.UPD_DT
+		  FROM CSL_CURE CC
+		  LEFT JOIN SYS_USR SU ON (CC.CSL_ID = SU.USR_ID)
+		 WHERE CC.CSL_NO = #{cslNo}
+	]]>
+	</select>
+
+	<insert id="cslCure.insertCslCure" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* cslCure.insertCslCure */ INTO CSL_CURE(
+			   MBR_NO				, CSL_NO				, CSL_ID				, CSL_DT				, CSL_FM_TM
+			 , CSL_TO_TM			, CSL_TERM_TM			, PGM_CD				, CSL_TGT_CD			, CSL_TP_CD
+			 , RSKA_TP_CD			, RSKB_TP_CD			, RSKC_TP_CD			, RSK_SCO				, CSL_SBJ
+			 , CRISIS_COUNSEL		, URS_CD				, CSL_TGT				, DRUG_USE_CD			, OLD_ACT_CD
+			 , ACT_CD				, AROUND_SUICIDE_CD		, SUICIDE_PLAN_CD		, OLD_ACT_WAY_CD		, ACT_WAY_CD
+			 , CURE_CD				, CSL_CTNT				, CSL_RST				, NXT_CSL_DT			, NXT_CSL_TM
+			 , NXT_CSL_CTNT			, FILE_ID				, CRE_ID				, CRE_DT				, UPD_ID
+			 , UPD_DT
+		)VALUES(
+			   #{mbrNo}				, #{cslNo}				, #{cslId}				, #{cslDt}				, #{cslFmTm}
+			 , #{cslToTm}			, #{cslTermTm}			, #{pgmCd}				, #{cslTgtCd}			, #{cslTpCd}
+			 , #{rskaTpCd}			, #{rskbTpCd}			, #{rskcTpCd}			, #{rskSco}				, #{cslSbj}
+			 , #{crisisCounsel}		, #{ursCd}				, #{cslTgt}				, #{drugUseCd}			, #{oldActCd}
+			 , #{actCd}				, #{aroundSuicideCd}	, #{suicidePlanCd}		, #{oldActWayCd}		, #{actWayCd}
+			 , #{cureCd}			, #{cslCtnt}			, #{cslRst}				, #{nxtCslDt}			, #{nxtCslTm}
+			 , #{nxtCslCtnt}		, #{fileId}				, #{cslId}				, NOW()					, #{cslId}
+			 , NOW()
+		)
+	]]>
+	</insert>
+
+	<update id="cslCure.updateCslCure" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* cslCure.updateCslCure */ CSL_CURE
+		   SET CSL_DT = #{cslDt}						, CSL_FM_TM = #{cslFmTm}
+			 , CSL_TO_TM = #{cslToTm}					, CSL_TERM_TM = #{cslTermTm}
+			 , PGM_CD = #{pgmCd}						, CSL_TGT_CD = #{cslTgtCd}
+			 , CSL_TP_CD = #{cslTpCd}					, RSKA_TP_CD = #{rskaTpCd}
+			 , RSKB_TP_CD = #{rskbTpCd}					, RSKC_TP_CD = #{rskcTpCd}
+			 , RSK_SCO = #{rskSco}						, CSL_SBJ = #{cslSbj}
+			 , CRISIS_COUNSEL = #{crisisCounsel}		, URS_CD = #{ursCd}
+			 , CSL_TGT = #{cslTgt}						, DRUG_USE_CD = #{drugUseCd}
+			 , OLD_ACT_CD = #{oldActCd}					, ACT_CD = #{actCd}
+			 , AROUND_SUICIDE_CD = #{aroundSuicideCd}	, SUICIDE_PLAN_CD = #{suicidePlanCd}
+			 , OLD_ACT_WAY_CD = #{oldActWayCd}			, ACT_WAY_CD = #{actWayCd}
+			 , CURE_CD = #{cureCd}						, CSL_CTNT = #{cslCtnt}
+			 , CSL_RST = #{cslRst}						, NXT_CSL_DT = #{nxtCslDt}
+			 , NXT_CSL_TM = #{nxtCslTm}					, NXT_CSL_CTNT = #{nxtCslCtnt}
+			 , FILE_ID = #{fileId}						, UPD_ID = #{cslId}
+			 , UPD_DT = NOW()
+		 WHERE CSL_NO = #{cslNo}
+	]]>
+	</update>
+
+	<select id="cslCure.getCslCureSeq" resultType="String">
+	<![CDATA[
+		SELECT /* cslCure.getCslCureSeq */
+			   CONCAT('C', DATE_FORMAT(NOW(), '%Y%m%d%H'), LPAD(IFNULL(MAX(CAST(SUBSTR(CSL_NO, 12) AS UNSIGNED)), 0) + 1, 4, '0')) AS rcpSeq
+		  FROM CSL_CURE
+		 WHERE CSL_NO LIKE CONCAT('C', DATE_FORMAT(NOW(), '%Y%m%d%H'), '%')
+	]]>
+	</select>
+
+	<delete id="cslCure.deleteCslCure" parameterType="String">
+	<![CDATA[
+		DELETE /* cslCure.deleteCslCure */ FROM CSL_CURE
+		 WHERE CSL_NO = #{cslNo}
+	]]>
+	</delete>
+</mapper>
