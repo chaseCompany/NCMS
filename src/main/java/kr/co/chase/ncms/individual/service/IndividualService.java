@@ -57,7 +57,7 @@ public interface IndividualService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int deleteCslIdv(String clsNo) throws Exception;
+	public int deleteCslIdv(String cslNo) throws Exception;
 
 	/**
 	 * ISP 수립 목록 조회

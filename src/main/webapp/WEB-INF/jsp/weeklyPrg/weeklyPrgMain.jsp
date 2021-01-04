@@ -507,20 +507,22 @@
 </c:if>
 								</select>
 							</td>
-							<th>기관명</th>
-							<td>
-								<span class="tac"><input type="text" name="siteNm" value="<c:out value="${loginSiteNm}" />" class="el-input__inner" readonly style="width:100px;" /></span>
-							</td>
 						</tr>
 						</tbody>
 					</table>
 					<table class="wr-form sig-form">
 						<colgroup>
 							<col style="width:58px">
+							<col style="width:200px">
+							<col style="width:58px">
 							<col>
 						</colgroup>
 						<tbody>
 						<tr>
+							<th>기관명</th>
+							<td>
+								<span class="tac"><input type="text" name="siteNm" value="<c:out value="${loginSiteNm}" />" class="el-input__inner" readonly style="width:100%;" /></span>
+							</td>
 							<th>회기</th>
 							<td><input type="text" name="pgmSession" placeholder="회기" style="width: 100%;" /></td>
 						</tr>
@@ -531,7 +533,7 @@
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
+							<td colspan="3"><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
 						</tr>
 						<tr>
 							<th>결과<br>
@@ -539,11 +541,11 @@
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
+							<td colspan="3"><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
 						</tr>
 						<tr>
 							<th>첨부</th>
-							<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
+							<td colspan="3"><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
 						</tr>
 						</tbody>
 					</table>

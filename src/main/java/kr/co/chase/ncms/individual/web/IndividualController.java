@@ -66,7 +66,7 @@ public class IndividualController {
 		}
 
 		// 집중상담 기본값 셋팅
-		cslIdvVO.setCslNm(StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+		cslIdvVO.setCslNm(StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
 		cslIdvVO.setCslDt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		cslIdvVO.setCslTgtCd("10");
 		cslIdvVO.setCslTpCd("20");
@@ -198,6 +198,9 @@ public class IndividualController {
 
 		codeListMap.put("grpCd", "C6000");				// 시도방법
 		model.put("actWayCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C6100");				// 연계구분
+		model.put("linkCdList", sysCodeService.getSysCdList(codeListMap));
 
 		return "individual/individualMain";
 	}
@@ -503,14 +506,14 @@ public class IndividualController {
 	}
 
 	/**
-	 * ISP 수립 삭제
+	 * ISP 수립 등록
 	 * @param reqMap
 	 * @param session
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/ajaxCslIspAdd.do")
-	public @ResponseBody ModelAndView ajaxCslIspAdd(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+	public @ResponseBody ModelAndView ajaxCslIspAdd(@RequestParam HashMap<String, Object> reqMap, HttpServletRequest request, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
@@ -526,12 +529,22 @@ public class IndividualController {
 		if(StringUtils.defaultString(reqMap.get("mbrNo").toString(), "") == "" && StringUtils.defaultString(reqMap.get("ispDt").toString(), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
-
 			return resultView;
 		}
 
 		reqMap.put("ispDt", StringUtils.defaultIfEmpty(reqMap.get("ispDt").toString(), "").replaceAll("-", ""));
 		reqMap.put("cslId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+		String[] linkCdList = request.getParameterValues("linkCd");
+
+		if(linkCdList != null && linkCdList.length > 0) {
+			String linkCd = "[";
+			for(String cd : linkCdList) {
+				linkCd += cd + ", ";
+			}
+			linkCd = linkCd.substring(0, linkCd.length() - 2) + "]";
+
+			reqMap.put("linkCd", linkCd);
+		}
 
 		HashMap<String, Object> resMap = individualService.cslIspAdd(reqMap);
 		if(resMap != null) {

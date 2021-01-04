@@ -29,6 +29,14 @@ public class MemberController {
 	@Resource(name="memberService")
 	private MemberService memberService;
 
+	/**
+	 * 회원정보관리 메인
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/memberMain.do")
 	public String memberMain(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);

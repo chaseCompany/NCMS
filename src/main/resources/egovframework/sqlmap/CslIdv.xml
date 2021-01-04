@@ -4,7 +4,7 @@
 <mapper namespace="cslIdv">
 	<select id="cslIdv.getCslIdvList" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
-		SELECT /* cslRcp.getCslIdvList */
+		SELECT /* cslIdv.getCslIdvList */
 			   CSL_NO		, CSL_ID		, CSL_DT		, CSL_FM_TM		, CSL_TO_TM
 			 , CSL_TERM_TM	, CSL_SBJ		, CSL_TGT		, MBR_NO
 		  FROM CSL_IDV

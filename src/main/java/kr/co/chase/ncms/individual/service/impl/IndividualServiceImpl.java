@@ -170,8 +170,21 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	 * @return
 	 * @throws Exception
 	 */
-	public int deleteCslIdv(String clsNo) throws Exception{
-		return cslIdvDao.deleteCslIdv(clsNo);
+	public int deleteCslIdv(String cslNo) throws Exception{
+		HashMap<String, Object> result = this.getCslIdv(cslNo);
+
+		if(!result.isEmpty()) {
+			String fileId = StringUtils.defaultIfEmpty((String)result.get("FILE_ID"), "");
+			if(!"".equals(fileId)) {			// 첨부 파일 존재시 삭제
+				HashMap<String, Object> fileMap = new HashMap<String, Object>();
+				fileMap.put("fileId", fileId);
+
+				fileUtil.deleteFile(fileId);
+				fileInfoService.deleteFileInfo(fileMap);
+			}
+		}
+
+		return cslIdvDao.deleteCslIdv(cslNo);
 	}
 
 	/**

@@ -57,7 +57,7 @@
 			$("button#assSaveButNo").hide();
 			$("button#assSaveButYes").show();
 		},
-		<%-- 집중상담 이력 조회 --%>
+		<%-- 사례관리 상담 이력 조회 --%>
 		getCslIdvList = function(tagMbrNo){
 			$.ajax({
 				url : '/getClsIdvList.do',
@@ -116,7 +116,7 @@
 				error : function(xhr, status){}
 			});
 		},
-		<%-- 집중상담내용 삭제 --%>
+		<%-- 사례관리 상담내용 삭제 --%>
 		idvDel = function(tagCslNo, idx){
 			$.ajax({
 				url : '/ajaxClsIdvDel.do',
@@ -144,7 +144,7 @@
 				error : function(xhr, status){}
 			});
 		},
-		<%-- 집중상담내용 상세 조회 --%>
+		<%-- 사례관리 상담내용 상세 조회 --%>
 		viewIdvRow = function(tagCslNo){
 			$.ajax({
 				url : '/ajaxClsIdvInfo.do',
@@ -207,27 +207,41 @@
 				error : function(xhr, status){}
 			});
 		},
-		<%-- 집중상담 신규 --%>
+		<%-- 사례관리 상담 신규 --%>
 		newIdv = function(){
 			$("input[name='cslNo']").val("");
-			$("input[name='cslDt']").val("");
-			$("input[name='cslFmTm']").val("");
-			$("input[name='cslToTm']").val("");
+			$("input[name='cslDt']").datepicker('setDate', 'today');
+			$("input[name='cslFmTm']").val("09:00");
+			$("input[name='cslToTm']").val("09:00");
 			$("span#cslTermTm").text("0");
+			$("input[name='cslTermTm']").val("0");
 			$("input[name='cslTgtCd']:radio[value='10']").prop("checked", true);
 			$("input[name='cslTpCd']:radio[value='20']").prop("checked", true);
 			$("input[name='cslSbj']").val("");
 			$("input[name='cslTgt']").val("");
-			$("textarea[name='cslCtnt']").val("");
 			$("select[name='rskaTpCd']").val("0").prop("selected", true);
 			$("select[name='rskbTpCd']").val("0").prop("selected", true);
 			$("select[name='rskcTpCd']").val("0").prop("selected", true);
 			$("span#ratingNum").text("0");
+			$("input[name='crisisCounsel']").val("");
+			$("select[name='ursCd']").val("").prop("selected", true);
+			$("select[name='cureCd']").val("").prop("selected", true);
+			$("select[name='drugUseCd']").val("").prop("selected", true);
+			$("select[name='oldActCd']").val("").prop("selected", true);
+			$("select[name='actCd']").val("").prop("selected", true);
+			$("select[name='aroundSuicideCd']").val("").prop("selected", true);
+			$("select[name='suicidePlanCd']").val("").prop("selected", true);
+			$("select[name='oldActWayCd']").val("").prop("selected", true);
+			$("select[name='actWayCd']").val("").prop("selected", true);
+			$("textarea[name='cslCtnt']").val("");
+			$("textarea[name='cslRst']").val("");
 			$("input[name='nxtCslDt']").val("");
 			$("input[name='nxtCslTm']").val("");
 			$("textarea[name='nxtCslCtnt']").val("");
+			$("div#fileName").text("");
+			$("input[name='file']").val("");
 		},
-		<%-- 집중상담 저장 --%>
+		<%-- 사례관리 상담 저장 --%>
 		saveIdv = function(){
 			if($("input[name='mbrNo']").val() == ""){
 				alert("회원을 선택하세요.");
@@ -373,6 +387,32 @@
 						$("input[name='ispDt']").val(formatDate(res.ispInfo.ISP_DT));
 						$("input[name='mngTpNm']").val(res.ispInfo.MNG_TP_NM);
 						$("input[name='mngTpCd']").val(res.ispInfo.MNG_TP_CD);
+
+						if(res.ispInfo.LINK_CD != undefined && res.ispInfo.LINK_CD != ""){
+							$("input[name='linkCd']").attr("checked", false);
+							var splVal = $.trim(res.ispInfo.LINK_CD).replaceAll("[", "").replaceAll("]", "");
+
+							if(splVal.indexOf(",") >= 0){
+								$.each(splVal.split(","), function(i, e){
+									$("input[name='linkCd']").each(function(i){
+										if($.trim(e) == $(this).val()){
+											$(this).prop("checked", true);
+											return;
+										}
+									});
+								});
+							}else{
+								$("input[name='linkCd']").each(function(i){
+									if(splVal == $(this).val()){
+										$(this).prop("checked", true);
+										return;
+									}
+								});
+							}
+						}else{
+							$("input[name='linkCd']").attr("checked", false);
+						}
+
 						$("select[name='evlItmSco01']").val(res.ispInfo.EVL_ITM_SCO01).prop("selected", true);
 						$("input[name='evlItmLnk01']").val(res.ispInfo.EVL_ITM_LNK01);
 						$("select[name='evlItmSco02']").val(res.ispInfo.EVL_ITM_SCO02).prop("selected", true);
@@ -454,6 +494,12 @@
 		saveIsp = function(){
 			if($("input[name='mbrNo']").val() == ""){
 				alert("회원을 선택하세요.");
+				$("input[name='mbrNo']").focus();
+				return;
+			}
+			if($("input[name='ispDt']").val() == ""){
+				alert("사정일자(ISP)를 선택하세요.");
+				$("input[name='ispDt']").focus();
 				return;
 			}
 
@@ -465,6 +511,7 @@
 					if(res.err != "Y"){
 						alert(res.MSG);
 						getCslIspList($("input[name='mbrNo']").val());
+						newIsp();
 					}else{
 						alert(res.MSG);
 					}
@@ -475,7 +522,8 @@
 		<%-- ISP 신규 작성 --%>
 		newIsp = function(){
 			$("input[name='newFlag']").val("Y");
-			$("input[name='ispDt']").val("");
+			$("input[name='ispDt']").datepicker('setDate', 'today');
+			$("input[name='linkCd']").attr("checked", false);
 			$("input[name='mngTpNm']").val("일시관리");
 			$("input[name='mngTpCd']").val("10");
 			$("select[name='evlItmSco01']").val("0").prop("selected", true);
@@ -888,7 +936,7 @@
 		},
 		<%-- 관리구분명 수정 --%>
 		checkMngTp = function(){
-			var maxRating = 0;
+			var maxRating = 1;
 			var mngTpCd = Number($("input[name='mngTpCd']").val());
 
 <c:if test="${mngTpList ne null && mngTpList ne ''}">
@@ -983,463 +1031,477 @@
 					<div class="dsp-ibk is-disabled"><form:input path="mstMbrInfo.mngUsrId" cssClass="el-input__inner" readonly="true" placeholder="사례관리자" style="width: 130px;" /></div>
 				</td>
 			</tr>
-		</tbody>
-	</table>
-</div>
-<!-- // 회원등록번호 ~ 사례관리자 -->
-<!-- 집중상담, ISP수립, 사정평가 -->
-<div class="section-sha" style="min-width: 1840px;">
-	<!-- 탭메뉴 -->
-	<div class="el-tabs__header is-top">
-		<div class="el-tabs__nav-wrap is-top">
-			<div class="el-tabs__nav-scroll">
-				<div role="tablist" class="el-tabs__nav is-top">
-					<div class="el-tabs__item is-top is-active" data-id="tab-focus">
-						<span><i class="el-icon-s-help"></i> 사례관리 상담</span>
-					</div>
-					<div class="el-tabs__item is-top" data-id="tab-isp">
-						<span><i class="el-icon-s-management"></i> ISP 수립/욕구항목</span>
-					</div>
-					<div class="el-tabs__item is-top" data-id="tab-assessment">
-						<span><i class="el-icon-platform-eleme"></i> 병력정보</span>
-					</div>
-					<div class="el-tabs__item is-top" data-id="tab-test">
-						<span><i class="el-icon-platform-eleme"></i> 치료 재활정보</span>
-					</div>
-					<div class="el-tabs__item is-top" data-id="tab-test">
-						<span><i class="el-icon-platform-eleme"></i> ISP 수립</span>
+			</tbody>
+		</table>
+	</div>
+	<!-- // 회원등록번호 ~ 사례관리자 -->
+	<!-- 사례관리 상담, ISP수립, 사정평가 -->
+	<div class="section-sha" style="min-width: 1840px;">
+		<!-- 탭메뉴 -->
+		<div class="el-tabs__header is-top">
+			<div class="el-tabs__nav-wrap is-top">
+				<div class="el-tabs__nav-scroll">
+					<div role="tablist" class="el-tabs__nav is-top">
+						<div class="el-tabs__item is-top is-active" data-id="tab-focus">
+							<span><i class="el-icon-s-help"></i> 사례관리 상담</span>
+						</div>
+						<div class="el-tabs__item is-top" data-id="tab-isp">
+							<span><i class="el-icon-s-management"></i> ISP 수립/욕구항목</span>
+						</div>
+						<div class="el-tabs__item is-top" data-id="tab-assessment">
+							<span><i class="el-icon-platform-eleme"></i> 병력정보</span>
+						</div>
+						<div class="el-tabs__item is-top" data-id="tab-cure">
+							<span><i class="el-icon-platform-eleme"></i> 치료 재활정보</span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- // 탭메뉴 -->
-	<div class="el-tabs_content">
-		<!-- 집중상담 -->
-		<div id="tab-focus" class="tab-form">
-			<div class="in-tab-btn">
-				<button disabled="disabled" id="idvSaveBtnNo" type="button" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
-					<i class="el-icon-download"></i> <span>저장</span>
-				</button>
-				<button type="button" id="idvSaveBtnYes" onclick="javaScript:saveIdv();" class="el-button normal el-button--primary el-button--small is-plain" style="padding: 7px 13px;display: none;">
-					<i class="el-icon-download"></i> <span>저장</span>
-				</button>
-				<button type="button" onclick="javaScript:newIdv();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
-					<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
-				</button>
-			</div>
-			<div class="tab-tb-box">
-				<div class="table-box">
-					<div class="el-table_header-wrapper">
-						<table>
-							<colgroup>
-								<col style="width:46px">
-								<col style="width:150px">
-								<col style="width:100px">
-								<col style="width:120px">
-								<col style="width:80px">
-								<col style="width:400px">
-								<col style="width:690px">
-								<col style="width:150px">
-								<col>
-							</colgroup>
-							<thead>
-							<tr>
-								<th>#</th>
-								<th>상담 번호</th>
-								<th>상담 일자</th>
-								<th>시작/종료 시간</th>
-								<th>소요(분)</th>
-								<th>상담주제</th>
-								<th>상담목표</th>
-								<th>상담자</th>
-								<th>작업</th>
-							</tr>
-							</thead>
-						</table>
-					</div>
-					<div class="el-table_body-wrapper" style="height: 148px;" id="idvList">
-						<div class="no-data">조회된 데이터가 없습니다.</div>
+		<!-- // 탭메뉴 -->
+		<div class="el-tabs_content">
+			<!-- 사례관리 상담 -->
+			<div id="tab-focus" class="tab-form">
+				<div class="in-tab-btn">
+					<button disabled="disabled" id="idvSaveBtnNo" type="button" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
+						<i class="el-icon-download"></i> <span>저장</span>
+					</button>
+					<button type="button" id="idvSaveBtnYes" onclick="javaScript:saveIdv();" class="el-button normal el-button--primary el-button--small is-plain" style="padding: 7px 13px;display: none;">
+						<i class="el-icon-download"></i> <span>저장</span>
+					</button>
+					<button type="button" onclick="javaScript:newIdv();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
+						<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
+					</button>
+				</div>
+				<div class="tab-tb-box">
+					<div class="table-box">
+						<div class="el-table_header-wrapper">
+							<table>
+								<colgroup>
+									<col style="width:46px">
+									<col style="width:150px">
+									<col style="width:100px">
+									<col style="width:120px">
+									<col style="width:80px">
+									<col style="width:400px">
+									<col style="width:690px">
+									<col style="width:150px">
+									<col>
+								</colgroup>
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>상담 번호</th>
+									<th>상담 일자</th>
+									<th>시작/종료 시간</th>
+									<th>소요(분)</th>
+									<th>상담주제</th>
+									<th>상담목표</th>
+									<th>상담자</th>
+									<th>작업</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="el-table_body-wrapper" style="height: 148px;" id="idvList">
+							<div class="no-data">조회된 데이터가 없습니다.</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="bottom-form el-row" id="idvInfoDiv">
-				<div class="row">
-					<table class="w-auto wr-form">
-						<tbody>
-						<tr>
-							<th> 사례관리자</th>
-							<td>
-								<div class="dsp-ibk is-disabled"><form:input path="cslIdvInfo.cslNm" cssClass="el-input__inner" readonly="true" style="width: 120px;" /></div>
-							</td>
-							<th><span class="required">*</span> 상담일시</th>
-							<td>
-								<div class="dat-pk">
-									<i class="el-input__icon el-icon-date"></i>
-									<form:input path="cslIdvInfo.cslDt" cssClass="el-input__inner datepicker" placeholder="날짜 선택" style="width: 130px;" />
-								</div>
-								<div class="time-box">
-									<div class="tm-in">
-										<i class="el-input__icon el-icon-time"></i>
-										<form:input path="cslIdvInfo.cslFmTm" value="09:00" cssClass="el-input__inner timepicker" placeholder="시작" style="width: 96px;" />
+				<div class="bottom-form el-row" id="idvInfoDiv">
+					<div class="row">
+						<table class="w-auto wr-form">
+							<tbody>
+							<tr>
+								<th> 사례관리자</th>
+								<td>
+									<div class="dsp-ibk is-disabled"><form:input path="cslIdvInfo.cslNm" cssClass="el-input__inner" readonly="true" style="width: 120px;" /></div>
+								</td>
+								<th><span class="required">*</span> 상담일시</th>
+								<td>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<form:input path="cslIdvInfo.cslDt" cssClass="el-input__inner datepicker" placeholder="날짜 선택" style="width: 130px;" />
 									</div>
-									<span>~</span>
-									<div class="tm-in">
-										<i class="el-input__icon el-icon-time"></i>
-										<form:input path="cslIdvInfo.cslToTm" value="09:00" cssClass="el-input__inner timepicker" placeholder="종료" style="width: 96px;" />
+									<div class="time-box">
+										<div class="tm-in">
+											<i class="el-input__icon el-icon-time"></i>
+											<form:input path="cslIdvInfo.cslFmTm" value="09:00" cssClass="el-input__inner timepicker" placeholder="시작" style="width: 96px;" />
+										</div>
+										<span>~</span>
+										<div class="tm-in">
+											<i class="el-input__icon el-icon-time"></i>
+											<form:input path="cslIdvInfo.cslToTm" value="09:00" cssClass="el-input__inner timepicker" placeholder="종료" style="width: 96px;" />
+										</div>
+										<div class="t-min">
+											<span class="readonly" id="cslTermTm">0</span> 분 소요
+										</div>
 									</div>
-									<div class="t-min">
-										<span class="readonly" id="cslTermTm">0</span> 분 소요
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th><span class="required">*</span> 상담대상</th>
-							<td>
-<c:forEach var="result" items="${cslTgtCdList}" varStatus="status">
-								<span class="ck-bx">
-									<input type="radio" class="el-radio__original" name="cslTgtCd" id="cslTgtCd-<c:out value='${status.count}'/>"  value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslIdvInfo.cslTgtCd}"> checked</c:if> />
-									<label for="cslTgtCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" /></label>
-								</span>
-</c:forEach>
-							</td>
-							<th><span class="required">*</span> 상담유형</th>
-							<td>
-<c:forEach var="result" items="${cslTpCdList}" varStatus="status">
-								<span class="ck-bx">
-									<input type="radio" class="el-radio__original" name="cslTpCd" id="cslTpCd-<c:out value='${status.count}'/>"value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslIdvInfo.cslTpCd}"> checked</c:if> />
-									<label for="cslTpCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" /></label>
-								</span>
-</c:forEach>
-							</td>
-						</tr>
-						<tr>
-							<th><span class="required">*</span> 상담주제</th>
-							<td colspan="3"><form:input path="cslIdvInfo.cslSbj" cssClass="el-input__inner" placeholder="상담주제" style="width: 680px;" /></td>
-						</tr>
-						<tr>
-							<th>상담목표</th>
-							<td colspan="3"><form:input path="cslIdvInfo.cslTgt" cssClass="el-input__inner" placeholder="상담목표" style="width: 680px;" /></td>
-						</tr>
-						<tr>
-							<th><span class="required">*</span> 위기분류척도</th>
-							<td colspan="3">
-								<span class="el-tag">Rating A: 위험성</span>
-								<select name="rskaTpCd" style="width: 555px;" onchange="javaScript:changRating();">
-<c:forEach var="result" items="${rskaTpList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th class="txt-center">점수</th>
-							<td colspan="3">
-								<span class="el-tag">Rating B: 지지체계</span>
-								<select name="rskbTpCd" style="width: 555px;" onchange="javaScript:changRating();">
-<c:forEach var="result" items="${rskbTpList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th class="txt-center"> <span class="el-tag-danger" id="ratingNum"><c:out value="${cslIdvInfo.rskSco}" /></span></th>
-							<td colspan="3">
-								<span class="el-tag">Rating C: 협조능력</span>
-								<select name="rskcTpCd" style="width: 555px;" onchange="javaScript:changRating();">
-<c:forEach var="result" items="${rskcTpList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th> 위기상담</th>
-							<td colspan="3"><form:input path="cslIdvInfo.crisisCounsel" cssClass="el-input__inner" placeholder="위기상담" style="width: 680px;" /></td>
-						</tr>
-						<tr>
-							<th><span class="required">*</span> USR</th>
-							<td colspan="3">
-								<select name="ursCd" style="width: 100%;">
-									<option value="">선택</option>
+								</td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> 상담대상</th>
+								<td>
+<c:if test="${cslTgtCdList ne null and cslTgtCdList ne ''}">
+	<c:forEach var="result" items="${cslTgtCdList}" varStatus="status">
+									<span class="ck-bx">
+										<input type="radio" class="el-radio__original" name="cslTgtCd" id="cslTgtCd-<c:out value='${status.count}'/>"  value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslIdvInfo.cslTgtCd}"> checked</c:if> />
+										<label for="cslTgtCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" /></label>
+									</span>
+	</c:forEach>
+</c:if>
+								</td>
+								<th><span class="required">*</span> 상담유형</th>
+								<td>
+<c:if test="${cslTpCdList ne null and cslTpCdList ne ''}">
+	<c:forEach var="result" items="${cslTpCdList}" varStatus="status">
+									<span class="ck-bx">
+										<input type="radio" class="el-radio__original" name="cslTpCd" id="cslTpCd-<c:out value='${status.count}'/>"value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslIdvInfo.cslTpCd}"> checked</c:if> />
+										<label for="cslTpCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" /></label>
+									</span>
+	</c:forEach>
+</c:if>
+								</td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> 상담주제</th>
+								<td colspan="3"><form:input path="cslIdvInfo.cslSbj" cssClass="el-input__inner" placeholder="상담주제" style="width: 680px;" /></td>
+							</tr>
+							<tr>
+								<th>상담목표</th>
+								<td colspan="3"><form:input path="cslIdvInfo.cslTgt" cssClass="el-input__inner" placeholder="상담목표" style="width: 680px;" /></td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> 위기분류척도</th>
+								<td colspan="3">
+									<span class="el-tag">Rating A: 위험성</span>
+									<select name="rskaTpCd" style="width: 555px;" onchange="javaScript:changRating();">
+<c:if test="${rskaTpList ne null and rskaTpList ne ''}">
+	<c:forEach var="result" items="${rskaTpList}" varStatus="status">
+										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th class="txt-center">점수</th>
+								<td colspan="3">
+									<span class="el-tag">Rating B: 지지체계</span>
+									<select name="rskbTpCd" style="width: 555px;" onchange="javaScript:changRating();">
+<c:if test="${rskbTpList ne null and rskbTpList ne ''}">
+	<c:forEach var="result" items="${rskbTpList}" varStatus="status">
+										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th class="txt-center"> <span class="el-tag-danger" id="ratingNum"><c:out value="${cslIdvInfo.rskSco}" /></span></th>
+								<td colspan="3">
+									<span class="el-tag">Rating C: 협조능력</span>
+									<select name="rskcTpCd" style="width: 555px;" onchange="javaScript:changRating();">
+<c:if test="${rskcTpList ne null and rskcTpList ne ''}">
+	<c:forEach var="result" items="${rskcTpList}" varStatus="status">
+										<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th> 위기상담</th>
+								<td colspan="3"><form:input path="cslIdvInfo.crisisCounsel" cssClass="el-input__inner" placeholder="위기상담" style="width: 680px;" /></td>
+							</tr>
+							<tr>
+								<th><span class="required">*</span> USR</th>
+								<td colspan="3">
+									<select name="ursCd" style="width: 100%;">
+										<option value="">선택</option>
 <c:if test="${ursCdList ne null and ursCdList ne ''}">
 	<c:forEach var="result" items="${ursCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th class="v-top" rowspan="8"> 자살관련</th>
-							<td colspan="3">
-								<span class="el-tag">치료력</span>
-								<select name="cureCd" title="치료력" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th class="v-top" rowspan="8"> 자살관련</th>
+								<td colspan="3">
+									<span class="el-tag">치료력</span>
+									<select name="cureCd" title="치료력" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${cureCdList ne null and cureCdList ne ''}">
 	<c:forEach var="result" items="${cureCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<span class="el-tag">약물사용여부</span>
-								<select name="drugUseCd" title="약물사용여부" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<span class="el-tag">약물사용여부</span>
+									<select name="drugUseCd" title="약물사용여부" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${selCdList ne null and selCdList ne ''}">
 	<c:forEach var="result" items="${selCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<span class="el-tag">과거 자살시도력</span>
-								<select name="oldActCd" title="과거 자살시도력" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<span class="el-tag">과거 자살시도력</span>
+									<select name="oldActCd" title="과거 자살시도력" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${actCdList ne null and actCdList ne ''}">
 	<c:forEach var="result" items="${actCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<span class="el-tag">시도 횟수</span>
-								<select name="actCd" title="시도 횟수" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<span class="el-tag">시도 횟수</span>
+									<select name="actCd" title="시도 횟수" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${actCdList ne null and actCdList ne ''}">
 	<c:forEach var="result" items="${actCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<span class="el-tag">주변인 자살</span>
-								<select name="aroundSuicideCd" title="주변인 자살" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<span class="el-tag">주변인 자살</span>
+									<select name="aroundSuicideCd" title="주변인 자살" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${selCdList ne null and selCdList ne ''}">
 	<c:forEach var="result" items="${selCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<span class="el-tag">자살계획</span>
-								<select name="suicidePlanCd" title="자살계획" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<span class="el-tag">자살계획</span>
+									<select name="suicidePlanCd" title="자살계획" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${selCdList ne null and selCdList ne ''}">
 	<c:forEach var="result" items="${selCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<span class="el-tag">(과거)시도방법</span>
-								<select name="oldActWayCd" title="(과거)시도방법" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<span class="el-tag">(과거)시도방법</span>
+									<select name="oldActWayCd" title="(과거)시도방법" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${actWayCdList ne null and actWayCdList ne ''}">
 	<c:forEach var="result" items="${actWayCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<span class="el-tag">시도계획방법</span>
-								<select name="actWayCd" title="시도계획방법" style="width: 557px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<span class="el-tag">시도계획방법</span>
+									<select name="actWayCd" title="시도계획방법" style="width: 557px;">
+										<option value="">선택</option>
 <c:if test="${actWayCdList ne null and actWayCdList ne ''}">
 	<c:forEach var="result" items="${actWayCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="row">
-					<table class="w-auto wr-form">
-						<tbody>
-						<tr>
-							<th class="v-top">
-								<span class="required">*</span> 상담내용<br>
-								<button type="button" onclick="javaScript:ctntPopup('cslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
-									<i class="el-icon-search"></i>
-								</button>
-							</th>
-							<td style="width:690px;"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:190px">${cslIdvInfo.cslCtnt}</textarea></td>
-						</tr>
-						<tr>
-							<th class="v-top">
-								<span class="required">*</span> 상담결과<br>
-								<button type="button" onclick="javaScript:ctntPopup('cslRst');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
-									<i class="el-icon-search"></i>
-								</button>
-							</th>
-							<td style="width:690px;"><textarea name="cslRst" placeholder="상담 결과" style="width:100%;height:190px">${cslIdvInfo.cslRst}</textarea></td>
-						</tr>
-						<tr>
-							<th>다음 상담일시</th>
-							<td>
-								<div class="dat-pk">
-									<i class="el-input__icon el-icon-date"></i>
-									<form:input path="cslIdvInfo.nxtCslDt" cssClass="el-input__inner datepicker" placeholder="날짜" style="width: 130px;" />
-								</div>
-								<div class="time-box">
-									<div class="tm-in">
-										<i class="el-input__icon el-icon-time"></i>
-										<form:input path="cslIdvInfo.nxtCslTm" cssClass="el-input__inner timepicker" placeholder="시간" style="width: 96px;" />
+									</select>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<table class="w-auto wr-form">
+							<tbody>
+							<tr>
+								<th class="v-top">
+									<span class="required">*</span> 상담내용<br>
+									<button type="button" onclick="javaScript:ctntPopup('cslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+										<i class="el-icon-search"></i>
+									</button>
+								</th>
+								<td style="width:690px;"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:190px">${cslIdvInfo.cslCtnt}</textarea></td>
+							</tr>
+							<tr>
+								<th class="v-top">
+									<span class="required">*</span> 상담결과<br>
+									<button type="button" onclick="javaScript:ctntPopup('cslRst');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+										<i class="el-icon-search"></i>
+									</button>
+								</th>
+								<td style="width:690px;"><textarea name="cslRst" placeholder="상담 결과" style="width:100%;height:190px">${cslIdvInfo.cslRst}</textarea></td>
+							</tr>
+							<tr>
+								<th>다음 상담일시</th>
+								<td>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<form:input path="cslIdvInfo.nxtCslDt" cssClass="el-input__inner datepicker" placeholder="날짜" style="width: 130px;" />
 									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th class="v-top">
-								다음 상담내용<br>
-								<button type="button" onclick="javaScript:ctntPopup('nxtCslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
-									<i class="el-icon-search"></i>
-								</button>
-							</th>
-							<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:190px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
-						</tr>
-						<tr>
-							<th> 첨부파일</th>
-							<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
-						</tr>
-						</tbody>
-					</table>
+									<div class="time-box">
+										<div class="tm-in">
+											<i class="el-input__icon el-icon-time"></i>
+											<form:input path="cslIdvInfo.nxtCslTm" cssClass="el-input__inner timepicker" placeholder="시간" style="width: 96px;" />
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th class="v-top">
+									다음 상담내용<br>
+									<button type="button" onclick="javaScript:ctntPopup('nxtCslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+										<i class="el-icon-search"></i>
+									</button>
+								</th>
+								<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:190px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
+							</tr>
+							<tr>
+								<th> 첨부파일</th>
+								<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
-		<!-- // 집중상담 -->
+			<!-- // 사례관리 상담 -->
 
-		<!-- ISP 수립-->
-		<div id="tab-isp" class="tab-form" style="display: none;">
-			<div class="in-tab-btn">
-				<button disabled="disabled" type="button" id="ispSaveButNo" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
-					<i class="el-icon-download"></i> <span>저장</span>
-				</button>
-				<button type="button" onclick="javaScript:saveIsp();" id="ispSaveButYes" class="el-button normal el-button--primary el-button--small is-plain" style="padding: 7px 13px;display: none;">
-					<i class="el-icon-download"></i> <span>저장</span>
-				</button>
-				<button type="button" onclick="javaScript:newIsp();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
-					<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
-				</button>
-			</div>
-			<div class="tab-tb-box">
-				<div class="table-box">
-					<div class="el-table_header-wrapper">
-						<table>
+			<!-- ISP 수립-->
+			<div id="tab-isp" class="tab-form" style="display: none;">
+				<div class="in-tab-btn">
+					<button disabled="disabled" type="button" id="ispSaveButNo" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
+						<i class="el-icon-download"></i> <span>저장</span>
+					</button>
+					<button type="button" onclick="javaScript:saveIsp();" id="ispSaveButYes" class="el-button normal el-button--primary el-button--small is-plain" style="padding: 7px 13px;display: none;">
+						<i class="el-icon-download"></i> <span>저장</span>
+					</button>
+					<button type="button" onclick="javaScript:newIsp();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
+						<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
+					</button>
+				</div>
+				<div class="tab-tb-box">
+					<div class="table-box">
+						<div class="el-table_header-wrapper">
+							<table>
+								<colgroup>
+									<col style="width:46px">
+									<col style="width:100px">
+									<col style="width:150px">
+									<col style="width:1300px">
+									<col style="width:150px">
+									<col>
+								</colgroup>
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>수립 일자</th>
+									<th>관리구분</th>
+									<th>ISP 결과</th>
+									<th>등록자</th>
+									<th>작업</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="el-table_body-wrapper" style="height: 148px;" id="ispList">
+							<div class="no-data">조회된 데이터가 없습니다.</div>
+						</div>
+					</div>
+				</div>
+				<div class="bottom-form el-row" id="ispInfoDiv">
+					<div class="section">
+						<table class="w-auto wr-form">
+							<tbody>
+							<tr>
+								<th><span class="required">*</span> 사정일자(ISP)</th>
+								<td>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<form:input path="cslIspInfo.ispDt" cssClass="el-input__inner datepicker" placeholder="날짜 선택" style="width: 130px;" />
+									</div>
+								</td>
+								<th>관리구분</th>
+								<td>
+									<div class="dsp-ibk is-disabled">
+										<form:input path="cslIspInfo.mngTpNm" cssClass="el-input__inner" placeholder="일시관리" readonly="true" style="width: 150px;" />
+										<input type="hidden" name="mngTpCd" id="mngTpCd" value="10" />
+									</div>
+								</td>
+								<td>
+<c:if test="${linkCdList ne null and linkCdList ne ''}">
+	<c:forEach var="result" items="${linkCdList}" varStatus="status">
+									&nbsp;<input type="checkbox" name="linkCd" value="<c:out value="${result.CD_ID}" />" />&nbsp;<c:out value="${result.CD_NM}" />&nbsp;
+	</c:forEach>
+</c:if>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="multi-table">
+						<table class="wr-table" id="mngTpTable">
 							<colgroup>
-								<col style="width:46px">
-								<col style="width:100px">
-								<col style="width:150px">
-								<col style="width:1300px">
-								<col style="width:150px">
-								<col>
+								<col style="width: 8%;">
+								<col style="width: 4%;">
+								<col style="width: 13%;">
+								<col style="width: 8%;">
+								<col style="width: 4%;">
+								<col style="width: 13%;">
+								<col style="width: 8%;">
+								<col style="width: 4%;">
+								<col style="width: 13%;">
+								<col style="width: 8%;">
+								<col style="width: 4%;">
+								<col style="width: 13%;">
 							</colgroup>
 							<thead>
 							<tr>
-								<th>#</th>
-								<th>수립 일자</th>
-								<th>관리구분</th>
-								<th>ISP 결과</th>
-								<th>등록자</th>
-								<th>작업</th>
+								<th colspan="3">중독 평가</th>
+								<th colspan="3">상태 평가</th>
+								<th colspan="3">사회적 기능 평가</th>
+								<th colspan="3">사회 서비스 평가</th>
+							</tr>
+							<tr>
+								<th>문항</th>
+								<th>심각도</th>
+								<th>자원연계</th>
+								<th>문항</th>
+								<th>심각도</th>
+								<th>자원연계</th>
+								<th>문항</th>
+								<th>심각도</th>
+								<th>자원연계</th>
+								<th>문항</th>
+								<th>심각도</th>
+								<th>자원연계</th>
 							</tr>
 							</thead>
-						</table>
-					</div>
-					<div class="el-table_body-wrapper" style="height: 148px;" id="ispList">
-						<div class="no-data">조회된 데이터가 없습니다.</div>
-					</div>
-				</div>
-			</div>
-			<div class="bottom-form el-row" id="ispInfoDiv">
-				<div class="section">
-					<table class="w-auto wr-form">
-						<tbody>
-						<tr>
-							<th><span class="required">*</span> ISP 일자</th>
-							<td>
-								<div class="dat-pk">
-									<i class="el-input__icon el-icon-date"></i>
-									<form:input path="cslIspInfo.ispDt" cssClass="el-input__inner datepicker" placeholder="날짜 선택" style="width: 130px;" />
-								</div>
-							</td>
-							<th>관리구분</th>
-							<td>
-								<div class="dsp-ibk is-disabled">
-									<form:input path="cslIspInfo.mngTpNm" cssClass="el-input__inner" placeholder="일시관리" readonly="true" style="width: 150px;" />
-									<form:input path="cslIspInfo.mngTpCd" style="display: none;" />
-								</div>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="multi-table">
-					<table class="wr-table" id="mngTpTable">
-						<colgroup>
-							<col style="width: 8%;">
-							<col style="width: 4%;">
-							<col style="width: 13%;">
-							<col style="width: 8%;">
-							<col style="width: 4%;">
-							<col style="width: 13%;">
-							<col style="width: 8%;">
-							<col style="width: 4%;">
-							<col style="width: 13%;">
-							<col style="width: 8%;">
-							<col style="width: 4%;">
-							<col style="width: 13%;">
-						</colgroup>
-						<thead>
-						<tr>
-							<th colspan="3">중독 평가</th>
-							<th colspan="3">상태 평가</th>
-							<th colspan="3">사회적 기능 평가</th>
-							<th colspan="3">사회 서비스 평가</th>
-						</tr>
-						<tr>
-							<th>문항</th>
-							<th>심각도</th>
-							<th>자원연계</th>
-							<th>문항</th>
-							<th>심각도</th>
-							<th>자원연계</th>
-							<th>문항</th>
-							<th>심각도</th>
-							<th>자원연계</th>
-							<th>문항</th>
-							<th>심각도</th>
-							<th>자원연계</th>
-						</tr>
-						</thead>
-						<tbody>
+							<tbody>
 							<tr>
 								<th id="evlItmSco01" class="bg-pk">약물사용문제</th>
 								<td>
@@ -1655,268 +1717,276 @@
 			</div>
 			<!-- // ISP 수립-->
 
-			<!-- 사정평가 -->
-			<div id="tab-assessment" class="tab-form" style="display: none;"><div id="assDivView">
-				<div class="in-tab-btn">
-					<button disabled="disabled" type="button" id="assSaveButNo" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
-						<i class="el-icon-download"></i> <span>저장</span>
-					</button>
-					<button type="button" onclick="javaScript:saveAss();" id="assSaveButYes" class="el-button normal el-button--primary el-button--small is-plain" style="padding: 7px 13px;display: none;">
-						<i class="el-icon-download"></i> <span>저장</span>
-					</button>
-				</div>
-				<div class="el-row">
-					<div class="row2">
-						<div class="section pdn">
-							<div class="el-card_header">
-								<h2><i class="el-icon-s-opportunity"></i> 중독력</h2>
-							</div>
-							<div class="el-card_body">
-								<table class="w-auto wr-form">
-									<tbody>
-									<tr>
-										<th><span class="required">*</span> 최초 사용약물</th>
-										<td colspan="5">
-											<select name="fstDrugCd" style="width: 100%;">
-												<option value="">선택</option>
-<c:forEach var="result" items="${fstDrugCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-											<div style="margin-top:5px"><form:input path="cslAssInfo.fstDrug" cssClass="el-input__inner" style="width: 100%;" placeholder="최초사용약물 입력" /></div>
-										</td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 주요 사용약물</th>
-										<td colspan="5">
-											<select name="mainDrugCd" style="width: 100%;">
-												<option value="">선택</option>
-<c:forEach var="result" items="${mainDrugCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-											<div style="margin-top:5px"><form:input path="cslAssInfo.mainDrug" cssClass="el-input__inner" style="width: 100%;" placeholder="주요사용약물 입력" /></div>
-										</td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 최초 사용시기</th>
-										<td><form:input path="cslAssInfo.fstAge" cssClass="el-input__inner" placeholder="나이" style="width: 100px;" /></td>
-										<th><span class="required">*</span> 마지막 사용시기</th>
-										<td><form:input path="cslAssInfo.lstAge" cssClass="el-input__inner" placeholder="나이" style="width: 100px;" /></td>
-										<th><span class="required">*</span> 사용기간</th>
-										<td><form:input path="cslAssInfo.useTerm" cssClass="el-input__inner" placeholder="사용기간" style="width: 113px;" /></td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 사용빈도</th>
-										<td>
-											<select name="useFrqCd" style="width:150px">
-												<option value="">선택</option>
-<c:forEach var="result" items="${useFrqCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-										</td>
-										<th><span class="required">*</span> 사용원인</th>
-										<td colspan="3">
-											<select name="useCauCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'useCauEtc');">
-												<option value="">선택</option>
-<c:forEach var="result" items="${useCauCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-											<div class="dsp-ibk"><form:input path="cslAssInfo.useCauEtc" cssClass="el-input__inner" placeholder="기타 선택시 입력 가능" disabled="true" style="width: 150px;" /></div>
-										</td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 약물관련 법적문제</th>
-										<td colspan="5">
-											<select name="lawPbmCd" id="lawPbmCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');" multiple>
-<c:forEach var="result" items="${lawPbmCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-											<div class="dsp-ibk"><form:input path="cslAssInfo.lawPbmEtc" cssClass="el-input__inner" disabled="true" placeholder="기타 선택시 입력 가능" style="width: 432px;" /></div>
-										</td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 신체적 건강문제</th>
-										<td colspan="5"><form:input path="cslAssInfo.physPbm" cssClas="el-input__inner" placeholder="신체적 건강문제" style="width: 100%;" /></td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 정신적 건강문제</th>
-										<td colspan="5">
-											<select name="sprtPbmCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'sprtPbmEtc');">
-												<option value="">선택</option>
-<c:forEach var="result" items="${sprtPbmCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-											<span class="dsp-ibk"><form:input path="cslAssInfo.sprtPbmEtc" cssClass="el-input__inner" disabled="true" placeholder="기타 선택시 입력 가능" style="width: 432px;" /></span>
-										</td>
-									</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
+			<!-- 병력정보 -->
+			<div id="tab-assessment" class="tab-form" style="display: none;">
+				<div id="assDivView">
+					<div class="in-tab-btn">
+						<button disabled="disabled" type="button" id="assSaveButNo" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
+							<i class="el-icon-download"></i> <span>저장</span>
+						</button>
+						<button type="button" onclick="javaScript:saveAss();" id="assSaveButYes" class="el-button normal el-button--primary el-button--small is-plain" style="padding: 7px 13px;display: none;">
+							<i class="el-icon-download"></i> <span>저장</span>
+						</button>
 					</div>
-					<div class="row2">
-						<div class="section pdn" style="height: 407px;">
-							<div class="el-card_header"><h2><i class="el-icon-s-opportunity"></i> 치료정보</h2></div>
-							<div class="el-card_body">
-								<table class="w-auto wr-form">
-									<tbody>
-									<tr>
-										<th>성격</th>
-										<td>
-											<select name="prsnCd" id="prsnCd" style="width: 220px;" multiple>
-												<option value="">선택</option>
-<c:forEach var="result" items="${prsnCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-										</td>
-										<th>정서-심리</th>
-										<td colspan="3">
-											<select name="emtnCd" id="emtnCd" style="width: 170px;" multiple>
-												<option value="">선택</option>
-<c:forEach var="result" items="${emtnCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<th>행동</th>
-										<td>
-											<select name="actnCd" id="actnCd" style="width: 170px;" multiple>
-												<option value="">선택</option>
-<c:forEach var="result" items="${actnCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-										</td>
-										<th>가족</th>
-										<td>
-											<select name="fmlyCd" id="fmlyCd" style="width: 170px;" multiple>
-												<option value="">선택</option>
-<c:forEach var="result" items="${fmlyCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-										</td>
-										<th>대인관계</th>
-										<td>
-											<select name="itRlCd" id="itRlCd" style="width: 170px;" multiple>
-												<option value="">선택</option>
-<c:forEach var="result" items="${itRlCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
-</c:forEach>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<th>기타</th>
-										<td colspan="3"><form:input path="cslAssInfo.miEtc" cssClass="el-input__inner" placeholder="기타" style="width: 100%;" /></td>
-										<th>심각성인식정도</th>
-										<td>
-											<div class="count-number">
-												<form:input path="cslAssInfo.svrRcgDgr" cssClass="el-input__inner" style="width: 80px;" maxVal="10" minVal="1" />
-												<a href="javaScript:tagNumChang('svrRcgDgr', +1);" class="up"><i class="el-icon-arrow-up"></i></a>
-												<a href="javaScript:tagNumChang('svrRcgDgr', -1);" class="down"><i class="el-icon-arrow-down"></i></a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th>기대효과</th>
-										<td colspan="5">
-											<textarea name="expEfc" placeholder="기대효과" style="width:367px;height: 220px;"></textarea>
-											<span style="display:inline-block;padding:0 7px;font-size:14px;color:#333;font-weight:400">메모</span>
-											<textarea name="miMemo" placeholder="메모" style="width:367px;height: 220px;"></textarea>
-										</td>
-									</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="section pdn el-row">
-					<div class="el-card_header">
-						<h2><i class="el-icon-s-opportunity"></i> 평가도구</h2>
-					</div>
-					<div class="el-card_body el-row">
-						<div class="sec-inr">
-							<div class="table-box">
-								<div class="el-table_header-wrapper">
-									<table>
-										<colgroup>
-											<col style="width:46px">
-											<col style="width:90px">
-											<col style="width:120px">
-											<col style="width:100px">
-											<col>
-										</colgroup>
-										<thead>
+					<div class="el-row">
+						<div class="row2">
+							<div class="section pdn">
+								<div class="el-card_header">
+									<h2><i class="el-icon-s-opportunity"></i> 중독력</h2>
+								</div>
+								<div class="el-card_body">
+									<table class="w-auto wr-form">
+										<tbody>
 										<tr>
-											<th>#</th>
-											<th>작업</th>
-											<th>평가 도구</th>
-											<th>평가 점수</th>
-											<th>평가 내용</th>
+											<th><span class="required">*</span> 최초 사용약물</th>
+											<td colspan="5">
+												<select name="fstDrugCd" style="width: 100%;">
+													<option value="">선택</option>
+<c:forEach var="result" items="${fstDrugCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+												<div style="margin-top:5px"><form:input path="cslAssInfo.fstDrug" cssClass="el-input__inner" style="width: 100%;" placeholder="최초사용약물 입력" /></div>
+											</td>
 										</tr>
-										</thead>
+										<tr>
+											<th><span class="required">*</span> 주요 사용약물</th>
+											<td colspan="5">
+												<select name="mainDrugCd" style="width: 100%;">
+													<option value="">선택</option>
+<c:forEach var="result" items="${mainDrugCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+												<div style="margin-top:5px"><form:input path="cslAssInfo.mainDrug" cssClass="el-input__inner" style="width: 100%;" placeholder="주요사용약물 입력" /></div>
+											</td>
+										</tr>
+										<tr>
+											<th><span class="required">*</span> 최초 사용시기</th>
+											<td><form:input path="cslAssInfo.fstAge" cssClass="el-input__inner" placeholder="나이" style="width: 100px;" /></td>
+											<th><span class="required">*</span> 마지막 사용시기</th>
+											<td><form:input path="cslAssInfo.lstAge" cssClass="el-input__inner" placeholder="나이" style="width: 100px;" /></td>
+											<th><span class="required">*</span> 사용기간</th>
+											<td><form:input path="cslAssInfo.useTerm" cssClass="el-input__inner" placeholder="사용기간" style="width: 113px;" /></td>
+										</tr>
+										<tr>
+											<th><span class="required">*</span> 사용빈도</th>
+											<td>
+												<select name="useFrqCd" style="width:150px">
+													<option value="">선택</option>
+<c:forEach var="result" items="${useFrqCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+											</td>
+											<th><span class="required">*</span> 사용원인</th>
+											<td colspan="3">
+												<select name="useCauCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'useCauEtc');">
+													<option value="">선택</option>
+<c:forEach var="result" items="${useCauCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+												<div class="dsp-ibk"><form:input path="cslAssInfo.useCauEtc" cssClass="el-input__inner" placeholder="기타 선택시 입력 가능" disabled="true" style="width: 150px;" /></div>
+											</td>
+										</tr>
+										<tr>
+											<th><span class="required">*</span> 약물관련 법적문제</th>
+											<td colspan="5">
+												<select name="lawPbmCd" id="lawPbmCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');" multiple>
+<c:forEach var="result" items="${lawPbmCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+												<div class="dsp-ibk"><form:input path="cslAssInfo.lawPbmEtc" cssClass="el-input__inner" disabled="true" placeholder="기타 선택시 입력 가능" style="width: 432px;" /></div>
+											</td>
+										</tr>
+										<tr>
+											<th><span class="required">*</span> 신체적 건강문제</th>
+											<td colspan="5"><form:input path="cslAssInfo.physPbm" cssClas="el-input__inner" placeholder="신체적 건강문제" style="width: 100%;" /></td>
+										</tr>
+										<tr>
+											<th><span class="required">*</span> 정신적 건강문제</th>
+											<td colspan="5">
+												<select name="sprtPbmCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'sprtPbmEtc');">
+													<option value="">선택</option>
+<c:forEach var="result" items="${sprtPbmCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+												<span class="dsp-ibk"><form:input path="cslAssInfo.sprtPbmEtc" cssClass="el-input__inner" disabled="true" placeholder="기타 선택시 입력 가능" style="width: 432px;" /></span>
+											</td>
+										</tr>
+										</tbody>
 									</table>
 								</div>
-								<div class="el-table_body-wrapper" style="height: 110px;" id="assEvlList">
-									<div class="no-data">조회된 데이터가 없습니다.</div>
+							</div>
+						</div>
+						<div class="row2">
+							<div class="section pdn" style="height: 407px;">
+								<div class="el-card_header"><h2><i class="el-icon-s-opportunity"></i> 치료정보</h2></div>
+								<div class="el-card_body">
+									<table class="w-auto wr-form">
+										<tbody>
+										<tr>
+											<th>성격</th>
+											<td>
+												<select name="prsnCd" id="prsnCd" style="width: 220px;" multiple>
+													<option value="">선택</option>
+<c:forEach var="result" items="${prsnCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+											</td>
+											<th>정서-심리</th>
+											<td colspan="3">
+												<select name="emtnCd" id="emtnCd" style="width: 170px;" multiple>
+													<option value="">선택</option>
+<c:forEach var="result" items="${emtnCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th>행동</th>
+											<td>
+												<select name="actnCd" id="actnCd" style="width: 170px;" multiple>
+													<option value="">선택</option>
+<c:forEach var="result" items="${actnCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+											</td>
+											<th>가족</th>
+											<td>
+												<select name="fmlyCd" id="fmlyCd" style="width: 170px;" multiple>
+													<option value="">선택</option>
+<c:forEach var="result" items="${fmlyCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+											</td>
+											<th>대인관계</th>
+											<td>
+												<select name="itRlCd" id="itRlCd" style="width: 170px;" multiple>
+													<option value="">선택</option>
+<c:forEach var="result" items="${itRlCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+</c:forEach>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th>기타</th>
+											<td colspan="3"><form:input path="cslAssInfo.miEtc" cssClass="el-input__inner" placeholder="기타" style="width: 100%;" /></td>
+											<th>심각성인식정도</th>
+											<td>
+												<div class="count-number">
+													<form:input path="cslAssInfo.svrRcgDgr" cssClass="el-input__inner" style="width: 80px;" maxVal="10" minVal="1" />
+													<a href="javaScript:tagNumChang('svrRcgDgr', +1);" class="up"><i class="el-icon-arrow-up"></i></a>
+													<a href="javaScript:tagNumChang('svrRcgDgr', -1);" class="down"><i class="el-icon-arrow-down"></i></a>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th>기대효과</th>
+											<td colspan="5">
+												<textarea name="expEfc" placeholder="기대효과" style="width:367px;height: 220px;"></textarea>
+												<span style="display:inline-block;padding:0 7px;font-size:14px;color:#333;font-weight:400">메모</span>
+												<textarea name="miMemo" placeholder="메모" style="width:367px;height: 220px;"></textarea>
+											</td>
+										</tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
-						<div class="cn-arw">
-							<button type="button" onclick="javaScript:addRowEval();" class="el-button el-button--primary el-button--mini is-plain">
-								<span>◀◀<br><br>행 추가</span>
-							</button>
+					</div>
+					<div class="section pdn el-row">
+						<div class="el-card_header">
+							<h2><i class="el-icon-s-opportunity"></i> 평가도구</h2>
 						</div>
-						<div class="sec-inr">
-							<div class="section mt0">
-								<table class="w-auto wr-form">
-									<tbody>
-									<tr>
-										<th><span class="required">*</span> 평가도구</th>
-										<td>
-											<select name="evlTolCd" style="width:170px">
-												<option value="">평가도구</option>
+						<div class="el-card_body el-row">
+							<div class="sec-inr">
+								<div class="table-box">
+									<div class="el-table_header-wrapper">
+										<table>
+											<colgroup>
+												<col style="width:46px">
+												<col style="width:90px">
+												<col style="width:120px">
+												<col style="width:100px">
+												<col>
+											</colgroup>
+											<thead>
+											<tr>
+												<th>#</th>
+												<th>작업</th>
+												<th>평가 도구</th>
+												<th>평가 점수</th>
+												<th>평가 내용</th>
+											</tr>
+											</thead>
+										</table>
+									</div>
+									<div class="el-table_body-wrapper" style="height: 110px;" id="assEvlList">
+										<div class="no-data">조회된 데이터가 없습니다.</div>
+									</div>
+								</div>
+							</div>
+							<div class="cn-arw">
+								<button type="button" onclick="javaScript:addRowEval();" class="el-button el-button--primary el-button--mini is-plain">
+									<span>◀◀<br><br>행 추가</span>
+								</button>
+							</div>
+							<div class="sec-inr">
+								<div class="section mt0">
+									<table class="w-auto wr-form">
+										<tbody>
+										<tr>
+											<th><span class="required">*</span> 평가도구</th>
+											<td>
+												<select name="evlTolCd" style="width:170px">
+													<option value="">평가도구</option>
 <c:forEach var="result" items="${evlTolCdList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
 </c:forEach>
-											</select>
-										</td>
-										<th><span class="required">*</span> 평가점수</th>
-										<td><input name="evlSco" type="text" placeholder="평가점수" style="width:170px" /></td>
-									</tr>
-									</tbody>
-								</table>
-								<table class="wr-form sig-form">
-									<colgroup>
-										<col style="width: 85px;">
-										<col>
-									</colgroup>
-									<tbody>
-									<tr>
-										<th><span class="required">*</span> 평가내용</th>
-										<td><textarea name="evlCtnt" style="height: 86px;" placeholder="평가 내용을 입력하세요."></textarea></td>
-									</tr>
-									</tbody>
-								</table>
+												</select>
+											</td>
+											<th><span class="required">*</span> 평가점수</th>
+											<td><input name="evlSco" type="text" placeholder="평가점수" style="width:170px" /></td>
+										</tr>
+										</tbody>
+									</table>
+									<table class="wr-form sig-form">
+										<colgroup>
+											<col style="width: 85px;">
+											<col>
+										</colgroup>
+										<tbody>
+										<tr>
+											<th><span class="required">*</span> 평가내용</th>
+											<td><textarea name="evlCtnt" style="height: 86px;" placeholder="평가 내용을 입력하세요."></textarea></td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div></div>
-			<!-- // 사정평가 -->
+			</div>
+			<!-- // 병력정보 -->
+
+			<!-- 치료 재활정보 -->
+			<div id="tab-cure" class="tab-form" style="display: none;">
+				치료 재활정보
+			</div>
+			<!-- // 치료 재활정보 -->
 		</div>
+		<!-- // 사례관리 상담, ISP수립, 사정평가 -->
 	</div>
-	<!-- // 집중상담, ISP수립, 사정평가 -->
 </div>
 </form>
 
