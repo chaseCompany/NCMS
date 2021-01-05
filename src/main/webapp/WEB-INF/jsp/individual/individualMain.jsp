@@ -109,6 +109,8 @@
 						}else{
 							$("div#idvList").html("<div class='no-data'>조회된 데이터가 없습니다.</div>");
 						}
+
+						newIdv();
 					}else{
 						console.log("ERR")
 					}

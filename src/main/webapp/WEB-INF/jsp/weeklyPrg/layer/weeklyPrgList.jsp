@@ -38,7 +38,7 @@
 				<th>실시 일자</th>
 				<th>담당자</th>
 				<th>주관 프로그램</th>
-				<th>회원수</th>
+				<th>참여자수</th>
 			</tr>
 			</thead>
 		</table>

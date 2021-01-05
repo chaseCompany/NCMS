@@ -128,10 +128,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 			int result = this.insertCslIdv(map);
 			if(result > 0){
 				resultMap.put("err", "N");
-				resultMap.put("MSG", "집중 상담 등록 완료");
+				resultMap.put("MSG", "사례관리 상담 등록 완료");
 			}else{
 				resultMap.put("err", "Y");
-				resultMap.put("MSG", "집중 상담 등록 실패");
+				resultMap.put("MSG", "사례관리 상담 등록 실패");
 			}
 		}else{
 			HashMap<String, Object> cslIdvInfo = this.getCslIdv(cslNo);
@@ -154,10 +154,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 			int result = this.updateCslIdv(map);
 			if(result > 0){
 				resultMap.put("err", "N");
-				resultMap.put("MSG", "집중 상담 수정 완료");
+				resultMap.put("MSG", "사례관리 상담 수정 완료");
 			}else{
 				resultMap.put("err", "Y");
-				resultMap.put("MSG", "집중 상담 수정 실패");
+				resultMap.put("MSG", "사례관리 상담 수정 실패");
 			}
 		}
 
