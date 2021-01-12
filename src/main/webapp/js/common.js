@@ -47,6 +47,9 @@ function gfncTimeFormatCheck(dateValue) {
  * @returns
  */
 function formatDate(date) {
+	if(date == "" || date == undefined){
+		return "";
+	}
 	if(date.length != 8){
 		return date;
 	}

@@ -108,82 +108,58 @@ public interface IndividualService {
 	public HashMap<String, Object> cslIspAdd(HashMap<String, Object> map) throws Exception;
 
 	/**
-	 * 사정평가 내용 조회
-	 * @param mbrNo
-	 * @return
-	 * @throws Excepton
-	 */
-	public HashMap<String, Object> getCslAssInfo(String mbrNo) throws Exception;
-
-	/**
-	 * 사정평가 내용 등록
+	 * 병력정보 목록 조회
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int insertCslAss(HashMap<String, Object> map) throws Exception;
+	public List<HashMap<String, Object>> getCslAnmList(HashMap<String, Object> map) throws Exception;
 
 	/**
-	 * 사정평가 내용 수정
+	 * 병력정보 상세 조회
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int updateCslAss(HashMap<String, Object> map) throws Exception;
+	public HashMap<String, Object> getCslAnmInfo(HashMap<String, Object> map) throws Exception;
 
 	/**
-	 * 사정 평가 평가도구 상세 조회
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	public HashMap<String, Object> getCslAssEvlInfo(HashMap<String, Object> map) throws Exception;
-
-	/**
-	 * 사정 평가 평가도구 목록 조회
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	public List<HashMap<String, Object>> getCslAssEvlList(String mbrNo) throws Exception;
-
-	/**
-	 * 사정 평가 평가도구 시퀀스 조회
+	 * 병력정보 고유키 생성
 	 * @param mbrNo
 	 * @return
 	 * @throws Exception
 	 */
-	public String getEvlSqeNext(String mbrNo) throws Exception;
+	public String getCslAnmSeq(String mbrNo) throws Exception;
 
 	/**
-	 * 사정 평가 평가도구 등록
+	 *병력정보 등록
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int insertCslAssEvl(HashMap<String, Object> map) throws Exception;
+	public int insertCslAnm(HashMap<String, Object> map) throws Exception;
 
 	/**
-	 * 사정 평가 평가도구 삭제
+	 * 병력정보 수정
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int deleteCslAssEvl(HashMap<String, Object> map) throws Exception;
+	public int updateCslAnm(HashMap<String, Object> map) throws Exception;
 
 	/**
-	 * 사정 평가 내용 조회
-	 * @param mbrNo
-	 * @return
-	 * @throws Exception
-	 */
-	public HashMap<String, Object> getCslAssInfoView(String mbrNo) throws Exception;
-
-	/**
-	 * 사정 평가 내용 등록
+	 * 병력정보 등록
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> addCslAss(HashMap<String, Object> map) throws Exception;
+	public HashMap<String, Object> addCslAns(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 병력정보 삭제
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteCslAnm(HashMap<String, Object> map) throws Exception;
 }

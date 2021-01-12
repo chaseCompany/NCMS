@@ -1,6 +1,5 @@
 package kr.co.chase.ncms.individual.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Service;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
+import kr.co.chase.ncms.common.util.DateUtil;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
-import kr.co.chase.ncms.dao.CslAssDao;
-import kr.co.chase.ncms.dao.CslAssEvlDao;
+import kr.co.chase.ncms.dao.CslAnmDao;
 import kr.co.chase.ncms.dao.CslIdvDao;
 import kr.co.chase.ncms.dao.CslIspDao;
 import kr.co.chase.ncms.individual.service.IndividualService;
@@ -31,11 +30,8 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	@Resource(name="cslIspDao")
 	private CslIspDao cslIspDao;
 
-	@Resource(name="cslAssDao")
-	private CslAssDao cslAssDao;
-
-	@Resource(name="cslAssEvlDao")
-	private CslAssEvlDao cslAssEvlDao;
+	@Resource(name="cslAnmDao")
+	private CslAnmDao cslAnmDao;
 
 	@Resource(name="fileInfoService")
 	private FileInfoService fileInfoService;
@@ -284,140 +280,140 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	}
 
 	/**
-	 * 사정평가 내용 조회
-	 * @param mbrNo
-	 * @return
-	 * @throws Excepton
-	 */
-	public HashMap<String, Object> getCslAssInfo(String mbrNo) throws Exception{
-		return cslAssDao.getCslAssInfo(mbrNo);
-	}
-
-	/**
-	 * 사정평가 내용 등록
+	 * 사례관리 병력정보 목록 조회
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int insertCslAss(HashMap<String, Object> map) throws Exception{
-		return cslAssDao.insertCslAss(map);
+	public List<HashMap<String, Object>> getCslAnmList(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
+			throw new Exception("IndividualService.getCslAnmList mbrNo 필수값 누락");
+		}
+
+		return cslAnmDao.getCslAnmList(map);
 	}
 
 	/**
-	 * 사정평가 내용 수정
+	 * 사례관리 병력정보 상세 조회
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int updateCslAss(HashMap<String, Object> map) throws Exception{
-		return cslAssDao.updateCslAss(map);
+	public HashMap<String, Object> getCslAnmInfo(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
+			throw new Exception("IndividualService.getCslAnmInfo mbrNo 필수값 누락");
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("cslNo"), ""))) {
+			throw new Exception("IndividualService.getCslAnmInfo cslNo 필수값 누락");
+		}
+
+		return cslAnmDao.getCslAnmInfo(map);
 	}
 
 	/**
-	 * 사정 평가 평가도구 상세 조회
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	public HashMap<String, Object> getCslAssEvlInfo(HashMap<String, Object> map) throws Exception{
-		return cslAssEvlDao.getCslAssEvlInfo(map);
-	}
-
-	/**
-	 * 사정 평가 평가도구 목록 조회
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	public List<HashMap<String, Object>> getCslAssEvlList(String mbrNo) throws Exception{
-		return cslAssEvlDao.getCslAssEvlList(mbrNo);
-	}
-
-	/**
-	 * 사정 평가 평가도구 시퀀스 조회
+	 * 사례관리 병력정보 고유키 생성
 	 * @param mbrNo
 	 * @return
 	 * @throws Exception
 	 */
-	public String getEvlSqeNext(String mbrNo) throws Exception{
-		return cslAssEvlDao.getEvlSqeNext(mbrNo);
+	public String getCslAnmSeq(String mbrNo) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty(mbrNo, ""))) {
+			throw new Exception("IndividualService.getCslAnmSeq mbrNo 필수값 누락");
+		}
+
+		return cslAnmDao.getCslAnmSeq(mbrNo);
 	}
 
 	/**
-	 * 사정 평가 평가도구 등록
+	 *사례관리 병력정보 등록
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int insertCslAssEvl(HashMap<String, Object> map) throws Exception{
-		map.put("evlSeq", this.getEvlSqeNext((String)map.get("mbrNo")));
+	public int insertCslAnm(HashMap<String, Object> map) throws Exception{
+		String mbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
 
-		return cslAssEvlDao.insertCslAssEvl(map);
+		if("".equals(mbrNo)) {
+			throw new Exception("IndividualService.insertCslAnm mbrNo 필수값 누락");
+		}
+
+		map.put("cslNo", this.getCslAnmSeq(mbrNo));
+
+		return cslAnmDao.insertCslAnm(map);
 	}
 
 	/**
-	 * 사정 평가 평가도구 삭제
+	 * 사례관리 병력정보 수정
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public int deleteCslAssEvl(HashMap<String, Object> map) throws Exception{
-		return cslAssEvlDao.deleteCslAssEvl(map);
+	public int updateCslAnm(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
+			throw new Exception("IndividualService.updateCslAnm mbrNo 필수값 누락");
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("cslNo"), ""))) {
+			throw new Exception("IndividualService.updateCslAnm cslNo 필수값 누락");
+		}
+
+		return cslAnmDao.updateCslAnm(map);
 	}
 
 	/**
-	 * 사정 평가 내용 조회
-	 * @param mbrNo
-	 * @return
-	 * @throws Exception
-	 */
-	public HashMap<String, Object> getCslAssInfoView(String mbrNo) throws Exception{
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-
-		resultMap.put("cslAssInfo", this.getCslAssInfo(mbrNo));
-		resultMap.put("cslAssEvlList", this.getCslAssEvlList(mbrNo));
-
-		return resultMap;
-	}
-
-	/**
-	 * 사정 평가 내용 등록
+	 * 사례관리 병력정보 등록
 	 * @param map
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> addCslAss(HashMap<String, Object> map) throws Exception{
+	public HashMap<String, Object> addCslAns(HashMap<String, Object> map) throws Exception{
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		int result = 0;
 
-		HashMap<String, Object> cslAssInfo = this.getCslAssInfo((String)map.get("mbrNo"));
-		if(cslAssInfo != null) {
-			result = this.updateCslAss(map);
-			resultMap.put("MSG", "수정");
-		}else {
-			result = this.insertCslAss(map);
-			resultMap.put("MSG", "등록");
+		String tagMbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
+		String tagCslNo = StringUtils.defaultIfEmpty((String)map.get("cslNo"), "");
+
+		if(
+			(!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudIndt"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudAge"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudTypeCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudSoulCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudWayCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudWayEtc"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudCtnt"), ""))) &&
+			"".equals(StringUtils.defaultIfEmpty((String)map.get("sudCreDt"), ""))
+		  ) {
+			map.put("sudCreDt", DateUtil.getToday("yyyyMMdd"));
+		}
+		if(
+			(!"".equals(StringUtils.defaultIfEmpty((String)map.get("devBabyPregCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devBabyDevCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devBabyNurtCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devChildDiscCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devChildLearnCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devChildRelationCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devChildTec"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devTeenLearnCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devTeenRelationCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devTeenUniCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devTeenEtc"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devAdulRelationCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devAdulSexCd"), "")) ||
+			!"".equals(StringUtils.defaultIfEmpty((String)map.get("devAdulEtc"), ""))) &&
+			"".equals(StringUtils.defaultIfEmpty((String)map.get("devCreDt"), ""))
+		  ) {
+			map.put("devCreDt", DateUtil.getToday("yyyyMMdd"));
 		}
 
-		if(result > 0) {
-			if(map.get("evlList") != null && ((ArrayList<HashMap<String, Object>>)map.get("evlList")).size() > 0) {
-				for(HashMap evlMap : (ArrayList<HashMap<String, Object>>)map.get("evlList")){
-					this.insertCslAssEvl(evlMap);
-				}
-			}
-		}
-
-		String deleteEvlSeq = StringUtils.defaultIfEmpty((String)map.get("deleteEvlSeq"), "");				// 삭제대상 평가
-		if(!"".equals(deleteEvlSeq)){
-			if(deleteEvlSeq.indexOf(",") >= 0) {
-				for(String evlSeq : deleteEvlSeq.split(",")){
-					map.put("evlSeq", evlSeq);
-					this.deleteCslAssEvl(map);
-				}
+		if(tagMbrNo != null && !"".equals(tagMbrNo)) {
+			if(tagCslNo != null && !"".equals(tagCslNo)) {
+				result = this.updateCslAnm(map);
+				resultMap.put("MSG", "수정");
 			}else {
-				map.put("evlSeq", deleteEvlSeq);
-				this.deleteCslAssEvl(map);
+				result = this.insertCslAnm(map);
+				resultMap.put("MSG", "등록");
 			}
+		}else {
+			resultMap.put("MSG", "필수값 누락");
 		}
 
 		if(result > 0) {
@@ -427,5 +423,22 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 		}
 
 		return resultMap;
+	}
+
+	/**
+	 * 병력정보 삭제
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteCslAnm(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
+			throw new Exception("IndividualService.deleteCslAnm mbrNo 필수값 누락");
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("cslNo"), ""))) {
+			throw new Exception("IndividualService.deleteCslAnm cslNo 필수값 누락");
+		}
+
+		return cslAnmDao.deleteCslAnm(map);
 	}
 }
