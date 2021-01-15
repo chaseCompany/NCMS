@@ -70,6 +70,8 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 		String rcpNo = StringUtils.defaultString(map.get("rcpNo") != null ? map.get("rcpNo").toString() : "", "");
 
 		if(rcpNo.equals("")) {
+/*
+			// 회원 번호 미존재시 회원 등록
 			String tgpMbrNo = StringUtils.defaultIfEmpty((String)map.get("tgpMbrNo"), "");
 			if("".equals(tgpMbrNo)){
 				map.put("mbrNm", StringUtils.defaultIfEmpty((String)map.get("tgpNm"), ""));
@@ -86,7 +88,7 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 
 				map.put("tgpMbrNo", memberService.saveMstMbrEt(map));
 			}
-
+*/
 			map.put("rcpNo", this.getCslRcpSeq());
 			result = this.insertCslRcp(map);
 		}else{
