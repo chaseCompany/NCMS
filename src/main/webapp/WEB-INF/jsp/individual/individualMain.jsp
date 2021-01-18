@@ -54,6 +54,7 @@
 			getCslIdvList(obj.MBR_NO);
 			getCslIspList(obj.MBR_NO);
 			getCslAnmList(obj.MBR_NO);
+			getCslHealList(obj.MBR_NO);
 
 			$("button#excelNo").hide();
 			$("button#excelYes").show();
@@ -63,6 +64,8 @@
 			$("button#ispSaveButYes").show();
 			$("button#anmSaveButNo").hide();
 			$("button#anmSaveButYes").show();
+			$("button#healSaveButNo").hide();
+			$("button#healSaveButYes").show();
 		},
 		<%-- 사례관리 상담 이력 조회 --%>
 		getCslIdvList = function(tagMbrNo){
@@ -955,6 +958,200 @@
 			$("input[name='mngTpCd']").val(maxRating * 10);
 			$("input[name='mngTpNm']").val(mngTpNmList[maxRating - 1]);
 		},
+		dtCheck = function(defaultDay, tagDay, tagVal){
+			var fromTag = $("input[name='" + defaultDay + "']").val();
+			var toTag = $("input[name='" + tagDay + "']").val();
+
+			if(fromTag != "" && toTag != ""){
+				var resultNum = checkDay(fromTag.replace(/-/g, ""), toTag.replace(/-/g, ""));
+				$("input[name='" + tagVal + "']").val(resultNum);
+			}
+		},
+		<%-- 치료재활정보 이력 조회 --%>
+		getCslHealList = function(tagMbrNo){
+			$.ajax({
+				url : '/ajaxCslHealList.do',
+				type : 'POST',
+				data : {
+					mbrNo : tagMbrNo
+				},
+				success : function(res){
+					var resultObj = res.cslHealList;
+
+					$("div#healList").html("");
+					if(resultObj != null && resultObj.length > 0){
+						var inHtml = "<table id='healTableList'>"
+								   + "	<colgroup>"
+								   + "		<col style='width:46px'>"
+								   + "		<col style='width:130px'>"
+								   + "		<col style='width:130px'>"
+								   + "		<col style='width:130px'>"
+								   + "		<col style='width:1180px'>"
+								   + "		<col style='width:120px'>"
+								   + "		<col>"
+								   + "	</colgroup>"
+								   + "	<tbody>";
+
+						$(resultObj).each(function(idx, obj){
+							inHtml = inHtml
+								   + "	<tr id='" + idx + "'>"
+								   + "		<td><div class='cell'>" + (idx + 1) + "</div></td>"
+								   + "		<td><div class='cell'><a href='javaScript:viewHealRow(\"" + obj.CSL_NO + "\");' class='row_link'>" + formatDate(obj.CRE_DT) + "</a></div></td>"
+								   + "		<td><div class='cell'>" + formatDate(obj.JOB_CRE_DT) + "</div></td>"
+								   + "		<td><div class='cell'>" + formatDate(obj.HEAL_CRE_DT) + "</div></td>"
+								   + "		<td class='txt-left'><div class='cell'>" + obj.ORGAN_CTNT + "</div></td>"
+								   + "		<td><div class='cell'>" + obj.CRE_NM + "</div></td>"
+								   + "		<td>"
+								   + "			<div class='cell'>"
+								   + "				<button type='button' onclick='javaScript:removeHeal(\"" + obj.CSL_NO + "\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+								   + "					<i class='el-icon-delete'></i> <span>삭제</span>"
+								   + "				</button>"
+								   + "			</div>"
+								   + "		</td>"
+								   + "	</tr>";
+						});
+
+						inHtml = inHtml
+							   + "	</tbody>"
+							   + "</table>";
+						$("div#healList").html(inHtml);
+					}else{
+						$("div#healList").html("<div class='no-data'>조회된 데이터가 없습니다.</div>");
+					}
+
+					newHeal();
+				},
+				error : function(xhr, status){}
+			});
+		},
+		<%-- 치료재활정보 폼 초기화 --%>
+		newHeal = function(){
+			$("input[name='cslNo']").val("");
+			$("input[name='jobCreDt']").val("");
+			$("input[name='healCreDt']").val("");
+
+			$("input[name='diagName']").val("");
+			$("input[name='attDt']").val("");
+			$("input[name='presDrug']").val("");
+			$("select[name='conformCd']").val("");
+			$("input[name='dosage']").val("");
+			$("select[name='mediIllCd']").val("");
+
+			$("input[name='jobStDt']").val("");
+			$("input[name='jobEndDt']").val("");
+			$("input[name='jobTerm']").val("");
+			$("select[name='jobFormCd']").val("");
+			$("select[name='jobTypeCd']").val("");
+			$("input[name='jobTypeEtc']").attr("disabled", true);
+			$("input[name='jobTypeEtc']").val("");
+			$("input[name='jobIncome']").val("");
+			$("textarea[name='jobResign']").val("");
+
+			$("input[name='healStDt']").val("");
+			$("input[name='healEndDt']").val("");
+			$("input[name='healTerm']").val("");
+			$("select[name='organFormCd']").val("");
+			$("input[name='organName']").val("");
+			$("textarea[name='organCtnt']").val("");
+		},
+		<%-- 치료재활정보 상세 보기 --%>
+		viewHealRow = function(tagCslNo){
+			$.ajax({
+				url : '/ajaxCslHealInfo.do',
+				type : 'POST',
+				data : {
+					mbrNo : $("input[name='mbrNo']").val(),
+					cslNo : tagCslNo
+				},
+				success : function(res){
+					var resultObj = res.cslHealinfo;
+
+					if(resultObj != "" && resultObj != null){
+						$("input[name='cslNo']").val(resultObj.CSL_NO);
+						$("input[name='jobCreDt']").val(resultObj.JOB_CRE_DT);
+						$("input[name='healCreDt']").val(resultObj.HEAL_CRE_DT);
+
+						$("input[name='diagName']").val(resultObj.DIAG_NAME);
+						$("input[name='attDt']").val(formatDate(resultObj.ATT_DT));
+						$("input[name='presDrug']").val(resultObj.PRES_DRUG);
+						$("select[name='conformCd']").val(resultObj.CONFORM_CD).prop("selected", true);
+						$("input[name='dosage']").val(resultObj.DOSAGE);
+						$("select[name='mediIllCd']").val(resultObj.MEDI_ILL_CD).prop("selected", true);
+
+						$("input[name='jobStDt']").val(formatDate(resultObj.JOB_ST_DT));
+						$("input[name='jobEndDt']").val(formatDate(resultObj.JOB_END_DT));
+						$("input[name='jobTerm']").val(resultObj.JOB_TERM);
+						$("select[name='jobFormCd']").val(resultObj.JOB_FORM_CD).prop("selected", true);
+						$("select[name='jobTypeCd']").val(resultObj.JOB_TYPE_CD).prop("selected", true);
+						if(resultObj.JOB_TYPE_CD == "ZZ"){
+							$("input[name='jobTypeEtc']").attr("disabled", false);
+							$("input[name='jobTypeEtc']").val(resultObj.JOB_TYPE_ETC);
+						}else{
+							$("input[name='jobTypeEtc']").attr("disabled", true);
+							$("input[name='jobTypeEtc']").val("");
+						}
+						$("input[name='jobIncome']").val(resultObj.JOB_INCOME);
+						$("textarea[name='jobResign']").val(resultObj.JOB_RESIGN);
+
+						$("input[name='healStDt']").val(formatDate(resultObj.HEAL_ST_DT));
+						$("input[name='healEndDt']").val(formatDate(resultObj.HEAL_END_DT));
+						$("input[name='healTerm']").val(resultObj.HEAL_TERM);
+						$("select[name='organFormCd']").val(resultObj.ORGAN_FORM_CD).prop("selected", true);
+						$("input[name='organName']").val(resultObj.ORGAN_NAME);
+						$("textarea[name='organCtnt']").val(resultObj.ORGAN_CTNT);
+					}else{
+						newHeal();
+					}
+				},
+				error : function(xhr, status){}
+			});
+		},
+		<%-- 치료재활정보 삭제 --%>
+		removeHeal = function(tagCslNo){
+			$.ajax({
+				url : '/ajaxCslHealDel.do',
+				type : 'POST',
+				data : {
+					mbrNo : $("input[name='mbrNo']").val(),
+					cslNo : tagCslNo
+				},
+				success : function(res){
+					if(res.err != "Y"){
+						getCslHealList($("input[name='mbrNo']").val());
+						newHeal();
+					}else{
+						console.log(res.MSG);
+					}
+				},
+				error : function(xhr, status){}
+			});
+		},
+		<%-- 치료재활정보 저장 --%>
+		saveHeal = function(){
+			if($("input[name='mbrNo']").val() == ""){
+				alert("회원을 선택하세요.");
+				return;
+			}
+			if($("input[name='diagName']").val() == ""){
+				alert("진단명은 필수 입력 항목입니다.");
+				$("input[name='diagName']").focus();						return;
+			}
+
+			$.ajax({
+				url : '/ajaxCslHealAdd.do',
+				type : 'POST',
+				data : $('#cslForm').serialize(),
+				success : function(res){
+					if(res.err != 'Y'){
+						alert("치료재활정보 " + res.MSG + " 완료");
+						getCslHealList($("input[name='mbrNo']").val());
+					}else{
+						alert(res.MSG);
+					}
+				},
+				error : function(xhr, status){}
+			});
+		}
 		<%-- 탭 메뉴 활성화 --%>
 		$('.el-tabs__item').on('click', function(){
 			var id = $(this).attr('data-id');
@@ -992,6 +1189,8 @@
 <input type="hidden" name="deleteEvlSeq" />
 <input type="hidden" name="sudCreDt" />
 <input type="hidden" name="devCreDt" />
+<input type="hidden" name="jobCreDt" />
+<input type="hidden" name="healCreDt" />
 <div class="formline">
 	<!-- 회원등록번호 ~ 사례관리자 -->
 	<div class="section">
@@ -1933,7 +2132,7 @@
 	</c:forEach>
 </c:if>
 												</select>
-												<input type="text" name="sudWayEtc" class="el-input__inner" disabled placeholder="기타 선택시 입력 가능" style="width: 372px;" />
+												<span class="dsp-ibk"><input type="text" name="sudWayEtc" class="el-input__inner" disabled placeholder="기타 선택시 입력 가능" style="width: 372px;" /></span>
 											</td>
 										</tr>
 										<tr>
@@ -2117,7 +2316,224 @@
 
 			<!-- 치료 재활정보 -->
 			<div id="tab-cure" class="tab-form" style="display: none;">
-				치료 재활정보
+				<div id="healDivView">
+					<div class="in-tab-btn">
+						<button disabled="disabled" type="button" id="healSaveButNo" class="el-button normal el-button--primary el-button--small is-disabled is-plain" style="padding: 7px 13px;">
+							<i class="el-icon-download"></i> <span>저장</span>
+						</button>
+						<button type="button" onclick="javaScript:saveHeal();" id="healSaveButYes" class="el-button normal el-button--primary el-button--small is-plain" style="padding: 7px 13px;display: none;">
+							<i class="el-icon-download"></i> <span>저장</span>
+						</button>
+						<button type="button" onclick="javaScript:newHeal();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
+							<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
+						</button>
+					</div>
+					<div class="tab-tb-box">
+						<div class="table-box">
+							<div class="el-table_header-wrapper">
+								<table>
+									<colgroup>
+										<col style="width:46px">
+										<col style="width:130px">
+										<col style="width:130px">
+										<col style="width:130px">
+										<col style="width:1180px">
+										<col style="width:120px">
+										<col>
+									</colgroup>
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>치료정보등록일자</th>
+										<th>직업력등록일자</th>
+										<th>재활등록일자</th>
+										<th>재활정보상세내용</th>
+										<th>등록자</th>
+										<th>작업</th>
+									</tr>
+									</thead>
+								</table>
+							</div>
+							<div class="el-table_body-wrapper" style="height: 148px;" id="healList">
+								<div class="no-data">조회된 데이터가 없습니다.</div>
+							</div>
+						</div>
+					</div>
+					<div class="el-row">
+						<div class="row2">
+							<div class="section pdn">
+								<div class="el-card_header">
+									<h2><i class="el-icon-s-opportunity"></i> 치료정보</h2>
+								</div>
+								<div class="el-card_body">
+									<table class="w-auto wr-form">
+										<tbody>
+										<tr>
+											<th><span class="required">*</span> 진단명</th>
+											<td><input type="text" name="diagName" class="el-input__inner" style="width: 420px;" placeholder="진단명 입력" /></td>
+											<th>발병시기</th>
+											<td>
+												<div class="dat-pk">
+													<i class="el-input__icon el-icon-date"></i>
+													<input type="text" name="attDt" class="el-input__inner datepicker" style="width: 100%;" placeholder="발병시기 입력" />
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th>처방약물</th>
+											<td colspan="3"><input type="text" name="presDrug" class="el-input__inner" style="width: 100%;" placeholder="처방약물 입력" /></td>
+										</tr>
+										<tr>
+											<th>순응도</th>
+											<td colspan="3">
+												<select name="conformCd" id="conformCd" style="width: 100%;">
+													<option value="">선택</option>
+<c:if test="${conformList ne null and conformList ne ''}">
+	<c:forEach var="result" items="${conformList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th>복용량</th>
+											<td colspan="3"><input type="text" name="dosage" class="el-input__inner" style="width: 100%;" placeholder="복용량 입력" /></td>
+										</tr>
+										<tr>
+											<th>신체질환</th>
+											<td colspan="3">
+												<select name="mediIllCd" id="mediIllCd" style="width: 100%;">
+													<option value="">선택</option>
+<c:if test="${mediIllList ne null and mediIllList ne ''}">
+	<c:forEach var="result" items="${mediIllList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+												</select>
+											</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="section pdn">
+								<div class="el-card_header">
+									<h2><i class="el-icon-s-opportunity"></i> 직업력</h2>
+								</div>
+								<div class="el-card_body">
+									<table class="w-auto wr-form">
+										<tbody>
+										<tr>
+											<th>취업시작일</th>
+											<td>
+												<div class="dat-pk">
+													<i class="el-input__icon el-icon-date"></i>
+													<input type="text" name="jobStDt" class="el-input__inner datepicker" style="width: 140px;" placeholder="취업시작일 입력" onchange="javaScript:dtCheck('jobStDt', 'jobEndDt', 'jobTerm');" />
+												</div>
+											</td>
+											<th>취업종료일</th>
+											<td>
+												<div class="dat-pk">
+													<i class="el-input__icon el-icon-date"></i>
+													<input type="text" name="jobEndDt" class="el-input__inner datepicker" style="width: 140px;" placeholder="취업종료일 입력" onchange="javaScript:dtCheck('jobStDt', 'jobEndDt', 'jobTerm');" />
+												</div>
+											</td>
+											<th>일수</th>
+											<td><input type="text" name="jobTerm" class="el-input__inner" style="width: 140px;" placeholder="일수 입력" /></td>
+										</tr>
+										<tr>
+											<th>고용형태</th>
+											<td colspan="5">
+												<select name="jobFormCd" id="jobFormCd" style="width: 100%;">
+													<option value="">선택</option>
+<c:if test="${jobFormList ne null and jobFormList ne ''}">
+	<c:forEach var="result" items="${jobFormList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th>직업군</th>
+											<td colspan="5">
+												<select name="jobTypeCd" id="jobTypeCd" style="width: 230px;" onchange="javaScript:inputDisabledChang(this, 'jobTypeEtc');">
+													<option value="">선택</option>
+<c:if test="${jobTypeList ne null and jobTypeList ne ''}">
+	<c:forEach var="result" items="${jobTypeList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+												</select>
+												<span class="dsp-ibk"><input type="text" name="jobTypeEtc" class="el-input__inner" disabled placeholder="기타 선택시 입력 가능" style="width: 372px;" /></span>
+											</td>
+										</tr>
+										<tr>
+											<th>소득금액</th>
+											<td colspan="5"><input type="text" name="jobIncome" class="el-input__inner" style="width: 100%;" placeholder="소득금액 입력" /></td>
+										</tr>
+										<tr>
+											<th>퇴사사유</th>
+											<td colspan="5"><textarea name="jobResign" placeholder="퇴사사유" style="width:100%;height: 190px;"></textarea></td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="row2">
+							<div class="section pdn" style="height: 673px;">
+								<div class="el-card_header"><h2><i class="el-icon-s-opportunity"></i> 재활</h2></div>
+								<div class="el-card_body">
+									<table class="w-auto wr-form">
+										<tbody>
+										<tr>
+											<th>이용시작일자</th>
+											<td>
+												<div class="dat-pk">
+													<i class="el-input__icon el-icon-date"></i>
+													<input type="text" name="healStDt" class="el-input__inner datepicker" style="width: 140px;" placeholder="이용시작일자 입력" onchange="javaScript:dtCheck('healStDt', 'healEndDt', 'healTerm');" />
+												</div>
+											</td>
+											<th>이용종료일자</th>
+											<td>
+												<div class="dat-pk">
+													<i class="el-input__icon el-icon-date"></i>
+													<input type="text" name="healEndDt" class="el-input__inner datepicker" style="width: 140px;" placeholder="이용종료일자 입력" onchange="javaScript:dtCheck('healStDt', 'healEndDt', 'healTerm');" />
+												</div>
+											</td>
+											<th>일수</th>
+											<td><input type="text" name="healTerm" class="el-input__inner" style="width: 140px;" placeholder="일수 입력" /></td>
+										</tr>
+										<tr>
+											<th>기관유형</th>
+											<td colspan="5">
+												<select name="organFormCd" id="organFormCd" style="width: 100%;">
+													<option value="">선택</option>
+<c:if test="${organFormList ne null and organFormList ne ''}">
+	<c:forEach var="result" items="${organFormList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+	</c:forEach>
+</c:if>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th>기관명</th>
+											<td colspan="5"><input type="text" name="organName" class="el-input__inner" style="width: 100%;" placeholder="기관명 입력" /></td>
+										</tr>
+										<tr>
+											<th>내용</th>
+											<td colspan="5"><textarea name="organCtnt" placeholder="내용" style="width:100%;height: 495px;"></textarea></td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!-- // 치료 재활정보 -->
 		</div>

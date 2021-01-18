@@ -151,3 +151,26 @@ function nl2br(str, is_xhtml){
 function downloadFile(tagId, tagSeq){
 	window.open("/fileDown.do?fileId=" + tagId + "&fileSeq=" + tagSeq);
 }
+/**
+ * 두 날짜 비교 년수 리턴
+ */
+function checkDay(fromDay, toDay){
+	var chkDay = 0;
+	if(fromDay == null || fromDay == '0' || fromDay.length < 8){
+		return chkDay;
+	}
+	if(toDay == null || toDay == '0' || toDay.length < 8){
+		return chkDay;
+	}
+	if(fromDay > toDay){
+		return chkDay;
+	}
+
+	var fDay = new Date(fromDay.substr(0, 4), parseInt(fromDay.substr(4, 2)) - 1, fromDay.substr(6));
+	var tDay = new Date(toDay.substr(0, 4), parseInt(toDay.substr(4, 2)) - 1, toDay.substr(6));
+	var rmDay = tDay - fDay;
+
+	chkDay = Math.floor(rmDay / (1000 * 60 * 60 * 24));
+
+	return chkDay;
+}

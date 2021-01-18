@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cslHeal">
+	<select id="cslHeal.getCslHeal" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* cslHeal.getCslHeal */
+			   CH.MBR_NO		, CH.CSL_NO				, CH.DIAG_NAME		, CH.ATT_DT			, CH.PRES_DRUG
+			 , CH.CONFORM_CD	, CH.DOSAGE				, CH.MEDI_ILL_CD	, CH.JOB_CRE_DT		, CH.JOB_ST_DT
+			 , CH.JOB_END_DT	, CH.JOB_TERM			, CH.JOB_FORM_CD	, CH.JOB_TYPE_CD	, CH.JOB_TYPE_ETC
+			 , CH.JOB_INCOME	, CH.JOB_RESIGN			, CH.HEAL_CRE_DT	, CH.HEAL_ST_DT		, CH.HEAL_END_DT
+			 , CH.HEAL_TERM		, CH.ORGAN_FORM_CD		, CH.ORGAN_NAME		, CH.ORGAN_CTNT		, CH.CRE_ID
+			 , SU.USR_NM AS CRE_NM			, DATE_FORMAT(CH.CRE_DT, '%Y%m%d') AS CRE_DT
+			 											, CH.UPD_ID			, CH.UPD_DT			, SC.CD_NM AS SITE_NM
+		  FROM CSL_HEAL CH
+		  LEFT JOIN SYS_USR SU ON (CH.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC ON (SC.GRP_CD = 'C3500' AND SU.SITE_CD = SC.CD_ID)
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNo != null and mbrNo != ''">
+		  AND CH.MBR_NO = #{mbrNo}
+			</if>
+			<if test="cslNo != null and cslNo != ''">
+		  AND CH.CSL_NO = #{cslNo}
+			</if>
+		</trim>
+		 ORDER BY CH.CRE_DT DESC
+	</select>
+
+	<select id="cslHeal.getCslHealSeq" resultType="String">
+	<![CDATA[
+		SELECT /* cslHeal.getCslHealSeq */
+			   CONCAT('N', DATE_FORMAT(NOW(), '%Y%m%d'), LPAD(IFNULL(MAX(CAST(SUBSTR(CSL_NO, 10) AS UNSIGNED)), 0) + 1, 4, '0')) AS cslSeq
+		  FROM CSL_HEAL
+		 WHERE CSL_NO LIKE CONCAT('N', DATE_FORMAT(NOW(), '%Y%m%d'), '%')
+	]]>
+	</select>
+
+	<insert id="cslHeal.insertCslHeal" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* cslHeal.insertCslHeal */ INTO CSL_HEAL(
+			MBR_NO			, CSL_NO			, DIAG_NAME			, ATT_DT			, PRES_DRUG
+		  , CONFORM_CD		, DOSAGE			, MEDI_ILL_CD		, JOB_CRE_DT		, JOB_ST_DT
+		  , JOB_END_DT		, JOB_TERM			, JOB_FORM_CD		, JOB_TYPE_CD		, JOB_TYPE_ETC
+		  , JOB_INCOME		, JOB_RESIGN		, HEAL_CRE_DT		, HEAL_ST_DT		, HEAL_END_DT
+		  , HEAL_TERM		, ORGAN_FORM_CD		, ORGAN_NAME		, ORGAN_CTNT		, CRE_ID
+		  , CRE_DT			, UPD_ID			, UPD_DT
+		)VALUES(
+			#{mbrNo}		, #{cslNo}			, #{diagName}		, #{attDt}			, #{presDrug}
+		  , #{conformCd}	, #{dosage}			, #{mediIllCd}		, #{jobCreDt}		, #{jobStDt}
+		  , #{jobEndDt}		, #{jobTerm}		, #{jobFormCd}		, #{jobTypeCd}		, #{jobTypeEtc}
+		  , #{jobIncome}	, #{jobResign}		, #{healCreDt}		, #{healStDt}		, #{healEndDt}
+		  , #{healTerm}		, #{organFormCd}	, #{organName}		, #{organCtnt}		, #{creId}
+		  , NOW()			, #{creId}			, NOW()
+		)
+	]]>
+	</insert>
+
+	<update id="cslHeal.updateCslHeal" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* cslHeal.updateCslHeal */ CSL_HEAL
+		   SET DIAG_NAME = #{diagName}			, ATT_DT = #{attDt}
+			 , PRES_DRUG = #{presDrug}			, CONFORM_CD = #{conformCd}
+			 , DOSAGE = #{dosage}				, MEDI_ILL_CD = #{mediIllCd}
+			 , JOB_CRE_DT = #{jobCreDt}			, JOB_ST_DT = #{jobStDt}
+			 , JOB_END_DT = #{jobEndDt}			, JOB_TERM = #{jobTerm}
+			 , JOB_FORM_CD = #{jobFormCd}		, JOB_TYPE_CD = #{jobTypeCd}
+			 , JOB_TYPE_ETC = #{jobTypeEtc}		, JOB_INCOME = #{jobIncome}
+			 , JOB_RESIGN = #{jobResign}		, HEAL_CRE_DT = #{healCreDt}
+			 , HEAL_ST_DT = #{healStDt}			, HEAL_END_DT = #{healEndDt}
+			 , HEAL_TERM = #{healTerm}			, ORGAN_FORM_CD = #{organFormCd}
+			 , ORGAN_NAME = #{organName}		, ORGAN_CTNT = #{organCtnt}
+			 , UPD_ID = #{creId}				, UPD_DT = NOW()
+		 WHERE CSL_NO = #{cslNo}
+	]]>
+	</update>
+
+	<delete id="cslHeal.deleteCslHeal" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* cslHeal.deleteCslHeal */
+		  FROM CSL_HEAL
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNo != null and mbrNo != ''">
+		  AND MBR_NO = #{mbrNo}
+			</if>
+			<if test="cslNo != null and cslNo != ''">
+		  AND CSL_NO = #{cslNo}
+			</if>
+		</trim>
+	</delete>
+</mapper>

@@ -48,9 +48,8 @@ public class FileManagerUtil {
 			Entry<String, MultipartFile> entry = itr.next();
 
 			file = entry.getValue();
-			String orginFileName = file.getOriginalFilename();
 
-			if(file.getSize() > 0) { // && "".equals(orginFileName)
+			if(file.getSize() > 0) { // && !"".equals(file.getOriginalFilename())
 				return true;
 			}
 		}
@@ -154,9 +153,9 @@ public class FileManagerUtil {
 						File file = new File(fileStreCours + streFileNm);
 						if( file.exists() ){
 							if(file.delete()){
-								LOGGER.info("파일삭제 성공 : " + streFileNm);
+								LOGGER.debug("file delete Success : " + streFileNm);
 							}else{
-								LOGGER.info("파일삭제 실패 : " + streFileNm);
+								LOGGER.info("file delete Fail : " + streFileNm);
 							}
 						}
 					}catch (Exception e) {

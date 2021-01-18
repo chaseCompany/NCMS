@@ -162,4 +162,59 @@ public interface IndividualService {
 	 * @throws Exception
 	 */
 	public int deleteCslAnm(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 치료재활정보 목록 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getCslHealList(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 치료재활정보 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertCslHeal(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 치료재활정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateCslHeal(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 치료재활정보 고유키 생성
+	 * @return
+	 * @throws Exception
+	 */
+	public String getCslHealSeq() throws Exception;
+
+	/**
+	 * 치료재활정보 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> addCslHeal(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 치료재활정보 상세 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getCslHealInfo(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 치료재활정보 삭제
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteCslHeal(HashMap<String, Object> map) throws Exception;
 }

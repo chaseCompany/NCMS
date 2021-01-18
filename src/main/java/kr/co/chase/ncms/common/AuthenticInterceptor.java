@@ -43,7 +43,9 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 			}else {
 				request.setAttribute("LoginUserId", StringUtil.nvl(usrInfo.get("USR_ID"), ""));
 				request.setAttribute("LoginUserNm", StringUtil.nvl(usrInfo.get("USR_NM"), ""));
+				request.setAttribute("LoginSiteCd", StringUtil.nvl(usrInfo.get("SITE_CD"), ""));
 				request.setAttribute("LoginSiteNm", StringUtil.nvl(usrInfo.get("SITE_NM"), ""));
+				request.setAttribute("LoginRoleCd", StringUtil.nvl(usrInfo.get("ROLE_CD"), ""));
 			}
 		}
 

@@ -16,6 +16,7 @@ import kr.co.chase.ncms.common.service.FileInfoService;
 import kr.co.chase.ncms.common.util.DateUtil;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.dao.CslAnmDao;
+import kr.co.chase.ncms.dao.CslHealDao;
 import kr.co.chase.ncms.dao.CslIdvDao;
 import kr.co.chase.ncms.dao.CslIspDao;
 import kr.co.chase.ncms.individual.service.IndividualService;
@@ -32,6 +33,9 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 
 	@Resource(name="cslAnmDao")
 	private CslAnmDao cslAnmDao;
+
+	@Resource(name="cslHealDao")
+	private CslHealDao cslHealDao;
 
 	@Resource(name="fileInfoService")
 	private FileInfoService fileInfoService;
@@ -373,13 +377,15 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 		String tagCslNo = StringUtils.defaultIfEmpty((String)map.get("cslNo"), "");
 
 		if(
-			(!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudIndt"), "")) ||
-			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudAge"), "")) ||
-			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudTypeCd"), "")) ||
-			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudSoulCd"), "")) ||
-			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudWayCd"), "")) ||
-			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudWayEtc"), "")) ||
-			!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudCtnt"), ""))) &&
+			(
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudIndt"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudAge"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudTypeCd"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudSoulCd"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudWayCd"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudWayEtc"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("sudCtnt"), ""))
+			) &&
 			"".equals(StringUtils.defaultIfEmpty((String)map.get("sudCreDt"), ""))
 		  ) {
 			map.put("sudCreDt", DateUtil.getToday("yyyyMMdd"));
@@ -440,5 +446,144 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 		}
 
 		return cslAnmDao.deleteCslAnm(map);
+	}
+
+	/**
+	 * 치료재활정보 목록 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getCslHealList(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
+			throw new Exception("IndividualService.getCslHealList mbrNo 필수값 누락");
+		}
+
+		return cslHealDao.getCslHealList(map);
+	}
+
+	/**
+	 * 치료재활정보 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertCslHeal(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
+			throw new Exception("IndividualService.insertCslHeal mbrNo 필수값 누락");
+		}
+
+		map.put("cslNo", this.getCslHealSeq());
+
+		return cslHealDao.insertCslHeal(map);
+	}
+
+	/**
+	 * 치료재활정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateCslHeal(HashMap<String, Object> map) throws Exception{
+		return cslHealDao.updateCslHeal(map);
+	}
+
+	/**
+	 * 치료재활정보 고유키 생성
+	 * @return
+	 * @throws Exception
+	 */
+	public String getCslHealSeq() throws Exception{
+		return cslHealDao.getCslHealSeq();
+	}
+
+	/**
+	 * 치료재활정보 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> addCslHeal(HashMap<String, Object> map) throws Exception{
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		int result = 0;
+
+		String tagMbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
+		String tagCslNo = StringUtils.defaultIfEmpty((String)map.get("cslNo"), "");
+
+		if(
+			(
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("jobStDt"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("jobEndDt"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("jobTerm"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("jobFormCd"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("jobTypeCd"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("jobIncome"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("jobResign"), ""))
+			) &&
+			"".equals(StringUtils.defaultIfEmpty((String)map.get("jobCreDt"), ""))
+		  ) {
+			map.put("jobCreDt", DateUtil.getToday("yyyyMMdd"));
+		}
+		if(
+			(
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("healStDt"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("healEndDt"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("healTerm"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("organFormCd"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("organName"), "")) ||
+				!"".equals(StringUtils.defaultIfEmpty((String)map.get("organCtnt"), ""))
+			) &&
+			"".equals(StringUtils.defaultIfEmpty((String)map.get("healCreDt"), ""))
+		  ){
+			map.put("healCreDt", DateUtil.getToday("yyyyMMdd"));
+		}
+
+		if(tagMbrNo != null && !"".equals(tagMbrNo)) {
+			if(tagCslNo != null && !"".equals(tagCslNo)) {
+				result = this.updateCslHeal(map);
+				resultMap.put("MSG", "수정");
+			}else {
+				result = this.insertCslHeal(map);
+				resultMap.put("MSG", "등록");
+			}
+		}else {
+			resultMap.put("MSG", "필수값 누락");
+		}
+
+		if(result > 0) {
+			resultMap.put("err", ConstantObject.N);
+		}else {
+			resultMap.put("err", ConstantObject.Y);
+		}
+
+		return resultMap;
+	}
+
+	/**
+	 * 치료재활정보 상세 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getCslHealInfo(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("cslNo"), ""))) {
+			throw new Exception("IndividualService.getCslHealInfo cslNo 필수값 누락");
+		}
+
+		return cslHealDao.getCslHealInfo(map);
+	}
+
+	/**
+	 * 치료재활정보 삭제
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteCslHeal(HashMap<String, Object> map) throws Exception{
+		if("".equals(StringUtils.defaultIfEmpty((String)map.get("cslNo"), ""))) {
+			throw new Exception("IndividualService.getCslHealInfo cslNo 필수값 누락");
+		}
+
+		return cslHealDao.deleteCslHeal(map);
 	}
 }

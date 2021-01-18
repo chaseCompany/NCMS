@@ -23,4 +23,6 @@ public class ConstantObject {
 	public static final String rlMemStsCd = "RL";			// 퇴록
 	public static final String rrMemStsCd = "RR";			// 재등록
 	public static final String etMemStsCd = "ET";			// 미등록
+
+	public static final String adminRoleCd = "90";			// 관리자코드
 }

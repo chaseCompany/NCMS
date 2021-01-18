@@ -22,7 +22,7 @@
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 		<if test="cslNo != null and cslNo != ''">
-		  AND CSL_NO = #{cslNo}
+		  AND CA.CSL_NO = #{cslNo}
 		</if>
 		 ORDER BY CA.CRE_DT DESC
 	</select>

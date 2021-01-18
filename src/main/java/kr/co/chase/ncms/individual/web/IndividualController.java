@@ -2,7 +2,6 @@ package kr.co.chase.ncms.individual.web;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.SysCodeService;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.individual.service.IndividualService;
-import kr.co.chase.ncms.vo.CslAssVO;
 import kr.co.chase.ncms.vo.CslIdvVO;
 import kr.co.chase.ncms.vo.CslIspVO;
 import kr.co.chase.ncms.vo.MstMbrVO;
@@ -213,6 +211,21 @@ public class IndividualController {
 
 		codeListMap.put("grpCd", "C7200");				// 발달력 이성교제
 		model.put("devAdulSexList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C7300");				// 순응도
+		model.put("conformList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C7400");				// 신체질환
+		model.put("mediIllList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C7500");				// 고용형태
+		model.put("jobFormList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1200");				// 직업군
+		model.put("jobTypeList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C7600");				// 기관유형
+		model.put("organFormList", sysCodeService.getSysCdList(codeListMap));
 
 		return "individual/individualMain";
 	}
@@ -761,6 +774,143 @@ public class IndividualController {
 		paramMap.put("cslNo", cslNo);
 
 		int result = individualService.deleteCslAnm(paramMap);
+		if(result <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "삭제 오류");
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 치료재활정보 이력 조회
+	 * @param mbrNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCslHealList.do")
+	public @ResponseBody ModelAndView ajaxCslHealList(@RequestParam String mbrNo, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		if(StringUtils.defaultString(mbrNo, "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mbrNo", mbrNo);
+
+		resultView.addObject("cslHealList", individualService.getCslHealList(paramMap));
+
+		return resultView;
+	}
+
+	/**
+	 * 치료재활정보 저장
+	 * @param reqMap
+	 * @param request
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCslHealAdd.do")
+	public @ResponseBody ModelAndView ajaxCslHealAdd(@RequestParam HashMap<String, Object> reqMap, HttpServletRequest request, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		String diagName = StringUtils.defaultIfEmpty((String)reqMap.get("diagName"), "");						// 진단명
+
+		if("".equals(diagName)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		reqMap.put("creId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+		reqMap.put("attDt", StringUtils.defaultString((String)reqMap.get("attDt"), "").replaceAll("-", ""));
+		reqMap.put("jobStDt", StringUtils.defaultString((String)reqMap.get("jobStDt"), "").replaceAll("-", ""));
+		reqMap.put("jobEndDt", StringUtils.defaultString((String)reqMap.get("jobEndDt"), "").replaceAll("-", ""));
+		reqMap.put("healStDt", StringUtils.defaultString((String)reqMap.get("healStDt"), "").replaceAll("-", ""));
+		reqMap.put("healEndDt", StringUtils.defaultString((String)reqMap.get("healEndDt"), "").replaceAll("-", ""));
+
+		HashMap<String, Object> resMap = individualService.addCslHeal(reqMap);
+		if(resMap != null) {
+			resultView.addObject("err", resMap.get("err"));
+			resultView.addObject("MSG", resMap.get("MSG"));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 치료재활정보 상세 보기
+	 * @param mbrNo
+	 * @param cslNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCslHealInfo.do")
+	public @ResponseBody ModelAndView ajaxCslHealInfo(@RequestParam String mbrNo, @RequestParam String cslNo, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		if(StringUtils.defaultString(mbrNo, "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if(StringUtils.defaultString(cslNo, "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mbrNo", mbrNo);
+		paramMap.put("cslNo", cslNo);
+
+		resultView.addObject("cslHealinfo", individualService.getCslHealInfo(paramMap));
+
+		return resultView;
+	}
+
+	/**
+	 * 치료재활정보 삭제
+	 * @param mbrNo
+	 * @param cslNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxCslHealDel.do")
+	public @ResponseBody ModelAndView ajaxCslHealDel(@RequestParam String mbrNo, @RequestParam String cslNo, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		if(StringUtils.defaultString(mbrNo, "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+		if(StringUtils.defaultString(cslNo, "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mbrNo", mbrNo);
+		paramMap.put("cslNo", cslNo);
+
+		int result = individualService.deleteCslHeal(paramMap);
 		if(result <= 0) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "삭제 오류");
