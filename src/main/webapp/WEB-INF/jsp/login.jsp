@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		$("input[name='subBtn']").click(function(){
@@ -14,7 +15,12 @@
 				data : Data,
 				success : function(data){
 					if(data.err != "Y"){
+<c:if test="${reDirect ne null && reDirect ne ''}">
+						window.location.href = '<c:out value="${reDirect}" />';
+</c:if>
+<c:if test="${reDirect eq null || reDirect eq ''}">
 						window.location.href = '/counselMain.do';
+</c:if>
 					}else{
 						alert(data.MSG);
 					}

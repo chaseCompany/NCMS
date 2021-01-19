@@ -2545,10 +2545,11 @@
 										<tr>
 											<th>기관명</th>
 											<td colspan="5">
-												<div class="search-input tac" style="width: 100%;">
+												<input type="text" name="organName" class="el-input__inner" style="width: 100%;" placeholder="기관명 입력" />
+												<%--div class="search-input tac" style="width: 100%;">
 													<input type="text" name="organName" class="el-input__inner" style="width: 93%;" placeholder="기관명 입력" />
 													<button type="button" onclick="javaScript:organSearchPopup();"><i class="el-icon-search"></i></button>
-												</div>
+												</div--%>
 											</td>
 										</tr>
 										<tr>

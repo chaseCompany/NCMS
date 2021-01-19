@@ -3,10 +3,14 @@ package kr.co.chase.ncms.login.web;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +21,8 @@ import kr.co.chase.ncms.login.service.LoginService;
 
 @Controller
 public class LoginController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
 	@Resource(name="loginService")
 	private LoginService loginService;
 
@@ -29,12 +35,14 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/login.do")
-	public String login(HttpSession session) throws Exception{
+	public String login(ModelMap model, HttpSession session, HttpServletRequest request) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo != null && StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") != "") {
 			return "redirect:/counselMain.do";
 		}
+
+		model.put("reDirect", StringUtils.defaultIfEmpty((String)request.getParameter("reDirect"), ""));
 
 		return "login";
 	}

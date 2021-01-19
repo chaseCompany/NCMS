@@ -14,7 +14,7 @@ import kr.co.chase.ncms.common.util.StringUtil;
 
 /**
  * 로그인 인증 권한 체크
- * @author jhg
+ * @author
  */
 public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 	@Override
@@ -39,6 +39,11 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 
 			if(usrInfo == null || StringUtil.nvl(usrInfo.get("USR_ID").toString(), "") == "") {
 				ModelAndView modelAndView = new ModelAndView("redirect:" + mainUrl);
+
+				if(requestURI.indexOf("ajax") < 0) {
+					modelAndView.addObject("reDirect", requestURI);
+				}
+
 				throw new ModelAndViewDefiningException(modelAndView);
 			}else {
 				request.setAttribute("LoginUserId", StringUtil.nvl(usrInfo.get("USR_ID"), ""));
