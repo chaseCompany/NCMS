@@ -569,6 +569,7 @@
 								</select>
 							</td>
 						</tr>
+<%--
 						<tr>
 							<th class="v-top" rowspan="8"> 자살관련</th>
 							<td colspan="3">
@@ -674,6 +675,7 @@
 								</select>
 							</td>
 						</tr>
+--%>
 						</tbody>
 					</table>
 				</div>
@@ -687,7 +689,7 @@
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td style="width:690px;"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:190px">${cslIdvInfo.cslCtnt}</textarea></td>
+							<td style="width:690px;"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:120px">${cslIdvInfo.cslCtnt}</textarea></td>
 						</tr>
 						<tr>
 							<th class="v-top">
@@ -696,7 +698,7 @@
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td style="width:690px;"><textarea name="cslRst" placeholder="상담 결과" style="width:100%;height:190px">${cslIdvInfo.cslRst}</textarea></td>
+							<td style="width:690px;"><textarea name="cslRst" placeholder="상담 결과" style="width:100%;height:120px">${cslIdvInfo.cslRst}</textarea></td>
 						</tr>
 						<tr>
 							<th>다음 상담일시</th>
@@ -720,7 +722,7 @@
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:190px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
+							<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:120px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
 						</tr>
 						<tr>
 							<th> 첨부파일</th>

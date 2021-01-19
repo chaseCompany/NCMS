@@ -69,7 +69,7 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 		}
 
 		HashMap<String, Object> result = grpPgmDao.getGrpPgm(map);
-		if(!result.isEmpty()) {
+		if(result != null) {
 			String fileId = StringUtils.defaultIfEmpty((String)result.get("FILE_ID"), "");
 			if(!"".equals(fileId)) {
 				HashMap<String, Object> paramMap = new HashMap<String, Object>();

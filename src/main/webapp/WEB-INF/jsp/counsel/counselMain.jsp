@@ -106,6 +106,14 @@
 				alert("URS은 필수 입력 항목입니다.");
 				$("select[name='ursCd']").focus();			return;
 			}
+			if($("textarea[name='cslCtnt']").val() == ""){
+				alert("상담내용은 필수 입력 항목입니다.");
+				$("textarea[name='cslCtnt']").focus();		return;
+			}
+			if($("textarea[name='cslRst']").val() == ""){
+				alert("상담결과는 필수 입력 항목입니다.");
+				$("textarea[name='cslRst']").focus();		return;
+			}
 
 			$.ajax({
 				url : '/ajaxCounselAdd.do',
@@ -487,7 +495,7 @@
 		<table class="w-auto">
 			<tbody>
 				<tr>
-					<th>정보제공자/본인여부</th>
+					<th><span class="required">*</span> 정보제공자/본인여부</th>
 					<td>
 <c:if test="${ifpGbList ne null and ifpGbList ne ''}">
 	<c:forEach var="result" items="${ifpGbList}" varStatus="status">
@@ -856,7 +864,7 @@
 				<colgroup><col style="width: 76px;"><col></colgroup>
 				<tbody>
 					<tr>
-						<th>상담내용<br>
+						<th><span class="required">*</span> 상담내용<br>
 							<button type="button" onclick="javaScript:areaPopup('cslCtnt');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 								<i class="el-icon-search"></i>
 							</button>
@@ -864,7 +872,7 @@
 						<td><textarea name="cslCtnt" placeholder="상담내용" style="width:99%;height:195px"></textarea></td>
 					</tr>
 					<tr>
-						<th>상담결과<br>
+						<th><span class="required">*</span> 상담결과<br>
 							<button type="button" onclick="javaScript:areaPopup('cslRst');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 								<i class="el-icon-search"></i>
 							</button>

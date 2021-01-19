@@ -918,4 +918,55 @@ public class IndividualController {
 
 		return resultView;
 	}
+
+	/**
+	 * 기관명 목록 조회
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxOrganList.do")
+	public String ajaxOrganList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "");
+		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
+/*
+		PaginationInfo paginginfo = new PaginationInfo();
+		if(currentPageNo == "" || recordCountPerPage == ""){
+			paginginfo.setCurrentPageNo(1);
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.parseInt(ConstantObject.defaultRowSize));
+		}else{
+			paginginfo.setCurrentPageNo(Integer.valueOf(currentPageNo));
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
+		}
+
+		String mbrNm = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNm"), "");
+		String telNo = StringUtils.defaultIfEmpty((String)reqMap.get("telNo"), "").replaceAll("-", "");
+		String closeFlg = StringUtils.defaultIfEmpty((String)reqMap.get("closeFlg"), ConstantObject.Y);
+		model.put("mbrNm", mbrNm);
+		model.put("telNo", telNo);
+		model.put("pageNo", currentPageNo);
+		model.put("closeFlg", closeFlg);
+
+		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
+		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
+
+		int totalCount = counselService.getMstMbrListCount(reqMap);
+		paginginfo.setTotalRecordCount(totalCount);
+
+		model.put("totalCount", totalCount);
+		model.put("paginationInfo", paginginfo);
+
+		if(totalCount > 0) {
+			List<HashMap<String, Object>> resultList = counselService.getMstMbrList(reqMap);
+			model.put("resultList", resultList);
+		}
+
+		model.put("listType", StringUtils.defaultIfEmpty((String)reqMap.get("listType"), ""));
+*/
+		return "counsel/layer/mbrSearchLayer";
+	}
 }

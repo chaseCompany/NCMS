@@ -6,8 +6,9 @@
 	<![CDATA[
 		SELECT /* grpPgm.getGrpPgm */
 			   GP.PGM_DT		, GP.PGM_FM_TM		, GP.PGM_TO_TM		, GP.PGM_TP_CD		, GP.MNG_USR_ID
-			 , GP.PGM_CTNT		, GP.PGM_SESSION	, GP.PGM_RST		, GP.FILE_ID		, GP.CRE_ID
-			 , GP.CRE_DT		, GP.UPD_ID			, GP.UPD_DT
+			 , GP.PGM_CTNT		, GP.PGM_SESSION	, GP.PGM_TEACHER	, GP.PGM_SUBJECT	, GP.PGM_GOAL
+			 , GP.PGM_RST		, GP.FILE_ID		, GP.CRE_ID			, GP.CRE_DT			, GP.UPD_ID
+			 , GP.UPD_DT
 			 , GP.PGM_CD		, SC01.CD_NM AS PGM_NM
 			 , SU.SITE_CD		, SC02.CD_NM AS SITE_NM
 		  FROM GRP_PGM GP
@@ -79,12 +80,14 @@
 	<![CDATA[
 		INSERT /* grpPgm.insertGrpPgm */ INTO GRP_PGM(
 			   PGM_DT		, PGM_CD		, PGM_FM_TM		, PGM_TO_TM		, PGM_TP_CD
-			 , MNG_USR_ID	, PGM_CTNT		, PGM_SESSION	, PGM_RST		, FILE_ID
-			 , CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+			 , MNG_USR_ID	, PGM_CTNT		, PGM_SESSION	, PGM_TEACHER	, PGM_SUBJECT
+			 , PGM_GOAL		, PGM_RST		, FILE_ID		, CRE_ID		, CRE_DT
+			 , UPD_ID		, UPD_DT
 		)VALUES(
 			   #{pgmDt}		, #{pgmCd}		, #{pgmFmTm}	, #{pgmToTm}	, #{pgmTpCd}
-			 , #{mngUsrId}	, #{pgmCtnt}	, #{pgmSession}	, #{pgmRst}		, #{fileId}
-			 , #{cslId}		, NOW()			, #{cslId}		, NOW()
+			 , #{mngUsrId}	, #{pgmCtnt}	, #{pgmSession}	, #{pgmTeacher}	, #{pgmSubject}
+			 , #{pgmGoal}	, #{pgmRst}		, #{fileId}		, #{cslId}		, NOW()
+			 , #{cslId}		, NOW()
 		)
 	]]>
 	</insert>
@@ -95,8 +98,10 @@
 		   SET PGM_FM_TM = #{pgmFmTm}		, PGM_TO_TM = #{pgmToTm}
 			 , PGM_TP_CD = #{pgmTpCd}		, MNG_USR_ID = #{mngUsrId}
 			 , PGM_CTNT = #{pgmCtnt}		, PGM_SESSION = #{pgmSession}
-			 , PGM_RST = #{pgmRst}			, FILE_ID = #{fileId}
-			 , UPD_ID = #{cslId}			, UPD_DT = NOW()
+			 , PGM_TEACHER = #{pgmTeacher}	, PGM_SUBJECT = #{pgmSubject}
+			 , PGM_GOAL = #{pgmGoal}		, PGM_RST = #{pgmRst}
+			 , FILE_ID = #{fileId}			, UPD_ID = #{cslId}
+			 , UPD_DT = NOW()
 		 WHERE PGM_DT = #{pgmDt}
 		   AND PGM_CD = #{pgmCd}
 	]]>

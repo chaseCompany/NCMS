@@ -20,7 +20,7 @@
 			console.log("엑셀다운로드");
 		},
 		<%-- 회원 조회 --%>
-		mstMbrSearchPopup = function(resFuct){
+		mstMbrSearchPopup = function(){
 			$.ajax({
 				url : '/ajaxMstMbrList.do',
 				type : 'POST',
@@ -1151,6 +1151,29 @@
 				},
 				error : function(xhr, status){}
 			});
+		},
+		<%-- 기관명 팝업 --%>
+		organSearchPopup = function(){
+			/*
+			$.ajax({
+				url : '/ajaxOrganList.do',
+				type : 'POST',
+				data : {
+					pageNo : $("input[name='memPageNo']").val(),
+					mbrNm : $("input[name='memSchMbrNm']").val(),
+					telNo : $("input[name='memSchTelNo']").val()
+				},
+				success : function(res){
+					$("div[id='layerpopup']").html(res);
+					$("div[id='layerpopup']").attr("data-popup", "memberPopUp");
+					$("input[name='reFunName']").val("setMemInfo");
+					layerPopupOpen('memberPopUp');
+				},
+				error : function(xhr, status){
+					console.log(xhr);
+				}
+			});
+			*/
 		}
 		<%-- 탭 메뉴 활성화 --%>
 		$('.el-tabs__item').on('click', function(){
@@ -2521,7 +2544,12 @@
 										</tr>
 										<tr>
 											<th>기관명</th>
-											<td colspan="5"><input type="text" name="organName" class="el-input__inner" style="width: 100%;" placeholder="기관명 입력" /></td>
+											<td colspan="5">
+												<div class="search-input tac" style="width: 100%;">
+													<input type="text" name="organName" class="el-input__inner" style="width: 93%;" placeholder="기관명 입력" />
+													<button type="button" onclick="javaScript:organSearchPopup();"><i class="el-icon-search"></i></button>
+												</div>
+											</td>
 										</tr>
 										<tr>
 											<th>내용</th>

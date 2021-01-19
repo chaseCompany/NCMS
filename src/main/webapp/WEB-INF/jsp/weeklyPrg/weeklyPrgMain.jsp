@@ -39,8 +39,12 @@
 		},
 		<%-- 프로그램 정보 등록 --%>
 		addGrpPgm = function(){
-			if($("select[name='pgmCd']").val() == ""){
-				alert("프로그램 분류는 필수 입력 항목입니다.");
+			if($("select[name='pgmTpCd']").val() == "" || $("select[name='pgmTpCd']").val() == null){
+				alert("대분류는 필수 입력 항목입니다.");
+				$("select[name='pgmTpCd']").focus();					return;
+			}
+			if($("select[name='pgmCd']").val() == "" || $("select[name='pgmCd']").val() == null){
+				alert("중분류는 필수 입력 항목입니다.");
 				$("select[name='pgmCd']").focus();					return;
 			}
 			if($("input[name='pgmDt']").val() == ""){
@@ -59,9 +63,25 @@
 				alert("담당자는 필수 입력 항목입니다.");
 				$("select[name='mngUsrId']").focus();				return;
 			}
+			if($("input[name='pgmSession']").val() == ""){
+				alert("회기는 필수 입력 항목입니다.");
+				$("input[name='pgmSession']").focus();					return;
+			}
+			if($("input[name='pgmTeacher']").val() == ""){
+				alert("강사는 필수 입력 항목입니다.");
+				$("input[name='pgmTeacher']").focus();					return;
+			}
+			if($("input[name='pgmSubject']").val() == ""){
+				alert("주제는 필수 입력 항목입니다.");
+				$("input[name='pgmSubject']").focus();					return;
+			}
 			if($("textarea[name='pgmCtnt']").val() == ""){
 				alert("프로그램 내용은 필수 입력 항목입니다.");
 				$("textarea[name='pgmCtnt']").focus();				return;
+			}
+			if($("textarea[name='pgmRst']").val() == ""){
+				alert("프로그램 결과는 필수 입력 항목입니다.");
+				$("textarea[name='pgmRst']").focus();				return;
 			}
 
 			$.ajax({
@@ -98,14 +118,17 @@
 				$("button#excelButNo").show();
 				$("button#excelButYes").hide();
 
+				$("select[name='pgmTpCd']").val("").prop("selected", true);
 				$("select[name='pgmCd']").val("").prop("selected", true);
 				$("input[name='pgmDt']").datepicker('setDate', 'today');
 				$("input[name='pgmFmTm']").val("09:00");
 				$("input[name='pgmToTm']").val("18:00");
-				$("select[name='pgmTpCd']").val("").prop("selected", true);
 				$("select[name='mngUsrId']").val("<c:out value="${loginUserId}" />").prop("selected", true);
 				$("input[name='siteNm']").val("<c:out value="${loginSiteNm}" />");
 				$("input[name='pgmSession']").val("");
+				$("input[name='pgmTeacher']").val("");
+				$("input[name='pgmSubject']").val("");
+				$("input[name='pgmGoal']").val("");
 				$("textarea[name='pgmCtnt']").val("");
 				$("textarea[name='pgmRst']").val("");
 				$("input[name='file']").val("");
@@ -128,14 +151,17 @@
 						var setDt = new Date(prgInfo.PGM_DT.substr(0, 4), prgInfo.PGM_DT.substr(4, 2), prgInfo.PGM_DT.substr(6, 2));
 						setDt.setMonth(setDt.getMonth() - 1);
 
+						$("select[name='pgmTpCd']").val(prgInfo.PGM_TP_CD).prop("selected", true);
 						$("select[name='pgmCd']").val(prgInfo.PGM_CD).prop("selected", true);
 						$("input[name='pgmDt']").datepicker('setDate', setDt);
 						$("input[name='pgmFmTm']").val(prgInfo.PGM_FM_TM);
 						$("input[name='pgmToTm']").val(prgInfo.PGM_TO_TM);
-						$("select[name='pgmTpCd']").val(prgInfo.PGM_TP_CD).prop("selected", true);
 						$("select[name='mngUsrId']").val(prgInfo.MNG_USR_ID).prop("selected", true);
 						$("input[name='siteNm']").val(prgInfo.SITE_NM);
 						$("input[name='pgmSession']").val(prgInfo.PGM_SESSION);
+						$("input[name='pgmTeacher']").val(prgInfo.PGM_TEACHER);
+						$("input[name='pgmSubject']").val(prgInfo.PGM_SUBJECT);
+						$("input[name='pgmGoal']").val(prgInfo.PGM_GOAL);
 						$("textarea[name='pgmCtnt']").val(prgInfo.PGM_CTNT);
 						$("textarea[name='pgmRst']").val(prgInfo.PGM_RST);
 
@@ -178,6 +204,7 @@
 				url : '/ajaxMstMbrList.do',
 				type : 'POST',
 				data : {
+					listType : "MEDIC",
 					pageNo : $("input[name='memPageNo']").val(),
 					mbrNm : $("input[name='memSchMbrNm']").val(),
 					telNo : $("input[name='memSchTelNo']").val(),
@@ -456,7 +483,7 @@
 					<table class="w-auto wr-form">
 						<tbody>
 						<tr>
-							<th>대분류</th>
+							<th><span class="required">*</span> 대분류</th>
 							<td>
 								<select name="pgmTpCd" style="width: 130px;">
 									<option value="">선택</option>
@@ -467,7 +494,7 @@
 </c:if>
 								</select>
 							</td>
-							<th>중분류</th>
+							<th><span class="required">*</span> 중분류</th>
 							<td>
 								<select name="pgmCd" style="width: 150px;">
 									<option value="">선택</option>
@@ -512,9 +539,11 @@
 					</table>
 					<table class="wr-form sig-form">
 						<colgroup>
-							<col style="width:58px">
+							<col style="width:71px">
 							<col style="width:200px">
-							<col style="width:58px">
+							<col style="width:71px">
+							<col style="width:200px">
+							<col style="width:71px">
 							<col>
 						</colgroup>
 						<tbody>
@@ -523,8 +552,18 @@
 							<td>
 								<span class="tac"><input type="text" name="siteNm" value="<c:out value="${loginSiteNm}" />" class="el-input__inner" readonly style="width:100%;" /></span>
 							</td>
-							<th>회기</th>
+							<th><span class="required">*</span> 회기</th>
 							<td><input type="text" name="pgmSession" placeholder="회기" style="width: 100%;" /></td>
+							<th><span class="required">*</span> 강사</th>
+							<td><input type="text" name="pgmTeacher" placeholder="강사" style="width: 100%;" /></td>
+						</tr>
+						<tr>
+							<th><span class="required">*</span> 주제</th>
+							<td colspan="5"><input type="text" name="pgmSubject" placeholder="주제" style="width: 100%;" /></td>
+						</tr>
+						<tr>
+							<th>목표</th>
+							<td colspan="5"><input type="text" name="pgmGoal" placeholder="목표" style="width: 100%;" /></td>
 						</tr>
 						<tr>
 							<th>
@@ -533,19 +572,19 @@
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td colspan="3"><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
+							<td colspan="5"><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
 						</tr>
 						<tr>
-							<th>결과<br>
+							<th><span class="required">*</span> 결과<br>
 								<button type="button" onclick="javaScript:viewCtnt('pgmRst', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 									<i class="el-icon-search"></i>
 								</button>
 							</th>
-							<td colspan="3"><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
+							<td colspan="5"><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
 						</tr>
 						<tr>
 							<th>첨부</th>
-							<td colspan="3"><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
+							<td colspan="5"><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
 						</tr>
 						</tbody>
 					</table>

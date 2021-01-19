@@ -259,14 +259,19 @@ public class CounselController {
 			resultView.addObject("MSG", "위기분류척도 점수를 입력하세요.");
 			return resultView;
 		}
-/*		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslCtnt"), "") == "") {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "상담내용을 입력하세요.");
-			return resultView;
-		}*/
 		if(StringUtils.defaultIfEmpty((String)reqMap.get("ursCd"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "URS를 선택하세요.");
+			return resultView;
+		}
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslCtnt"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "상담내용을 입력하세요.");
+			return resultView;
+		}
+		if(StringUtils.defaultIfEmpty((String)reqMap.get("cslRst"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "상담결과를 입력하세요.");
 			return resultView;
 		}
 
@@ -295,6 +300,7 @@ public class CounselController {
 	 */
 	@RequestMapping(value="/getClsRcpList.do")
 	public String getClsRcpList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
@@ -323,6 +329,11 @@ public class CounselController {
 			reqMap.put("schEndCslDt", schEndCslDt.replaceAll("-", ""));
 		}else{
 			reqMap.put("schEndCslDt", DateUtil.getToday("yyyyMMdd"));
+		}
+
+		// 관리자가 아닌 경우
+		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("LoginRoleCd"), ""))) {
+			reqMap.put("", "");
 		}
 
 		model.put("schStrCslDt", reqMap.get("schStrCslDt"));
@@ -361,14 +372,6 @@ public class CounselController {
 		ModelAndView resultView = new ModelAndView("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-
-		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-			resultView.addObject("actUrl", "/login.do");
-
-			return resultView;
-		}
 
 		if(StringUtils.defaultIfEmpty((String)reqMap.get("rcpNo"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);

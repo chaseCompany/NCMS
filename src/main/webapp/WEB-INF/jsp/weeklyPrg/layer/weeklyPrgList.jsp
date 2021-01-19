@@ -28,7 +28,8 @@
 				<col style="width:130px">
 				<col style="width:95px">
 				<col style="width:130px">
-				<col style="width:220px">
+				<col style="width:110px">
+				<col style="width:110px">
 				<col>
 			</colgroup>
 			<thead>
@@ -37,7 +38,8 @@
 				<th>기관명</th>
 				<th>실시 일자</th>
 				<th>담당자</th>
-				<th>주관 프로그램</th>
+				<th>대분류</th>
+				<th>중분류</th>
 				<th>참여자수</th>
 			</tr>
 			</thead>
@@ -51,7 +53,8 @@
 				<col style="width:130px">
 				<col style="width:95px">
 				<col style="width:130px">
-				<col style="width:220px">
+				<col style="width:110px">
+				<col style="width:110px">
 				<col>
 			</colgroup>
 			<tbody>
@@ -62,12 +65,18 @@
 				<td><div class="cell"><c:out value="${result.SITE_NM}" /></div></td>
 				<td><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></td>
 				<td><div class="cell"><c:out value="${result.MNG_USR_NM}" /></div></td>
-				<td class='txt-left'><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
-																  , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
+				<td><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
+												 , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
 <c:if test="${result.PGM_TP_NM ne null and result.PGM_TP_NM ne ''}">
-					<c:out value="${result.PGM_TP_NM}" /> >
+					<c:out value="${result.PGM_TP_NM}" />
 </c:if>
-					<c:out value="${result.PGM_NM}" /></a></td>
+					</a></td>
+				<td><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
+												 , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
+<c:if test="${result.PGM_NM ne null and result.PGM_NM ne ''}">
+					<c:out value="${result.PGM_NM}" />
+</c:if>
+					</a></td>
 				<td><div class="cell"><c:out value="${result.MBR_CNT}" /></div></td>
 			</tr>
 	</c:forEach>

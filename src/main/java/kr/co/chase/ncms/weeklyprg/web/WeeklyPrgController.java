@@ -184,9 +184,14 @@ public class WeeklyPrgController {
 			return resultView;
 		}
 
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmTpCd"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "프로그램 대분류는 필수 입력 항목입니다.");
+			return resultView;
+		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmCd"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 분류는 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "프로그램 중분류는 필수 입력 항목입니다.");
 			return resultView;
 		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), ""))) {
@@ -209,9 +214,29 @@ public class WeeklyPrgController {
 			resultView.addObject("MSG", "담당자는 필수 입력 항목입니다.");
 			return resultView;
 		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmSession"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "회기는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmTeacher"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "강사는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmSubject"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "주제는 필수 입력 항목입니다.");
+			return resultView;
+		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmCtnt"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "프로그램 내용은 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmRst"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "결과는 필수 입력 항목입니다.");
 			return resultView;
 		}
 
