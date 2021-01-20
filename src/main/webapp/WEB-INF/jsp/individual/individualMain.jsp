@@ -102,8 +102,8 @@
 									   + "	<td><div class='cell'>" + formatDate(obj.CSL_DT) + "</div></td>"
 									   + "	<td><div class='cell'>" + obj.CSL_FM_TM + " ~ " + obj.CSL_TO_TM + "</div></td>"
 									   + "	<td><div class='cell'>" + obj.CSL_TERM_TM + "</div></td>"
-									   + "	<td><div class='cell'>" + obj.CSL_SBJ + "</div></td>"
-									   + "	<td><div class='cell'>" + obj.CSL_TGT + "</div></td>"
+									   + "	<td class='txt-left'><div class='cell'>" + obj.CSL_SBJ + "</div></td>"
+									   + "	<td class='txt-left'><div class='cell'>" + obj.CSL_TGT + "</div></td>"
 									   + "	<td><div class='cell'>" + obj.CSL_ID + "</div></td>"
 									   + "	<td><div class='cell'>"
 									   + "		<button type='button' onclick='javaScript:idvDel(\"" + obj.CSL_NO + "\", \"" + idx + "\");' class='el-button el-button--danger el-button--mini is-plain' style='margin-left: 1px; padding: 4px 9px;'> <span>삭제</span> </button>"
@@ -183,6 +183,7 @@
 						$("input[name='rskSco']").val(dataInfo.RSK_SCO);
 						$("input[name='crisisCounsel']").val(dataInfo.CRISIS_COUNSEL);
 						$("select[name='ursCd']").val(dataInfo.URS_CD).prop("selected", true);
+<%--
 						$("select[name='cureCd']").val(dataInfo.CURE_CD).prop("selected", true);
 						$("select[name='drugUseCd']").val(dataInfo.DRUG_USE_CD).prop("selected", true);
 						$("select[name='oldActCd']").val(dataInfo.OLD_ACT_CD).prop("selected", true);
@@ -191,6 +192,7 @@
 						$("select[name='suicidePlanCd']").val(dataInfo.SUICIDE_PLAN_CD).prop("selected", true);
 						$("select[name='oldActWayCd']").val(dataInfo.OLD_ACT_WAY_CD).prop("selected", true);
 						$("select[name='actWayCd']").val(dataInfo.ACT_WAY_CD).prop("selected", true);
+--%>
 						$("textarea[name='cslCtnt']").val(dataInfo.CSL_CTNT);
 						$("textarea[name='cslRst']").val(dataInfo.CSL_RST);
 						$("input[name='nxtCslDt']").val(formatDate(dataInfo.NXT_CSL_DT));
@@ -237,6 +239,7 @@
 			$("span#ratingNum").text("0");
 			$("input[name='crisisCounsel']").val("");
 			$("select[name='ursCd']").val("").prop("selected", true);
+<%--
 			$("select[name='cureCd']").val("").prop("selected", true);
 			$("select[name='drugUseCd']").val("").prop("selected", true);
 			$("select[name='oldActCd']").val("").prop("selected", true);
@@ -245,6 +248,7 @@
 			$("select[name='suicidePlanCd']").val("").prop("selected", true);
 			$("select[name='oldActWayCd']").val("").prop("selected", true);
 			$("select[name='actWayCd']").val("").prop("selected", true);
+--%>
 			$("textarea[name='cslCtnt']").val("");
 			$("textarea[name='cslRst']").val("");
 			$("input[name='nxtCslDt']").val("");
@@ -315,7 +319,6 @@
 					if(res.err != "Y"){
 						alert(res.MSG);
 						getCslIdvList($("input[name='mbrNo']").val());
-						viewIdvRow($("input[name='cslNo']").val());
 					}else{
 						alert(res.MSG);
 					}
@@ -1448,6 +1451,7 @@
 									</select>
 								</td>
 							</tr>
+<%--
 							<tr>
 								<th class="v-top" rowspan="8"> 자살관련</th>
 								<td colspan="3">
@@ -1553,6 +1557,7 @@
 									</select>
 								</td>
 							</tr>
+--%>
 							</tbody>
 						</table>
 					</div>
@@ -1566,7 +1571,7 @@
 										<i class="el-icon-search"></i>
 									</button>
 								</th>
-								<td style="width:690px;"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:190px">${cslIdvInfo.cslCtnt}</textarea></td>
+								<td style="width:690px;"><textarea name="cslCtnt" placeholder="상담 내용" style="width:100%;height:120px">${cslIdvInfo.cslCtnt}</textarea></td>
 							</tr>
 							<tr>
 								<th class="v-top">
@@ -1575,7 +1580,7 @@
 										<i class="el-icon-search"></i>
 									</button>
 								</th>
-								<td style="width:690px;"><textarea name="cslRst" placeholder="상담 결과" style="width:100%;height:190px">${cslIdvInfo.cslRst}</textarea></td>
+								<td style="width:690px;"><textarea name="cslRst" placeholder="상담 결과" style="width:100%;height:120px">${cslIdvInfo.cslRst}</textarea></td>
 							</tr>
 							<tr>
 								<th>다음 상담일시</th>
@@ -1599,7 +1604,7 @@
 										<i class="el-icon-search"></i>
 									</button>
 								</th>
-								<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:190px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
+								<td><textarea name="nxtCslCtnt" placeholder="다음 상담내용" style="width:100%;height:120px"><c:out value="${cslIdvInfo.nxtCslCtnt}" /></textarea></td>
 							</tr>
 							<tr>
 								<th> 첨부파일</th>

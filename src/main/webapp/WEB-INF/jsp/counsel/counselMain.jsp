@@ -800,7 +800,7 @@
 						<th><span class="required">*</span> 위기분류척도</th>
 						<td>
 							<span class="el-tag">Rating A: 위험성</span>
-							<select name="rskaTpCd" style="width: 690px;" onchange="javaScript:changRating();">
+							<select name="rskaTpCd" style="width: 414px;" onchange="javaScript:changRating();">
 <c:if test="${rskaTpList ne null and rskaTpList ne ''}">
 	<c:forEach var="result" items="${rskaTpList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
@@ -813,7 +813,7 @@
 						<th class="txt-center">점수</th>
 						<td>
 							<span class="el-tag">Rating B: 지지체계</span>
-							<select name="rskbTpCd" style="width: 690px;" onchange="javaScript:changRating();">
+							<select name="rskbTpCd" style="width: 414px;" onchange="javaScript:changRating();">
 <c:if test="${rskbTpList ne null and rskbTpList ne ''}">
 	<c:forEach var="result" items="${rskbTpList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
@@ -826,7 +826,7 @@
 						<th class="txt-center"><span class="el-tag-danger" id="ratingNum"><c:out value="${cslRcpInfo.rskSco}"/></span></th>
 						<td>
 							<span class="el-tag">Rating C: 협조능력</span>
-							<select name="rskcTpCd" style="width: 690px;" onchange="javaScript:changRating();">
+							<select name="rskcTpCd" style="width: 414px;" onchange="javaScript:changRating();">
 <c:if test="${rskcTpList ne null and rskcTpList ne ''}">
 	<c:forEach var="result" items="${rskcTpList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}"/>" rating="<c:out value='${status.index}' />"><c:out value="${result.CD_NM}" /></option>
