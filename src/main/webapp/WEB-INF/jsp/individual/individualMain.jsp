@@ -1139,6 +1139,18 @@
 				alert("진단명은 필수 입력 항목입니다.");
 				$("input[name='diagName']").focus();						return;
 			}
+			if($("input[name='jobStDt']").val() != "" && $("input[name='jobEndDt']").val() != ""){
+				if($("input[name='jobStDt']").val().replace(/-/g, "") > $("input[name='jobEndDt']").val().replace(/-/g, "")){
+					alert("취업종료일은 취업시작일보다 크거나 같아야 합니다.");
+					return;
+				}
+			}
+			if($("input[name='healStDt']").val() != "" && $("input[name='healEndDt']").val() != ""){
+				if($("input[name='healStDt']").val().replace(/-/g, "") > $("input[name='healEndDt']").val().replace(/-/g, "")){
+					alert("이용종료일은 이용시작일보다 크거나 같아야 합니다.");
+					return;
+				}
+			}
 
 			$.ajax({
 				url : '/ajaxCslHealAdd.do',
@@ -2517,14 +2529,14 @@
 									<table class="w-auto wr-form">
 										<tbody>
 										<tr>
-											<th>이용시작일자</th>
+											<th>이용시작일</th>
 											<td>
 												<div class="dat-pk">
 													<i class="el-input__icon el-icon-date"></i>
 													<input type="text" name="healStDt" class="el-input__inner datepicker" style="width: 140px;" placeholder="이용시작일자 입력" onchange="javaScript:dtCheck('healStDt', 'healEndDt', 'healTerm');" />
 												</div>
 											</td>
-											<th>이용종료일자</th>
+											<th>이용종료일</th>
 											<td>
 												<div class="dat-pk">
 													<i class="el-input__icon el-icon-date"></i>
