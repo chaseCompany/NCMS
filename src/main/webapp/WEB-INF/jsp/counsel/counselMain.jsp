@@ -884,8 +884,8 @@
 		</div>
 	</div>
 	<!-- // 정보취득경로 ~ 위기분류척도 / 상담내용-->
-</form>
 </div>
+</form>
 <!-- 상담내용 팝업 -->
 <div class="layerpopup" data-popup="counwrite">
 	<div class="pop-header">
