@@ -540,7 +540,10 @@
 							</td>
 						</tr>
 						<tr>
-							<th class="txt-center"> <span class="el-tag-danger" id="ratingNum">0</span></th>
+							<th class="txt-center">
+								<span class="el-tag-danger" id="ratingNum">0</span>
+								<input type="hidden" name="rskSco" value="0" />
+							</th>
 							<td colspan="3">
 								<span class="el-tag">Rating C: 협조능력</span>
 								<select name="rskcTpCd" style="width: 555px;" onchange="javaScript:changRating();">
