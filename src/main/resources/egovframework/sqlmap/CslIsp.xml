@@ -19,17 +19,29 @@
 	<![CDATA[
 		SELECT /* cslIsp.getCslIspInfo */
 			   CI.ISP_DT			, CI.MBR_NO				, CI.LINK_CD			, CI.MNG_TP_CD			, SC.CD_NM AS MNG_TP_NM
-			 , CI.EVL_ITM_SCO01		, CI.EVL_ITM_SCO02		, CI.EVL_ITM_SCO03		, CI.EVL_ITM_SCO04		, CI.EVL_ITM_SCO05
-			 , CI.EVL_ITM_SCO06		, CI.EVL_ITM_SCO07		, CI.EVL_ITM_SCO08		, CI.EVL_ITM_SCO09		, CI.EVL_ITM_SCO10
-			 , CI.EVL_ITM_SCO11		, CI.EVL_ITM_SCO12		, CI.EVL_ITM_SCO13		, CI.EVL_ITM_SCO14		, CI.EVL_ITM_SCO15
-			 , CI.EVL_ITM_SCO16		, CI.EVL_ITM_LNK01		, CI.EVL_ITM_LNK02		, CI.EVL_ITM_LNK03		, CI.EVL_ITM_LNK04
-			 , CI.EVL_ITM_LNK05		, CI.EVL_ITM_LNK06		, CI.EVL_ITM_LNK07		, CI.EVL_ITM_LNK08		, CI.EVL_ITM_LNK09
-			 , CI.EVL_ITM_LNK10		, CI.EVL_ITM_LNK11		, CI.EVL_ITM_LNK12		, CI.EVL_ITM_LNK13		, CI.EVL_ITM_LNK14
-			 , CI.EVL_ITM_LNK15		, CI.EVL_ITM_LNK16		, CI.ISP_RST			, CI.TGT_CTNT			, CI.CRE_ID
-			 , CI.CRE_DT			, CI.UPD_ID				, CI.UPD_DT
+			 , IFNULL(CI.EVL_ITM_SCO01, '0') AS EVL_ITM_SCO01		, IFNULL(CI.EVL_ITM_SCO02, '0') AS EVL_ITM_SCO02
+			 , IFNULL(CI.EVL_ITM_SCO03, '0') AS EVL_ITM_SCO03		, IFNULL(CI.EVL_ITM_SCO04, '0') AS EVL_ITM_SCO04
+			 , IFNULL(CI.EVL_ITM_SCO05, '0') AS EVL_ITM_SCO05		, IFNULL(CI.EVL_ITM_SCO06, '0') AS EVL_ITM_SCO06
+			 , IFNULL(CI.EVL_ITM_SCO07, '0') AS EVL_ITM_SCO07		, IFNULL(CI.EVL_ITM_SCO08, '0') AS EVL_ITM_SCO08
+			 , IFNULL(CI.EVL_ITM_SCO09, '0') AS EVL_ITM_SCO09		, IFNULL(CI.EVL_ITM_SCO10, '0') AS EVL_ITM_SCO10
+			 , IFNULL(CI.EVL_ITM_SCO11, '0') AS EVL_ITM_SCO11		, IFNULL(CI.EVL_ITM_SCO12, '0') AS EVL_ITM_SCO12
+			 , IFNULL(CI.EVL_ITM_SCO13, '0') AS EVL_ITM_SCO13		, IFNULL(CI.EVL_ITM_SCO14, '1') AS EVL_ITM_SCO14
+			 , IFNULL(CI.EVL_ITM_SCO15, '0') AS EVL_ITM_SCO15		, IFNULL(CI.EVL_ITM_SCO16, '0') AS EVL_ITM_SCO16
+			 , IFNULL(CI.EVL_ITM_SCO17, '0') AS EVL_ITM_SCO17		, IFNULL(CI.EVL_ITM_SCO18, '0') AS EVL_ITM_SCO18
+			 , IFNULL(CI.EVL_ITM_SCO19, '0') AS EVL_ITM_SCO19		, IFNULL(CI.EVL_ITM_SCO20, '0') AS EVL_ITM_SCO20
+			 , IFNULL(CI.EVL_ITM_SCO21, '1') AS EVL_ITM_SCO21		, IFNULL(CI.EVL_ITM_SCO22, '1') AS EVL_ITM_SCO22
+			 , IFNULL(CI.EVL_ITM_SCO23, '1') AS EVL_ITM_SCO23		, IFNULL(CI.EVL_ITM_SCO24, '1') AS EVL_ITM_SCO24
+			 , IFNULL(CI.EVL_ITM_SCO25, '1') AS EVL_ITM_SCO25
+			 , CI.EVL_ITM_LNK01		, CI.EVL_ITM_LNK02		, CI.EVL_ITM_LNK03		, CI.EVL_ITM_LNK04		, CI.EVL_ITM_LNK05
+			 , CI.EVL_ITM_LNK06		, CI.EVL_ITM_LNK07		, CI.EVL_ITM_LNK08		, CI.EVL_ITM_LNK09		, CI.EVL_ITM_LNK10
+			 , CI.EVL_ITM_LNK11		, CI.EVL_ITM_LNK12		, CI.EVL_ITM_LNK13		, CI.EVL_ITM_LNK14		, CI.EVL_ITM_LNK15
+			 , CI.EVL_ITM_LNK16		, CI.EVL_ITM_LNK17		, CI.EVL_ITM_LNK18		, CI.EVL_ITM_LNK19		, CI.EVL_ITM_LNK20
+			 , CI.EVL_ITM_LNK21		, CI.EVL_ITM_LNK22		, CI.EVL_ITM_LNK23		, CI.EVL_ITM_LNK24		, CI.EVL_ITM_LNK25
+			 , CI.ISP_RST			, CI.TGT_CTNT			, CI.CRE_ID				, CI.CRE_DT				, CI.UPD_ID
+			 , CI.UPD_DT
 		  FROM CSL_ISP CI
 		  LEFT JOIN SYS_CD SC ON (SC.GRP_CD = 'C4200' AND CI.MNG_TP_CD = SC.CD_ID)
-		 where MBR_NO = #{mbrNo}
+		 WHERE MBR_NO = #{mbrNo}
 		   AND ISP_DT = #{ispDt}
 	]]>
 	</select>
@@ -49,21 +61,27 @@
 			 , EVL_ITM_SCO02	, EVL_ITM_SCO03		, EVL_ITM_SCO04		, EVL_ITM_SCO05		, EVL_ITM_SCO06
 			 , EVL_ITM_SCO07	, EVL_ITM_SCO08		, EVL_ITM_SCO09		, EVL_ITM_SCO10		, EVL_ITM_SCO11
 			 , EVL_ITM_SCO12	, EVL_ITM_SCO13		, EVL_ITM_SCO14		, EVL_ITM_SCO15		, EVL_ITM_SCO16
-			 , EVL_ITM_LNK01	, EVL_ITM_LNK02		, EVL_ITM_LNK03		, EVL_ITM_LNK04		, EVL_ITM_LNK05
-			 , EVL_ITM_LNK06	, EVL_ITM_LNK07		, EVL_ITM_LNK08		, EVL_ITM_LNK09		, EVL_ITM_LNK10
-			 , EVL_ITM_LNK11	, EVL_ITM_LNK12		, EVL_ITM_LNK13		, EVL_ITM_LNK14		, EVL_ITM_LNK15
-			 , EVL_ITM_LNK16	, ISP_RST			, TGT_CTNT			, CRE_ID			, CRE_DT
-			 , UPD_ID			, UPD_DT
+			 , EVL_ITM_SCO17	, EVL_ITM_SCO18		, EVL_ITM_SCO19		, EVL_ITM_SCO20		, EVL_ITM_SCO21
+			 , EVL_ITM_SCO22	, EVL_ITM_SCO23		, EVL_ITM_SCO24		, EVL_ITM_SCO25		, EVL_ITM_LNK01
+			 , EVL_ITM_LNK02	, EVL_ITM_LNK03		, EVL_ITM_LNK04		, EVL_ITM_LNK05		, EVL_ITM_LNK06
+			 , EVL_ITM_LNK07	, EVL_ITM_LNK08		, EVL_ITM_LNK09		, EVL_ITM_LNK10		, EVL_ITM_LNK11
+			 , EVL_ITM_LNK12	, EVL_ITM_LNK13		, EVL_ITM_LNK14		, EVL_ITM_LNK15		, EVL_ITM_LNK16
+			 , EVL_ITM_LNK17	, EVL_ITM_LNK18		, EVL_ITM_LNK19		, EVL_ITM_LNK20		, EVL_ITM_LNK21
+			 , EVL_ITM_LNK22	, EVL_ITM_LNK23		, EVL_ITM_LNK24		, EVL_ITM_LNK25		, ISP_RST
+			 , TGT_CTNT			, CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
 		)VALUES(
 			   #{ispDt}			, #{mbrNo}			, #{linkCd}			, #{mngTpCd}		, #{evlItmSco01}
 			 , #{evlItmSco02}	, #{evlItmSco03}	, #{evlItmSco04}	, #{evlItmSco05}	, #{evlItmSco06}
 			 , #{evlItmSco07}	, #{evlItmSco08}	, #{evlItmSco09}	, #{evlItmSco10}	, #{evlItmSco11}
 			 , #{evlItmSco12}	, #{evlItmSco13}	, #{evlItmSco14}	, #{evlItmSco15}	, #{evlItmSco16}
-			 , #{evlItmLnk01}	, #{evlItmLnk02}	, #{evlItmLnk03}	, #{evlItmLnk04}	, #{evlItmLnk05}
-			 , #{evlItmLnk06}	, #{evlItmLnk07}	, #{evlItmLnk08}	, #{evlItmLnk09}	, #{evlItmLnk10}
-			 , #{evlItmLnk11}	, #{evlItmLnk12}	, #{evlItmLnk13}	, #{evlItmLnk14}	, #{evlItmLnk15}
-			 , #{evlItmLnk16}	, #{ispRst}			, #{tgtCtnt}		, #{cslId}			, NOW()
-			 , #{cslId}			, NOW()
+			 , #{evlItmSco17}	, #{evlItmSco18}	, #{evlItmSco19}	, #{evlItmSco20}	, #{evlItmSco21}
+			 , #{evlItmSco22}	, #{evlItmSco23}	, #{evlItmSco24}	, #{evlItmSco25}	, #{evlItmLnk01}
+			 , #{evlItmLnk02}	, #{evlItmLnk03}	, #{evlItmLnk04}	, #{evlItmLnk05}	, #{evlItmLnk06}
+			 , #{evlItmLnk07}	, #{evlItmLnk08}	, #{evlItmLnk09}	, #{evlItmLnk10}	, #{evlItmLnk11}
+			 , #{evlItmLnk12}	, #{evlItmLnk13}	, #{evlItmLnk14}	, #{evlItmLnk15}	, #{evlItmLnk16}
+			 , #{evlItmLnk17}	, #{evlItmLnk18}	, #{evlItmLnk19}	, #{evlItmLnk20}	, #{evlItmLnk21}
+			 , #{evlItmLnk22}	, #{evlItmLnk23}	, #{evlItmLnk24}	, #{evlItmLnk25}	, #{ispRst}
+			 , #{tgtCtnt}		, #{cslId}			, NOW()				, #{cslId}			, NOW()
 		)
 	]]>
 	</insert>
@@ -80,14 +98,23 @@
 			 , EVL_ITM_SCO11 = #{evlItmSco11}		, EVL_ITM_SCO12 = #{evlItmSco12}
 			 , EVL_ITM_SCO13 = #{evlItmSco13}		, EVL_ITM_SCO14 = #{evlItmSco14}
 			 , EVL_ITM_SCO15 = #{evlItmSco15}		, EVL_ITM_SCO16 = #{evlItmSco16}
-			 , EVL_ITM_LNK01 = #{evlItmLnk01}		, EVL_ITM_LNK02 = #{evlItmLnk02}
-			 , EVL_ITM_LNK03 = #{evlItmLnk03}		, EVL_ITM_LNK04 = #{evlItmLnk04}
-			 , EVL_ITM_LNK05 = #{evlItmLnk05}		, EVL_ITM_LNK06 = #{evlItmLnk06}
-			 , EVL_ITM_LNK07 = #{evlItmLnk07}		, EVL_ITM_LNK08 = #{evlItmLnk08}
-			 , EVL_ITM_LNK09 = #{evlItmLnk09}		, EVL_ITM_LNK10 = #{evlItmLnk10}
-			 , EVL_ITM_LNK11 = #{evlItmLnk11}		, EVL_ITM_LNK12 = #{evlItmLnk12}
-			 , EVL_ITM_LNK13 = #{evlItmLnk13}		, EVL_ITM_LNK14 = #{evlItmLnk14}
-			 , EVL_ITM_LNK15 = #{evlItmLnk15}		, EVL_ITM_LNK16 = #{evlItmLnk16}
+			 , EVL_ITM_SCO17 = #{evlItmSco17}		, EVL_ITM_SCO18 = #{evlItmSco18}
+			 , EVL_ITM_SCO19 = #{evlItmSco19}		, EVL_ITM_SCO20 = #{evlItmSco20}
+			 , EVL_ITM_SCO21 = #{evlItmSco21}		, EVL_ITM_SCO22 = #{evlItmSco22}
+			 , EVL_ITM_SCO23 = #{evlItmSco23}		, EVL_ITM_SCO24 = #{evlItmSco24}
+			 , EVL_ITM_SCO25 = #{evlItmSco25}		, EVL_ITM_LNK01 = #{evlItmLnk01}
+			 , EVL_ITM_LNK02 = #{evlItmLnk02}		, EVL_ITM_LNK03 = #{evlItmLnk03}
+			 , EVL_ITM_LNK04 = #{evlItmLnk04}		, EVL_ITM_LNK05 = #{evlItmLnk05}
+			 , EVL_ITM_LNK06 = #{evlItmLnk06}		, EVL_ITM_LNK07 = #{evlItmLnk07}
+			 , EVL_ITM_LNK08 = #{evlItmLnk08}		, EVL_ITM_LNK09 = #{evlItmLnk09}
+			 , EVL_ITM_LNK10 = #{evlItmLnk10}		, EVL_ITM_LNK11 = #{evlItmLnk11}
+			 , EVL_ITM_LNK12 = #{evlItmLnk12}		, EVL_ITM_LNK13 = #{evlItmLnk13}
+			 , EVL_ITM_LNK14 = #{evlItmLnk14}		, EVL_ITM_LNK15 = #{evlItmLnk15}
+			 , EVL_ITM_LNK16 = #{evlItmLnk16}		, EVL_ITM_LNK17 = #{evlItmLnk17}
+			 , EVL_ITM_LNK18 = #{evlItmLnk18}		, EVL_ITM_LNK19 = #{evlItmLnk19}
+			 , EVL_ITM_LNK20 = #{evlItmLnk20}		, EVL_ITM_LNK21 = #{evlItmLnk21}
+			 , EVL_ITM_LNK22 = #{evlItmLnk22}		, EVL_ITM_LNK23 = #{evlItmLnk23}
+			 , EVL_ITM_LNK24 = #{evlItmLnk24}		, EVL_ITM_LNK25 = #{evlItmLnk25}
 			 , ISP_RST = #{ispRst}					, TGT_CTNT = #{tgtCtnt}
 			 , UPD_ID = #{cslId}					, UPD_DT = NOW()
 		 WHERE MBR_NO = #{mbrNo}

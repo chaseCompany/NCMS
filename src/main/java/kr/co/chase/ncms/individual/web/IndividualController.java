@@ -26,7 +26,6 @@ import kr.co.chase.ncms.common.service.SysCodeService;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.individual.service.IndividualService;
 import kr.co.chase.ncms.vo.CslIdvVO;
-import kr.co.chase.ncms.vo.CslIspVO;
 import kr.co.chase.ncms.vo.MstMbrVO;
 
 @Controller
@@ -54,8 +53,7 @@ public class IndividualController {
 	@RequestMapping(value="/individualMain.do")
 	public String individualMain(ModelMap model, HttpSession session
 			, @ModelAttribute("mstMbrVO") MstMbrVO mstMbrVO
-			, @ModelAttribute("cslIdvVO") CslIdvVO cslIdvVO
-			, @ModelAttribute("cslIspVO") CslIspVO cslIspVO) throws Exception{
+			, @ModelAttribute("cslIdvVO") CslIdvVO cslIdvVO) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
@@ -67,12 +65,9 @@ public class IndividualController {
 		cslIdvVO.setCslDt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		cslIdvVO.setCslTgtCd("10");
 		cslIdvVO.setCslTpCd("20");
-		// ISP 수립 기본값 셋팅
-		cslIspVO.setIspDt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
 		model.put("mstMbrInfo", mstMbrVO);				// 회원정보
 		model.put("cslIdvInfo", cslIdvVO);				// 집중상담
-		model.put("cslIspInfo", cslIspVO);				// ISP수립
 
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
@@ -95,53 +90,38 @@ public class IndividualController {
 		codeListMap.put("grpCd", "C4200");				// 관리구분
 		model.put("mngTpList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C5010");				// 약물사용문제
+		codeListMap.put("grpCd", "C5010");				// 약물중독/알코올중독/도박중독/인터넷중독/기타중독
 		model.put("evlItmSco01List", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C5110");				// 자해 및 타해 위험
-		model.put("evlItmSco05List", sysCodeService.getSysCdList(codeListMap));
+		codeListMap.put("grpCd", "C5110");				// 자해/자살위험/타해위험
+		model.put("evlItmSco18List", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C5210");				// 가족관계
 		model.put("evlItmSco10List", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C5310");				// 주거
+		codeListMap.put("grpCd", "C5310");				// 주거/고용 및 교육가능성/법률적 문제
 		model.put("evlItmSco12List", sysCodeService.getSysCdList(codeListMap));
-
-		codeListMap.put("grpCd", "C5020");				// 알코올사용문제
-		model.put("evlItmSco02List", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C5120");				// 정신과적 증상
 		model.put("evlItmSco06List", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C5220");				// 사회적관계
+		codeListMap.put("grpCd", "C5220");				// 사회적관계/회복환경 관계
 		model.put("evlItmSco11List", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C5320");				// 경제활동 지원
 		model.put("evlItmSco13List", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C5030");				// 도박사용문제
-		model.put("evlItmSco03List", sysCodeService.getSysCdList(codeListMap));
-
 		codeListMap.put("grpCd", "C5130");				// 정신약물관리
 		model.put("evlItmSco07List", sysCodeService.getSysCdList(codeListMap));
-
-		codeListMap.put("grpCd", "C5330");				// 취업 및 학업욕구
-		model.put("evlItmSco14List", sysCodeService.getSysCdList(codeListMap));
-
-		codeListMap.put("grpCd", "C5040");				// 인터넷사용문제
-		model.put("evlItmSco04List", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C5140");				// 스트레스 상태
 		model.put("evlItmSco08List", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C5340");				// 고용 및 교육가능성
-		model.put("evlItmSco15List", sysCodeService.getSysCdList(codeListMap));
-
 		codeListMap.put("grpCd", "C5150");				// 신체질환
 		model.put("evlItmSco09List", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C5350");				// 법률적 문제
-		model.put("evlItmSco16List", sysCodeService.getSysCdList(codeListMap));
+		codeListMap.put("grpCd", "C7700");				// 욕구
+		model.put("evlItmSco14List", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C1800");				// 최초 사용약물
 		model.put("fstDrugCdList", sysCodeService.getSysCdList(codeListMap));
@@ -241,15 +221,6 @@ public class IndividualController {
 	public @ResponseBody ModelAndView getClsIdvList(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView("jsonView");
 
-		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-			resultView.addObject("actUrl", "/login.do");
-
-			return resultView;
-		}
-
 		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "회원번호를 선택하세요.");
@@ -297,13 +268,6 @@ public class IndividualController {
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-
-		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
-			resultView.addObject("actUrl", "/login.do");
-			return resultView;
-		}
 
 		if(StringUtils.defaultString((String)reqMap.get("mbrNo"), "") == "") {
 			resultView.addObject("err", ConstantObject.Y);
