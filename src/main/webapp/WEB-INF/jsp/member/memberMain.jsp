@@ -100,6 +100,8 @@
 				},
 				success : function(res){
 					$("div#memInfoView").html(res);
+
+					 $("input[name='regDt']").datepicker();
 				},
 				error : function(xhr, status){
 					console.log(xhr);
