@@ -332,8 +332,8 @@ public class CounselController {
 		}
 
 		// 관리자가 아닌 경우
-		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("LoginRoleCd"), ""))) {
-			reqMap.put("", "");
+		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
+//			reqMap.put("", "");
 		}
 
 		model.put("schStrCslDt", reqMap.get("schStrCslDt"));
@@ -427,6 +427,8 @@ public class CounselController {
 	 */
 	@RequestMapping(value="/ajaxMstMbrList.do")
 	public String ajaxMstMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String searchType = StringUtils.defaultIfEmpty((String)reqMap.get("searchType"), "");
 		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "");
 		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
@@ -451,6 +453,13 @@ public class CounselController {
 
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
 		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
+
+		// 관리자가 아닌 경우
+		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
+			if("S".equals(searchType)) {
+				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "X"));
+			}
+		}
 
 		int totalCount = counselService.getMstMbrListCount(reqMap);
 		paginginfo.setTotalRecordCount(totalCount);

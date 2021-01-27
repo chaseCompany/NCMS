@@ -4,8 +4,9 @@
 <mapper namespace="mstMbr">
 	<select id="mstMbr.getMstMbrListCount" parameterType="hashMap" resultType="int">
 	<![CDATA[
-		SELECT /* mstMbr.getMstMbrListCount */ COUNT(MBR_NO) AS CNT
-		  FROM MST_MBR
+		SELECT /* mstMbr.getMstMbrListCount */ COUNT(MM.MBR_NO) AS CNT
+		  FROM MST_MBR MM
+		  LEFT JOIN SYS_USR SU ON (MM.MNG_USR_ID = SU.USR_ID)
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="mbrNm != null and mbrNm != ''">
@@ -16,6 +17,9 @@
 			</if>
 			<if test="juminNo1 != null and juminNo1 != ''">
 		   AND JUMIN_NO1 = #{juminNo1}
+			</if>
+			<if test="searchSiteCd != null and searchSiteCd != ''">
+		   AND SU.SITE_CD = ${searchSiteCd}
 			</if>
 		</trim>
 	</select>
@@ -52,9 +56,12 @@
 			<if test="juminNo1 != null and juminNo1 != ''">
 						   AND JUMIN_NO1 = #{juminNo1}
 			</if>
+			<if test="searchSiteCd != null and searchSiteCd != ''">
+						   AND SU.SITE_CD = ${searchSiteCd}
+			</if>
 		</trim>
 	<![CDATA[
-						 ORDER BY CRE_DT DESC
+						 ORDER BY MM.CRE_DT DESC
 				  ) T,(SELECT @RNUM := 0) RNUM
 				 ORDER BY T.CRE_DT DESC
 		  ) T1
@@ -67,16 +74,18 @@
 	<select id="mstMbr.getMstMbr" parameterType="String" resultType="hashMap">
 	<![CDATA[
 		SELECT /* mstMbr.getMstMbr */
-			   MM.MBR_NO		, MM.MBR_NM		, MM.GEND_CD	, MM.AGE			, MM.JUMIN_NO1
-			 , MM.FRG_CD		, MM.TEL_NO1	, MM.TEL_NO2	, MM.TEL_NO3		, MM.JOB_CD
-			 , MM.ZIP_CD		, MM.ADDR1		, MM.ADDR2		, MM.MBR_TP_CD		, MM.DRG_USE_CD
-			 , MM.MRG_CD		, MM.EDU_CD		, MM.RLGN_CD	, MM.REQ_PATH_CD	, MM.MEDIC_CARE_CD
-			 , MM.DIS_ETC		, MM.REG_USR_ID	, MM.REG_DT		, MM.STP_DT			, MM.FMLY_RMK
-			 , MM.RMK			, MM.MNG_USR_ID	, MM.LST_UPD_ID	, MM.LST_UPD_DT		, MM.STS_CD
-			 , MM.CRE_ID		, MM.CRE_DT		, MM.UPD_DT
-			 , MM.UPD_ID		, SU.USR_NM AS UPD_NM
+			   MM.MBR_NO			, MM.MBR_NM				, MM.GEND_CD			, MM.AGE				, MM.JUMIN_NO1
+			 , MM.FRG_CD			, MM.TEL_NO1			, MM.TEL_NO2			, MM.TEL_NO3			, MM.JOB_CD
+			 , MM.ZIP_CD			, MM.ADDR1				, MM.ADDR2				, MM.MBR_TP_CD			, MM.DRG_USE_CD
+			 , MM.MRG_CD			, MM.EDU_CD				, MM.EDU02_CD			, MM.RLGN_CD			, MM.REQ_PATH_CD
+			 , MM.MEDIC_CARE_CD		, MM.DIS_ETC			, MM.REG_USR_ID			, MM.REG_DT				, MM.STP_DT
+			 , MM.FMLY_NAME			, MM.FMLY_RELATION_CD	, MM.FMLY_SEX_CD		, MM.FMLY_AGE			, MM.FMLY_AREA
+			 , MM.FMLY_TEL_NO1		, MM.FMLY_TEL_NO2		, MM.FMLY_TEL_NO3		, MM.FMLY_EXP_CD		, MM.FMLY_TOGETHER_CD
+			 , MM.FMLY_TREE			, MM.PERSONAL_INFO		, MM.FMLY_RMK			, MM.RMK				, MM.MNG_USR_ID
+			 , MM.LST_UPD_ID		, MM.LST_UPD_DT			, MM.STS_CD				, MM.CRE_ID				, MM.CRE_DT
+			 , MM.UPD_DT			, MM.UPD_ID				, SU.USR_NM AS UPD_NM
 		  FROM MST_MBR MM
-		  LEFT JOIN SYS_USR SU ON (MM.UPD_ID = SU.USR_ID AND SU.USE_YN = 'Y')
+		  LEFT JOIN SYS_USR SU ON (MM.UPD_ID = SU.USR_ID)
 		 WHERE MM.MBR_NO = #{mbrNo}
 	]]>
 	</select>
@@ -93,21 +102,27 @@
 	<insert id="mstMbr.insertMstMbr" parameterType="hashMap">
 	<![CDATA[
 		INSERT /* mstMbr.insertMstMbr */ INTO MST_MBR(
-			   MBR_NO			, MBR_NM		, GEND_CD			, AGE				, JUMIN_NO1
-			 , FRG_CD			, TEL_NO1		, TEL_NO2			, TEL_NO3			, JOB_CD
-			 , ZIP_CD			, ADDR1			, ADDR2				, MBR_TP_CD			, DRG_USE_CD
-			 , MRG_CD			, EDU_CD		, RLGN_CD			, REQ_PATH_CD		, MEDIC_CARE_CD
-			 , DIS_ETC			, REG_USR_ID	, REG_DT			, FMLY_RMK			, RMK
-			 , MNG_USR_ID		, LST_UPD_ID	, LST_UPD_DT		, STS_CD			, CRE_ID
-			 , CRE_DT			, UPD_ID		, UPD_DT
+			   MBR_NO			, MBR_NM			, GEND_CD			, AGE				, JUMIN_NO1
+			 , FRG_CD			, TEL_NO1			, TEL_NO2			, TEL_NO3			, JOB_CD
+			 , ZIP_CD			, ADDR1				, ADDR2				, MBR_TP_CD			, DRG_USE_CD
+			 , MRG_CD			, EDU_CD			, EDU02_CD			, RLGN_CD			, REQ_PATH_CD
+			 , MEDIC_CARE_CD	, DIS_ETC			, REG_USR_ID		, REG_DT			, FMLY_NAME
+			 , FMLY_RELATION_CD	, FMLY_SEX_CD		, FMLY_AGE			, FMLY_AREA			, FMLY_TEL_NO1
+			 , FMLY_TEL_NO2		, FMLY_TEL_NO3		, FMLY_EXP_CD		, FMLY_TOGETHER_CD	, FMLY_TREE
+			 , PERSONAL_INFO	, FMLY_RMK			, RMK				, MNG_USR_ID		, LST_UPD_ID
+			 , LST_UPD_DT		, STS_CD			, CRE_ID			, CRE_DT			, UPD_ID
+			 , UPD_DT
 		)VALUES(
 			   #{mbrNo}			, #{mbrNm}		, #{gendCd}			, #{age}			, #{juminNo1}
 			 , #{frgCd}			, #{telNo1}		, #{telNo2}			, #{telNo3}			, #{jobCd}
 			 , #{zipCd}			, #{addr1}		, #{addr2}			, #{mbrTpCd}		, #{drgUseCd}
-			 , #{mrgCd}			, #{eduCd}		, #{rlgnCd}			, #{reqPathCd}		, #{medicCareCd}
-			 , #{disEtc}		, #{creId}		, IFNULL(#{regDt}, DATE_FORMAT(NOW(), '%Y%m%d'))		, #{fmlyRmk}	, #{rmk}
-			 , IFNULL(#{mngUsrId}, #{creId})	, #{creId}			, NOW()				, #{stsCd}		, #{creId}
-			 , NOW()			, #{creId}		, NOW()
+			 , #{mrgCd}			, #{eduCd}		, #{edu02Cd}		, #{rlgnCd}			, #{reqPathCd}
+			 , #{medicCareCd}	, #{disEtc}		, #{creId}			, IFNULL(#{regDt}, DATE_FORMAT(NOW(), '%Y%m%d'))		, #{fmlyName}
+			 , #{fmlyRelationCd}, #{fmlySexCd}	, #{fmlyAge}		, #{fmlyArea}		, #{fmlyTelNo1}
+			 , #{fmlyTelNo2}	, #{fmlyTelNo3}	, #{fmlyExpCd}		, #{fmlyTogetherCd}	, #{fmlyTree}
+			 , #{personalInfo}	, #{fmlyRmk}	, #{rmk}			, IFNULL(#{mngUsrId}, #{creId})	, #{creId}
+			 , NOW()			, #{stsCd}		, #{creId}			, NOW()				, #{creId}
+			 , NOW()
 		)
 	]]>
 	</insert>
@@ -115,21 +130,27 @@
 	<update id="mstMbr.updateMstMbr" parameterType="hashMap">
 	<![CDATA[
 		UPDATE /* mstMbr.updateMstMbr */ MST_MBR
-		   SET MBR_NM = #{mbrNm}				, GEND_CD = #{gendCd}
-			 , AGE = #{age}						, JUMIN_NO1 = #{juminNo1}
-			 , FRG_CD = #{frgCd}				, TEL_NO1 = #{telNo1}
-			 , TEL_NO2 = #{telNo2}				, TEL_NO3 = #{telNo3}
-			 , JOB_CD = #{jobCd}				, ZIP_CD = #{zipCd}
-			 , ADDR1 = #{addr1}					, ADDR2 = #{addr2}
-			 , MBR_TP_CD = #{mbrTpCd}			, DRG_USE_CD = #{drgUseCd}
-			 , MRG_CD = #{mrgCd}				, REG_DT = #{regDt}
-			 , EDU_CD = #{eduCd}				, RLGN_CD = #{rlgnCd}
-			 , REQ_PATH_CD = #{reqPathCd}		, MEDIC_CARE_CD = #{medicCareCd}
-			 , DIS_ETC = #{disEtc}				, REG_USR_ID = #{regUsrId}
-			 , FMLY_RMK = #{fmlyRmk}			, RMK = #{rmk}
-			 , MNG_USR_ID = #{mngUsrId}			, LST_UPD_ID = #{creId}
-			 , LST_UPD_DT = NOW()				, UPD_ID = #{creId}
-			 , UPD_DT = NOW()
+		   SET MBR_NM = #{mbrNm}						, GEND_CD = #{gendCd}
+			 , AGE = #{age}								, JUMIN_NO1 = #{juminNo1}
+			 , FRG_CD = #{frgCd}						, TEL_NO1 = #{telNo1}
+			 , TEL_NO2 = #{telNo2}						, TEL_NO3 = #{telNo3}
+			 , JOB_CD = #{jobCd}						, ZIP_CD = #{zipCd}
+			 , ADDR1 = #{addr1}							, ADDR2 = #{addr2}
+			 , MBR_TP_CD = #{mbrTpCd}					, DRG_USE_CD = #{drgUseCd}
+			 , MRG_CD = #{mrgCd}						, REG_DT = #{regDt}
+			 , EDU_CD = #{eduCd}						, EDU02_CD = #{edu02Cd}
+			 , RLGN_CD = #{rlgnCd}						, REQ_PATH_CD = #{reqPathCd}
+			 , MEDIC_CARE_CD = #{medicCareCd}			, DIS_ETC = #{disEtc}
+			 , REG_USR_ID = #{regUsrId}					, FMLY_NAME = #{fmlyName}
+			 , FMLY_RELATION_CD = #{fmlyRelationCd}		, FMLY_SEX_CD = #{fmlySexCd}
+			 , FMLY_AGE = #{fmlyAge}					, FMLY_AREA = #{fmlyArea}
+			 , FMLY_TEL_NO1 = #{fmlyTelNo1}				, FMLY_TEL_NO2 = #{fmlyTelNo2}
+			 , FMLY_TEL_NO3 = #{fmlyTelNo3}				, FMLY_EXP_CD = #{fmlyExpCd}
+			 , FMLY_TOGETHER_CD = #{fmlyTogetherCd}		, FMLY_TREE = #{fmlyTree}
+			 , PERSONAL_INFO = #{personalInfo}			, FMLY_RMK = #{fmlyRmk}
+			 , RMK = #{rmk}								, MNG_USR_ID = #{mngUsrId}
+			 , LST_UPD_ID = #{creId}					, LST_UPD_DT = NOW()
+			 , UPD_ID = #{creId}						, UPD_DT = NOW()
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</update>
@@ -146,6 +167,30 @@
 		UPDATE /* mstMbr.updateMstMbrStsCd */ MST_MBR
 		   SET STS_CD = #{stsCd}				, LST_UPD_ID = #{creId}
 			 , LST_UPD_DT = NOW()				, UPD_ID = #{creId}
+			 , UPD_DT = NOW()
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</update>
+
+	<update id="mstMbr.updateMbrFmly" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* mstMbr.updateMbrFmly */ MST_MBR
+		   SET FMLY_NAME = #{fmlyName}
+			 , FMLY_RELATION_CD = #{fmlyRelationCd}		, FMLY_SEX_CD = #{fmlySexCd}
+			 , FMLY_AGE = #{fmlyAge}					, FMLY_AREA = #{fmlyArea}
+			 , FMLY_TEL_NO1 = #{fmlyTelNo1}				, FMLY_TEL_NO2 = #{fmlyTelNo2}
+			 , FMLY_TEL_NO3 = #{fmlyTelNo3}				, FMLY_EXP_CD = #{fmlyExpCd}
+			 , FMLY_TOGETHER_CD = #{fmlyTogetherCd}		, FMLY_TREE = #{fmlyTree}
+			 , PERSONAL_INFO = #{personalInfo}			, FMLY_RMK = #{fmlyRmk}
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</update>
+
+	<update id="mstMbr.updateMbrMngUsrId" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* mstMbr.updateMbrMngUsrId */ MST_MBR
+		   SET MNG_USR_ID = #{creId}					, LST_UPD_ID = #{creId}
+			 , LST_UPD_DT = NOW()						, UPD_ID = #{creId}
 			 , UPD_DT = NOW()
 		 WHERE MBR_NO = #{mbrNo}
 	]]>

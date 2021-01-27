@@ -25,7 +25,7 @@
 			<li><a href="javaScript:goTopMenuPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>사례관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/mentalityMain.do');"<c:if test="${thisViewUrl eq 'mentalityMain.do'}"> class="on"</c:if>>심리치유</a></li>
 			<li><a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>주간재활 프로그램</a></li>
-			<li><a href="javaScript:goTopMenuPage('/memberMain.do');"<c:if test="${thisViewUrl eq 'memberMain.do'}"> class="on"</c:if>>회원정보관리</a></li>
+			<li><a href="javaScript:goTopMenuPage('/memberMain.do');"<c:if test="${thisViewUrl eq 'memberMain.do' || thisViewUrl eq 'memberLink.do' || thisViewUrl eq 'memberReq.do'}"> class="on"</c:if>>회원정보관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/reportMain.do');"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계관리</a></li>
 		</ul>
 	</div>

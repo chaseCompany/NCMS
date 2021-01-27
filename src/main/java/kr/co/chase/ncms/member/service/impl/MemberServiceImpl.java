@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.co.chase.ncms.common.ConstantObject;
+import kr.co.chase.ncms.common.service.FileInfoService;
+import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.counsel.service.CounselService;
 import kr.co.chase.ncms.dao.MstMbrDao;
 import kr.co.chase.ncms.dao.MstRegHisDao;
+import kr.co.chase.ncms.dao.MstTransDao;
 import kr.co.chase.ncms.member.service.MemberService;
 
 @Service("memberService")
@@ -27,8 +30,17 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 	@Resource(name="mstRegHisDao")
 	private MstRegHisDao mstRegHisDao;
 
+	@Resource(name="mstTransDao")
+	private MstTransDao mstTransDao;
+
 	@Resource(name="counselService")
 	private CounselService counselService;
+
+	@Resource(name="fileInfoService")
+	private FileInfoService fileInfoService;
+
+	@Resource(name = "FileManagerUtil")
+	private FileManagerUtil fileUtil;
 
 	/**
 	 * 회원 정보 조회
@@ -41,7 +53,26 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 			throw new Exception("MemberServiceImpl.getMstMbr mbrNo 필수값 누락");
 		}
 
-		return mstMbrDao.getMstMbr(mbrNo);
+		HashMap<String, Object> mbrInfoMap = mstMbrDao.getMstMbr(mbrNo);
+		if(mbrInfoMap != null) {
+			String fmlyTree = StringUtils.defaultIfEmpty((String)mbrInfoMap.get("FMLY_TREE"), "");
+			String personalInfo = StringUtils.defaultIfEmpty((String)mbrInfoMap.get("PERSONAL_INFO"), "");
+
+			if(!"".equals(fmlyTree)){
+				HashMap<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("fileId", fmlyTree);
+
+				mbrInfoMap.put("fmlyTreeFileList", fileInfoService.getFileList(paramMap));
+			}
+			if(!"".equals(personalInfo)){
+				HashMap<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("fileId", personalInfo);
+
+				mbrInfoMap.put("personalInfoFileList", fileInfoService.getFileList(paramMap));
+			}
+		}
+
+		return mbrInfoMap;
 	}
 
 	/**
@@ -122,6 +153,14 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		int result = 0;
 
+		if(map.get("fileList") != null) {
+			List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)map.get("fileList");
+
+			for(HashMap<String, Object> info : fileList){
+				fileInfoService.insertFileInfo(info);
+ 			}
+		}
+
 		String mbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
 		if("".equals(mbrNo)){
 			HashMap<String, Object> sechMap = new HashMap<String, Object>();
@@ -149,6 +188,34 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 				resultMap.put("MSG", "동일 회원 정보 존재");
 			}
 		}else{
+			HashMap<String, Object> mbrInfo = this.getMstMbr(mbrNo);
+			if(mbrInfo != null) {
+				String oldFmlyTree = StringUtils.defaultIfEmpty((String)mbrInfo.get("FMLY_TREE"), "");
+				String oldPersonalInfo = StringUtils.defaultIfEmpty((String)mbrInfo.get("PERSONAL_INFO"), "");
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), ""))){
+					if(!"".equals(oldFmlyTree)) {
+						mbrInfo.put("fileId", oldFmlyTree);
+
+						fileUtil.deleteFile(oldFmlyTree);
+						fileInfoService.deleteFileInfo(mbrInfo);
+					}
+				}else if(!"".equals(oldFmlyTree)) {
+					map.put("fmlyTree", oldFmlyTree);
+				}
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), ""))){
+					if(!"".equals(oldPersonalInfo)) {
+						mbrInfo.put("fileId", oldPersonalInfo);
+
+						fileUtil.deleteFile(oldPersonalInfo);
+						fileInfoService.deleteFileInfo(mbrInfo);
+					}
+				}else if(!"".equals(oldPersonalInfo)) {
+					map.put("personalInfo", oldPersonalInfo);
+				}
+			}
+
 			result = this.updateMstMbr(map);
 			resultMap.put("MSG", "수정");
 			resultMap.put("mbrNo", map.get("mbrNo"));
@@ -260,5 +327,288 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		}
 
 		return newMbrNo;
+	}
+
+	/**
+	 * 가족관계 정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMbrFmly(HashMap<String, Object> map) throws Exception {
+		return mstMbrDao.updateMbrFmly(map);
+	}
+
+	/**
+	 * 의뢰 고유키 생성
+	 * @return
+	 * @throws Exception
+	 */
+	public String getMstTransSeq() throws Exception{
+		return mstTransDao.getMstTransSeq();
+	}
+
+	/**
+	 * 의뢰정보 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertMstTrans(HashMap<String, Object> map) throws Exception{
+		return mstTransDao.insertMstTrans(map);
+	}
+
+	/**
+	 * 의뢰정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMstTrans(HashMap<String, Object> map) throws Exception{
+		return mstTransDao.updateMstTrans(map);
+	}
+
+	/**
+	 * 연계정보 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMstTransReceipt(HashMap<String, Object> map) throws Exception{
+		return mstTransDao.updateMstTransReceipt(map);
+	}
+
+	/**
+	 * 의뢰정보 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getMstTrans(HashMap<String, Object> map) throws Exception{
+		HashMap<String, Object> resultMap = mstTransDao.getMstTrans(map);
+
+		if(resultMap != null) {
+			String fileId = StringUtils.defaultIfEmpty((String)resultMap.get("FILE_ID"), "");
+			if(!"".equals(fileId)) {
+				HashMap<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("fileId", fileId);
+
+				resultMap.put("transFileList", fileInfoService.getFileList(paramMap));
+			}
+		}
+
+		return resultMap;
+	}
+
+	/**
+	 * 의뢰정보 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> saveTrans(HashMap<String, Object> map) throws Exception{
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String tagMbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
+		String transNo = StringUtils.defaultIfEmpty((String)map.get("transNo"), "");
+		int result = 0;
+
+		if(map.get("fileList") != null) {
+			List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)map.get("fileList");
+
+			for(HashMap<String, Object> info : fileList){
+				fileInfoService.insertFileInfo(info);
+			}
+		}
+
+		if("".equals(transNo)) {
+			map.put("transNo", this.getMstTransSeq());
+
+			result = this.insertMstTrans(map);
+
+			resultMap.put("MSG", "등록");
+		}else {
+			HashMap<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("transNo", transNo);
+			paramMap = this.getMstTrans(paramMap);
+
+			if(paramMap != null) {
+				String oldTransFileId = StringUtils.defaultIfEmpty((String)paramMap.get("FILE_ID"), "");
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))) {
+					if(!"".equals(oldTransFileId)) {
+						paramMap.put("fileId", oldTransFileId);
+
+						fileUtil.deleteFile(oldTransFileId);
+						fileInfoService.deleteFileInfo(paramMap);
+					}
+				}else if(!"".equals(oldTransFileId)) {
+					map.put("fileId", oldTransFileId);
+				}
+
+				result = this.updateMstTrans(map);
+
+				resultMap.put("MSG", "수정");
+			}
+		}
+
+		if(result > 0) {
+			HashMap<String, Object> mbrInfo = this.getMstMbr(tagMbrNo);
+			if(mbrInfo != null) {
+				String oldFmlyTree = StringUtils.defaultIfEmpty((String)mbrInfo.get("FMLY_TREE"), "");
+				String oldPersonalInfo = StringUtils.defaultIfEmpty((String)mbrInfo.get("PERSONAL_INFO"), "");
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), ""))){
+					if(!"".equals(oldFmlyTree)) {
+						mbrInfo.put("fileId", oldFmlyTree);
+
+						fileUtil.deleteFile(oldFmlyTree);
+						fileInfoService.deleteFileInfo(mbrInfo);
+					}
+				}else if(!"".equals(oldFmlyTree)) {
+					map.put("fmlyTree", oldFmlyTree);
+				}
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), ""))){
+					if(!"".equals(oldPersonalInfo)) {
+						mbrInfo.put("fileId", oldPersonalInfo);
+
+						fileUtil.deleteFile(oldPersonalInfo);
+						fileInfoService.deleteFileInfo(mbrInfo);
+					}
+				}else if(!"".equals(oldPersonalInfo)) {
+					map.put("personalInfo", oldPersonalInfo);
+				}
+			}
+
+			result = this.updateMbrFmly(map);
+		}
+
+		if(result <= 0) {
+			resultMap.put("err", ConstantObject.Y);
+		}
+
+		return resultMap;
+	}
+
+	/**
+	 * 의뢰정보 목록 카운트
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int getMstTransListCount(HashMap<String, Object> map) throws Exception{
+		return mstTransDao.getMstTransListCount(map);
+	}
+
+	/**
+	 * 의뢰정보 목록 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getMstTransList(HashMap<String, Object> map) throws Exception{
+		if(map.get("currentPageNo")== null || StringUtils.defaultString(map.get("currentPageNo").toString(), "") == "") {
+			throw new Exception("MemberServiceImpl.getMstTransList currentPageNo 페이지 수 누락");
+		}
+		if(map.get("recordCountPerPage") == null || StringUtils.defaultString(map.get("recordCountPerPage").toString(), "") == "") {
+			throw new Exception("MemberServiceImpl.getMstTransList recordCountPerPage 목록 수 누락");
+		}
+
+		return mstTransDao.getMstTransList(map);
+	}
+
+	/**
+	 * 연계처리 내용 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> saveTransState(HashMap<String, Object> map) throws Exception{
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String tagMbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
+		String transNo = StringUtils.defaultIfEmpty((String)map.get("transNo"), "");
+		String linkStateCd = StringUtils.defaultIfEmpty((String)map.get("linkStateCd"), "");
+		int result = 0;
+
+		if(map.get("fileList") != null) {
+			List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)map.get("fileList");
+
+			for(HashMap<String, Object> info : fileList){
+				fileInfoService.insertFileInfo(info);
+			}
+		}
+
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("transNo", transNo);
+		paramMap = this.getMstTrans(paramMap);
+
+		if(paramMap != null) {
+			String oldTransFileId = StringUtils.defaultIfEmpty((String)paramMap.get("FILE_ID"), "");
+
+			if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))) {
+				if(!"".equals(oldTransFileId)) {
+					paramMap.put("fileId", oldTransFileId);
+
+					fileUtil.deleteFile(oldTransFileId);
+					fileInfoService.deleteFileInfo(paramMap);
+				}
+			}else if(!"".equals(oldTransFileId)) {
+				map.put("fileId", oldTransFileId);
+			}
+
+			result = this.updateMstTransReceipt(map);
+		}
+
+		if("2".equals(linkStateCd) && result > 0) {			// 접수인 경우
+			result = this.updateMbrMngUsrId(map);
+		}
+
+		if(result > 0) {
+			HashMap<String, Object> mbrInfo = this.getMstMbr(tagMbrNo);
+			if(mbrInfo != null) {
+				String oldFmlyTree = StringUtils.defaultIfEmpty((String)mbrInfo.get("FMLY_TREE"), "");
+				String oldPersonalInfo = StringUtils.defaultIfEmpty((String)mbrInfo.get("PERSONAL_INFO"), "");
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), ""))){
+					if(!"".equals(oldFmlyTree)) {
+						mbrInfo.put("fileId", oldFmlyTree);
+
+						fileUtil.deleteFile(oldFmlyTree);
+						fileInfoService.deleteFileInfo(mbrInfo);
+					}
+				}else if(!"".equals(oldFmlyTree)) {
+					map.put("fmlyTree", oldFmlyTree);
+				}
+
+				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), ""))){
+					if(!"".equals(oldPersonalInfo)) {
+						mbrInfo.put("fileId", oldPersonalInfo);
+
+						fileUtil.deleteFile(oldPersonalInfo);
+						fileInfoService.deleteFileInfo(mbrInfo);
+					}
+				}else if(!"".equals(oldPersonalInfo)) {
+					map.put("personalInfo", oldPersonalInfo);
+				}
+			}
+
+			result = this.updateMbrFmly(map);
+		}
+
+		if(result <= 0) {
+			resultMap.put("err", ConstantObject.Y);
+		}
+
+		return resultMap;
+	}
+
+	/**
+	 * 사례관리자 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMbrMngUsrId(HashMap<String, Object> map) throws Exception{
+		return mstMbrDao.updateMbrMngUsrId(map);
 	}
 }

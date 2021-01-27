@@ -708,7 +708,7 @@
 	</div>
 	<!-- // 정보 제공자 / 대상자 -->
 	<!-- 정보취득경로 ~ 위기분류척도 / 상담내용-->
-	<div class="section el-row">
+	<div class="section el-row" style="min-width: 1880px;">
 		<div class="row">
 			<table class="w-auto wr-form">
 				<tbody>
@@ -877,7 +877,7 @@
 								<i class="el-icon-search"></i>
 							</button>
 						</th>
-						<td><textarea name="cslRst" placeholder="상담결과" style="width:99%;height:295px"></textarea></td>
+						<td><textarea name="cslRst" placeholder="상담결과" style="width:99%;height:260px"></textarea></td>
 					</tr>
 				</tbody>
 			</table>

@@ -106,4 +106,91 @@ public interface MemberService {
 	 * @throws Exception
 	 */
 	public String saveMstMbrEt(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 가족관계 정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMbrFmly(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 의뢰 고유키 생성
+	 * @return
+	 * @throws Exception
+	 */
+	public String getMstTransSeq() throws Exception;
+
+	/**
+	 * 의뢰정보 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertMstTrans(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 의뢰정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMstTrans(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계정보 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMstTransReceipt(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 의뢰정보 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getMstTrans(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 의뢰정보 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> saveTrans(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 의뢰정보 목록 카운트
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int getMstTransListCount(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 의뢰정보 목록 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getMstTransList(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계처리 내용 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> saveTransState(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 사례관리자 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMbrMngUsrId(HashMap<String, Object> map) throws Exception;
 }

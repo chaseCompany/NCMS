@@ -110,6 +110,7 @@ public class FileManagerUtil {
 			}
 
 			fileMap = new HashMap<String, Object>();
+			fileMap.put("formName", entry.getKey());
 			fileMap.put("fileId", fileId);								// 파일 고유키
 			fileMap.put("fileSeq", String.valueOf(fileKey));			// 동시등록 파일 순서
 			fileMap.put("fileExtsn", fileExt);							// 파일 확장자

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mstTrans">
+	<select id="mstTrans.getMstTransSeq" resultType="String">
+	<![CDATA[
+		SELECT /* mstTrans.getMstTransSeq */
+			   CONCAT('T', DATE_FORMAT(NOW(), '%Y%m%d%H'), LPAD(IFNULL(MAX(CAST(SUBSTR(TRANS_NO, 12) AS UNSIGNED)), 0) + 1, 4, '0')) AS NEW_TRANS_NO
+		  FROM MST_TRANS
+		 WHERE TRANS_NO LIKE CONCAT('T', DATE_FORMAT(NOW(), '%Y%m%d%H'), '%')
+	]]>
+	</select>
+
+	<select id="mstTrans.getMstTrans" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* mstTrans.getMstTrans */
+			   MT.TRANS_NO			, MT.MBR_NO			, MT.REQ_SERVICE_CD		, MT.TRANS_INST_CD		, MT.TRANS_USR_ID
+			 , SU01.USR_NM AS TRANS_USR_NM
+			 , MT.TRANS_DT			, MT.LINK_STATE_CD	, MT.TRANS_CTNT			, MT.RECEIPT_INST_CD	, MT.RECEIPT_USR_ID
+			 , MT.RECEIPT_DT		, MT.RECEIPT_CTNT	, MT.FILE_ID
+			 , MT.EVL_ITM_SCO01		, MT.EVL_ITM_LNK01	, MT.EVL_ITM_SCO02		, MT.EVL_ITM_LNK02		, MT.EVL_ITM_SCO03		, MT.EVL_ITM_LNK03
+			 , MT.EVL_ITM_SCO04		, MT.EVL_ITM_LNK04	, MT.EVL_ITM_SCO05		, MT.EVL_ITM_LNK05		, MT.EVL_ITM_SCO06		, MT.EVL_ITM_LNK06
+			 , MT.EVL_ITM_SCO07		, MT.EVL_ITM_LNK07	, MT.EVL_ITM_SCO08		, MT.EVL_ITM_LNK08		, MT.EVL_ITM_SCO09		, MT.EVL_ITM_LNK09
+			 , MT.EVL_ITM_SCO10		, MT.EVL_ITM_LNK10	, MT.EVL_ITM_SCO11		, MT.EVL_ITM_LNK11		, MT.EVL_ITM_SCO12		, MT.EVL_ITM_LNK12
+			 , MT.EVL_ITM_SCO13		, MT.EVL_ITM_LNK13	, MT.EVL_ITM_SCO14		, MT.EVL_ITM_LNK14		, MT.EVL_ITM_SCO15		, MT.EVL_ITM_LNK15
+			 , MT.EVL_ITM_SCO16		, MT.EVL_ITM_LNK16	, MT.EVL_ITM_SCO17		, MT.EVL_ITM_LNK17		, MT.EVL_ITM_SCO18		, MT.EVL_ITM_LNK18
+			 , MT.EVL_ITM_SCO19		, MT.EVL_ITM_LNK19	, MT.EVL_ITM_SCO20		, MT.EVL_ITM_LNK20		, MT.EVL_ITM_SCO21		, MT.EVL_ITM_LNK21
+			 , MT.EVL_ITM_SCO22		, MT.EVL_ITM_LNK22	, MT.EVL_ITM_SCO23		, MT.EVL_ITM_LNK23		, MT.EVL_ITM_SCO24		, MT.EVL_ITM_LNK24
+			 , MT.CRE_ID			, MT.CRE_DT			, MT.UPD_ID				, MT.UPD_DT
+		  FROM MST_TRANS MT
+		  LEFT JOIN SYS_USR SU01 ON (SU01.USR_ID = MT.TRANS_USR_ID)
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNo != null and mbrNo != ''">
+		   AND MT.MBR_NO = #{mbrNo}
+			</if>
+			<if test="transNo != null and transNo != ''">
+		   AND MT.TRANS_NO = #{transNo}
+			</if>
+			<if test="transInstCd != null and transInstCd != ''">
+		   AND MT.TRANS_INST_CD = #{transInstCd}
+			</if>
+			<if test="receiptInstCd != null and receiptInstCd != ''">
+		   AND MT.RECEIPT_INST_CD = #{receiptInstCd}
+			</if>
+		</trim>
+		 ORDER BY MT.CRE_DT DESC
+	</select>
+
+	<insert id="mstTrans.insertMstTrans" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* mstTrans.insertMstTrans */ INTO MST_TRANS(
+			   TRANS_NO			, MBR_NO			, REQ_SERVICE_CD	, TRANS_INST_CD		, TRANS_USR_ID
+			 , TRANS_DT			, LINK_STATE_CD		, TRANS_CTNT		, RECEIPT_INST_CD	, RECEIPT_USR_ID
+			 , RECEIPT_DT		, RECEIPT_CTNT		, FILE_ID
+			 , EVL_ITM_SCO01	, EVL_ITM_LNK01		, EVL_ITM_SCO02		, EVL_ITM_LNK02
+			 , EVL_ITM_SCO03	, EVL_ITM_LNK03		, EVL_ITM_SCO04		, EVL_ITM_LNK04
+			 , EVL_ITM_SCO05	, EVL_ITM_LNK05		, EVL_ITM_SCO06		, EVL_ITM_LNK06
+			 , EVL_ITM_SCO07	, EVL_ITM_LNK07		, EVL_ITM_SCO08		, EVL_ITM_LNK08
+			 , EVL_ITM_SCO09	, EVL_ITM_LNK09		, EVL_ITM_SCO10		, EVL_ITM_LNK10
+			 , EVL_ITM_SCO11	, EVL_ITM_LNK11		, EVL_ITM_SCO12		, EVL_ITM_LNK12
+			 , EVL_ITM_SCO13	, EVL_ITM_LNK13		, EVL_ITM_SCO14		, EVL_ITM_LNK14
+			 , EVL_ITM_SCO15	, EVL_ITM_LNK15		, EVL_ITM_SCO16		, EVL_ITM_LNK16
+			 , EVL_ITM_SCO17	, EVL_ITM_LNK17		, EVL_ITM_SCO18		, EVL_ITM_LNK18
+			 , EVL_ITM_SCO19	, EVL_ITM_LNK19		, EVL_ITM_SCO20		, EVL_ITM_LNK20
+			 , EVL_ITM_SCO21	, EVL_ITM_LNK21		, EVL_ITM_SCO22		, EVL_ITM_LNK22
+			 , EVL_ITM_SCO23	, EVL_ITM_LNK23		, EVL_ITM_SCO24		, EVL_ITM_LNK24
+			 , CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
+		)VALUES(
+			   #{transNo}		, #{mbrNo}			, #{reqServiceCd}	, #{transInstCd}	, #{transUsrId}
+			 , #{transDt}		, #{linkStateCd}	, #{transCtnt}		, #{receiptInstCd}	, #{receiptUsrId}
+			 , #{receiptDt}		, #{receiptCtnt}	, #{fileId}
+			 , #{evlItmSco01}	, #{evlItmLnk01}	, #{evlItmSco02}	, #{evlItmLnk02}
+			 , #{evlItmSco03}	, #{evlItmLnk03}	, #{evlItmSco04}	, #{evlItmLnk04}
+			 , #{evlItmSco05}	, #{evlItmLnk05}	, #{evlItmSco06}	, #{evlItmLnk06}
+			 , #{evlItmSco07}	, #{evlItmLnk07}	, #{evlItmSco08}	, #{evlItmLnk08}
+			 , #{evlItmSco09}	, #{evlItmLnk09}	, #{evlItmSco10}	, #{evlItmLnk10}
+			 , #{evlItmSco11}	, #{evlItmLnk11}	, #{evlItmSco12}	, #{evlItmLnk12}
+			 , #{evlItmSco13}	, #{evlItmLnk13}	, #{evlItmSco14}	, #{evlItmLnk14}
+			 , #{evlItmSco15}	, #{evlItmLnk15}	, #{evlItmSco16}	, #{evlItmLnk16}
+			 , #{evlItmSco17}	, #{evlItmLnk17}	, #{evlItmSco18}	, #{evlItmLnk18}
+			 , #{evlItmSco19}	, #{evlItmLnk19}	, #{evlItmSco20}	, #{evlItmLnk20}
+			 , #{evlItmSco21}	, #{evlItmLnk21}	, #{evlItmSco22}	, #{evlItmLnk22}
+			 , #{evlItmSco23}	, #{evlItmLnk23}	, #{evlItmSco24}	, #{evlItmLnk24}
+			 , #{creId}			, NOW()				, #{creId}			, NOW()
+		)
+	]]>
+	</insert>
+
+	<update id="mstTrans.updateMstTrans" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* mstTrans.updateMstTrans */ MST_TRANS
+		   SET REQ_SERVICE_CD = #{reqServiceCd}		, TRANS_INST_CD = #{transInstCd}
+			 , TRANS_USR_ID = #{transUsrId}			, TRANS_DT = #{transDt}
+			 , LINK_STATE_CD = #{linkStateCd}		, TRANS_CTNT = #{transCtnt}
+			 , RECEIPT_INST_CD = #{receiptInstCd}	, RECEIPT_USR_ID = #{receiptUsrId}
+			 , RECEIPT_DT = #{receiptDt}			, RECEIPT_CTNT = #{receiptCtnt}
+			 , FILE_ID = #{fileId}
+			 , EVL_ITM_SCO01 = #{evlItmSco01}		, EVL_ITM_LNK01 = #{evlItmLnk01}
+			 , EVL_ITM_SCO02 = #{evlItmSco02}		, EVL_ITM_LNK02 = #{evlItmLnk02}
+			 , EVL_ITM_SCO03 = #{evlItmSco03}		, EVL_ITM_LNK03 = #{evlItmLnk03}
+			 , EVL_ITM_SCO04 = #{evlItmSco04}		, EVL_ITM_LNK04 = #{evlItmLnk04}
+			 , EVL_ITM_SCO05 = #{evlItmSco05}		, EVL_ITM_LNK05 = #{evlItmLnk05}
+			 , EVL_ITM_SCO06 = #{evlItmSco06}		, EVL_ITM_LNK06 = #{evlItmLnk06}
+			 , EVL_ITM_SCO07 = #{evlItmSco07}		, EVL_ITM_LNK07 = #{evlItmLnk07}
+			 , EVL_ITM_SCO08 = #{evlItmSco08}		, EVL_ITM_LNK08 = #{evlItmLnk08}
+			 , EVL_ITM_SCO09 = #{evlItmSco09}		, EVL_ITM_LNK09 = #{evlItmLnk09}
+			 , EVL_ITM_SCO10 = #{evlItmSco10}		, EVL_ITM_LNK10 = #{evlItmLnk10}
+			 , EVL_ITM_SCO11 = #{evlItmSco11}		, EVL_ITM_LNK11 = #{evlItmLnk11}
+			 , EVL_ITM_SCO12 = #{evlItmSco12}		, EVL_ITM_LNK12 = #{evlItmLnk12}
+			 , EVL_ITM_SCO13 = #{evlItmSco13}		, EVL_ITM_LNK13 = #{evlItmLnk13}
+			 , EVL_ITM_SCO14 = #{evlItmSco14}		, EVL_ITM_LNK14 = #{evlItmLnk14}
+			 , EVL_ITM_SCO15 = #{evlItmSco15}		, EVL_ITM_LNK15 = #{evlItmLnk15}
+			 , EVL_ITM_SCO16 = #{evlItmSco16}		, EVL_ITM_LNK16 = #{evlItmLnk16}
+			 , EVL_ITM_SCO17 = #{evlItmSco17}		, EVL_ITM_LNK17 = #{evlItmLnk17}
+			 , EVL_ITM_SCO18 = #{evlItmSco18}		, EVL_ITM_LNK18 = #{evlItmLnk18}
+			 , EVL_ITM_SCO19 = #{evlItmSco19}		, EVL_ITM_LNK19 = #{evlItmLnk19}
+			 , EVL_ITM_SCO20 = #{evlItmSco20}		, EVL_ITM_LNK20 = #{evlItmLnk20}
+			 , EVL_ITM_SCO21 = #{evlItmSco21}		, EVL_ITM_LNK21 = #{evlItmLnk21}
+			 , EVL_ITM_SCO22 = #{evlItmSco22}		, EVL_ITM_LNK22 = #{evlItmLnk22}
+			 , EVL_ITM_SCO23 = #{evlItmSco23}		, EVL_ITM_LNK23 = #{evlItmLnk23}
+			 , EVL_ITM_SCO24 = #{evlItmSco24}		, EVL_ITM_LNK24 = #{evlItmLnk24}
+			 , UPD_ID = #{creId}					, UPD_DT = NOW()
+		 WHERE TRANS_NO = #{transNo}
+	]]>
+	</update>
+
+	<update id="mstTrans.updateMstTransReceipt" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* mstTrans.updateMstTransReceipt */ MST_TRANS
+		   SET REQ_SERVICE_CD = #{reqServiceCd}				, TRANS_DT = #{transDt}
+			 , LINK_STATE_CD = #{linkStateCd}				, TRANS_CTNT = #{transCtnt}
+			 , RECEIPT_INST_CD = #{receiptInstCd}			, RECEIPT_USR_ID = #{creId}
+			 , RECEIPT_DT = DATE_FORMAT(NOW(), '%Y%m%d')	, FILE_ID = #{fileId}
+			 , EVL_ITM_SCO01 = #{evlItmSco01}				, EVL_ITM_LNK01 = #{evlItmLnk01}
+			 , EVL_ITM_SCO02 = #{evlItmSco02}				, EVL_ITM_LNK02 = #{evlItmLnk02}
+			 , EVL_ITM_SCO03 = #{evlItmSco03}				, EVL_ITM_LNK03 = #{evlItmLnk03}
+			 , EVL_ITM_SCO04 = #{evlItmSco04}				, EVL_ITM_LNK04 = #{evlItmLnk04}
+			 , EVL_ITM_SCO05 = #{evlItmSco05}				, EVL_ITM_LNK05 = #{evlItmLnk05}
+			 , EVL_ITM_SCO06 = #{evlItmSco06}				, EVL_ITM_LNK06 = #{evlItmLnk06}
+			 , EVL_ITM_SCO07 = #{evlItmSco07}				, EVL_ITM_LNK07 = #{evlItmLnk07}
+			 , EVL_ITM_SCO08 = #{evlItmSco08}				, EVL_ITM_LNK08 = #{evlItmLnk08}
+			 , EVL_ITM_SCO09 = #{evlItmSco09}				, EVL_ITM_LNK09 = #{evlItmLnk09}
+			 , EVL_ITM_SCO10 = #{evlItmSco10}				, EVL_ITM_LNK10 = #{evlItmLnk10}
+			 , EVL_ITM_SCO11 = #{evlItmSco11}				, EVL_ITM_LNK11 = #{evlItmLnk11}
+			 , EVL_ITM_SCO12 = #{evlItmSco12}				, EVL_ITM_LNK12 = #{evlItmLnk12}
+			 , EVL_ITM_SCO13 = #{evlItmSco13}				, EVL_ITM_LNK13 = #{evlItmLnk13}
+			 , EVL_ITM_SCO14 = #{evlItmSco14}				, EVL_ITM_LNK14 = #{evlItmLnk14}
+			 , EVL_ITM_SCO15 = #{evlItmSco15}				, EVL_ITM_LNK15 = #{evlItmLnk15}
+			 , EVL_ITM_SCO16 = #{evlItmSco16}				, EVL_ITM_LNK16 = #{evlItmLnk16}
+			 , EVL_ITM_SCO17 = #{evlItmSco17}				, EVL_ITM_LNK17 = #{evlItmLnk17}
+			 , EVL_ITM_SCO18 = #{evlItmSco18}				, EVL_ITM_LNK18 = #{evlItmLnk18}
+			 , EVL_ITM_SCO19 = #{evlItmSco19}				, EVL_ITM_LNK19 = #{evlItmLnk19}
+			 , EVL_ITM_SCO20 = #{evlItmSco20}				, EVL_ITM_LNK20 = #{evlItmLnk20}
+			 , EVL_ITM_SCO21 = #{evlItmSco21}				, EVL_ITM_LNK21 = #{evlItmLnk21}
+			 , EVL_ITM_SCO22 = #{evlItmSco22}				, EVL_ITM_LNK22 = #{evlItmLnk22}
+			 , EVL_ITM_SCO23 = #{evlItmSco23}				, EVL_ITM_LNK23 = #{evlItmLnk23}
+			 , EVL_ITM_SCO24 = #{evlItmSco24}				, EVL_ITM_LNK24 = #{evlItmLnk24}
+			 , UPD_ID = #{creId}							, UPD_DT = NOW()
+		 WHERE TRANS_NO = #{transNo}
+	]]>
+	</update>
+
+	<select id="mstTrans.getMstTransListCount" parameterType="hashMap" resultType="int">
+	<![CDATA[
+		SELECT /* mstTrans.getMstTransListCount */ COUNT(TRANS_NO) AS CNT
+		  FROM MST_TRANS
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNo != null and mbrNo != ''">
+		   AND MBR_NO = #{mbrNo}
+			</if>
+			<if test="transNo != null and transNo != ''">
+		   AND TRANS_NO = #{transNo}
+			</if>
+			<if test="transInstCd != null and transInstCd != ''">
+		   AND TRANS_INST_CD = #{transInstCd}
+			</if>
+			<if test="receiptInstCd != null and receiptInstCd != ''">
+		   AND RECEIPT_INST_CD = #{receiptInstCd}
+			</if>
+		</trim>
+		 ORDER BY CRE_DT DESC
+	</select>
+
+	<select id="mstTrans.getMstTransList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* mstTrans.getMstTransList */ *
+		  FROM (
+				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
+				  FROM (
+						SELECT
+							   MT.TRANS_NO		, MT.MBR_NO						, MM.MBR_NM						, MT.TRANS_INST_CD		, SC01.CD_NM AS TRANS_INST_NM
+							 , MT.TRANS_DT		, MT.TRANS_USR_ID				, SU01.USR_NM AS TRANS_USR_NM	, MT.RECEIPT_INST_CD	, SC02.CD_NM AS RECEIPT_INST_NM
+							 , MT.RECEIPT_DT	, MT.RECEIPT_USR_ID				, SU02.USR_NM AS RECEIPT_USR_NM	, MM.GEND_CD			, SC03.CD_NM AS GEND_NM
+							 , MM.TEL_NO1		, MM.TEL_NO2					, MM.TEL_NO3					, MM.MNG_USR_ID			, SU03.USR_NM AS MNG_USR_NM
+							 , MM.REG_USR_ID	, SU04.USR_NM AS REG_USR_NM		, SU04.SITE_CD					, SC04.CD_NM AS SITE_NM	, MT.LINK_STATE_CD
+							 , SC05.CD_NM AS LINK_STATE_NM		, MT.CRE_DT
+						  FROM MST_TRANS MT
+						  LEFT JOIN MST_MBR MM ON (MT.MBR_NO = MM.MBR_NO)
+						  LEFT JOIN SYS_USR SU01 ON (SU01.USR_ID = MT.TRANS_USR_ID)
+						  LEFT JOIN SYS_USR SU02 ON (SU02.USR_ID = MT.RECEIPT_USR_ID)
+						  LEFT JOIN SYS_USR SU03 ON (SU03.USR_ID = MM.MNG_USR_ID)
+						  LEFT JOIN SYS_USR SU04 ON (SU04.USR_ID = MM.REG_USR_ID)
+						  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND MT.TRANS_INST_CD = SC01.CD_ID)
+						  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3500' AND MT.RECEIPT_INST_CD = SC02.CD_ID)
+						  LEFT JOIN SYS_CD SC03 ON (SC03.GRP_CD = 'C1100' AND MM.GEND_CD = SC03.CD_ID)
+						  LEFT JOIN SYS_CD SC04 ON (SC04.GRP_CD = 'C3500' AND SU04.SITE_CD = SC04.CD_ID)
+						  LEFT JOIN SYS_CD SC05 ON (SC05.GRP_CD = 'C8500' AND  MT.LINK_STATE_CD = SC05.CD_ID)
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNo != null and mbrNo != ''">
+						   AND MT.MBR_NO = #{mbrNo}
+			</if>
+			<if test="transNo != null and transNo != ''">
+						   AND MT.TRANS_NO = #{transNo}
+			</if>
+			<if test="transInstCd != null and transInstCd != ''">
+						   AND MT.TRANS_INST_CD = #{transInstCd}
+			</if>
+			<if test="receiptInstCd != null and receiptInstCd != ''">
+						   AND MT.RECEIPT_INST_CD = #{receiptInstCd}
+			</if>
+		</trim>
+	<![CDATA[
+						 ORDER BY MT.CRE_DT DESC
+				  ) T,(SELECT @RNUM := 0) RNUM
+				 ORDER BY T.CRE_DT DESC
+		  ) T1
+		 WHERE ROWNUM > (#{currentPageNo}-1) * #{recordCountPerPage}
+		 ORDER BY T1.CRE_DT DESC
+		 LIMIT #{recordCountPerPage}
+	]]>
+	</select>
+</mapper>

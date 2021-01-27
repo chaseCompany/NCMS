@@ -9,9 +9,12 @@
 <c:set var="loginUserNm" value="<%=loginUserNm%>" />
 <c:set var="loginSiteNm" value="<%=loginSiteNm%>" />
 <script type="text/javascript" language="javascript" charset="utf-8" src="<c:url value='/js/jquery.form.js'/>"></script>
+<script type="text/javascript" language="javascript" charset="utf-8" src="<c:url value='/js/jquery.sumoselect.js'/>"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		$("input[name='ispDt']").datepicker('setDate', 'today');
+		// 멀티 셀렉트박스 생성
+		var multipleSelect = $('#lawPbmCd').SumoSelect();
 
 		<%-- 초기화 --%>
 		individualNew = function(){
@@ -806,6 +809,9 @@
 								pmbFlag = true;
 							}
 						}
+
+						multipleSelect = $("select[name='lawPbmCd']")[0].sumo.reload();
+
 						if(pmbFlag){
 							$("input[name='lawPbmEtc']").attr("disabled", false);
 							$("input[name='lawPbmEtc']").val(resultObj.LAW_PBM_ETC);
@@ -1223,29 +1229,6 @@
 				},
 				error : function(xhr, status){}
 			});
-		},
-		<%-- 기관명 팝업 --%>
-		organSearchPopup = function(){
-			/*
-			$.ajax({
-				url : '/ajaxOrganList.do',
-				type : 'POST',
-				data : {
-					pageNo : $("input[name='memPageNo']").val(),
-					mbrNm : $("input[name='memSchMbrNm']").val(),
-					telNo : $("input[name='memSchTelNo']").val()
-				},
-				success : function(res){
-					$("div[id='layerpopup']").html(res);
-					$("div[id='layerpopup']").attr("data-popup", "memberPopUp");
-					$("input[name='reFunName']").val("setMemInfo");
-					layerPopupOpen('memberPopUp');
-				},
-				error : function(xhr, status){
-					console.log(xhr);
-				}
-			});
-			*/
 		}
 		<%-- 탭 메뉴 활성화 --%>
 		$('.el-tabs__item').on('click', function(){
@@ -2268,7 +2251,7 @@
 										<tr>
 											<th><span class="required">*</span> 약물관련 법적문제</th>
 											<td colspan="5">
-												<select name="lawPbmCd" id="lawPbmCd" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');" multiple>
+												<select name="lawPbmCd" id="lawPbmCd" class="testselect2" style="width: 150px;" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');" multiple="multiple">
 <c:if test="${lawPbmCdList ne null and lawPbmCdList ne ''}">
 	<c:forEach var="result" items="${lawPbmCdList}" varStatus="status">
 													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
@@ -2775,10 +2758,6 @@
 											<th>기관명</th>
 											<td colspan="5">
 												<input type="text" name="organName" class="el-input__inner" style="width: 100%;" placeholder="기관명 입력" />
-												<%--div class="search-input tac" style="width: 100%;">
-													<input type="text" name="organName" class="el-input__inner" style="width: 93%;" placeholder="기관명 입력" />
-													<button type="button" onclick="javaScript:organSearchPopup();"><i class="el-icon-search"></i></button>
-												</div--%>
 											</td>
 										</tr>
 										<tr>
