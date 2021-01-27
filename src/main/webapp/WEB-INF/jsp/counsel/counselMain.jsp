@@ -308,6 +308,9 @@
 						if(res.cslRcpInfo.IFP_AREA_CD == "ZZZ"){
 							$("input[name='ifpAreaEtc']").attr("disabled", false);
 							$("input[name='ifpAreaEtc']").val(res.cslRcpInfo.IFP_AREA_ETC);
+						}else{
+							$("input[name='ifpAreaEtc']").attr("disabled", true);
+							$("input[name='ifpAreaEtc']").val("");
 						}
 						$("input[name='tgpNm']").val(res.cslRcpInfo.TGP_NM);
 						$("input[name='tgpMbrNo']").val(res.cslRcpInfo.TGP_MBR_NO);
@@ -322,6 +325,9 @@
 						if(res.cslRcpInfo.TGP_AREA_CD == "ZZZ"){
 							$("input[name='tgpAreaEtc']").attr("disabled", false);
 							$("input[name='tgpAreaEtc']").val(res.cslRcpInfo.TGP_AREA_ETC);
+						}else{
+							$("input[name='tgpAreaEtc']").attr("disabled", true);
+							$("input[name='tgpAreaEtc']").val("");
 						}
 						$("select[name='ifPathCd']").val(res.cslRcpInfo.IF_PATH_CD).prop("selected", true);
 						$("select[name='pbmKndCd']").val(res.cslRcpInfo.PBM_KND_CD).prop("selected", true);
