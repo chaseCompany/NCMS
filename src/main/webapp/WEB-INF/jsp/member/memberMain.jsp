@@ -220,7 +220,7 @@
 			<div class="section">
 				<table class="wr-form sig-form">
 					<colgroup>
-						<col style="width:100px">
+						<col style="width:80px">
 						<col style="width:180px">
 						<col style="width:100px">
 						<col style="width:150px">
