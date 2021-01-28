@@ -185,15 +185,21 @@
 		<div class="el-tabs__nav-wrap is-top">
 			<div class="el-tabs__nav-scroll">
 				<div role="tablist" class="el-tabs__nav is-top">
-					<div class="el-tabs__item is-top is-active" data-id="tab-mem">
-						<span><i class="el-icon-s-help"></i> <a href="/memberMain.do">회원정보관리</a></span>
-					</div>
-					<div class="el-tabs__item is-top" data-id="tab-link">
-						<span><i class="el-icon-s-management"></i> <a href="/memberLink.do">연계</a></span>
-					</div>
-					<div class="el-tabs__item is-top" data-id="tab-req">
-						<span><i class="el-icon-platform-eleme"></i> <a href="/memberReq.do">의뢰</a></span>
-					</div>
+					<a href="/memberMain.do">
+						<div class="el-tabs__item is-top is-active" data-id="tab-mem">
+							<span><i class="el-icon-s-help"></i> 회원정보관리</span>
+						</div>
+					</a>
+					<a href="/memberLink.do">
+						<div class="el-tabs__item is-top" data-id="tab-link">
+							<span><i class="el-icon-s-management"></i> 연계</span>
+						</div>
+					</a>
+					<a href="/memberReq.do">
+						<div class="el-tabs__item is-top" data-id="tab-req">
+							<span><i class="el-icon-platform-eleme"></i> 의뢰</span>
+						</div>
+					</a>
 				</div>
 			</div>
 		</div>
