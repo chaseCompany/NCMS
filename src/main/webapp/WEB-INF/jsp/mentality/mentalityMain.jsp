@@ -155,11 +155,14 @@
 
 						if(dataInfo.fileList != undefined && dataInfo.fileList != ''){
 							for(let i=0 ; i<dataInfo.fileList.length ; i++){
-								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + dataInfo.fileList[i].FILE_ID + "\", \"" + dataInfo.fileList[i].FILE_SEQ + "\");'>" + dataInfo.fileList[i].ORIGNL_FILE_NM + "</a>");
+								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + dataInfo.fileList[i].FILE_ID + "\", \"" + dataInfo.fileList[i].FILE_SEQ + "\");'>" + dataInfo.fileList[i].ORIGNL_FILE_NM + "</a>"
+													+  "&nbsp;&nbsp;<a href='javaScript:deleteFile(\"fileName\");'>삭제</a>"
+													  );
 							}
 						}else{
 							$("div#fileName").text("");
 						}
+						$("input[name='fileNameFlag']").val("N");
 
 						var termTm = needTime($("input[name='cslFmTm']").val(), $("input[name='cslToTm']").val());
 						if(termTm > 0){
@@ -305,6 +308,7 @@
 			$("input[name='nxtCslTm']").val("");
 			$("textarea[name='nxtCslCtnt']").val("");
 			$("div#fileName").text("");
+			$("input[name='fileNameFlag']").val("N");
 			$("input[name='file']").val("");
 		},
 		<%-- 상담내용보기 --%>
@@ -729,7 +733,11 @@
 						</tr>
 						<tr>
 							<th> 첨부파일</th>
-							<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
+							<td>
+								<div id="fileName"></div>
+								<input type="hidden" name="fileNameFlag" value="N" />
+								<input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" />
+							</td>
 						</tr>
 						</tbody>
 					</table>

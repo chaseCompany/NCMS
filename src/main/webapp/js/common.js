@@ -152,6 +152,13 @@ function downloadFile(tagId, tagSeq){
 	window.open("/fileDown.do?fileId=" + tagId + "&fileSeq=" + tagSeq);
 }
 /**
+ * 파일 삭제 플레그 변경
+ */
+function deleteFile(tagName){
+	$("div#" + tagName).text("");
+	$("input[name='" + tagName + "Flag']").val("Y");
+}
+/**
  * 두 날짜 비교 년수 리턴
  */
 function checkDay(fromDay, toDay){

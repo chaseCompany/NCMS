@@ -127,10 +127,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 
 			int result = this.insertCslIdv(map);
 			if(result > 0){
-				resultMap.put("err", "N");
+				resultMap.put("err", ConstantObject.N);
 				resultMap.put("MSG", "사례관리 상담 등록 완료");
 			}else{
-				resultMap.put("err", "Y");
+				resultMap.put("err", ConstantObject.Y);
 				resultMap.put("MSG", "사례관리 상담 등록 실패");
 			}
 		}else{
@@ -139,13 +139,14 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 			if(!cslIdvInfo.isEmpty() && cslIdvInfo != null) {
 				String oldFileId = StringUtils.defaultIfEmpty((String)cslIdvInfo.get("FILE_ID"), "");
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))) {
-					if(!"".equals(oldFileId)) {
-						cslIdvInfo.put("fileId", oldFileId);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("fileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), "")) && !"".equals(oldFileId))
+				  ) {
+					cslIdvInfo.put("fileId", oldFileId);
 
-						fileUtil.deleteFile(oldFileId);
-						fileInfoService.deleteFileInfo(cslIdvInfo);
-					}
+					fileUtil.deleteFile(oldFileId);
+					fileInfoService.deleteFileInfo(cslIdvInfo);
 				}else if(!"".equals(oldFileId)) {
 					map.put("fileId", oldFileId);
 				}
@@ -153,10 +154,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 
 			int result = this.updateCslIdv(map);
 			if(result > 0){
-				resultMap.put("err", "N");
+				resultMap.put("err", ConstantObject.N);
 				resultMap.put("MSG", "사례관리 상담 수정 완료");
 			}else{
-				resultMap.put("err", "Y");
+				resultMap.put("err", ConstantObject.Y);
 				resultMap.put("MSG", "사례관리 상담 수정 실패");
 			}
 		}

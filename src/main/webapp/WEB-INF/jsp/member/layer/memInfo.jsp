@@ -507,7 +507,11 @@
 						<td colspan="3">
 <c:if test="${mbrInfo.fmlyTreeFileList ne null and mbrInfo.fmlyTreeFileList ne ''}">
 	<c:forEach var="result" items="${mbrInfo.fmlyTreeFileList}" varStatus="status">
-							<div id="fmlyTreeFileName"><a href='javaScript:downloadFile("<c:out value="${result.FILE_ID}" />", "<c:out value="${result.FILE_SEQ}"/>");'><c:out value="${result.ORIGNL_FILE_NM}"/></a></div>
+							<div id="fmlyTreeFileName">
+								<a href='javaScript:downloadFile("<c:out value="${result.FILE_ID}" />", "<c:out value="${result.FILE_SEQ}"/>");'><c:out value="${result.ORIGNL_FILE_NM}"/></a>
+								&nbsp;&nbsp;<a href='javaScript:deleteFile("fmlyTreeFileName");'>삭제</a>
+							</div>
+							<input type="hidden" name="fmlyTreeFileNameFlag" value="N" />
 	</c:forEach>
 </c:if>
 							<input name="fmlyTree" type="file" class="el-input__inner" style="width: 100%;">
@@ -518,7 +522,11 @@
 						<td colspan="3">
 <c:if test="${mbrInfo.personalInfoFileList ne null and mbrInfo.personalInfoFileList ne ''}">
 	<c:forEach var="result" items="${mbrInfo.personalInfoFileList}" varStatus="status">
-							<div id="personalInfoFileName"><a href='javaScript:downloadFile("<c:out value="${result.FILE_ID}" />", "<c:out value="${result.FILE_SEQ}"/>");'><c:out value="${result.ORIGNL_FILE_NM}"/></a></div>
+							<div id="personalInfoFileName">
+								<a href='javaScript:downloadFile("<c:out value="${result.FILE_ID}" />", "<c:out value="${result.FILE_SEQ}"/>");'><c:out value="${result.ORIGNL_FILE_NM}"/></a>
+								&nbsp;&nbsp;<a href='javaScript:deleteFile("personalInfoFileName");'>삭제</a>
+							</div>
+							<input type="hidden" name="personalInfoFileNameFlag" value="N" />
 	</c:forEach>
 </c:if>
 							<input name="personalInfo" type="file" class="el-input__inner" style="width: 100%;">

@@ -193,25 +193,27 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 				String oldFmlyTree = StringUtils.defaultIfEmpty((String)mbrInfo.get("FMLY_TREE"), "");
 				String oldPersonalInfo = StringUtils.defaultIfEmpty((String)mbrInfo.get("PERSONAL_INFO"), "");
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), ""))){
-					if(!"".equals(oldFmlyTree)) {
-						mbrInfo.put("fileId", oldFmlyTree);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTreeFileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), "")) && !"".equals(oldFmlyTree))
+				  ) {
+					mbrInfo.put("fileId", oldFmlyTree);
 
-						fileUtil.deleteFile(oldFmlyTree);
-						fileInfoService.deleteFileInfo(mbrInfo);
-					}
+					fileUtil.deleteFile(oldFmlyTree);
+					fileInfoService.deleteFileInfo(mbrInfo);
 				}else if(!"".equals(oldFmlyTree)) {
 					map.put("fmlyTree", oldFmlyTree);
 				}
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), ""))){
-					if(!"".equals(oldPersonalInfo)) {
-						mbrInfo.put("fileId", oldPersonalInfo);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("personalInfoFileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), "")) && !"".equals(oldPersonalInfo))
+				  ) {
+					mbrInfo.put("fileId", oldPersonalInfo);
 
-						fileUtil.deleteFile(oldPersonalInfo);
-						fileInfoService.deleteFileInfo(mbrInfo);
-					}
-				}else if(!"".equals(oldPersonalInfo)) {
+					fileUtil.deleteFile(oldPersonalInfo);
+					fileInfoService.deleteFileInfo(mbrInfo);
+				}else if(!"".equals(oldFmlyTree)) {
 					map.put("personalInfo", oldPersonalInfo);
 				}
 			}
@@ -434,13 +436,14 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 			if(paramMap != null) {
 				String oldTransFileId = StringUtils.defaultIfEmpty((String)paramMap.get("FILE_ID"), "");
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))) {
-					if(!"".equals(oldTransFileId)) {
-						paramMap.put("fileId", oldTransFileId);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("transfileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), "")) && !"".equals(oldTransFileId))
+				  ) {
+					paramMap.put("fileId", oldTransFileId);
 
-						fileUtil.deleteFile(oldTransFileId);
-						fileInfoService.deleteFileInfo(paramMap);
-					}
+					fileUtil.deleteFile(oldTransFileId);
+					fileInfoService.deleteFileInfo(paramMap);
 				}else if(!"".equals(oldTransFileId)) {
 					map.put("fileId", oldTransFileId);
 				}
@@ -457,25 +460,27 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 				String oldFmlyTree = StringUtils.defaultIfEmpty((String)mbrInfo.get("FMLY_TREE"), "");
 				String oldPersonalInfo = StringUtils.defaultIfEmpty((String)mbrInfo.get("PERSONAL_INFO"), "");
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), ""))){
-					if(!"".equals(oldFmlyTree)) {
-						mbrInfo.put("fileId", oldFmlyTree);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTreeFileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), "")) && !"".equals(oldFmlyTree))
+				  ) {
+					mbrInfo.put("fileId", oldFmlyTree);
 
-						fileUtil.deleteFile(oldFmlyTree);
-						fileInfoService.deleteFileInfo(mbrInfo);
-					}
+					fileUtil.deleteFile(oldFmlyTree);
+					fileInfoService.deleteFileInfo(mbrInfo);
 				}else if(!"".equals(oldFmlyTree)) {
 					map.put("fmlyTree", oldFmlyTree);
 				}
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), ""))){
-					if(!"".equals(oldPersonalInfo)) {
-						mbrInfo.put("fileId", oldPersonalInfo);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("personalInfoFileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), "")) && !"".equals(oldPersonalInfo))
+				  ) {
+					mbrInfo.put("fileId", oldPersonalInfo);
 
-						fileUtil.deleteFile(oldPersonalInfo);
-						fileInfoService.deleteFileInfo(mbrInfo);
-					}
-				}else if(!"".equals(oldPersonalInfo)) {
+					fileUtil.deleteFile(oldPersonalInfo);
+					fileInfoService.deleteFileInfo(mbrInfo);
+				}else if(!"".equals(oldFmlyTree)) {
 					map.put("personalInfo", oldPersonalInfo);
 				}
 			}
@@ -545,13 +550,14 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		if(paramMap != null) {
 			String oldTransFileId = StringUtils.defaultIfEmpty((String)paramMap.get("FILE_ID"), "");
 
-			if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))) {
-				if(!"".equals(oldTransFileId)) {
-					paramMap.put("fileId", oldTransFileId);
+			if(
+					ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("transfileNameFlag"), ""))
+				 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), "")) && !"".equals(oldTransFileId))
+			  ) {
+				paramMap.put("fileId", oldTransFileId);
 
-					fileUtil.deleteFile(oldTransFileId);
-					fileInfoService.deleteFileInfo(paramMap);
-				}
+				fileUtil.deleteFile(oldTransFileId);
+				fileInfoService.deleteFileInfo(paramMap);
 			}else if(!"".equals(oldTransFileId)) {
 				map.put("fileId", oldTransFileId);
 			}
@@ -569,25 +575,27 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 				String oldFmlyTree = StringUtils.defaultIfEmpty((String)mbrInfo.get("FMLY_TREE"), "");
 				String oldPersonalInfo = StringUtils.defaultIfEmpty((String)mbrInfo.get("PERSONAL_INFO"), "");
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), ""))){
-					if(!"".equals(oldFmlyTree)) {
-						mbrInfo.put("fileId", oldFmlyTree);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTreeFileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fmlyTree"), "")) && !"".equals(oldFmlyTree))
+				  ) {
+					mbrInfo.put("fileId", oldFmlyTree);
 
-						fileUtil.deleteFile(oldFmlyTree);
-						fileInfoService.deleteFileInfo(mbrInfo);
-					}
+					fileUtil.deleteFile(oldFmlyTree);
+					fileInfoService.deleteFileInfo(mbrInfo);
 				}else if(!"".equals(oldFmlyTree)) {
 					map.put("fmlyTree", oldFmlyTree);
 				}
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), ""))){
-					if(!"".equals(oldPersonalInfo)) {
-						mbrInfo.put("fileId", oldPersonalInfo);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("personalInfoFileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("personalInfo"), "")) && !"".equals(oldPersonalInfo))
+				  ) {
+					mbrInfo.put("fileId", oldPersonalInfo);
 
-						fileUtil.deleteFile(oldPersonalInfo);
-						fileInfoService.deleteFileInfo(mbrInfo);
-					}
-				}else if(!"".equals(oldPersonalInfo)) {
+					fileUtil.deleteFile(oldPersonalInfo);
+					fileInfoService.deleteFileInfo(mbrInfo);
+				}else if(!"".equals(oldFmlyTree)) {
 					map.put("personalInfo", oldPersonalInfo);
 				}
 			}

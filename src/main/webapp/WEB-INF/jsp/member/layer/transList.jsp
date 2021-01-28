@@ -83,14 +83,18 @@
 						$("select[name='evlItmSco24']").val(resultObj.EVL_ITM_SCO24).prop("selected", true);
 						$("input[name='evlItmLnk24']").val(resultObj.EVL_ITM_LNK24);
 						$("textarea[name='transCtnt']").val(resultObj.TRANS_CTNT);
+						$("input[name='fileId']").val("");
 
 						if(resultObj.transFileList != undefined && resultObj.transFileList != ''){
 							for(let i=0 ; i<resultObj.transFileList.length ; i++){
-								$("div#transfileName").html("<a href='javaScript:downloadFile(\"" + resultObj.transFileList[i].FILE_ID + "\", \"" + resultObj.transFileList[i].FILE_SEQ + "\");'>" + resultObj.transFileList[i].ORIGNL_FILE_NM + "</a>");
+								$("div#transfileName").html("<a href='javaScript:downloadFile(\"" + resultObj.transFileList[i].FILE_ID + "\", \"" + resultObj.transFileList[i].FILE_SEQ + "\");'>" + resultObj.transFileList[i].ORIGNL_FILE_NM + "</a>"
+														  + "&nbsp;&nbsp;<a href='javaScript:deleteFile(\"transfileName\");'>삭제</a>"
+														   );
 							}
 						}else{
 							$("div#transfileName").text("");
 						}
+						$("input[name='transfileNameFlag']").val("N");
 					}
 				},
 				error : function(xhr, status){

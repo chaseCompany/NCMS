@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.dao.CslCureDao;
@@ -136,10 +137,10 @@ public class MentalityServiceImpl extends EgovAbstractServiceImpl implements Men
 
 			int result = this.insertCslCure(map);
 			if(result > 0){
-				resultMap.put("err", "N");
+				resultMap.put("err", ConstantObject.N);
 				resultMap.put("MSG", "심리치유 등록 완료");
 			}else{
-				resultMap.put("err", "Y");
+				resultMap.put("err", ConstantObject.Y);
 				resultMap.put("MSG", "심리치유 등록 실패");
 			}
 		}else{
@@ -148,13 +149,14 @@ public class MentalityServiceImpl extends EgovAbstractServiceImpl implements Men
 			if(!cslIdvInfo.isEmpty() && cslIdvInfo != null) {
 				String oldFileId = StringUtils.defaultIfEmpty((String)cslIdvInfo.get("FILE_ID"), "");
 
-				if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))) {
-					if(!"".equals(oldFileId)) {			// 기존 첨부 파일 정보 존재시 삭제
-						cslIdvInfo.put("fileId", oldFileId);
+				if(
+						ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("fileNameFlag"), ""))
+					 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), "")) && !"".equals(oldFileId))
+				  ) {
+					cslIdvInfo.put("fileId", oldFileId);
 
-						fileUtil.deleteFile(oldFileId);
-						fileInfoService.deleteFileInfo(cslIdvInfo);
-					}
+					fileUtil.deleteFile(oldFileId);
+					fileInfoService.deleteFileInfo(cslIdvInfo);
 				}else if(!"".equals(oldFileId)) {
 					map.put("fileId", oldFileId);
 				}
@@ -162,10 +164,10 @@ public class MentalityServiceImpl extends EgovAbstractServiceImpl implements Men
 
 			int result = this.updateCslCure(map);
 			if(result > 0){
-				resultMap.put("err", "N");
+				resultMap.put("err", ConstantObject.N);
 				resultMap.put("MSG", "심리치유 수정 완료");
 			}else{
-				resultMap.put("err", "Y");
+				resultMap.put("err", ConstantObject.Y);
 				resultMap.put("MSG", "심리치유 수정 실패");
 			}
 		}

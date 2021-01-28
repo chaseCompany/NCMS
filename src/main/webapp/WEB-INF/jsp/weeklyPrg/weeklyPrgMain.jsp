@@ -132,6 +132,7 @@
 				$("textarea[name='pgmCtnt']").val("");
 				$("textarea[name='pgmRst']").val("");
 				$("input[name='file']").val("");
+				$("input[name='fileNameFlag']").val("N");
 				$("div#fileName").text("");
 			}else{
 				$.ajax({
@@ -167,11 +168,14 @@
 
 						if(prgInfo.fileList != undefined && prgInfo.fileList != ''){
 							for(let i=0 ; i<prgInfo.fileList.length ; i++){
-								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + prgInfo.fileList[i].FILE_ID + "\", \"" + prgInfo.fileList[i].FILE_SEQ + "\");'>" + prgInfo.fileList[i].ORIGNL_FILE_NM + "</a>");
+								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + prgInfo.fileList[i].FILE_ID + "\", \"" + prgInfo.fileList[i].FILE_SEQ + "\");'>" + prgInfo.fileList[i].ORIGNL_FILE_NM + "</a>"
+													 + "&nbsp;&nbsp;<a href='javaScript:deleteFile(\"fileName\");'>삭제</a>"
+													  );
 							}
 						}else{
 							$("div#fileName").text("");
 						}
+						$("input[name='fileNameFlag']").val("N");
 					},
 					error : function(xhr, status){
 						console.log(xhr);
@@ -586,7 +590,11 @@
 							</tr>
 							<tr>
 								<th class="v-top">첨부</th>
-								<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;"></td>
+								<td>
+									<div id="fileName"></div>
+									<input type="hidden" name="fileNameFlag" value="N" />
+									<input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;">
+								</td>
 							</tr>
 						</tbody>
 					</table>

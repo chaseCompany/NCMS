@@ -139,13 +139,14 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 		if(grpInfoMap != null){
 			String oldFileId = StringUtils.defaultIfEmpty((String)grpInfoMap.get("FILE_ID"), "");
 
-			if(!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), ""))){
-				if(!"".equals(oldFileId)) {
-					grpInfoMap.put("fileId", oldFileId);
+			if(
+					ConstantObject.Y.equals(StringUtils.defaultIfEmpty((String)map.get("fileNameFlag"), ""))
+				 || (!"".equals(StringUtils.defaultIfEmpty((String)map.get("fileId"), "")) && !"".equals(oldFileId))
+			  ) {
+				grpInfoMap.put("fileId", oldFileId);
 
-					fileUtil.deleteFile(oldFileId);
-					fileInfoService.deleteFileInfo(grpInfoMap);
-				}
+				fileUtil.deleteFile(oldFileId);
+				fileInfoService.deleteFileInfo(grpInfoMap);
 			}else if(!"".equals(oldFileId)) {
 				map.put("fileId", oldFileId);
 			}

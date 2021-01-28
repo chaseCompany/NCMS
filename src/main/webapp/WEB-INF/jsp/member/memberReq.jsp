@@ -65,7 +65,9 @@
 				success : function(res){
 					if(res.err != "Y"){
 						alert(res.MSG + " 성공");
+
 						getTransList();
+						transView($("input[name='transNo']").val());
 					}else{
 						alert(res.MSG);
 					}
@@ -604,7 +606,11 @@
 			<h2><i class="el-icon-s-opportunity"></i> 의뢰사유</h2>
 		</div>
 		<div class="el-card_body"><textarea name="transCtnt" style="height: 120px;" placeholder="의뢰사유"></textarea></div>
-		<div class="el-card_body"><div id="transfileName"></div><input type="file" name="fileId" /></div>
+		<div class="el-card_body">
+			<div id="transfileName"></div>
+			<input type="hidden" name="transfileNameFlag" value="N" />
+			<input type="file" name="fileId" />
+		</div>
 	</div>
 	</form>
 </div>
