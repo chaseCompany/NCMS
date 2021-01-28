@@ -486,7 +486,7 @@
 					<table class="w-auto wr-form">
 						<tbody>
 							<tr>
-								<th> 대분류</th>
+								<th><span class="required">*</span> 대분류</th>
 								<td>
 									<select name="pgmTpCd" style="width: 140px;">
 										<option value="">선택</option>
@@ -497,7 +497,7 @@
 </c:if>
 									</select>
 								</td>
-								<th> 중분류</th>
+								<th><span class="required">*</span> 중분류</th>
 								<td>
 									<select name="pgmCd" style="width: 140px;">
 										<option value="">선택</option>
