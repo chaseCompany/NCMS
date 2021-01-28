@@ -24,24 +24,24 @@
 	<div class="el-table_header-wrapper">
 		<table>
 			<colgroup>
-				<col style="width:44px">
-				<col style="width:130px">
-				<col style="width:95px">
-				<col style="width:130px">
-				<col style="width:110px">
-				<col style="width:110px">
+				<col style="width:46px">
+				<col style="width:120px">
+				<col style="width:85px;">
+				<col style="width: 110px;">
+				<col style="width: 130px;">
+				<col style="width: 130px;">
 				<col>
 			</colgroup>
 			<thead>
-			<tr>
-				<th>#</th>
-				<th>기관명</th>
-				<th>실시 일자</th>
-				<th>담당자</th>
-				<th>대분류</th>
-				<th>중분류</th>
-				<th>참여자수</th>
-			</tr>
+				<tr>
+					<th>#</th>
+					<th>기관명</th>
+					<th>실시 일자</th>
+					<th>담당자</th>
+					<th>대분류</th>
+					<th>중분류</th>
+					<th>참여자수</th>
+				</tr>
 			</thead>
 		</table>
 	</div>
@@ -49,36 +49,36 @@
 <c:if test="${totalCount > 0}">
 		<table>
 			<colgroup>
-				<col style="width:44px">
-				<col style="width:130px">
-				<col style="width:95px">
-				<col style="width:130px">
-				<col style="width:110px">
-				<col style="width:110px">
+				<col style="width:46px">
+				<col style="width:120px">
+				<col style="width:85px;">
+				<col style="width: 110px;">
+				<col style="width: 130px;">
+				<col style="width: 130px;">
 				<col>
 			</colgroup>
 			<tbody>
 	<c:forEach var="result" items="${prgList}" varStatus="status">
 		<fmt:parseDate value="${result.PGM_DT}" var="regDt" pattern="yyyyMMdd"/>
-			<tr>
-				<td><div class="cell"><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></div></td>
-				<td><div class="cell"><c:out value="${result.SITE_NM}" /></div></td>
-				<td><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></td>
-				<td><div class="cell"><c:out value="${result.MNG_USR_NM}" /></div></td>
-				<td><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
-												 , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
+				<tr>
+					<td><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></td>
+					<td><c:out value="${result.SITE_NM}" /></td>
+					<td><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></td>
+					<td><c:out value="${result.MNG_USR_NM}" /></td>
+					<td><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
+													 , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
 <c:if test="${result.PGM_TP_NM ne null and result.PGM_TP_NM ne ''}">
-					<c:out value="${result.PGM_TP_NM}" />
+						<c:out value="${result.PGM_TP_NM}" />
 </c:if>
-					</a></td>
-				<td><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
-												 , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
+						</a></td>
+					<td><a href='javaScript:viewPrgRow("<c:out value="${result.PGM_CD}"/>"
+													 , "<c:out value="${result.PGM_DT}"/>");' class='row_link'>
 <c:if test="${result.PGM_NM ne null and result.PGM_NM ne ''}">
-					<c:out value="${result.PGM_NM}" />
+						<c:out value="${result.PGM_NM}" />
 </c:if>
-					</a></td>
-				<td><div class="cell"><c:out value="${result.MBR_CNT}" /></div></td>
-			</tr>
+						</a></td>
+					<td><c:out value="${result.MBR_CNT}" /></td>
+				</tr>
 	</c:forEach>
 			</tbody>
 		</table>

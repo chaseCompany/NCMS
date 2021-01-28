@@ -393,7 +393,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 주간재활 프로그램</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 주간재활 프로그램 </h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
@@ -404,7 +404,7 @@
 	<button type="button" onclick="javaScript:newBtn();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;">
 		<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
 	</button>
-	<button type="button" id="delBtnNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
+	<button disabled="disabled" type="button" id="delBtnNo" class="el-button normal el-button--default el-button--small is-disabled is-plain">
 		<i class="el-icon-delete-solid"></i> <span>삭제</span>
 	</button>
 	<button type="button" id="delBtnYes" onclick="javaScript:pgmDel();" class="el-button normal el-button--default el-button--small is-plain" style="display:none;">
@@ -429,43 +429,42 @@
 			<div class="section bg-sky">
 				<table class="w-auto wr-form">
 					<tbody>
-					<tr>
-						<th><span class="required">*</span> 검색기간</th>
-						<td>
-							<div class="dat-pk">
-								<i class="el-input__icon el-icon-date"></i>
-								<input type="text" name="schStrDt" class="el-input__inner datepicker" placeholder="시작" style="width: 105px;">
-							</div>
-							<span>~</span>
-							<div class="dat-pk">
-								<i class="el-input__icon el-icon-date"></i>
-								<input type="text" name="schEndDt" class="el-input__inner datepicker" placeholder="종료" style="width: 105px;">
-							</div>
-						</td>
-						<th>프로그램</th>
-						<td>
-							<select name="schTpCd" style="width:100px">
-								<option value="">선택</option>
+						<tr>
+							<th><span class="required">*</span> 검색기간</th>
+							<td>
+								<div class="dat-pk">
+									<i class="el-input__icon el-icon-date"></i>
+									<input type="text" name="schStrDt" class="el-input__inner datepicker" placeholder="시작" style="width: 110px;">
+								</div>
+								<span>~</span>
+								<div class="dat-pk">
+									<i class="el-input__icon el-icon-date"></i>
+									<input type="text" name="schEndDt" class="el-input__inner datepicker" placeholder="종료" style="width: 110px;">
+								</div>
+							</td>
+							<th>프로그램</th>
+							<td>
+								<select name="schTpCd" style="width:90px">
+									<option value="">선택</option>
 <c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
 	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
-								<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-							</select>
-							<select name="schPgmCd" style="width:110px">
-								<option value="">선택</option>
+								</select>
+								<select name="schPgmCd" style="width:90px">
+									<option value="">선택</option>
 <c:if test="${pgmCdList ne null and pgmCdList ne ''}">
 	<c:forEach var="result" items="${pgmCdList}" varStatus="status">
 								<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-							</select>
-							<button type="button" onclick="javaScript:seachPrgList();" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px; padding: 8px 15px;">
-								<i class="el-icon-search"></i>
-								<span>검색</span>
-							</button>
-						</td>
-					</tr>
+								</select>
+								<button type="button" onclick="javaScript:seachPrgList();" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px; padding: 8px 15px;">
+									<i class="el-icon-search"></i><span>검색</span>
+								</button>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -482,112 +481,120 @@
 				<div class="el-card_body">
 					<table class="w-auto wr-form">
 						<tbody>
-						<tr>
-							<th><span class="required">*</span> 대분류</th>
-							<td>
-								<select name="pgmTpCd" style="width: 130px;">
-									<option value="">선택</option>
+							<tr>
+								<th> 대분류</th>
+								<td>
+									<select name="pgmTpCd" style="width: 140px;">
+										<option value="">선택</option>
 <c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
 	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-							<th><span class="required">*</span> 중분류</th>
-							<td>
-								<select name="pgmCd" style="width: 150px;">
-									<option value="">선택</option>
+									</select>
+								</td>
+								<th> 중분류</th>
+								<td>
+									<select name="pgmCd" style="width: 140px;">
+										<option value="">선택</option>
 <c:if test="${pgmCdList ne null and pgmCdList ne ''}">
 	<c:forEach var="result" items="${pgmCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-							<th><span class="required">*</span> 실시 일시</th>
-							<td>
-								<div class="dat-pk">
-									<i class="el-input__icon el-icon-date"></i>
-									<input type="text" name="pgmDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 110px;">
-								</div>
-								<div class="time-box">
-									<div class="tm-in">
-										<i class="el-input__icon el-icon-time"></i>
-										<input type="text" name="pgmFmTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 75px;">
+									</select>
+								</td>
+								<th> <span class="required">*</span> 실시 일시</th>
+								<td>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<input type="text" name="pgmDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 120px;">
 									</div>
-									<span>~</span>
-									<div class="tm-in">
-										<i class="el-input__icon el-icon-time"></i>
-										<input type="text" name="pgmToTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 75px;">
+									<div class="time-box">
+										<div class="tm-in">
+											<i class="el-input__icon el-icon-time"></i>
+											<input type="text" name="pgmFmTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 80px;">
+										</div>
+										<span>~</span>
+										<div class="tm-in">
+											<i class="el-input__icon el-icon-time"></i>
+											<input type="text" name="pgmToTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 80px;">
+										</div>
 									</div>
-								</div>
-							</td>
-							<th><span class="required">*</span> 담당자</th>
-							<td>
-								<select name="mngUsrId" style="width: 140px;" onchange="javaScrpt:changSiteNm(this);">
-									<option value="">선택</option>
+								</td>
+								<th> <span class="required">*</span> 담당자</th>
+								<td>
+									<select name="mngUsrId" style="width: 140px;" onchange="javaScrpt:changSiteNm(this);">
+										<option value="">선택</option>
 <c:if test="${sysMbrList ne null and sysMbrList ne ''}">
 	<c:forEach var="result" items="#{sysMbrList}" varStatus="status">
-									<option value="<c:out value="${result.USR_ID}" />" siteNm="<c:out value="${result.SITE_NM}" />"<c:if test="${result.USR_ID eq loginUserId}"> selected</c:if>><c:out value="${result.USR_NM}" />(<c:out value="${result.USR_ID}" />)</option>
+										<option value="<c:out value="${result.USR_ID}" />" siteNm="<c:out value="${result.SITE_NM}" />"<c:if test="${result.USR_ID eq loginUserId}"> selected</c:if>><c:out value="${result.USR_NM}" />(<c:out value="${result.USR_ID}" />)</option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="w-auto wr-form">
+						<tbody>
+							<tr>
+								<th>기관명</th>
+								<td>
+									<div class="dsp-ibk tac">
+										<input type="text" name="siteNm" value="<c:out value="${loginSiteNm}" />" readonly class="el-input__inner" style="width: 200px;" placeholder="기관명">
+									</div>
+								</td>
+								<th> <span class="required">*</span> 회기</th>
+								<td> <input type="text" name="pgmSession" class="el-input__inner" placeholder="회기" style="width: 319px;"></td>
+								<th> <span class="required">*</span> 강사</th>
+								<td> <input type="text" name="pgmTeacher" class="el-input__inner" placeholder="강사" style="width: 319px;"></td>
+							</tr>
+							<tr>
+								<th> <span class="required">*</span> 주제 </th>
+								<td colspan='5'><input type="text" name="pgmSubject" placeholder="주제" style="width: 100%;" /></td>
+							</tr>
+							<tr>
+								<th> 목표</th>
+								<td colspan='5'><input type="text" name="pgmGoal" placeholder="목표" style="width: 100%;" /></td>
+							</tr>
 						</tbody>
 					</table>
 					<table class="wr-form sig-form">
 						<colgroup>
-							<col style="width:71px">
-							<col style="width:200px">
-							<col style="width:71px">
-							<col style="width:200px">
-							<col style="width:71px">
+							<col style="width:58px">
 							<col>
 						</colgroup>
 						<tbody>
-						<tr>
-							<th>기관명</th>
-							<td>
-								<span class="tac"><input type="text" name="siteNm" value="<c:out value="${loginSiteNm}" />" class="el-input__inner" readonly style="width:100%;" /></span>
-							</td>
-							<th><span class="required">*</span> 회기</th>
-							<td><input type="text" name="pgmSession" placeholder="회기" style="width: 100%;" /></td>
-							<th><span class="required">*</span> 강사</th>
-							<td><input type="text" name="pgmTeacher" placeholder="강사" style="width: 100%;" /></td>
-						</tr>
-						<tr>
-							<th><span class="required">*</span> 주제</th>
-							<td colspan="5"><input type="text" name="pgmSubject" placeholder="주제" style="width: 100%;" /></td>
-						</tr>
-						<tr>
-							<th>목표</th>
-							<td colspan="5"><input type="text" name="pgmGoal" placeholder="목표" style="width: 100%;" /></td>
-						</tr>
-						<tr>
-							<th>
-								<span class="required">*</span> 내용<br>
-								<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
-									<i class="el-icon-search"></i>
-								</button>
-							</th>
-							<td colspan="5"><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
-						</tr>
-						<tr>
-							<th><span class="required">*</span> 결과<br>
-								<button type="button" onclick="javaScript:viewCtnt('pgmRst', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
-									<i class="el-icon-search"></i>
-								</button>
-							</th>
-							<td colspan="5"><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
-						</tr>
-						<tr>
-							<th>첨부</th>
-							<td colspan="5"><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;" /></td>
-						</tr>
+							<tr>
+								<th>
+									<span class="required">*</span> 내용<br>
+									<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+										<i class="el-icon-search"></i>
+									</button>
+								</th>
+								<td><textarea name="pgmCtnt" placeholder="내용" style="height: 110px;"></textarea></td>
+							</tr>
+							<tr>
+								<th>
+									결과<br>
+									<button type="button" onclick="javaScript:viewCtnt('pgmRst', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
+										<i class="el-icon-search"></i>
+									</button>
+								</th>
+								<td><textarea name="pgmRst" placeholder="결과" style="height: 110px;"></textarea></td>
+							</tr>
+							<tr>
+								<th class="v-top">첨부</th>
+								<td><div id="fileName"></div><input type="file" id="file" name="file" placeholder="첨부" style="width: 100%;"></td>
+							</tr>
 						</tbody>
 					</table>
+
+
+
+
+
 				</div>
 			</div>
 			<!-- //  프로그램 정보 -->
