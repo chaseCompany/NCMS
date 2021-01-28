@@ -10,7 +10,7 @@
 
 					<!-- 시스템별 환경 설정정보 -->
 					<entry key="dirPartition" value="/"/>
-					<entry key="uploadFile" value="/data/KVA_Project/upload/"/>
+					<entry key="uploadFile" value="/home/drugfreeCS/app/uploadfile/"/>
 				</map>
 			</property>
 		</bean>
