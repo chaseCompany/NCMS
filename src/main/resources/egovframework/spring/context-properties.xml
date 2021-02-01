@@ -11,7 +11,7 @@
 					<!-- 시스템별 환경 설정정보 -->
 					<entry key="dirPartition" value="/"/>
 					<entry key="uploadFile" value="/home/drugfreeCS/app/uploadfile/"/>
-					<entry key="aes256Key" value="1234qwer1234qwer"/>
+					<entry key="aes256Key" value="drugfree52$8fTn7"/>
 				</map>
 			</property>
 		</bean>
