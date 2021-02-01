@@ -34,7 +34,7 @@
 		  FROM SYS_USR SU
 		  LEFT JOIN SYS_CD SC01 ON (SU.SITE_CD = SC01.CD_ID AND SC01.GRP_CD = 'C3500')
 		 WHERE SU.USR_ID = #{usrId}
-		   AND SU.PASSWD = #{passwd}
+		   AND SU.PASSWD = SUBSTR(PASSWORD(#{passwd}), 2)
 		   AND SU.USE_YN = 'Y'
 	]]>
 	</select>

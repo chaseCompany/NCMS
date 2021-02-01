@@ -36,8 +36,8 @@ public class MstMbrDao extends EgovAbstractMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<String, Object> getMstMbr(String mbrNo) throws SQLException{
-		return selectOne("mstMbr.getMstMbr", mbrNo);
+	public HashMap<String, Object> getMstMbr(HashMap<String, Object> map) throws SQLException{
+		return selectOne("mstMbr.getMstMbr", map);
 	}
 
 	/**

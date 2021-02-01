@@ -2,15 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cslRcp">
-	<select id="cslRcp.getCslRcp" parameterType="String" resultType="hashMap">
+	<select id="cslRcp.getCslRcp" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* cslRcp.getCslRcp */
 			   CR.RCP_NO				, CR.CSL_DT				, CR.CSL_FM_TM			, CR.CSL_TO_TM			, CR.CSL_TERM_TM
 			 , CR.CSL_ID				, CR.CSL_NM				, CR.CSL_SITE			, CR.IFP_GB_CD			, CR.IFP_GB_ETC
-			 , CR.IFP_MBR_NO			, CR.IFP_NM				, CR.IFP_GEND_CD		, CR.IFP_AGE			, CR.IFP_TEL_NO1
-			 , CR.IFP_TEL_NO2			, CR.IFP_TEL_NO3		, CR.IFP_AREA_CD		, CR.IFP_JOB_CD			, CR.TGP_MBR_NO
-			 , CR.TGP_NM				, CR.TGP_GEND_CD		, CR.TGP_AGE			, CR.TGP_TEL_NO1		, CR.TGP_TEL_NO2
-			 , CR.TGP_TEL_NO3			, CR.TGP_AREA_CD		, CR.TGP_FRG_CD			, CR.TGP_JOB_CD			, CR.IF_PATH_CD
+			 , CR.IFP_MBR_NO
+			 , CAST(AES_DECRYPT(UNHEX(CR.IFP_NM), #{paswKey}) AS CHAR) AS IFP_NM
+																, CR.IFP_GEND_CD		, CR.IFP_AGE
+			 , CAST(AES_DECRYPT(UNHEX(CR.IFP_TEL_NO1), #{paswKey}) AS CHAR) AS IFP_TEL_NO1
+			 , CAST(AES_DECRYPT(UNHEX(CR.IFP_TEL_NO2), #{paswKey}) AS CHAR) AS IFP_TEL_NO2
+			 , CAST(AES_DECRYPT(UNHEX(CR.IFP_TEL_NO3), #{paswKey}) AS CHAR) AS IFP_TEL_NO3
+			 													, CR.IFP_AREA_CD		, CR.IFP_JOB_CD			, CR.TGP_MBR_NO
+			 , CAST(AES_DECRYPT(UNHEX(CR.TGP_NM), #{paswKey}) AS CHAR) AS TGP_NM
+										, CR.TGP_GEND_CD		, CR.TGP_AGE
+			 , CAST(AES_DECRYPT(UNHEX(CR.TGP_TEL_NO1), #{paswKey}) AS CHAR) AS TGP_TEL_NO1
+			 , CAST(AES_DECRYPT(UNHEX(CR.TGP_TEL_NO2), #{paswKey}) AS CHAR) AS TGP_TEL_NO2
+			 , CAST(AES_DECRYPT(UNHEX(CR.TGP_TEL_NO3), #{paswKey}) AS CHAR) AS TGP_TEL_NO3
+										, CR.TGP_AREA_CD		, CR.TGP_FRG_CD			, CR.TGP_JOB_CD			, CR.IF_PATH_CD
 			 , CR.PBM_KND_CD			, CR.CSL_TP_CD			, CR.CSL_HIS_CD			, CR.FST_DRUG_CD		, CR.FST_DRUG
 			 , CR.MAIN_DRUG_CD			, CR.MAIN_DRUG			, CR.CSL_CTNT			, CR.CSL_RST			, CR.CSL_EMER
 			 , CR.MJR_MNG_CD			, CR.AST_SCO			, CR.RSKA_TP_CD			, CR.RSKB_TP_CD			, CR.RSKC_TP_CD
@@ -52,10 +61,17 @@
 		)VALUES(
 			   #{rcpNo}					, #{cslDt}						, #{cslFmTm}			, #{cslToTm}			, CAST(#{cslTermTm} AS UNSIGNED)
 			 , #{cslId}					, #{cslNm}						, #{cslSite}			, #{ifpGbCd}			, #{ifpGbEtc}
-			 , #{ifpMbrNo}				, #{ifpNm}						, #{ifpGendCd}			, #{ifpAge}				, #{ifpTelNo1}
-			 , #{ifpTelNo2}				, CAST(#{ifpTelNo3} AS UNSIGNED), #{ifpAreaCd}			, #{ifpJobCd}			, #{tgpMbrNo}
-			 , #{tgpNm}					, #{tgpGendCd}					, #{tgpAge}				, #{tgpTelNo1}			, #{tgpTelNo2}
-			 , #{tgpTelNo3}				, #{tgpAreaCd}					, #{tgpFrgCd}			, #{tgpJobCd}			, #{ifPathCd}
+			 , #{ifpMbrNo}
+			 , HEX(AES_ENCRYPT(#{ifpNm}, #{paswKey}))					, #{ifpGendCd}			, #{ifpAge}
+			 , HEX(AES_ENCRYPT(#{ifpTelNo1}, #{paswKey}))
+			 , HEX(AES_ENCRYPT(#{ifpTelNo2}, #{paswKey}))
+			 , HEX(AES_ENCRYPT(#{ifpTelNo3}, #{paswKey}))				, #{ifpAreaCd}			, #{ifpJobCd}			, #{tgpMbrNo}
+			 , HEX(AES_ENCRYPT(#{tgpNm}, #{paswKey}))
+										, #{tgpGendCd}					, #{tgpAge}
+			 , HEX(AES_ENCRYPT(#{tgpTelNo1}, #{paswKey}))
+			 , HEX(AES_ENCRYPT(#{tgpTelNo2}, #{paswKey}))
+			 , HEX(AES_ENCRYPT(#{tgpTelNo3}, #{paswKey}))
+										, #{tgpAreaCd}					, #{tgpFrgCd}			, #{tgpJobCd}			, #{ifPathCd}
 			 , #{pbmKndCd}				, #{cslTpCd}					, #{cslHisCd}			, #{fstDrugCd}			, #{fstDrug}
 			 , #{mainDrugCd}			, #{mainDrug}					, #{cslCtnt}			, #{cslRst}				, #{cslEmer}
 			 , #{mjrMngCd}				, CAST(#{astSco} AS UNSIGNED)	, #{rskaTpCd}			, #{rskbTpCd}			, #{rskcTpCd}
@@ -77,15 +93,15 @@
 		   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 				<when test="schGb == '1'">
-		   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+		   AND CAST(AES_DECRYPT(UNHEX(IFP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 				<when test="schGb == '2'">
-		   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+		   AND CAST(AES_DECRYPT(UNHEX(TGP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 				<otherwise>
 		   AND (CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-			OR IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-			OR TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%'))
+			OR CAST(AES_DECRYPT(UNHEX(IFP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+			OR CAST(AES_DECRYPT(UNHEX(TGP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%'))
 				</otherwise>
 			</choose>
 		</if>
@@ -98,7 +114,9 @@
 				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
 				  FROM (
 						SELECT RCP_NO			, CSL_DT		, CSL_FM_TM		, CSL_TO_TM			, CSL_TERM_TM
-							 , CSL_NM			, IFP_NM		, TGP_NM		, CRE_DT
+							 , CSL_NM
+							 , CAST(AES_DECRYPT(UNHEX(IFP_NM), #{paswKey}) AS CHAR) AS IFP_NM
+							 , CAST(AES_DECRYPT(UNHEX(TGP_NM), #{paswKey}) AS CHAR) AS TGP_NM		, CRE_DT
 						  FROM CSL_RCP
 						 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
@@ -108,16 +126,16 @@
 						   AND CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 				<when test="schGb == '1'">
-						   AND IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+						   AND CAST(AES_DECRYPT(UNHEX(IFP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 				<when test="schGb == '2'">
-						   AND TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+						   AND CAST(AES_DECRYPT(UNHEX(TGP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 				</when>
 				<otherwise>
 						   AND (
 								CSL_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-							OR IFP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
-							OR TGP_NM LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+							OR CAST(AES_DECRYPT(UNHEX(IFP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
+							OR CAST(AES_DECRYPT(UNHEX(TGP_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{schNm}, ' ', ''), '%')
 								)
 				</otherwise>
 			</choose>
@@ -144,31 +162,31 @@
 	<update id="cslRcp.updateCslRcp" parameterType="hashMap">
 	<![CDATA[
 		UPDATE /* cslRcp.updateCslRcp */ CSL_RCP
-		   SET CSL_DT			= #{cslDt}							, CSL_FM_TM			= #{cslFmTm}
-			 , CSL_TO_TM		= #{cslToTm}						, CSL_TERM_TM		= CAST(#{cslTermTm} AS UNSIGNED)
-			 , CSL_ID			= #{cslId}							, CSL_NM			= #{cslNm}
-			 , CSL_SITE			= #{cslSite}						, IFP_GB_CD			= #{ifpGbCd}
-			 , IFP_GB_ETC		= #{ifpGbEtc}						, IFP_MBR_NO		= #{ifpMbrNo}
-			 , IFP_NM			= #{ifpNm}							, IFP_GEND_CD		= #{ifpGendCd}
-			 , IFP_AGE			= #{ifpAge}							, IFP_TEL_NO1		= #{ifpTelNo1}
-			 , IFP_TEL_NO2		= #{ifpTelNo2}						, IFP_TEL_NO3		= CAST(#{ifpTelNo3} AS UNSIGNED)
-			 , IFP_AREA_CD		= #{ifpAreaCd}						, IFP_JOB_CD		= #{ifpJobCd}
-			 , TGP_MBR_NO		= #{tgpMbrNo}						, TGP_NM			= #{tgpNm}
-			 , TGP_GEND_CD		= #{tgpGendCd}						, TGP_AGE			= #{tgpAge}
-			 , TGP_TEL_NO1		= #{tgpTelNo1}						, TGP_TEL_NO2		= #{tgpTelNo2}
-			 , TGP_TEL_NO3		= #{tgpTelNo3}						, TGP_AREA_CD		= #{tgpAreaCd}
-			 , TGP_FRG_CD		= #{tgpFrgCd}						, TGP_JOB_CD		= #{tgpJobCd}
-			 , IF_PATH_CD		= #{ifPathCd}						, PBM_KND_CD		= #{pbmKndCd}
-			 , CSL_TP_CD		= #{cslTpCd}						, CSL_HIS_CD		= #{cslHisCd}
-			 , FST_DRUG_CD		= #{fstDrugCd}						, FST_DRUG			= #{fstDrug}
-			 , MAIN_DRUG_CD		= #{mainDrugCd}						, MAIN_DRUG			= #{mainDrug}
-			 , CSL_CTNT			= #{cslCtnt}						, CSL_RST			= #{cslRst}
-			 , CSL_EMER			= #{cslEmer}						, MJR_MNG_CD		= #{mjrMngCd}
-			 , AST_SCO			= CAST(#{astSco} AS UNSIGNED)		, RSKA_TP_CD		= #{rskaTpCd}
-			 , RSKB_TP_CD		= #{rskbTpCd}						, RSKC_TP_CD		= #{rskcTpCd}
-			 , URS_CD			= #{ursCd}							, RSK_SCO			= CAST(#{rskSco} AS UNSIGNED)
-			 , UPD_ID			= #{cslId}							, UPD_DT			= NOW()
-			 , IFP_AREA_ETC		= #{ifpAreaEtc}						, TGP_AREA_ETC		= #{tgpAreaEtc}
+		   SET CSL_DT			= #{cslDt}										, CSL_FM_TM			= #{cslFmTm}
+			 , CSL_TO_TM		= #{cslToTm}									, CSL_TERM_TM		= CAST(#{cslTermTm} AS UNSIGNED)
+			 , CSL_ID			= #{cslId}										, CSL_NM			= #{cslNm}
+			 , CSL_SITE			= #{cslSite}									, IFP_GB_CD			= #{ifpGbCd}
+			 , IFP_GB_ETC		= #{ifpGbEtc}									, IFP_MBR_NO		= #{ifpMbrNo}
+			 , IFP_NM			= HEX(AES_ENCRYPT(#{ifpNm}, #{paswKey}))		, IFP_GEND_CD		= #{ifpGendCd}
+			 , IFP_AGE			= #{ifpAge}										, IFP_TEL_NO1		= HEX(AES_ENCRYPT(#{ifpTelNo1}, #{paswKey}))
+			 , IFP_TEL_NO2		= HEX(AES_ENCRYPT(#{ifpTelNo2}, #{paswKey}))	, IFP_TEL_NO3		= HEX(AES_ENCRYPT(#{ifpTelNo3}, #{paswKey}))
+			 , IFP_AREA_CD		= #{ifpAreaCd}									, IFP_JOB_CD		= #{ifpJobCd}
+			 , TGP_MBR_NO		= #{tgpMbrNo}									, TGP_NM			= HEX(AES_ENCRYPT(#{tgpNm}, #{paswKey}))
+			 , TGP_GEND_CD		= #{tgpGendCd}									, TGP_AGE			= #{tgpAge}
+			 , TGP_TEL_NO1		= HEX(AES_ENCRYPT(#{tgpTelNo1}, #{paswKey}))	, TGP_TEL_NO2		= HEX(AES_ENCRYPT(#{tgpTelNo2}, #{paswKey}))
+			 , TGP_TEL_NO3		= HEX(AES_ENCRYPT(#{tgpTelNo3}, #{paswKey}))	, TGP_AREA_CD		= #{tgpAreaCd}
+			 , TGP_FRG_CD		= #{tgpFrgCd}									, TGP_JOB_CD		= #{tgpJobCd}
+			 , IF_PATH_CD		= #{ifPathCd}									, PBM_KND_CD		= #{pbmKndCd}
+			 , CSL_TP_CD		= #{cslTpCd}									, CSL_HIS_CD		= #{cslHisCd}
+			 , FST_DRUG_CD		= #{fstDrugCd}									, FST_DRUG			= #{fstDrug}
+			 , MAIN_DRUG_CD		= #{mainDrugCd}									, MAIN_DRUG			= #{mainDrug}
+			 , CSL_CTNT			= #{cslCtnt}									, CSL_RST			= #{cslRst}
+			 , CSL_EMER			= #{cslEmer}									, MJR_MNG_CD		= #{mjrMngCd}
+			 , AST_SCO			= CAST(#{astSco} AS UNSIGNED)					, RSKA_TP_CD		= #{rskaTpCd}
+			 , RSKB_TP_CD		= #{rskbTpCd}									, RSKC_TP_CD		= #{rskcTpCd}
+			 , URS_CD			= #{ursCd}										, RSK_SCO			= CAST(#{rskSco} AS UNSIGNED)
+			 , UPD_ID			= #{cslId}										, UPD_DT			= NOW()
+			 , IFP_AREA_ETC		= #{ifpAreaEtc}									, TGP_AREA_ETC		= #{tgpAreaEtc}
 		 WHERE RCP_NO = #{rcpNo}
 	]]>
 	</update>

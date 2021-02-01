@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import egovframework.rte.fdl.property.EgovPropertyService;
 import kr.co.chase.ncms.counsel.service.CounselService;
 import kr.co.chase.ncms.dao.CslRcpDao;
 import kr.co.chase.ncms.dao.MstMbrDao;
@@ -30,6 +31,9 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	@Resource(name="mstMbrDao")
 	private MstMbrDao mstMbrDao;
 
+	@Resource(name="propertiesService")
+	protected EgovPropertyService propertiesService;
+
 	/**
 	 * 상담이력 조회
 	 * @param map
@@ -37,7 +41,11 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 * @throws SQLException
 	 */
 	public HashMap<String, Object> getCslRcp(String rcpNo) throws Exception{
-		return cslRcpDao.getCslRcp(rcpNo);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("rcpNo", rcpNo);
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+
+		return cslRcpDao.getCslRcp(map);
 	}
 
 	/**
@@ -47,6 +55,7 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 * @throws SQLException
 	 */
 	public int insertCslRcp(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
 		return cslRcpDao.insertCslRcp(map);
 	}
 
@@ -109,6 +118,7 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 * @throws Exception
 	 */
 	public int getCslRcpListCount(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
 		return cslRcpDao.getCslRcpListCount(map);
 	}
 
@@ -125,6 +135,8 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 		if(map.get("recordCountPerPage") == null || StringUtils.defaultString(map.get("recordCountPerPage").toString(), "") == "") {
 			throw processException("목록 수 누락");
 		}
+
+		map.put("paswKey", propertiesService.getString("aes256Key"));
 
 		return cslRcpDao.getCslRcpList(map);
 	}
@@ -150,6 +162,8 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 * @throws Exception
 	 */
 	public int getMstMbrListCount(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+
 		return mstMbrDao.getMstMbrListCount(map);
 	}
 
@@ -167,6 +181,8 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 			throw processException("목록 수 누락");
 		}
 
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+
 		return mstMbrDao.getMstMbrList(map);
 	}
 
@@ -177,6 +193,7 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 	 * @throws Exception
 	 */
 	public int updateCslRcp(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
 		return cslRcpDao.updateCslRcp(map);
 	}
 }

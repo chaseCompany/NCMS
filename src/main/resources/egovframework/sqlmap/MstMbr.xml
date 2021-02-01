@@ -10,13 +10,15 @@
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="mbrNm != null and mbrNm != ''">
-		   AND MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
+		   AND CAST(AES_DECRYPT(UNHEX(MM.MBR_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
 			</if>
 			<if test="telNo != null and telNo != ''">
-		   AND REPLACE(CONCAT(TEL_NO1, TEL_NO2, TEL_NO3), '-', '') LIKE CONCAT('%', #{telNo}, '%')
+		   AND REPLACE(CONCAT(CAST(AES_DECRYPT(UNHEX(MM.TEL_NO1), #{paswKey}) AS CHAR)
+							, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO2), #{paswKey}) AS CHAR)
+							, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO3), #{paswKey}) AS CHAR)), '-', '') LIKE CONCAT('%', #{telNo}, '%')
 			</if>
 			<if test="juminNo1 != null and juminNo1 != ''">
-		   AND JUMIN_NO1 = #{juminNo1}
+		   AND JUMIN_NO1 = HEX(AES_ENCRYPT(#{juminNo1}, #{paswKey}))
 			</if>
 			<if test="searchSiteCd != null and searchSiteCd != ''">
 		   AND SU.SITE_CD = ${searchSiteCd}
@@ -31,13 +33,16 @@
 				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
 				  FROM (
 						SELECT
-							   MM.MBR_NO		, MM.MBR_NM			, MM.JUMIN_NO1		, MM.GEND_CD		, SC01.CD_NM AS GEND_NM
-							 , MM.AGE			, MM.FRG_CD			, MM.TEL_NO1		, MM.TEL_NO2		, MM.TEL_NO3
-							 , MM.REG_DT		, MM.CRE_DT
-							 , MEDIC_CARE_CD	, SC02.CD_NM AS MEDIC_CARE_NM
-							 , MM.MNG_USR_ID	, SU.USR_NM AS MNG_USR_NM	, SU.SITE_CD	, SC05.CD_NM AS SITE_NM
-							 , MM.STS_CD		, SC03.CD_NM AS STS_NM
-							 , MM.JOB_CD		, SC04.CD_NM AS JOB_NM
+							   MM.MBR_NO
+							 , CAST(AES_DECRYPT(UNHEX(MM.MBR_NM), #{paswKey}) AS CHAR) AS MBR_NM
+							 , CAST(AES_DECRYPT(UNHEX(MM.JUMIN_NO1), #{paswKey}) AS CHAR) AS JUMIN_NO1
+																									, MM.GEND_CD		, SC01.CD_NM AS GEND_NM
+							 , MM.AGE			, MM.FRG_CD			, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO1), #{paswKey}) AS CHAR) AS TEL_NO1
+																	, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO2), #{paswKey}) AS CHAR) AS TEL_NO2
+																	, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO3), #{paswKey}) AS CHAR) AS TEL_NO3
+							 , MM.REG_DT		, MM.CRE_DT			, MEDIC_CARE_CD		, SC02.CD_NM AS MEDIC_CARE_NM
+							 , MM.MNG_USR_ID	, SU.USR_NM AS MNG_USR_NM		, SU.SITE_CD		, SC05.CD_NM AS SITE_NM
+							 , MM.STS_CD		, SC03.CD_NM AS STS_NM			, MM.JOB_CD			, SC04.CD_NM AS JOB_NM
 						  FROM MST_MBR MM
 						  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND MM.GEND_CD = SC01.CD_ID)
 						  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3100' AND MM.MEDIC_CARE_CD = SC02.CD_ID)
@@ -48,13 +53,15 @@
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="mbrNm != null and mbrNm != ''">
-						   AND MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
+						   AND CAST(AES_DECRYPT(UNHEX(MM.MBR_NM), #{paswKey}) AS CHAR) LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
 			</if>
 			<if test="telNo != null and telNo != ''">
-						   AND REPLACE(CONCAT(TEL_NO1, TEL_NO2, TEL_NO3), '-', '') LIKE CONCAT('%', #{telNo}, '%')
+						   AND REPLACE(CONCAT(CAST(AES_DECRYPT(UNHEX(MM.TEL_NO1), #{paswKey}) AS CHAR)
+											, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO2), #{paswKey}) AS CHAR)
+											, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO3), #{paswKey}) AS CHAR)), '-', '') LIKE CONCAT('%', #{telNo}, '%')
 			</if>
 			<if test="juminNo1 != null and juminNo1 != ''">
-						   AND JUMIN_NO1 = #{juminNo1}
+						   AND JUMIN_NO1 = HEX(AES_ENCRYPT(#{juminNo1}, #{paswKey}))
 			</if>
 			<if test="searchSiteCd != null and searchSiteCd != ''">
 						   AND SU.SITE_CD = ${searchSiteCd}
@@ -71,16 +78,24 @@
 	]]>
 	</select>
 
-	<select id="mstMbr.getMstMbr" parameterType="String" resultType="hashMap">
+	<select id="mstMbr.getMstMbr" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* mstMbr.getMstMbr */
-			   MM.MBR_NO			, MM.MBR_NM				, MM.GEND_CD			, MM.AGE				, MM.JUMIN_NO1
-			 , MM.FRG_CD			, MM.TEL_NO1			, MM.TEL_NO2			, MM.TEL_NO3			, MM.JOB_CD
+			   MM.MBR_NO
+			 , CAST(AES_DECRYPT(UNHEX(MM.MBR_NM), #{paswKey}) AS CHAR) AS MBR_NM
+															, MM.GEND_CD			, MM.AGE				, CAST(AES_DECRYPT(UNHEX(MM.JUMIN_NO1), #{paswKey}) AS CHAR) AS JUMIN_NO1
+			 , MM.FRG_CD			, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO1), #{paswKey}) AS CHAR) AS TEL_NO1
+									, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO2), #{paswKey}) AS CHAR) AS TEL_NO2
+									, CAST(AES_DECRYPT(UNHEX(MM.TEL_NO3), #{paswKey}) AS CHAR) AS TEL_NO3	, MM.JOB_CD
 			 , MM.ZIP_CD			, MM.ADDR1				, MM.ADDR2				, MM.MBR_TP_CD			, MM.DRG_USE_CD
 			 , MM.MRG_CD			, MM.EDU_CD				, MM.EDU02_CD			, MM.RLGN_CD			, MM.REQ_PATH_CD
 			 , MM.MEDIC_CARE_CD		, MM.DIS_ETC			, MM.REG_USR_ID			, MM.REG_DT				, MM.STP_DT
-			 , MM.FMLY_NAME			, MM.FMLY_RELATION_CD	, MM.FMLY_SEX_CD		, MM.FMLY_AGE			, MM.FMLY_AREA
-			 , MM.FMLY_TEL_NO1		, MM.FMLY_TEL_NO2		, MM.FMLY_TEL_NO3		, MM.FMLY_EXP_CD		, MM.FMLY_TOGETHER_CD
+			 , CAST(AES_DECRYPT(UNHEX(MM.FMLY_NAME), #{paswKey}) AS CHAR) AS FMLY_NAME
+									, MM.FMLY_RELATION_CD	, MM.FMLY_SEX_CD		, MM.FMLY_AGE			, MM.FMLY_AREA
+			 , CAST(AES_DECRYPT(UNHEX(MM.FMLY_TEL_NO1), #{paswKey}) AS CHAR) AS FMLY_TEL_NO1
+			 , CAST(AES_DECRYPT(UNHEX(MM.FMLY_TEL_NO2), #{paswKey}) AS CHAR) AS FMLY_TEL_NO2
+			 , CAST(AES_DECRYPT(UNHEX(MM.FMLY_TEL_NO2), #{paswKey}) AS CHAR) AS FMLY_TEL_NO3
+																					, MM.FMLY_EXP_CD		, MM.FMLY_TOGETHER_CD
 			 , MM.FMLY_TREE			, MM.PERSONAL_INFO		, MM.FMLY_RMK			, MM.RMK				, MM.MNG_USR_ID
 			 , MM.LST_UPD_ID		, MM.LST_UPD_DT			, MM.STS_CD				, MM.CRE_ID				, MM.CRE_DT
 			 , MM.UPD_DT			, MM.UPD_ID				, SU.USR_NM AS UPD_NM
@@ -113,15 +128,22 @@
 			 , LST_UPD_DT		, STS_CD			, CRE_ID			, CRE_DT			, UPD_ID
 			 , UPD_DT
 		)VALUES(
-			   #{mbrNo}			, #{mbrNm}		, #{gendCd}			, #{age}			, #{juminNo1}
-			 , #{frgCd}			, #{telNo1}		, #{telNo2}			, #{telNo3}			, #{jobCd}
-			 , #{zipCd}			, #{addr1}		, #{addr2}			, #{mbrTpCd}		, #{drgUseCd}
-			 , #{mrgCd}			, #{eduCd}		, #{edu02Cd}		, #{rlgnCd}			, #{reqPathCd}
-			 , #{medicCareCd}	, #{disEtc}		, #{creId}			, IFNULL(#{regDt}, DATE_FORMAT(NOW(), '%Y%m%d'))		, #{fmlyName}
-			 , #{fmlyRelationCd}, #{fmlySexCd}	, #{fmlyAge}		, #{fmlyArea}		, #{fmlyTelNo1}
-			 , #{fmlyTelNo2}	, #{fmlyTelNo3}	, #{fmlyExpCd}		, #{fmlyTogetherCd}	, #{fmlyTree}
-			 , #{personalInfo}	, #{fmlyRmk}	, #{rmk}			, IFNULL(#{mngUsrId}, #{creId})	, #{creId}
-			 , NOW()			, #{stsCd}		, #{creId}			, NOW()				, #{creId}
+			   #{mbrNo}			, HEX(AES_ENCRYPT(#{mbrNm}, #{paswKey}))
+													, #{gendCd}			, #{age}			, HEX(AES_ENCRYPT(#{juminNo1}, #{paswKey}))
+			 , #{frgCd}			, HEX(AES_ENCRYPT(#{telNo1}, #{paswKey}))
+								, HEX(AES_ENCRYPT(#{telNo2}, #{paswKey}))
+								, HEX(AES_ENCRYPT(#{telNo3}, #{paswKey}))					, #{jobCd}
+			 , #{zipCd}			, #{addr1}			, #{addr2}			, #{mbrTpCd}		, #{drgUseCd}
+			 , #{mrgCd}			, #{eduCd}			, #{edu02Cd}		, #{rlgnCd}			, #{reqPathCd}
+			 , #{medicCareCd}	, #{disEtc}			, #{creId}			, IFNULL(#{regDt}, DATE_FORMAT(NOW(), '%Y%m%d'))
+																							, HEX(AES_ENCRYPT(#{fmlyName}, #{paswKey}))
+			 , #{fmlyRelationCd}, #{fmlySexCd}		, #{fmlyAge}		, #{fmlyArea}
+			 , HEX(AES_ENCRYPT(#{fmlyTelNo1}, #{paswKey}))
+			 , HEX(AES_ENCRYPT(#{fmlyTelNo2}, #{paswKey}))
+			 , HEX(AES_ENCRYPT(#{fmlyTelNo3}, #{paswKey}))
+													, #{fmlyExpCd}		, #{fmlyTogetherCd}	, #{fmlyTree}
+			 , #{personalInfo}	, #{fmlyRmk}		, #{rmk}			, IFNULL(#{mngUsrId}, #{creId})	, #{creId}
+			 , NOW()			, #{stsCd}			, #{creId}			, NOW()				, #{creId}
 			 , NOW()
 		)
 	]]>
@@ -130,27 +152,27 @@
 	<update id="mstMbr.updateMstMbr" parameterType="hashMap">
 	<![CDATA[
 		UPDATE /* mstMbr.updateMstMbr */ MST_MBR
-		   SET MBR_NM = #{mbrNm}						, GEND_CD = #{gendCd}
-			 , AGE = #{age}								, JUMIN_NO1 = #{juminNo1}
-			 , FRG_CD = #{frgCd}						, TEL_NO1 = #{telNo1}
-			 , TEL_NO2 = #{telNo2}						, TEL_NO3 = #{telNo3}
-			 , JOB_CD = #{jobCd}						, ZIP_CD = #{zipCd}
-			 , ADDR1 = #{addr1}							, ADDR2 = #{addr2}
-			 , MBR_TP_CD = #{mbrTpCd}					, DRG_USE_CD = #{drgUseCd}
-			 , MRG_CD = #{mrgCd}						, REG_DT = #{regDt}
-			 , EDU_CD = #{eduCd}						, EDU02_CD = #{edu02Cd}
-			 , RLGN_CD = #{rlgnCd}						, REQ_PATH_CD = #{reqPathCd}
-			 , MEDIC_CARE_CD = #{medicCareCd}			, DIS_ETC = #{disEtc}
-			 , REG_USR_ID = #{regUsrId}					, FMLY_NAME = #{fmlyName}
-			 , FMLY_RELATION_CD = #{fmlyRelationCd}		, FMLY_SEX_CD = #{fmlySexCd}
-			 , FMLY_AGE = #{fmlyAge}					, FMLY_AREA = #{fmlyArea}
-			 , FMLY_TEL_NO1 = #{fmlyTelNo1}				, FMLY_TEL_NO2 = #{fmlyTelNo2}
-			 , FMLY_TEL_NO3 = #{fmlyTelNo3}				, FMLY_EXP_CD = #{fmlyExpCd}
-			 , FMLY_TOGETHER_CD = #{fmlyTogetherCd}		, FMLY_TREE = #{fmlyTree}
-			 , PERSONAL_INFO = #{personalInfo}			, FMLY_RMK = #{fmlyRmk}
-			 , RMK = #{rmk}								, MNG_USR_ID = #{mngUsrId}
-			 , LST_UPD_ID = #{creId}					, LST_UPD_DT = NOW()
-			 , UPD_ID = #{creId}						, UPD_DT = NOW()
+		   SET MBR_NM = HEX(AES_ENCRYPT(#{mbrNm}, #{paswKey}))				, GEND_CD = #{gendCd}
+			 , AGE = #{age}													, JUMIN_NO1 = HEX(AES_ENCRYPT(#{juminNo1}, #{paswKey}))
+			 , FRG_CD = #{frgCd}											, TEL_NO1 = HEX(AES_ENCRYPT(#{telNo1}, #{paswKey}))
+			 , TEL_NO2 = HEX(AES_ENCRYPT(#{telNo2}, #{paswKey}))			, TEL_NO3 = HEX(AES_ENCRYPT(#{telNo3}, #{paswKey}))
+			 , JOB_CD = #{jobCd}											, ZIP_CD = #{zipCd}
+			 , ADDR1 = #{addr1}												, ADDR2 = #{addr2}
+			 , MBR_TP_CD = #{mbrTpCd}										, DRG_USE_CD = #{drgUseCd}
+			 , MRG_CD = #{mrgCd}											, REG_DT = #{regDt}
+			 , EDU_CD = #{eduCd}											, EDU02_CD = #{edu02Cd}
+			 , RLGN_CD = #{rlgnCd}											, REQ_PATH_CD = #{reqPathCd}
+			 , MEDIC_CARE_CD = #{medicCareCd}								, DIS_ETC = #{disEtc}
+			 , REG_USR_ID = #{regUsrId}										, FMLY_NAME = HEX(AES_ENCRYPT(#{fmlyName}, #{paswKey}))
+			 , FMLY_RELATION_CD = #{fmlyRelationCd}							, FMLY_SEX_CD = #{fmlySexCd}
+			 , FMLY_AGE = #{fmlyAge}										, FMLY_AREA = #{fmlyArea}
+			 , FMLY_TEL_NO1 = HEX(AES_ENCRYPT(#{fmlyTelNo1}, #{paswKey}))	, FMLY_TEL_NO2 = HEX(AES_ENCRYPT(#{fmlyTelNo2}, #{paswKey}))
+			 , FMLY_TEL_NO3 = HEX(AES_ENCRYPT(#{fmlyTelNo3}, #{paswKey}))	, FMLY_EXP_CD = #{fmlyExpCd}
+			 , FMLY_TOGETHER_CD = #{fmlyTogetherCd}							, FMLY_TREE = #{fmlyTree}
+			 , PERSONAL_INFO = #{personalInfo}								, FMLY_RMK = #{fmlyRmk}
+			 , RMK = #{rmk}													, MNG_USR_ID = #{mngUsrId}
+			 , LST_UPD_ID = #{creId}										, LST_UPD_DT = NOW()
+			 , UPD_ID = #{creId}											, UPD_DT = NOW()
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</update>
@@ -175,13 +197,13 @@
 	<update id="mstMbr.updateMbrFmly" parameterType="hashMap">
 	<![CDATA[
 		UPDATE /* mstMbr.updateMbrFmly */ MST_MBR
-		   SET FMLY_NAME = #{fmlyName}
-			 , FMLY_RELATION_CD = #{fmlyRelationCd}		, FMLY_SEX_CD = #{fmlySexCd}
-			 , FMLY_AGE = #{fmlyAge}					, FMLY_AREA = #{fmlyArea}
-			 , FMLY_TEL_NO1 = #{fmlyTelNo1}				, FMLY_TEL_NO2 = #{fmlyTelNo2}
-			 , FMLY_TEL_NO3 = #{fmlyTelNo3}				, FMLY_EXP_CD = #{fmlyExpCd}
-			 , FMLY_TOGETHER_CD = #{fmlyTogetherCd}		, FMLY_TREE = #{fmlyTree}
-			 , PERSONAL_INFO = #{personalInfo}			, FMLY_RMK = #{fmlyRmk}
+		   SET FMLY_NAME = HEX(AES_ENCRYPT(#{fmlyName}, #{paswKey}))		, FMLY_RELATION_CD = #{fmlyRelationCd}
+			 , FMLY_SEX_CD = #{fmlySexCd}									, FMLY_AGE = #{fmlyAge}
+			 , FMLY_AREA = #{fmlyArea}										, FMLY_TEL_NO1 = HEX(AES_ENCRYPT(#{fmlyTelNo1}, #{paswKey}))
+			 , FMLY_TEL_NO2 = HEX(AES_ENCRYPT(#{fmlyTelNo2}, #{paswKey}))	, FMLY_TEL_NO3 = HEX(AES_ENCRYPT(#{fmlyTelNo3}, #{paswKey}))
+			 , FMLY_EXP_CD = #{fmlyExpCd}									, FMLY_TOGETHER_CD = #{fmlyTogetherCd}
+			 , FMLY_TREE = #{fmlyTree}										, PERSONAL_INFO = #{personalInfo}
+			 , FMLY_RMK = #{fmlyRmk}
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</update>
