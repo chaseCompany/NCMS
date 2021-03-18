@@ -4,10 +4,10 @@
 
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
-		
+
 		<%-- 코드내용 상세조회 --%>
 		sysAdminUsrView = function(tagUsrId){
-			
+
 			$.ajax({
 				url : '/ajaxUsrView.do',
 				type : 'POST',
@@ -20,6 +20,16 @@
 						$("input[id='usrNm']").val(res.usrView.USR_NM);
 						$("select[id='siteCd']").val(res.usrView.SITE_CD);
 						$("select[id='roleCd']").val(res.usrView.ROLE_CD);
+						if(res.usrView.SITE_CONSULT == '1'){
+							$("input[name='siteConsult']").prop("checked", true);
+						}else{
+							$("input[name='siteConsult']").prop("checked", false);
+						}
+						if(res.usrView.SITE_EDU == '1'){
+							$("input[name='siteEdu']").prop("checked", true);
+						}else{
+							$("input[name='siteEdu']").prop("checked", false);
+						}
 						$("input[name='useYn']:radio[value='" + res.usrView.USE_YN + "']").prop("checked", true);
 						$("input[id='regDt']").val(res.usrView.REG_DT);
 						$('#iInitializePwdDefault').hide();
@@ -36,9 +46,9 @@
 			});
 		},
 		usrUpdate = function(){
-			
+
 			var uiFlag = $("input[id='uiFlag']").val();
-			
+
 			if (uiFlag == "U") {
 				$.ajax({
 					url : '/ajaxUsrUpdate.do',
@@ -80,7 +90,7 @@
 
 		},
 		sysAdminUsrSearch = function(){
-			
+
 			$.ajax({
 				url : '/ajaxAdminUsrSearch.do',
 				type : 'POST',
@@ -137,7 +147,7 @@
 			var result = confirm("사용자 비밀번호를 초기화 하시겠습니까?");
 			if (result) {
 				var tagUsrId = $("input[id='usrId']").val();
-				
+
 				$.ajax({
 					url : '/ajaxResetPwd.do',
 					type : 'POST',
@@ -164,7 +174,7 @@
 			var tagUsrId = $("input[id='usrId']").val();
 			var result = confirm("사용자(" + tagUsrId + ")를 삭제하시겠습니까?");
 			if (result) {
-				
+
 				$.ajax({
 					url : '/ajaxDeleteSysUsr.do',
 					type : 'POST',
@@ -187,13 +197,15 @@
 			}
 		},
 		usrInsert = function(){
-			
+
 			$("input[id='uiFlag']").val("I");
 
 			$("input[id='usrId']").val("");
 			$("input[id='usrNm']").val("");
 			$("select[id='siteCd']").val("");
 			$("select[id='roleCd']").val("");
+			$("input[name='siteConsult']").prop("checked", false);
+			$("input[name='siteEdu']").prop("checked", false);
 			$("input[name='useYn']:radio[value='Y']").prop("checked", true);
 			$("input[id='regDt']").val("");
 
@@ -214,7 +226,7 @@
 <!-- // 페이지 타이틀 -->
 
 <div class="formline">
-   
+
     <!-- 사용자 목록, 사용자 정보 -->
     <div class="el-row">
         <div class="row2">
@@ -454,6 +466,16 @@
 </c:forEach>
                                     </select>
                                 </td>
+                            </tr>
+                            	<th> 사용 시스템 </th>
+                            	<td>
+                            		<span class="ck-bx">
+                                        <input type="checkbox" value="1" name="siteConsult"> 상담
+                                    </span>
+                                    <span class="ck-bx">
+                                        <input type="checkbox" value="1" name="siteEdu"> 교육
+                                    </span>
+                            	</td>
                             </tr>
                             <tr>
                                 <th>
