@@ -33,7 +33,7 @@
 	</div>
 	<div class="r">
 <c:if test="${LoginSiteEdu eq '1'}">
-		<a href="<c:url value="/nrds/test.do" />" class="f">교육</a>&nbsp;&nbsp;
+		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">교육</a>&nbsp;&nbsp;
 </c:if>
 		<a href="#" class="f"> <%=loginUserNm%>님
 			<i class="el-icon-arrow-down el-icon--right"></i>
