@@ -50,4 +50,12 @@ public interface ClientService {
 	 * @throws Exception
 	 */
 	public List<HashMap<String, Object>> getEdMbrList(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 회원 정보 저장
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> saveEdMbr(HashMap<String, Object> map) throws Exception;
 }
