@@ -12,7 +12,9 @@
 			 , EDU_CD		, EDU02_CD		, RLGN_CD		, JOB_CD		, FST_DRUG_CD
 			 , FST_DRUG		, MAIN_DRUG_CD	, MAIN_DRUG		, FST_AGE		, LST_AGE
 			 , USE_TERM		, USE_FRQ_CD	, USE_CAU_CD	, USE_CAU_ETC	, LAW_PBM_CD
-			 , LAW_PBM_ETC	, CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+			 , LAW_PBM_ETC
+			 , CRE_ID		, DATE_FORMAT(CRE_DT, '%Y%m%d') AS CRE_DT
+			 , UPD_ID		, DATE_FORMAT(UPD_DT, '%Y%m%d') AS UPD_DT
 		  FROM ED_MBR
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
