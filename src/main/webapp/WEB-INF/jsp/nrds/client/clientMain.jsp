@@ -5,6 +5,7 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
+		$("input[name='creDt']").val(getToday());
 		<%-- 나이계산 --%>
 		checkAge = function(){
 			var juminNo = $("input[name='juminNo1']").val();
@@ -44,7 +45,7 @@
 			$.ajax({
 				url : '<c:url value="/nrds/ajaxEdMbrAdd.do"/>',
 				type : 'POST',
-				data : new FormData($("#mbrInfoForm")[0]),
+				data : $('#mainForm').serialize(),
 				success : function(res){
 					if(res.err != "Y"){
 						alert(res.MSG + " 성공");
@@ -53,6 +54,43 @@
 					}else{
 						alert(res.MSG);
 					}
+				},
+				error : function(xhr, status){
+					console.log(xhr);
+				}
+			});
+		}
+		<%-- 회원 조회 팝업 --%>
+		mstMbrSearchPopup = function(){
+			$.ajax({
+				url : '<c:url value="/nrds/ajaxEdMbrList.do"/>',
+				type : 'POST',
+				data : {
+					pageNo : $("input[name='memPageNo']").val(),
+					mbrNm : $("input[name='memSchMbrNm']").val(),
+					telNo : $("input[name='memSchTelNo']").val()
+				},
+				success : function(res){
+					$("div[id='layerpopup']").html(res);
+					$("div[id='layerpopup']").attr("data-popup", "memberPopUp");
+					$("input[name='reFunName']").val("viewMemInfo");
+					layerPopupOpen('memberPopUp');
+				},
+				error : function(xhr, status){
+					console.log(xhr);
+				}
+			});
+		}
+		<%-- 회원정보 상세 조회 --%>
+		viewMemInfo = function(tagMbrNo){
+			$.ajax({
+				url : '<c:url value="/nrds/ajaxMbrInfoJson.do"/>',
+				type : 'POST',
+				data : {
+					mbrNo : tagMbrNo
+				},
+				success : function(json){
+					console.log(json);
 				},
 				error : function(xhr, status){
 					console.log(xhr);
@@ -387,7 +425,7 @@
 			<tbody>
 			<tr>
 				<th><span class="required">*</span> 최초등록일자</th>
-				<td><input name="regDt" type="text" class="el-input__inner" placeholder="날짜" style="width: 130px;"></td>
+				<td><input name="creDt" type="text" class="el-input__inner" placeholder="날짜" style="width: 130px;"></td>
 				<th>최종수정일시</th>
 				<td><input name="updDt" type="text" class="el-input__inner" readonly style="width:160px"></td>
 				<th>최종수정자</th>

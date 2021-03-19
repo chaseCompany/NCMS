@@ -11,120 +11,7 @@
 <script type="text/javascript" language="javascript" charset="utf-8" src="<c:url value='/js/jquery.form.js'/>"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
-		$('span').filter('.generate').each(function(index, item){
-			//var p1 = item.data('gen-id');
-			var tagName = $(item).attr("gen-id");
-			var tagType = $(item).attr("gen-type");
-			var grpCd = $(item).attr("gen-cond1");
-			var p2 = $(item).attr("gen-cond2");
-			var firstOption = $(item).attr("gen-default");
-			var choice = $(item).attr("gen-un");
-			$.ajax({
-				type: 'POST',
-				url: '<c:url value="/nrds/SysCdList.do"/>',
-				data : { 'grpCd' : grpCd
-						, 'p2' : p2
-						, 'p3' : firstOption},
-				async: false,
-				dataType: "json",
-				beforeSend:function(){
-					$("span[gen-id='"+tagName+"']").html("로딩중...");
-
-			    }, 
-				success: function(data){
-					if(data.RESULT_LIST.length>0){
-						
-						if(tagType =='select'){
-							
-							$("span[gen-id='"+tagName+"']").html("<select name='"+tagName+"' id='"+tagName+"'></select>");
-							if(firstOption != ''){
-								var option = $("<option value='1'>"+firstOption+"</option>");
-								$("select[name="+tagName+"]").append(option);	
-								
-							}
-							
-							for(var i=0; i < data.RESULT_LIST.length; i++){
-								
-								var option = $("<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>");
-								$("select[name="+tagName+"]").append(option);
-							}
-							if(choice !=''){
-								$("select[name="+tagName+"] option[value="+choice+"]").prop('selected', true);
-							}else{
-								$("select[name="+tagName+"] option[value=1]").prop('selected', true);
-							}
-							
-						}
-						if(tagType == 'radio'){
-							
-							var radio = "";
-							if(firstOption != ''){
-								radio = radio+"<label for='"+tagName+"_f'><input type='radio' name='"+tagName+"' id='"+tagName+"_f' value='1'/>"+firstOption+"</label>";	
-								
-							}
-							
-							for(var i=0, k=0; i < data.RESULT_LIST.length; i++,k++){
-								if($("input[name=stage]").val()!="CNS005005" 
-									|| ($("input[name=stage]").val()=="CNS005005" && (data.RESULT_LIST[i].CD_ID!="TAPS0010116" && data.RESULT_LIST[i].CD_ID!="TAPS0010117"))) {
-									radio = radio+"<input type='radio' name='"+tagName+"' id='"+tagName+"_"+i+"' class='iCheck' value='"+data.RESULT_LIST[i].CD_ID+"' title='"+data.RESULT_LIST[i].codeDesc+"'/>" 
-									+ "<label for='"+tagName+"_"+i+"' class='label_check' title='"+data.RESULT_LIST[i].codeDesc+"'>" +data.RESULT_LIST[i].CD_NM+"</label>";							
-									
-									if(data.RESULT_LIST[i].codeNm =="기타"){
-										
-										//상담경로 기타 선택에 따른 입력 가능 여부.
-										var cnslRtEtc =   "<input type='text' name='cnslRtEtc' id='cnslRtEtc_0' title='상담경로 기타' size='13' maxlength='20' disabled='disabled' class='iText ' style='margin-left:-125px; margin-bottom:4px;' value='' require='false'>"
-											
-										$("#cnslRtEtc").html(cnslRtEtc);
-										
-									}
-									
-								}
-								if((i+1)%4 == 0){
-									radio += "<br>";
-								}
-							}
-							
-							
-							$("#"+tagName).html(radio);
-							//$("label[for="+tagName+"_0]").unwrap();
-							
-							if(choice !=''){
-								$("input:radio[name="+tagName+"][value="+choice+"]").prop('checked', true);
-							}else{
-								$("input:radio[name="+tagName+"][value=1]").prop('checked', true);
-							}
-						}
-						if(tagType == 'checkbox'){
-							
-							var checkBox = "";
-							if(firstOption != ''){
-								checkBox = checkBox+"<label for='"+tagName+"_f'><input type='checkbox' name='"+tagName+"' id='"+tagName+"_f' value='1'/>"+firstOption+"</label>";	
-								
-							}
-							for(var i=0; i < data.RESULT_LIST.length; i++){
-								checkBox = checkBox+"<label for='"+tagName+"_"+i+"'><input type='checkbox' name='"+tagName+"' id='"+tagName+"_"+i+"' value='"+data.RESULT_LIST[i].CODE_IDX+"'/>"+data.RESULT_LIST[i].CODE_NM+"</label>";	
-							}
-							
-							$("#"+tagName).html(checkBox);
-							//$("label[for="+tagName+"_0]").unwrap();
-							
-							if(choice !=''){
-								var choiceArr = choice.split(',');
-								for(var i in choiceArr){
-									$("input:checkbox[name="+tagName+"][value="+choiceArr[i]+"]").prop('checked', true);
-								}
-								
-							}else{
-								$("input:checkbox[name="+tagName+"][value=1]").prop('checked', true);
-							}
-						}
-					}
-					
-					
-				}
-					
-			});
-		});
+		
 		$("input[name='schStrDt']").datepicker('setDate', '-3M');
 		$("input[name='schEndDt']").datepicker('setDate', 'today');
 		$("input[name='pgmDt']").datepicker('setDate', 'today');
@@ -597,11 +484,7 @@
 			<form name="pgmInfoForm" id="pgmInfoForm" enctype="multipart/form-data">
 			<div class="section pdn">
 				<div class="el-card_header">
-					<h2><i class="el-icon-s-opportunity"></i> 프로그램 정보</h2>
-					<span class="generate" name="테스트" gen-id="grp_cd01" gen-type="select" gen-cond1="C0000" gen-cond2="C0000" gen-default="COM00101" gen-un="선택해주세요">dd
-			<!-- <select><option>로딩중...</option></select> -->
-					</span>
-					<span class="generate" name="테스트" gen-id="grp_cd02" gen-type="select" gen-cond1="C0000" gen-cond2="C0000" gen-default="COM00101" gen-un="선택해주세요">22</span>
+					<h2><i class="el-icon-s-opportunity"></i> 프로그램 정보</h2>					
 				</div>
 				
 				<div class="el-card_body">
