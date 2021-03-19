@@ -17,4 +17,91 @@
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</select>
+
+	<select id="edMbr.getMbrNoSeq" resultType="String">
+	<![CDATA[
+		SELECT /* edMbr.getMbrNoSeq */
+			   CONCAT('M', DATE_FORMAT(NOW(), '%Y%m%d%H'), LPAD(IFNULL(MAX(CAST(SUBSTR(MBR_NO, 12) AS UNSIGNED)), 0) + 1, 4, '0')) AS newMbrNo
+		  FROM ED_MBR
+		 WHERE MBR_NO LIKE CONCAT('M', DATE_FORMAT(NOW(), '%Y%m%d%H'), '%')
+	]]>
+	</select>
+
+	<insert id="edMbr.insertEdMbr" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* edMbr.insertEdMbr */ INTO ED_MBR(
+			   MBR_ID		, MBR_NO		, MBR_NM		, GEND_CD		, FRG_CD
+			 , JUMIN_NO1	, AGE			, TEL_NO1		, TEL_NO2		, TEL_NO3
+			 , ZIP_CD		, ADDR1			, ADDR2			, MBR_TP1		, MBR_TP2
+			 , MBR_TP3		, MBR_TP4		, MBR_TP5		, MBR_TP6		, MRG_CD
+			 , EDU_CD		, EDU02_CD		, RLGN_CD		, JOB_CD		, FST_DRUG_CD
+			 , FST_DRUG		, MAIN_DRUG_CD	, MAIN_DRUG		, FST_AGE		, LST_AGE
+			 , USE_TERM		, USE_FRQ_CD	, USE_CAU_CD	, USE_CAU_ETC	, LAW_PBM_CD
+			 , LAW_PBM_ETC	, CRE_ID		, CRE_DT		, UPD_ID		, UPD_DT
+		)VALUES(
+			   #{mbrId}		, #{mbrNo}		, #{mbrNm}		, #{gendCd}		, #{frgCd}
+			 , #{juminNo1}	, #{age}		, #{telNo1}		, #{telNo2}		, #{telNo3}
+			 , #{zipCd}		, #{addr1}		, #{addr2}		, #{mbrTp1}		, #{mbrTp2}
+			 , #{mbrTp3}	, #{mbrTp4}		, #{mbrTp5}		, #{mbrTp6}		, #{mrgCd}
+			 , #{eduCd}		, #{edu02Cd}	, #{rlgnCd}		, #{jobCd}		, #{fstDrugCd}
+			 , #{fstDrug}	, #{mainDrugCd}	, #{mainDrug}	, #{fstAge}		, #{lstAge}
+			 , #{useTerm}	, #{useFrqCd}	, #{useCauCd}	, #{useCauEtc}	, #{lawPbmCd}
+			 , #{lawPbmEtc}	, #{loginId}	, NOW()			, #{loginId}	, NOW()
+		)
+	]]>
+	</insert>
+
+	<update id="edMbr.updateEdMbr" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* edMbr.updateEdMbr */ ED_MBR
+		   SET MBR_NM		= #{mbrNm}		, GEND_CD		= #{gendCd}
+			 , FRG_CD		= #{frgCd}		, JUMIN_NO1		= #{juminNo1}
+			 , AGE			= #{age}		, TEL_NO1		= #{telNo1}
+			 , TEL_NO2		= #{telNo2}		, TEL_NO3		= #{telNo3}
+			 , ZIP_CD		= #{zipCd}		, ADDR1			= #{addr1}
+			 , ADDR2		= #{addr2}		, MBR_TP1		= #{mbrTp1}
+			 , MBR_TP2		= #{mbrTp2}		, MBR_TP3		= #{mbrTp3}
+			 , MBR_TP4		= #{mbrTp4}		, MBR_TP5		= #{mbrTp5}
+			 , MBR_TP6		= #{mbrTp6}		, MRG_CD		= #{mrgCd}
+			 , EDU_CD		= #{eduCd}		, EDU02_CD		= #{edu02Cd}
+			 , RLGN_CD		= #{rlgnCd}		, JOB_CD		= #{jobCd}
+			 , FST_DRUG_CD	= #{fstDrugCd}	, FST_DRUG		= #{fstDrug}
+			 , MAIN_DRUG_CD	= #{mainDrugCd}	, MAIN_DRUG		= #{mainDrug}
+			 , FST_AGE		= #{fstAge}		, LST_AGE		= #{lstAge}
+			 , USE_TERM		= #{useTerm}	, USE_FRQ_CD	= #{useFrqCd}
+			 , USE_CAU_CD	= #{useCauCd}	, USE_CAU_ETC	= #{useCauEtc}
+			 , LAW_PBM_CD	= #{lawPbmCd}	, LAW_PBM_ETC	= #{lawPbmEtc}
+			 , UPD_ID		= #{loginId}	, UPD_DT		= NOW()
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</update>
+
+	<select id="edMbr.getEdMbrListCount" parameterType="hashMap" resultType="int">
+	<![CDATA[
+		SELECT /* edMbr.getEdMbrListCount */ COUNT(EM.MBR_NO) AS CNT
+		  FROM ED_MBR EM
+	]]>
+	</select>
+
+	<select id="edMbr.getEdMbrList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbr.getEdMbrList */ *
+		  FROM (
+				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
+				  FROM (
+						SELECT
+							   EM.MBR_NO		, EM.MBR_NM			, EM.JUMIN_NO1			, EM.GEND_CD
+						  FROM ED_MBR EM
+
+	]]>
+	<![CDATA[
+						 ORDER BY EM.CRE_DT DESC
+				  ) T,(SELECT @RNUM := 0) RNUM
+				 ORDER BY T.CRE_DT DESC
+		  ) T1
+		 WHERE ROWNUM > (#{currentPageNo}-1) * #{recordCountPerPage}
+		 ORDER BY T1.CRE_DT DESC
+		 LIMIT #{recordCountPerPage}
+	]]>
+	</select>
 </mapper>
