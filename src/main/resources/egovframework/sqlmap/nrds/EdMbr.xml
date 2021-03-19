@@ -99,8 +99,8 @@
 				  FROM (
 						SELECT
 							   EM.MBR_NO		, EM.MBR_NM			, EM.JUMIN_NO1			, EM.GEND_CD		, SC01.CD_NM AS GEND_NM
-							 , EM.AGE			, EM.TEL_NO1		, EM.TEL_NO2			, EM.TEL_NO3		, EM.CRE_DT
-							 , EM.UPD_ID		, SU.USR_NM			, EM.UPD_DT
+							 , EM.AGE			, EM.TEL_NO1		, EM.TEL_NO2			, EM.TEL_NO3		, DATE_FORMAT(EM.CRE_DT, '%Y%m%d') AS CRE_DT
+							 , EM.UPD_ID		, SU.USR_NM AS UPD_NM	, DATE_FORMAT(EM.UPD_DT, '%Y%m%d') AS UPD_DT
 						  FROM ED_MBR EM
 						  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
 						  LEFT JOIN SYS_USR SU ON (EM.UPD_ID = SU.USR_ID)
@@ -123,4 +123,11 @@
 		 LIMIT #{recordCountPerPage}
 	]]>
 	</select>
+
+	<delete id="edMbr.deleteEdMbr" parameterType="String">
+	<![CDATA[
+		DELETE /* edMbr.deleteEdMbr */ FROM ED_MBR
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</delete>
 </mapper>

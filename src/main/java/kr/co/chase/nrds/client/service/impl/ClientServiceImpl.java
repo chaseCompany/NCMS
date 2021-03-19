@@ -84,4 +84,9 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 
 		return resultMap;
 	}
+
+	@Override
+	public int deleteEdMbr(String mbrNo) throws Exception {
+		return edMbrDao.deleteEdMbr(mbrNo);
+	}
 }

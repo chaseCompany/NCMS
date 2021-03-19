@@ -1,5 +1,6 @@
 package kr.co.chase.nrds.client.service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,4 +59,12 @@ public interface ClientService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> saveEdMbr(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 회원정보 삭제
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteEdMbr(String mbrNo) throws Exception;
 }

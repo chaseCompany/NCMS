@@ -173,4 +173,24 @@ public class ClientController {
 
 		return resultView;
 	}
+
+	/**
+	 * 회원 정보 삭제
+	 * @param mbrNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrDel.do")
+	public @ResponseBody ModelAndView ajaxEdMbrDel(@RequestParam String mbrNo, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		int result = clientService.deleteEdMbr(mbrNo);
+		if(result <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "삭제 처리 오류");
+		}
+
+		return resultView;
+	}
 }

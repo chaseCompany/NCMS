@@ -68,4 +68,14 @@ public class EdMbrDao extends EgovAbstractMapper {
 	public List<HashMap<String, Object>> getEdMbrList(HashMap<String, Object> map) throws SQLException{
 		return selectList("edMbr.getEdMbrList", map);
 	}
+
+	/**
+	 * 회원정보 삭제
+	 * @param mbrNo
+	 * @return
+	 * @throws SQLException
+	 */
+	public int deleteEdMbr(String mbrNo) throws SQLException{
+		return delete("edMbr.deleteEdMbr", mbrNo);
+	}
 }

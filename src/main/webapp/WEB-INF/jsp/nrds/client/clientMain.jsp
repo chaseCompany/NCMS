@@ -50,7 +50,7 @@
 					if(res.err != "Y"){
 						alert(res.MSG + " 성공");
 
-						getMemInfo(res.mbrNo);
+						viewMemInfo(res.mbrNo);
 					}else{
 						alert(res.MSG);
 					}
@@ -90,12 +90,176 @@
 					mbrNo : tagMbrNo
 				},
 				success : function(json){
-					console.log(json);
+					var info = json.mbrInfo;
+
+					if(info.MBR_NO != ""){
+						$("input[name='mbrNo']").val(info.MBR_NO);
+						$("input[name='mbrNm']").val(info.MBR_NM);
+						$("select[name='gendCd']").val(info.GEND_CD).prop("selected", true);
+						$("input[name='frgCd']:radio[value='" + info.FRG_CD + "']").prop("checked", true);
+						$("input[name='juminNo1']").val(info.JUMIN_NO1);
+						$("input[name='age']").val(info.AGE);
+						$("input[name='telNo1']").val(info.TEL_NO1);
+						$("input[name='telNo2']").val(info.TEL_NO2);
+						$("input[name='telNo3']").val(info.TEL_NO3);
+						$("input[name='zipCd']").val(info.ZIP_CD);
+						$("input[name='addr1']").val(info.ADDR1);
+						$("input[name='addr2']").val(info.ADDR2);
+						if(info.MBR_TP1 == '1'){
+							$("input[name='mbrTp1']").prop("checked", true);
+						}else{
+							$("input[name='mbrTp1']").prop("checked", false);
+						}
+						if(info.MBR_TP2 == '1'){
+							$("input[name='mbrTp2']").prop("checked", true);
+						}else{
+							$("input[name='mbrTp2']").prop("checked", false);
+						}
+						if(info.MBR_TP3 == '1'){
+							$("input[name='mbrTp3']").prop("checked", true);
+						}else{
+							$("input[name='mbrTp3']").prop("checked", false);
+						}
+						if(info.MBR_TP4 == '1'){
+							$("input[name='mbrTp4']").prop("checked", true);
+						}else{
+							$("input[name='mbrTp4']").prop("checked", false);
+						}
+						if(info.MBR_TP5 == '1'){
+							$("input[name='mbrTp5']").prop("checked", true);
+						}else{
+							$("input[name='mbrTp5']").prop("checked", false);
+						}
+						if(info.MBR_TP6 == '1'){
+							$("input[name='mbrTp6']").prop("checked", true);
+						}else{
+							$("input[name='mbrTp6']").prop("checked", false);
+						}
+						$("select[name='mrgCd']").val(info.MRG_CD).prop("selected", true);
+						$("select[name='eduCd']").val(info.EDU_CD).prop("selected", true);
+						$("select[name='edu02Cd']").val(info.EDU02_CD).prop("selected", true);
+						$("select[name='rlgnCd']").val(info.RLGN_CD).prop("selected", true);
+						$("select[name='jobCd']").val(info.JOB_CD).prop("selected", true);
+
+						$("select[name='fstDrugCd']").val(info.FST_DRUG_CD).prop("selected", true);
+						$("input[name='fstDrug']").val(info.FST_DRUG);
+						$("select[name='mainDrugCd']").val(info.MAIN_DRUG_CD).prop("selected", true);
+						$("input[name='mainDrug']").val(info.MAIN_DRUG);
+						$("input[name='fstAge']").val(info.FST_AGE);
+						$("input[name='lstAge']").val(info.LST_AGE);
+						$("input[name='useTerm']").val(info.USE_TERM);
+						$("select[name='useFrqCd']").val(info.USE_FRQ_CD).prop("selected", true);
+						$("select[name='useCauCd']").val(info.USE_CAU_CD).prop("selected", true);
+						if(info.USE_CAU_CD == "ZZ"){
+							$("input[name='useCauEtc']").val(info.USE_CAU_ETC);
+							$("input[name='useCauEtc']").attr("disabled", false);
+						}else{
+							$("input[name='useCauEtc']").val("");
+							$("input[name='useCauEtc']").attr("disabled", true);
+						}
+						$("select[name='lawPbmCd']").val(info.LAW_PBM_CD).prop("selected", true);
+						if(info.LAW_PBM_CD == "ZZ"){
+							$("input[name='lawPbmEtc']").val(info.LAW_PBM_ETC);
+							$("input[name='lawPbmEtc']").attr("disabled", false);
+						}else{
+							$("input[name='lawPbmEtc']").val("");
+							$("input[name='lawPbmEtc']").attr("disabled", true);
+						}
+						$("input[name='creDt']").val(formatDate(info.CRE_DT));
+						$("input[name='updDt']").val(info.UPD_DT);
+						$("input[name='updNm']").val(info.UPD_NM);
+
+						setButton("E");
+					}
 				},
 				error : function(xhr, status){
 					console.log(xhr);
 				}
 			});
+		}
+		<%-- 회원정보 초기화 --%>
+		newMemInfo = function(){
+			$("input[name='mbrNo']").val("");
+			$("input[name='mbrNm']").val("");
+			$("select[name='gendCd']").val("M").prop("selected", true);
+			$("input[name='frgCd']").prop("checked", false);
+			$("input[name='juminNo1']").val("");
+			$("input[name='age']").val("");
+			$("input[name='telNo1']").val("");
+			$("input[name='telNo2']").val("");
+			$("input[name='telNo3']").val("");
+			$("input[name='zipCd']").val("");
+			$("input[name='addr1']").val("");
+			$("input[name='addr2']").val("");
+			$("input[name='mbrTp1']").prop("checked", false);
+			$("input[name='mbrTp2']").prop("checked", false);
+			$("input[name='mbrTp3']").prop("checked", false);
+			$("input[name='mbrTp4']").prop("checked", false);
+			$("input[name='mbrTp5']").prop("checked", false);
+			$("input[name='mbrTp6']").prop("checked", false);
+			$("select[name='mrgCd']").val("").prop("selected", true);
+			$("select[name='eduCd']").val("").prop("selected", true);
+			$("select[name='edu02Cd']").val("").prop("selected", true);
+			$("select[name='rlgnCd']").val("10").prop("selected", true);
+			$("select[name='jobCd']").val("").prop("selected", true);
+
+			$("select[name='fstDrugCd']").val("").prop("selected", true);
+			$("input[name='fstDrug']").val("");
+			$("select[name='mainDrugCd']").val("").prop("selected", true);
+			$("input[name='mainDrug']").val("");
+			$("input[name='fstAge']").val("");
+			$("input[name='lstAge']").val("");
+			$("input[name='useTerm']").val("");
+			$("select[name='useFrqCd']").val("").prop("selected", true);
+			$("select[name='useCauCd']").val("").prop("selected", true);
+			$("input[name='useCauEtc']").val("");
+			$("input[name='useCauEtc']").attr("disabled", true);
+			$("select[name='lawPbmCd']").val("").prop("selected", true);
+			$("input[name='lawPbmEtc']").val("");
+			$("input[name='lawPbmEtc']").attr("disabled", true);
+			$("input[name='creDt']").val(getToday());
+			$("input[name='updDt']").val("");
+			$("input[name='updNm']").val("");
+
+			setButton("N");
+		}
+		<%-- 회원 정보 삭제 --%>
+		delMemInfo = function(){
+			if(confirm("정말로 삭제하시겠습니까?\n삭제한 데이터는 복구가 불가합니다.")){
+				$.ajax({
+					url : '<c:url value="/nrds/ajaxEdMbrDel.do"/>',
+					type : 'POST',
+					data : {
+						mbrNo : $("input[name='mbrNo']").val()
+					},
+					success : function(res){
+						if(res.err != "Y"){
+							alert("삭제 성공");
+
+							newMemInfo();
+						}else{
+							alert(res.MSG);
+						}
+					},
+					error : function(xhr, status){
+						console.log(xhr);
+					}
+				});
+			}
+		}
+		<%-- 버튼 활성화 --%>
+		setButton = function(flag){
+			if(flag == "E"){
+				$("button#delButNo").hide();
+				$("button#delButNoYes").show();
+				$("button#stsButNo").hide();
+				$("button#stsRlButYes").show();
+			}else{
+				$("button#delButNo").show();
+				$("button#delButNoYes").hide();
+				$("button#stsButNo").show();
+				$("button#stsRlButYes").hide();
+			}
 		}
 	});
 </script>
