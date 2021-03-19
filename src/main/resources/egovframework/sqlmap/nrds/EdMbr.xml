@@ -5,17 +5,18 @@
 	<select id="edMbr.getEdMbrInfo" resultType="hashMap" parameterType="hashMap">
 	<![CDATA[
 		SELECT /* edMbr.getEdMbrInfo */
-			   MBR_ID		, MBR_NO		, MBR_NM		, GEND_CD		, FRG_CD
-			 , JUMIN_NO1	, AGE			, TEL_NO1		, TEL_NO2		, TEL_NO3
-			 , ZIP_CD		, ADDR1			, ADDR2			, MBR_TP1		, MBR_TP2
-			 , MBR_TP3		, MBR_TP4		, MBR_TP5		, MBR_TP6		, MRG_CD
-			 , EDU_CD		, EDU02_CD		, RLGN_CD		, JOB_CD		, FST_DRUG_CD
-			 , FST_DRUG		, MAIN_DRUG_CD	, MAIN_DRUG		, FST_AGE		, LST_AGE
-			 , USE_TERM		, USE_FRQ_CD	, USE_CAU_CD	, USE_CAU_ETC	, LAW_PBM_CD
-			 , LAW_PBM_ETC
-			 , CRE_ID		, DATE_FORMAT(CRE_DT, '%Y%m%d') AS CRE_DT
-			 , UPD_ID		, DATE_FORMAT(UPD_DT, '%Y%m%d') AS UPD_DT
-		  FROM ED_MBR
+			   EM.MBR_ID		, EM.MBR_NO			, EM.MBR_NM			, EM.GEND_CD		, EM.FRG_CD
+			 , EM.JUMIN_NO1		, EM.AGE			, EM.TEL_NO1		, EM.TEL_NO2		, EM.TEL_NO3
+			 , EM.ZIP_CD		, EM.ADDR1			, EM.ADDR2			, EM.MBR_TP1		, EM.MBR_TP2
+			 , EM.MBR_TP3		, EM.MBR_TP4		, EM.MBR_TP5		, EM.MBR_TP6		, EM.MRG_CD
+			 , EM.EDU_CD		, EM.EDU02_CD		, EM.RLGN_CD		, EM.JOB_CD			, EM.FST_DRUG_CD
+			 , EM.FST_DRUG		, EM.MAIN_DRUG_CD	, EM.MAIN_DRUG		, EM.FST_AGE		, EM.LST_AGE
+			 , EM.USE_TERM		, EM.USE_FRQ_CD		, EM.USE_CAU_CD		, EM.USE_CAU_ETC	, EM.LAW_PBM_CD
+			 , EM.LAW_PBM_ETC
+			 , EM.CRE_ID		, DATE_FORMAT(EM.CRE_DT, '%Y%m%d') AS CRE_DT
+			 , EM.UPD_ID		, SU.USR_NM AS UPD_NM		, DATE_FORMAT(EM.UPD_DT, '%Y%m%d') AS UPD_DT
+		  FROM ED_MBR EM
+		  LEFT JOIN SYS_USR SU ON (EM.UPD_ID = SU.USR_ID)
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</select>
