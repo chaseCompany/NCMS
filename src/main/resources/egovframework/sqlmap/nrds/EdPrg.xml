@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edPrg">
+	<select id="edPrg.selectEdPrmList" parameterType="hashMap" resultType="egovframework.rte.psl.dataaccess.util.EgovMap">
+		/* edPrg.selectEdPrmList */
+	<![CDATA[
+		SELECT PGM_ID
+			 , PGM_ED_CD
+			 , PGM_CLASS_NN_CD
+			 , PGM_MAIN_LEC
+			 , PGM_SUB_LEC
+			 , PGM_START_DT
+			 , PGM_END_DT
+			 , PGM_DUR
+			 , PGM_SESSION
+			 , PGM_CLASS
+			 , PGM_AGENT
+			 , PGM_MNG_USR_ID
+			 , PGM_CLASS_DT
+			 , PGM_CLASS_START_TM
+			 , PGM_CLASS_END_TM, PGM_CLASS_DUR, PGM_SUBJECT
+			 , PGM_GOAL
+			 , PGM_CTNT
+			 , PGM_RST
+			 , FILE_ID
+			 , PGM_EMP
+			 , PGM_VOL
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT 
+		  FROM ED_PGM
+
+
+	]]>
+	</select>
+
+	<select id="edPrg.selectEdPrmInfo" parameterType="hashMap" resultType="egovframework.rte.psl.dataaccess.util.EgovMap">
+		/* edPrg.selectEdPrmInfo */
+	<![CDATA[
+		SELECT PGM_ID
+			 , PGM_ED_CD
+			 , PGM_CLASS_NN_CD
+			 , PGM_MAIN_LEC
+			 , PGM_SUB_LEC
+			 , PGM_START_DT
+			 , PGM_END_DT
+			 , PGM_DUR
+			 , PGM_SESSION
+			 , PGM_CLASS
+			 , PGM_AGENT
+			 , PGM_MNG_USR_ID
+			 , PGM_CLASS_DT
+			 , PGM_CLASS_START_TM
+			 , PGM_CLASS_END_TM
+			 , PGM_CLASS_DUR
+			 , PGM_SUBJECT
+			 , PGM_GOAL
+			 , PGM_CTNT
+			 , PGM_RST
+			 , FILE_ID
+			 , PGM_EMP
+			 , PGM_VOL
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT 
+		  FROM ED_PGM
+		 WHERE PGM_ID = #{pgmId}
+	]]>
+	</select>
+
+	<insert id="edPrg.insertEdPrmInfo" parameterType="hashMap">
+		/* edPrg.insertEdPrmInfo */
+	<![CDATA[
+		INSERT INTO ED_PGM (
+				  PGM_ED_CD		, PGM_CLASS_NN_CD	, PGM_MAIN_LEC	, PGM_SUB_LEC			, PGM_START_DT	
+				, PGM_END_DT	, PGM_DUR			, PGM_SESSION	, PGM_CLASS				, PGM_AGENT
+				, PGM_MNG_USR_ID, PGM_CLASS_DT		, PGM_CLASS_START_TM, PGM_CLASS_END_TM	, PGM_CLASS_DUR
+				, PGM_SUBJECT	, PGM_GOAL			, PGM_CTNT		, PGM_RST				, FILE_ID
+				, PGM_EMP		, PGM_VOL			, CRE_ID		, CRE_DT				, UPD_ID
+				, UPD_DT 
+		) VALUES (
+				  #{pgmEdCd}	, #{pgmClassNmCd}	, #{pgmMainLec}		, #{pgmSubLec}		, #{pgmStartDt}
+				, #{pgmEndDt}	, #{pgmDur}			, #{pgmSession}		, #{pgmClass}		, #{pgmAgent}
+				, #{pgmMngUsrId}, #{pgmClassDt}		, #{pgmClassStartTm}, #{pgmClassEndTm}	, #{pgmClassDur}
+				, #{pgmSubject}	, #{pgmGoal}		, #{pgmCtnt}		, #{pgmRst}			, #{fileId}
+				, #{pgmEmp}		, #{pgmVol}			, #{creId}			, NOW()			, #{updId}
+				, #{updDt}
+		)
+				
+	]]>
+	</insert>
+
+	<update id="edPrg.updateEdPrmInfo" parameterType="hashMap">
+		/* edPrg.updateEdPrmInfo */ 
+	<![CDATA[
+		UPDATE ED_PGM
+		   SET PGM_ED_CD  			= #{pgmEdCd}			, PGM_CLASS_NN_CD 	= #{pgmClassNmCd}	
+		     , PGM_MAIN_LEC			= #{pgmMainLec}			, PGM_SUB_LEC 	  	= #{pgmSubLec}
+		     , PGM_START_DT  		= #{pgmStartDt}			, PGM_END_DT		= #{pgmEndDt}
+			 , PGM_DUR  			= #{pgmDur}				, PGM_SESSION		= #{pgmSession}
+			 , PGM_CLASS  			= #{pgmClass}			, PGM_AGENT			= #{pgmAgent}
+			 , PGM_MNG_USR_ID  		= #{pgmMngUsrId}		, PGM_CLASS_DT		= #{pgmClassDt}
+			 , PGM_CLASS_START_TM  	= #{pgmClassStartTm}	, PGM_CLASS_END_TM	= #{pgmClassEndTm}	
+			 , PGM_CLASS_DUR  		= #{pgmClassDur}		, PGM_SUBJECT		= #{pgmSubject}
+			 , PGM_GOAL  			= #{pgmGoal}			, PGM_CTNT			= #{pgmCtnt}
+			 , PGM_RST	  			= #{pgmRst}				, FILE_ID			= #{fileId}
+			 , PGM_EMP  			= #{pgmEmp}				, PGM_VOL			= #{pgmVol}
+			 , UPD_ID	  			= #{updId}				, UPD_DT 			= NOW()
+		 WHERE PGM_ID = #{pgmId}
+	]]>
+	</update>
+
+	<select id="edPrg.selectEdPrmListCount" parameterType="hashMap" resultType="egovframework.rte.psl.dataaccess.util.EgovMap">
+		/* edPrg.selectEdPrmListCount */
+	<![CDATA[
+		SELECT  COUNT(*) AS CNT
+		  FROM ED_PGM
+	]]>
+	</select>
+	
+	<delete id="edPrg.deleteEdPrm" parameterType="hashMap">
+		/* edPrg.deleteEdPrm */
+		DELETE FROM ED_PGM WHERE PGM_ID = #{pgmId}
+	</delete>
+</mapper>

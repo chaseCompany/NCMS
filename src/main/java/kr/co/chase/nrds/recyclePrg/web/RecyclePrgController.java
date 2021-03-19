@@ -1,5 +1,6 @@
 package kr.co.chase.nrds.recyclePrg.web;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,14 +44,24 @@ public class RecyclePrgController {
 	 * @return
 	 * @throws Exception
 	 */
+	
 	@RequestMapping(value="/nrds/recyclePrgMain.do")
-	public String rhbEduPrgMain(ModelMap model, @ModelAttribute("cslRcpVO") CslRcpVO cslRcpVO, HttpSession session) throws Exception{
+	public String recyclePrgMain(ModelMap model, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		@SuppressWarnings("unchecked")
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
 			return "redirect:/login.do";
 		}
-
+		Enumeration<?> paramsName= request.getParameterNames();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		while (paramsName.hasMoreElements()) {
+			String name =  (String) paramsName.nextElement();
+			System.out.println("name: "+name +"   &&   parameter:" + request.getParameter(name));
+			map.put(name, request.getParameter(name));
+		} 
+		
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
@@ -64,7 +75,7 @@ public class RecyclePrgController {
 		paramMap.put("grpCd", "NOT");
 		paramMap.put("roleCd", new String[]{"90"});
 		model.put("sysMbrList", loginService.getSysUsrList(paramMap));
-
+		model.put("edPrmList", recyclePrgService.selectEdPrmList(map));
 		return "nrds/recyclePrg/recyclePrgMain";
 	}
 	
@@ -73,7 +84,6 @@ public class RecyclePrgController {
 	public ModelAndView sysCdList(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav= new ModelAndView("jsonView");
 		String grpCd= request.getParameter("grpCd");
-		System.out.println("씨발: "+grpCd);
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
