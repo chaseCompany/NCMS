@@ -5,28 +5,255 @@
 <%
 	String loginUserId = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserId"), "");
 	String loginSiteNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginSiteNm"), "");
+	String loginUserNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserNm"), "");
 %>
 <c:set var="loginUserId" value="<%=loginUserId%>" />
 <c:set var="loginSiteNm" value="<%=loginSiteNm%>" />
+<c:set var="loginUserNm" value="<%=loginUserNm%>" />
+
 <script type="text/javascript" language="javascript" charset="utf-8" src="<c:url value='/js/jquery.form.js'/>"></script>
+<script type="text/javaScript" language="javascript" defer="defer">
+	$(document).ready(function(){
+		$('.generate').each(function(index, item){
+			var tagName = $(this).attr("gen-id");
+			var tagType = $(this).attr("gen-type");
+			var grpCd = $(this).attr("gen-cond1");
+			var defaultValue = $(this).attr("gen-default-value");
+		    var defaultText = $(this).attr("gen-default-text");
+			var selectValue = $(this).attr("gen-select-value");			
+			$.ajax({
+				type: 'POST',
+				url: '<c:url value="/nrds/SysCdList.do"/>',
+				data : { 'grpCd' : grpCd },
+				//async: false,
+				dataType: "json",
+				beforeSend:function(){
+					if(tagType=='select')
+					{
+						$("span[gen-id='"+tagName+"']").html("<select><option>로딩중...</option></select>");
+					}
+					else
+					{
+						$("span[gen-id='"+tagName+"']").html("로딩중...");
+					}
+			    }, 
+				success: function(data){
+					var s = "";
+					if(data.RESULT_LIST.length>0){					
+						if(defaultValue==undefined) defaultValue = "";
+						if(defaultText==undefined) defaultText = "선택";
+						if(selectValue==undefined) selectValue = "";
+						console.log("select : defaultValue=",defaultValue,"defaultText=",defaultText,"selectValue=",selectValue);						
+						if(tagType == 'select')
+						{							
+							$("span[gen-id='"+tagName+"']").html("<select name='"+tagName+"' id='"+tagName+"'></select>");
+							if(defaultValue != null){
+								s += "<option value='" + defaultValue + "'>"+defaultText+"</option>";
+							}							
+							for(var i=0; i < data.RESULT_LIST.length; i++){								
+								s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+							}
+							$("select[id="+tagName+"]").append(s);
+							$("select[id="+tagName+"] option[value='"+selectValue+"']").prop('selected', true);
+						}
+						else if(tagType == 'radio')
+						{							
+							if(selectValue==undefined) selectValue = "";
+							console.log("radio : selectValue=",selectValue);
+														
+							for(var i=0; i < data.RESULT_LIST.length; i++){
+								s += "<span class='ck-bx'>";
+								s += "<input type='radio' name='"+tagName+"' id='"+tagName+""+i+"' class='el-radio__original' value='"+data.RESULT_LIST[i].CD_ID+"'/>";
+								s += "<label for='"+tagName+""+i+"'><span class='el-radio__input'><span class='el-radio__inner'></span></span>" + data.RESULT_LIST[i].CD_NM + "</label>";
+								s += "</span>";
+							}
+							$("span[gen-id='"+tagName+"']").html(s);
+							$("input:radio[name='"+tagName+"'][value='"+selectValue+"']").prop('checked', true);
+						}
+						else if(tagType == 'checkbox')
+						{							
+							if(selectValue==undefined) selectValue = "";
+							console.log("checkbox : selectValue=",selectValue);
+														
+							for(var i=0; i < data.RESULT_LIST.length; i++){
+								s += "<input type='checkbox' name='"+tagName+"' id='"+tagName+""+i+"' value='"+data.RESULT_LIST[i].CD_ID+"'/>";
+								s += "&nbsp;" + data.RESULT_LIST[i].CD_NM + " &nbsp; ";
+							}
+							$("span[gen-id='"+tagName+"']").html(s);
+							var selectArr = selectValue.split(',');
+							for(var i in selectArr){
+								$("input:checkbox[name='"+tagName+"'][value='"+selectArr[i]+"']").prop('checked', true);
+							}
+						} 						
+					}
+				}
+					
+			});
+		});
+	});
+</script>		
+
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		
 		$("input[name='schStrDt']").datepicker('setDate', '-3M');
 		$("input[name='schEndDt']").datepicker('setDate', 'today');
 		$("input[name='pgmDt']").datepicker('setDate', 'today');
+		
 		<%-- 페이지 초기화 --%>
 		pageRest = function(){
 			window.location.reload();
-		},
+		};
+		
+		<%-- SELECT BOX생성 --%>
+		$.ajax({
+			url: '/nrds/SysCdList.do',
+			type: 'POST',
+			data: {grpCd : 'R0100'},
+			async: false,
+			success: function(data){
+				//검색조건 체크박스
+				var s1 ="";
+				for(var i=0; i < data.RESULT_LIST.length; i++){
+					s1 += "<input type='checkbox' name='searchPgmEdCd"+i+"' id='searchPgmEdCd"+i+"' value='"+data.RESULT_LIST[i].CD_ID+"'/>";
+					s1 += "&nbsp;" + data.RESULT_LIST[i].CD_NM + " &nbsp; ";
+				}
+				$("span[id=searchPgmEdCd]").html(s1);
+				
+				//프로그램정보 셀렉스박스
+				$("span[id=pgmEdCdSpan]").html("<select name='pgmEdCd' id='pgmEdCd'></select>");
+				var s2 = "<option value=''>선택</option>";						
+				for(var i=0; i < data.RESULT_LIST.length; i++){								
+					s2 += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+				}
+				$("select[id=pgmEdCd]").append(s2);
+				$("span[id=pgmClassNmCd]").html("<select name='pgmClassNmCd' id='pgmClassNmCd'><option>교육분류를 선택해주세요</option></select>");
+			}
+		});
+		
+		<%-- 프로그램 검색 조건(체크박스) 선택시 교육과정명 체크박스 표시 --%>
+		$("#searchPgmEdCd").change(function(){
+			//alert($("#searchPgmEdCd0").is(":checked") +":: "+ $("#searchPgmEdCd1").is(":checked") );
+			if($("#searchPgmEdCd0").is(":checked")){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0101'},
+					async: false,
+					success: function(data){
+						$("span[id='searchPgmClassNmCd1']").html("");
+						var s1 ="";
+						for(var i=0; i < data.RESULT_LIST.length; i++){
+							s1 += "<input type='checkbox' name='searchPgmClassNmCd"+i+"' id='searchPgmClassNmCd"+data.RESULT_LIST[i].CD_ID+"' value='"+data.RESULT_LIST[i].CD_ID+"'/>";
+							s1 += "&nbsp;" + data.RESULT_LIST[i].CD_NM + " &nbsp; ";
+						}
+						$("span[id=searchPgmClassNmCd1]").html(s1);
+					}
+				});
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R010101'},
+					async: false,
+					success: function(data){
+						var s2 ="";
+						for(var i=0; i < data.RESULT_LIST.length; i++){
+							s2 += "<input type='checkbox' name='searchPgmClassSubCd"+i+"' id='searchPgmClassSubCd"+data.RESULT_LIST[i].CD_ID+"' value='"+data.RESULT_LIST[i].CD_ID+"'/>";
+							s2 += "&nbsp;" + data.RESULT_LIST[i].CD_NM + " &nbsp; ";
+						}
+						$("span[id=searchPgmClassNmCd1]").append(s2);
+						$("span[id=searchPgmClassNmCd1]").append("<br/>");
+					}
+				});
+				
+			} else{
+				$("span[id=searchPgmClassNmCd1]").html("");
+			}
+			
+			if($("#searchPgmEdCd1").is(":checked")){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0102'},
+					async: false,
+					success: function(data){
+						$("span[id='searchPgmClassNmCd2']").html("");
+						var s1 ="";
+						for(var i=0; i < data.RESULT_LIST.length; i++){
+							s1 += "<input type='checkbox' name='searchPgmClassNmCd2"+i+"' id='searchPgmClassNmCd"+data.RESULT_LIST[i].CD_ID+"' value='"+data.RESULT_LIST[i].CD_ID+"'/>";
+							s1 += "&nbsp;" + data.RESULT_LIST[i].CD_NM + " &nbsp; ";
+						}
+						$("span[id=searchPgmClassNmCd2]").html(s1);
+					}
+				});
+				
+				
+			} else{
+				$("span[id=searchPgmClassNmCd2]").html("");
+			}
+		});
+		
+		<%-- 프로그램 정보 교육분류 선택시 교육과정명 셀렉트박스 표시 --%>
+		$("#pgmEdCdSpan").change(function(){
+			if($("select#pgmEdCd").val() == "R0101"){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0101'},
+					success: function(data){
+						$("span[id='pgmClassNmCd']").html("");
+						$("span[id='pgmClassNmCd']").html("<select name='pgmClassNmCd' id='pgmClassNmCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassNmCd]").append(s);
+						
+					}
+				});
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R010101'},
+					success: function(data){
+						$("span[id='pgmClassSubSpan']").html("");
+						$("span[id='pgmClassSubSpan']").html("<select name='pgmClassSubCd' id='pgmClassSubCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassSubCd]").append(s);
+						
+					}
+				});
+			}else if($("select#pgmEdCd").val() == "R0102"){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0102'},
+					success: function(data){
+						$("span[id='pgmClassNmCd']").html("");
+						$("span[id='pgmClassSubSpan']").html("");
+						$("span[id='pgmClassNmCd']").html("<select name='pgmClassNmCd' id='pgmClassNmCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassNmCd]").append(s);
+					}
+				});
+				
+			}
+		});
+		
 		<%-- 프로그램 목록 조회 --%>
-		getWeeklyPrgList = function(){
+		getRecyclePrgList = function(){
 			$.ajax({
-				url : '/ajaxGetWeeklyPrgList.do',
+				url : '/ajaxGetRecyclePrgList.do',
 				type : 'POST',
 				data : $("#prgListForm").serialize(),
 				success : function(res){
-					$("div[id='weeklyPrgList']").html(res);
+					$("div[id='recyclePrgList']").html(res);
 				},
 				error : function(xhr, status){
 					console.log(xhr);
@@ -36,41 +263,49 @@
 		<%-- 검색버튼 클릭 --%>
 		seachPrgList = function(){
 			$("input[name='pgmPageNo']").val('1');
-			getWeeklyPrgList();
+			getRecyclePrgList();
 		},
 		<%-- 프로그램 정보 등록 --%>
-		addGrpPgm = function(){
-			if($("select[name='pgmTpCd']").val() == "" || $("select[name='pgmTpCd']").val() == null){
-				alert("대분류는 필수 입력 항목입니다.");
-				$("select[name='pgmTpCd']").focus();					return;
+		addRecyclePrg = function(){
+			 if($("select[name='pgmEdCd']").val() == "" || $("select[name='pgmEdCd']").val() == null){
+				alert("교육분류는 필수 입력 항목입니다.");
+				$("select[name='pgmEdCd']").focus();					return;
 			}
-			if($("select[name='pgmCd']").val() == "" || $("select[name='pgmCd']").val() == null){
-				alert("중분류는 필수 입력 항목입니다.");
-				$("select[name='pgmCd']").focus();					return;
+			if($("select[name='pgmClassNmCd']").val() == "" || $("select[name='pgmClassNmCd']").val() == null){
+				alert("교육과정명는 필수 입력 항목입니다.");
+				$("select[name='pgmClassNmCd']").focus();					return;
 			}
-			if($("input[name='pgmDt']").val() == ""){
-				alert("프로그램 실시 일자는 필수 입력 항목입니다.");
-				$("input[name='pgmDt']").focus();					return;
+			if($("input[name='pgmStartDt']").val() == ""){
+				alert("교육기간은 시작일필수 입력 항목입니다.");
+				$("input[name='pgmStartDt']").focus();					return;
 			}
-			if($("input[name='pgmFmTm']").val() == ""){
-				alert("프로그램 실시 시작시간은 필수 입력 항목입니다.");
-				$("input[name='pgmFmTm']").focus();					return;
+			if($("input[name='pgmEndDt']").val() == ""){
+				alert("교육기간 종료일은 필수 입력 항목입니다.");
+				$("input[name='pgmEndDt']").focus();					return;
 			}
-			if($("input[name='pgmToTm']").val() == ""){
-				alert("프로그램 실시 종료시간은 필수 입력 항목입니다.");
-				$("input[name='pgmToTm']").focus();					return;
+			if($("input[name='pgmClassStartTm']").val() == ""){
+				alert("교육일시 시작시간은 필수 입력 항목입니다.");
+				$("input[name='pgmClassStartTm']").focus();					return;
 			}
-			if($("select[name='mngUsrId']").val() == ""){
+			if($("input[name='pgmClassEndTm']").val() == ""){
+				alert("교육일시 종료시간은 필수 입력 항목입니다.");
+				$("input[name='pgmClassEndTm']").focus();					return;
+			}
+			if($("select[name='pgmMngUsrId']").val() == ""){
 				alert("담당자는 필수 입력 항목입니다.");
-				$("select[name='mngUsrId']").focus();				return;
+				$("select[name='pgmMngUsrId']").focus();				return;
 			}
 			if($("input[name='pgmSession']").val() == ""){
 				alert("회기는 필수 입력 항목입니다.");
 				$("input[name='pgmSession']").focus();					return;
 			}
-			if($("input[name='pgmTeacher']").val() == ""){
-				alert("강사는 필수 입력 항목입니다.");
-				$("input[name='pgmTeacher']").focus();					return;
+			if($("input[name='pgmClass']").val() == ""){
+				alert("차수는 필수 입력 항목입니다.");
+				$("input[name='pgmClass']").focus();					return;
+			}
+			if($("input[name='pgmMainLec']").val() == ""){
+				alert("주강사는 필수 입력 항목입니다.");
+				$("input[name='pgmMainLec']").focus();					return;
 			}
 			if($("input[name='pgmSubject']").val() == ""){
 				alert("주제는 필수 입력 항목입니다.");
@@ -83,10 +318,10 @@
 			if($("textarea[name='pgmRst']").val() == ""){
 				alert("프로그램 결과는 필수 입력 항목입니다.");
 				$("textarea[name='pgmRst']").focus();				return;
-			}
+			} 
 
 			$.ajax({
-				url : '/ajaxWeeklyPrgAdd.do',
+				url : '/ajaxRecyclePrgAdd.do',
 				type : 'POST',
 				processData : false,
 				contentType : false,
@@ -111,7 +346,7 @@
 				}
 			});
 		},
-		<%-- 프로그램 정보 폼 초기화 --%>
+		<%-- 재활교육 프로그램 정보 불러오기 --%>
 		reSetPgmForm = function(obj){
 			if(obj == undefined){
 				$("button#delBtnYes").hide();
@@ -119,7 +354,7 @@
 				$("button#excelButNo").show();
 				$("button#excelButYes").hide();
 
-				$("select[name='pgmTpCd']").val("").prop("selected", true);
+				$("select[name='pgmEdCd']").val("").prop("selected", true);
 				$("select[name='pgmCd']").val("").prop("selected", true);
 				$("input[name='pgmDt']").datepicker('setDate', 'today');
 				$("input[name='pgmFmTm']").val("09:00");
@@ -137,7 +372,7 @@
 				$("div#fileName").text("");
 			}else{
 				$.ajax({
-					url : '/ajaxGetWeeklyPrg.do',
+					url : '/ajaxGetRecyclePrgInfo.do',
 					type : 'POST',
 					data : {
 						pgmDt : obj.pgmDt,
@@ -153,19 +388,32 @@
 						var setDt = new Date(prgInfo.PGM_DT.substr(0, 4), prgInfo.PGM_DT.substr(4, 2), prgInfo.PGM_DT.substr(6, 2));
 						setDt.setMonth(setDt.getMonth() - 1);
 
-						$("select[name='pgmTpCd']").val(prgInfo.PGM_TP_CD).prop("selected", true);
-						$("select[name='pgmCd']").val(prgInfo.PGM_CD).prop("selected", true);
-						$("input[name='pgmDt']").datepicker('setDate', setDt);
+						$("select[name='pgmEdCd']").val(prgInfo.PGM_TP_CD).prop("selected", true);
+						$("select[name='pgmClassNmCd']").val(prgInfo.PGM_CD).prop("selected", true);
+						$("select[name='pgmClassSubCd']").val(prgInfo.PGM_CD).prop("selected", true);
+						$("input[name='pgmSession']").val(prgInfo.pgmSession);
+						$("input[name='pgmClass']").val(prgInfo.pgmClass);
+						$("input[name='pgmMainLec']").val(prgInfo.pgmMainLec);
+						$("input[name='pgmSubLec']").val(prgInfo.pgmSubLec);
+						$("input[name='pgmStartDt']").datepicker('setDate', setDt);
+						$("input[name='pgmEndDt']").datepicker('setDate', setDt);
 						$("input[name='pgmFmTm']").val(prgInfo.PGM_FM_TM);
 						$("input[name='pgmToTm']").val(prgInfo.PGM_TO_TM);
-						$("select[name='mngUsrId']").val(prgInfo.MNG_USR_ID).prop("selected", true);
-						$("input[name='siteNm']").val(prgInfo.SITE_NM);
-						$("input[name='pgmSession']").val(prgInfo.PGM_SESSION);
-						$("input[name='pgmTeacher']").val(prgInfo.PGM_TEACHER);
-						$("input[name='pgmSubject']").val(prgInfo.PGM_SUBJECT);
-						$("input[name='pgmGoal']").val(prgInfo.PGM_GOAL);
-						$("textarea[name='pgmCtnt']").val(prgInfo.PGM_CTNT);
-						$("textarea[name='pgmRst']").val(prgInfo.PGM_RST);
+						
+						$("input[name='pgmAgent']").val(prgInfo.pgmAgent);
+						$("select[name='pgmMngUsrId']").val(prgInfo.pgmMngUsrId);
+						
+						$("input[name='pgmClassStartDt']").datepicker('setDate', pgmClassStartDt);
+						$("input[name='pgmClassEndDt']").datepicker('setDate', pgmClassEndDt);
+						$("input[name='pgmClassStartTm']").val(prgInfo.pgmClassStartTm);
+						$("input[name='pgmClassEndTm']").val(prgInfo.pgmClassEndTm);
+						
+						$("input[name='pgmSubject']").val(prgInfo.pgmSubject);
+						$("input[name='pgmGoal']").val(prgInfo.pgmGoal);
+						$("input[name='pgmCtnt']").val(prgInfo.pgmCtnt);
+						$("input[name='pgmRst']").val(prgInfo.pgmRst);
+						$("textarea[name='pgmEmp']").val(prgInfo.pgmEmp);
+						$("textarea[name='pgmVol']").val(prgInfo.pgmVol);
 
 						if(prgInfo.fileList != undefined && prgInfo.fileList != ''){
 							for(let i=0 ; i<prgInfo.fileList.length ; i++){
@@ -395,9 +643,11 @@
 		
 		
 		
-		getWeeklyPrgList();
+		getRecyclePrgList();
 		getPgmMemList();
 	});
+	
+	
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
@@ -406,7 +656,7 @@
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
 <div class="top-right-btn">
-	<button type="button" onclick="javaScript:addGrpPgm();" class="el-button normal el-button--primary el-button--small is-plain">
+	<button type="button" onclick="javaScript:addRecyclePrg();" class="el-button normal el-button--primary el-button--small is-plain">
 		<i class="el-icon-download"></i> <span>저장</span>
 	</button>
 	<button type="button" onclick="javaScript:newBtn();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;">
@@ -450,33 +700,23 @@
 									<input type="text" name="schEndDt" class="el-input__inner datepicker" placeholder="종료" style="width: 110px;">
 								</div>
 							</td>
-							<th>프로그램</th>
+							
 							<td>
-								<select name="schTpCd" style="width:90px">
-									<option value="">선택</option>
-<c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
-	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-								</select>
-								<select name="schPgmCd" style="width:90px">
-									<option value="">선택</option>
-<c:if test="${pgmCdList ne null and pgmCdList ne ''}">
-	<c:forEach var="result" items="${pgmCdList}" varStatus="status">
-								<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-								</select>
+								<span id="searchPgmEdCd"></span>
 								<button type="button" onclick="javaScript:seachPrgList();" class="el-button el-button--primary el-button--small is-plain" style="margin-left: 8px; padding: 8px 15px;">
 									<i class="el-icon-search"></i><span>검색</span>
 								</button>
 							</td>
 						</tr>
+						<tr>
+							<td colspan="4"><span id="searchPgmClassNmCd1"></span>
+											<span id="searchPgmClassNmCd2"></span>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
-			<div id="weeklyPrgList"></div>
+			<div id="recyclePrgList"></div>
 		</div>
 		</form>
 		<div class="r">
@@ -491,80 +731,91 @@
 					<table class="w-auto wr-form">
 						<tbody>
 							<tr>
-								<th><span class="required">*</span> 대분류</th>
-								<td>
-									<select name="pgmTpCd" style="width: 140px;">
-										<option value="">선택</option>
-<c:if test="${pgmTpCdList ne null and pgmTpCdList ne ''}">
-	<c:forEach var="result" items="${pgmTpCdList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-									</select>
+								<th><span class="required">*</span> 교육분류</th>
+								<td><span id="pgmEdCdSpan"></span>
 								</td>
-								<th><span class="required">*</span> 중분류</th>
+								<th><span class="required">*</span> 교육과정명</th>
 								<td>
-									<select name="pgmCd" style="width: 140px;">
-										<option value="">선택</option>
-<c:if test="${pgmCdList ne null and pgmCdList ne ''}">
-	<c:forEach var="result" items="${pgmCdList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-									</select>
+									<span id="pgmClassNmCd"></span>
+									<span id="pgmClassSubSpan"></span>
 								</td>
-								<th> <span class="required">*</span> 실시 일시</th>
-								<td>
-									<div class="dat-pk">
-										<i class="el-input__icon el-icon-date"></i>
-										<input type="text" name="pgmDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 120px;">
-									</div>
-									<div class="time-box">
-										<div class="tm-in">
-											<i class="el-input__icon el-icon-time"></i>
-											<input type="text" name="pgmFmTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 80px;">
-										</div>
-										<span>~</span>
-										<div class="tm-in">
-											<i class="el-input__icon el-icon-time"></i>
-											<input type="text" name="pgmToTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 80px;">
-										</div>
-									</div>
-								</td>
-								<th> <span class="required">*</span> 담당자</th>
-								<td>
-									<select name="mngUsrId" style="width: 140px;" onchange="javaScrpt:changSiteNm(this);">
-										<option value="">선택</option>
-<c:if test="${sysMbrList ne null and sysMbrList ne ''}">
-	<c:forEach var="result" items="#{sysMbrList}" varStatus="status">
-										<option value="<c:out value="${result.USR_ID}" />" siteNm="<c:out value="${result.SITE_NM}" />"<c:if test="${result.USR_ID eq loginUserId}"> selected</c:if>><c:out value="${result.USR_NM}" />(<c:out value="${result.USR_ID}" />)</option>
-	</c:forEach>
-</c:if>
-									</select>
-								</td>
+								<th><span class="required">*</span> 회기</th>
+								<td><input type="text" name="pgmSession" class="el-input__inner" placeholder="회기" style="width: 80px;"></td>
+								<th><span class="required">*</span> 차수</th>
+								<td><input type="text" name="pgmClass" class="el-input__inner" placeholder="차수" style="width: 80px;"></td>
 							</tr>
 						</tbody>
 					</table>
 					<table class="w-auto wr-form">
 						<tbody>
 							<tr>
+								<th> <span class="required">*</span> &nbsp;주강사&nbsp;&nbsp;</th>
+								<td>
+									<input type="text" name="pgmMainLec" placeholder="강사이름" style="width: 120px;"> 
+								</td>
+								<th> <span class="required">*</span> 보조강사</th>
+								<td> 
+									<input type="text" name="pgmSubLec" placeholder="강사이름" style="width: 120px;">
+								</td>
+								<th> <span class="required">*</span> 교육기간</th>
+								<td>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<input type="text" name="pgmStartDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 120px;">
+									</div>
+									<div class="tm-in">
+										<i class="el-input__icon el-icon-time"></i>
+										<input type="text" name="pgmFmTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 80px;">
+									</div>
+									<span>~</span>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<input type="text" name="pgmEndDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 120px;">
+									</div>
+									<div class="tm-in">
+										<i class="el-input__icon el-icon-time"></i>
+										<input type="text" name="pgmToTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 80px;">
+									</div>
+								</td>
+							</tr>
+							<tr>
 								<th>기관명</th>
 								<td>
 									<div class="dsp-ibk tac">
-										<input type="text" name="siteNm" value="<c:out value="${loginSiteNm}" />" readonly class="el-input__inner" style="width: 200px;" placeholder="기관명">
+										<input type="text" name="pgmAgent" value="<c:out value="${loginSiteNm}" />" readonly class="el-input__inner" style="width: 200px;" placeholder="기관명">
 									</div>
 								</td>
-								<th> <span class="required">*</span> 회기</th>
-								<td> <input type="text" name="pgmSession" class="el-input__inner" placeholder="회기" style="width: 319px;"></td>
-								<th> <span class="required">*</span> 강사</th>
-								<td> <input type="text" name="pgmTeacher" class="el-input__inner" placeholder="강사" style="width: 319px;"></td>
+								<th> <span class="required">*</span> 담당자</th>
+								<td>
+									<input type="text" name="pgmMngUsrId" value="<c:out value="${loginUserNm}" />" readonly class="el-input__inner" style="width: 100px;" placeholder="담당자">
+								</td>
+								<th> <span class="required">*</span> 교육일시</th>
+								<td>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<input type="text" name="pgmClassStartDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 120px;">
+									</div>
+									<div class="tm-in">
+										<i class="el-input__icon el-icon-time"></i>
+										<input type="text" name="pgmClassStartTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 80px;">
+									</div>
+										<span>~</span>
+									<div class="dat-pk">
+										<i class="el-input__icon el-icon-date"></i>
+										<input type="text" name="pgmClassEndDt" class="el-input__inner datepicker" placeholder="날짜" style="width: 120px;">
+									</div>
+									<div class="tm-in">
+										<i class="el-input__icon el-icon-time"></i>
+										<input type="text" name="pgmClassEndTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 80px;">
+									</div>
+								</td>
 							</tr>
 							<tr>
-								<th> <span class="required">*</span> 주제 </th>
+								<th> <span class="required">*</span>교육주제</th>
 								<td colspan='5'><input type="text" name="pgmSubject" placeholder="주제" style="width: 100%;" /></td>
 							</tr>
 							<tr>
-								<th> 목표</th>
+								<th>교육목표</th>
 								<td colspan='5'><input type="text" name="pgmGoal" placeholder="목표" style="width: 100%;" /></td>
 							</tr>
 						</tbody>
@@ -577,7 +828,7 @@
 						<tbody>
 							<tr>
 								<th>
-									<span class="required">*</span> 내용<br>
+									<span class="required">*</span>교육내용<br>
 									<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 										<i class="el-icon-search"></i>
 									</button>
@@ -586,7 +837,7 @@
 							</tr>
 							<tr>
 								<th>
-									결과<br>
+									교육결과<br>
 									<button type="button" onclick="javaScript:viewCtnt('pgmRst', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 										<i class="el-icon-search"></i>
 									</button>
@@ -610,7 +861,31 @@
 
 				</div>
 			</div>
-			<!-- //  프로그램 정보 -->
+			<!-- 인적자원등록 -->
+			<div class="section pdn">
+				<div class="el-card_header">
+					<h2><i class="el-icon-s-opportunity"></i> 인적자원등록</h2>
+				</div>
+				<div class="el-card_body">
+					<table class="wr-form">
+						<colgroup>
+							<col width="7%">
+							<col width="*">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th>직원</th>
+								<td><input type="text" name="pgmEmp" style="width: 100%;" /></td>
+							</tr>
+							<tr>
+								<th>자원봉사자</th>
+								<td><input type="text" name="pgmVol" style="width: 100%;" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- // 인적자원등록 -->
 			<!-- 회원 목록 -->
 			<div class="section pdn">
 				<div class="el-card_header">
@@ -638,7 +913,7 @@
 								<tr>
 									<th>#</th>
 									<th>작업</th>
-									<th>회원번호</th>
+									<th>대상자등록번호</th>
 									<th>이름</th>
 									<th>진행기록</th>
 									<th>보기</th>

@@ -1,7 +1,12 @@
 package kr.co.chase.nrds.recyclePrg.web;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +17,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.SysCodeService;
+import kr.co.chase.ncms.common.util.FileManagerUtil;
 import kr.co.chase.ncms.login.service.LoginService;
 import kr.co.chase.nrds.recyclePrg.service.RecyclePrgService;
 
@@ -29,6 +42,10 @@ public class RecyclePrgController {
 	@Resource(name = "RecyclePrgService")
 	private RecyclePrgService recyclePrgService;
 	
+	@Resource(name = "FileManagerUtil")
+	private FileManagerUtil fileUtil;
+
+		
 	/**
 	 * 주간 프로그램 메인 페이지
 	 * @param model
@@ -46,6 +63,10 @@ public class RecyclePrgController {
 
 		if(usrInfo == null || StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "") == "") {
 			return "redirect:/login.do";
+		}
+		Set<String> keys= usrInfo.keySet();
+		for(String key : keys) {
+			System.out.println("로그인 key::"+key);
 		}
 		Enumeration<?> paramsName= request.getParameterNames();
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -70,6 +91,211 @@ public class RecyclePrgController {
 		model.put("sysMbrList", loginService.getSysUsrList(paramMap));
 		model.put("edPrmList", recyclePrgService.selectEdPrmList(map));
 		return "nrds/recyclePrg/recyclePrgMain";
+	}
+	
+	/**
+	 * 주간 프로그램 등록
+	 * @param reqMap
+	 * @param request
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxRecyclePrgAdd.do")
+	public @ResponseBody ModelAndView ajaxRecyclePrgAdd(final MultipartHttpServletRequest multiRequest, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+/*		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmEdCd"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "프로그램 대분류는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmCd"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "프로그램 중분류는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "프로그램 실시 일자는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmFmTm"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "프로그램 실시 시작시간은 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmToTm"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "프로그램 실시 종료시간은 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("mngUsrId"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "담당자는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmSession"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "회기는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmTeacher"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "강사는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmSubject"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "주제는 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmCtnt"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "프로그램 내용은 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmRst"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "결과는 필수 입력 항목입니다.");
+			return resultView;
+		} */
+
+		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
+		String pgmDt = StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), "").replaceAll("-", "");
+		String pgmCd = StringUtils.defaultIfEmpty((String)reqMap.get("pgmCd"), "");
+		String[] pgmMbrNoList = multiRequest.getParameterValues("pgmMbrNo");
+		String[] mbrSeqNoList = multiRequest.getParameterValues("mbrSeqNo");
+		String[] mbrCtntList = multiRequest.getParameterValues("mbrCtnt");
+
+		reqMap.put("pgmDt", pgmDt);
+		reqMap.put("cslId", cslId);
+
+		// 첨부 파일 정보
+		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		if (!files.isEmpty()) {
+			boolean flag = fileUtil.checkFiles(files);
+
+			if(flag) {
+				HashMap<String, Object> fileMng = fileUtil.parseFileInf(files, "RECYCLE", cslId);
+				if(!fileMng.isEmpty()) {
+					List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)fileMng.get("fileList");
+
+					reqMap.put("fileList", fileList);
+					reqMap.put("fileId", StringUtils.defaultIfEmpty((String)fileMng.get("fileId"), ""));
+				}
+			}
+		}
+
+		// 회원 목록
+		if(pgmMbrNoList != null && pgmMbrNoList.length > 0) {
+			List<HashMap<String, Object>> mbrList = new ArrayList<HashMap<String, Object>>();
+
+			for(int i=0 ; i<pgmMbrNoList.length ; i++) {
+				HashMap<String, Object> mbrMap = new HashMap<String, Object>();
+				mbrMap.put("pgmDt", pgmDt);
+				mbrMap.put("pgmCd", pgmCd);
+				mbrMap.put("seqNo", mbrSeqNoList[i]);
+				mbrMap.put("mbrNo", pgmMbrNoList[i]);
+				mbrMap.put("mbrCtnt", mbrCtntList[i]);
+
+				mbrList.add(mbrMap);
+			}
+
+			reqMap.put("grpPgmMbrList", mbrList);
+		}
+
+		int resMap = recyclePrgService.insertEdPrmInfo(reqMap);
+		if(resMap > 1) {
+			//resultView.addObject("err", resMap.get("err"));
+			//resultView.addObject("MSG", resMap.get("MSG"));
+		}
+
+		return resultView;
+	}
+	
+	/**
+	 * 재활 교육 프로그램 목록 조회
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxGetRecyclePrgList.do")
+	public String ajaxGetRecyclePrgList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
+		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
+
+		PaginationInfo paginginfo = new PaginationInfo();
+		if(currentPageNo == "" || recordCountPerPage == ""){
+			paginginfo.setCurrentPageNo(1);
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.parseInt(ConstantObject.defaultRowSize));
+		} else {
+			paginginfo.setCurrentPageNo(Integer.valueOf(currentPageNo));
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
+		}
+
+		String schStrDt = StringUtils.defaultIfEmpty((String)reqMap.get("schStrDt"), "");
+		String schEndDt = StringUtils.defaultIfEmpty((String)reqMap.get("schEndDt"), "");
+		System.out.println("재활교육프로그램 검색 파라미터 목록");
+		List<Object> pgmEdCdList = new ArrayList<Object>();
+		List<Object> pgmClassNmList = new ArrayList<Object>();
+		List<Object> pgmClassSubList = new ArrayList<Object>();
+		for(String key : reqMap.keySet()) {
+			if(reqMap.get(key) != null) {
+				System.out.println("key: "+key + " || value: "+reqMap.get(key));	
+			}
+			HashMap<String, Object> searchMap= new HashMap<String, Object>();
+			searchMap.put(key, reqMap.get(key));
+			if(key.contains("searchPgmEdCd")) {
+				pgmEdCdList.add(reqMap.get(key));
+			} else if(key.contains("searchPgmClassNmCd")) {
+				pgmClassNmList.add(reqMap.get(key));
+			} else if(key.contains("searchPgmClassSubCd")){
+				pgmClassSubList.add(reqMap.get(key));
+			}
+			
+		}
+		reqMap.put("pgmEdCdList", pgmEdCdList);
+		reqMap.put("pgmClassNmList", pgmClassNmList);
+		reqMap.put("pgmClassSubList", pgmClassSubList);
+		if(!"".equals(schStrDt) && !"".equals(schEndDt)) {
+			//reqMap.put("schStrDt", schStrDt.replaceAll("-", ""));
+			//reqMap.put("schEndDt", schEndDt.replaceAll("-", ""));
+
+			//reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
+			//reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
+
+			//int totalCount = weeklyPrgService.getGrpPgmListCount(reqMap);
+			//paginginfo.setTotalRecordCount(totalCount);
+
+			//model.put("totalCount", totalCount);
+			//model.put("paginationInfo", paginginfo);
+
+			//if(totalCount > 0) {
+			//	List<HashMap<String, Object>> resultList = weeklyPrgService.getGrpPgmList(reqMap);
+			//	model.put("prgList", resultList);
+			//}
+		}else{
+			//model.put("totalCount", 0);
+			//model.put("paginationInfo", paginginfo);
+		}	
+		List<EgovMap> resultList = recyclePrgService.selectEdPrmList(reqMap);
+		model.put("prgList", resultList);
+		return "nrds/recyclePrg/layer/recyclePrgList";
 	}
 	
 }

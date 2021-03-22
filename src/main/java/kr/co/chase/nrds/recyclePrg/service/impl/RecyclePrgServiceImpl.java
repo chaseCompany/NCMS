@@ -41,4 +41,6 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 	public void deleteEdPrmInfo(HashMap<String, Object> map) throws Exception{
 		recyclePrgDao.deleteEdPrmInfo(map);
 	}
+	
+	
 }
