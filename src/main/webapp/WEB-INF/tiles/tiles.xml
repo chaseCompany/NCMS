@@ -13,6 +13,20 @@
 	<definition name="*/layer/*" extends="onlyBody-layout">
 		<put-attribute name="content" value="/WEB-INF/jsp/{1}/layer/{2}.jsp" />
 	</definition>
+	<definition name="nrds/*/layer/*" extends="onlyBody-layout">
+		<put-attribute name="content" value="/WEB-INF/jsp/nrds/{1}/layer/{2}.jsp" />
+	</definition>
+
+	<definition name="nrds-default-layout" template="/WEB-INF/jsp/layouts/nrds/defalut.jsp">
+		<put-attribute name="head" value="/WEB-INF/jsp/layouts/head.jsp" />
+		<put-attribute name="topmenu" value="/WEB-INF/jsp/layouts/nrds/topMenu.jsp" />
+	</definition>
+	<definition name="nrds/*" extends="nrds-default-layout">
+		<put-attribute name="content" value="/WEB-INF/jsp/nrds/{1}.jsp" />
+	</definition>
+	<definition name="nrds/*/*" extends="nrds-default-layout">
+		<put-attribute name="content" value="/WEB-INF/jsp/nrds/{1}/{2}.jsp" />
+	</definition>
 
 	<definition name="default-layout" template="/WEB-INF/jsp/layouts/defalut.jsp">
 		<put-attribute name="head" value="/WEB-INF/jsp/layouts/head.jsp" />

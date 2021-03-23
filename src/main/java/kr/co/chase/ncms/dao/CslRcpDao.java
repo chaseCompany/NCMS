@@ -20,8 +20,8 @@ public class CslRcpDao extends EgovAbstractMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<String, Object> getCslRcp(String rcpNo) throws SQLException{
-		return selectOne("cslRcp.getCslRcp", rcpNo);
+	public HashMap<String, Object> getCslRcp(HashMap<String, Object> map) throws SQLException{
+		return selectOne("cslRcp.getCslRcp", map);
 	}
 
 	/**

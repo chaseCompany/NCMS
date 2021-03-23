@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edMbr">
+	<select id="edMbr.getEdMbrInfo" resultType="hashMap" parameterType="hashMap">
+	<![CDATA[
+		SELECT /* edMbr.getEdMbrInfo */
+			   EM.MBR_NO		, EM.MBR_NM			, EM.GEND_CD		, EM.FRG_CD			, EM.JUMIN_NO1
+			 , EM.AGE			, EM.TEL_NO1		, EM.TEL_NO2		, EM.TEL_NO3		, EM.ZIP_CD
+			 , EM.ADDR1			, EM.ADDR2			, EM.MBR_TP1		, EM.MBR_TP2		, EM.MBR_TP3
+			 , EM.MBR_TP4		, EM.MBR_TP5		, EM.MBR_TP6		, EM.MRG_CD			, EM.EDU_CD
+			 , EM.EDU02_CD		, EM.RLGN_CD		, EM.JOB_CD			, EM.FST_DRUG_CD	, EM.FST_DRUG
+			 , EM.MAIN_DRUG_CD	, EM.MAIN_DRUG		, EM.FST_AGE		, EM.LST_AGE		, EM.USE_TERM
+			 , EM.USE_FRQ_CD	, EM.USE_CAU_CD		, EM.USE_CAU_ETC	, EM.LAW_PBM_CD		, EM.LAW_PBM_ETC
+			 , EM.CRE_ID		, DATE_FORMAT(EM.CRE_DT, '%Y%m%d') AS CRE_DT
+			 , EM.UPD_ID		, SU.USR_NM AS UPD_NM		, DATE_FORMAT(EM.UPD_DT, '%Y%m%d') AS UPD_DT
+			 , SC01.CD_NM AS GEND_NM
+		  FROM ED_MBR EM
+		  LEFT JOIN SYS_USR SU ON (EM.UPD_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</select>
+
+	<select id="edMbr.getMbrNoSeq" resultType="String">
+	<![CDATA[
+		SELECT /* edMbr.getMbrNoSeq */
+			   CONCAT('M', DATE_FORMAT(NOW(), '%Y%m%d%H'), LPAD(IFNULL(MAX(CAST(SUBSTR(MBR_NO, 12) AS UNSIGNED)), 0) + 1, 4, '0')) AS newMbrNo
+		  FROM ED_MBR
+		 WHERE MBR_NO LIKE CONCAT('M', DATE_FORMAT(NOW(), '%Y%m%d%H'), '%')
+	]]>
+	</select>
+
+	<insert id="edMbr.insertEdMbr" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* edMbr.insertEdMbr */ INTO ED_MBR(
+			   MBR_NO			, MBR_NM			, GEND_CD			, FRG_CD			, JUMIN_NO1
+			 , AGE				, TEL_NO1			, TEL_NO2			, TEL_NO3			, ZIP_CD
+			 , ADDR1			, ADDR2				, MBR_TP1			, MBR_TP2			, MBR_TP3
+			 , MBR_TP4			, MBR_TP5			, MBR_TP6			, MRG_CD			, EDU_CD
+			 , EDU02_CD			, RLGN_CD			, JOB_CD			, FST_DRUG_CD		, FST_DRUG
+			 , MAIN_DRUG_CD		, MAIN_DRUG			, FST_AGE			, LST_AGE			, USE_TERM
+			 , USE_FRQ_CD		, USE_CAU_CD		, USE_CAU_ETC		, LAW_PBM_CD		, LAW_PBM_ETC
+			 , CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
+		)VALUES(
+			   #{mbrNo}			, #{mbrNm}			, #{gendCd}			, #{frgCd}			, #{juminNo1}
+			 , #{age}			, #{telNo1}			, #{telNo2}			, #{telNo3}			, #{zipCd}
+			 , #{addr1}			, #{addr2}			, #{mbrTp1}			, #{mbrTp2}			, #{mbrTp3}
+			 , #{mbrTp4}		, #{mbrTp5}			, #{mbrTp6}			, #{mrgCd}			, #{eduCd}
+			 , #{edu02Cd}		, #{rlgnCd}			, #{jobCd}			, #{fstDrugCd}		, #{fstDrug}
+			 , #{mainDrugCd}	, #{mainDrug}		, #{fstAge}			, #{lstAge}			, #{useTerm}
+			 , #{useFrqCd}		, #{useCauCd}		, #{useCauEtc}		, #{lawPbmCd}		, #{lawPbmEtc}
+			 , #{loginId}		, NOW()				, #{loginId}		, NOW()
+		)
+	]]>
+	</insert>
+
+	<update id="edMbr.updateEdMbr" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* edMbr.updateEdMbr */ ED_MBR
+		   SET MBR_NM		= #{mbrNm}		, GEND_CD		= #{gendCd}
+			 , FRG_CD		= #{frgCd}		, JUMIN_NO1		= #{juminNo1}
+			 , AGE			= #{age}		, TEL_NO1		= #{telNo1}
+			 , TEL_NO2		= #{telNo2}		, TEL_NO3		= #{telNo3}
+			 , ZIP_CD		= #{zipCd}		, ADDR1			= #{addr1}
+			 , ADDR2		= #{addr2}		, MBR_TP1		= #{mbrTp1}
+			 , MBR_TP2		= #{mbrTp2}		, MBR_TP3		= #{mbrTp3}
+			 , MBR_TP4		= #{mbrTp4}		, MBR_TP5		= #{mbrTp5}
+			 , MBR_TP6		= #{mbrTp6}		, MRG_CD		= #{mrgCd}
+			 , EDU_CD		= #{eduCd}		, EDU02_CD		= #{edu02Cd}
+			 , RLGN_CD		= #{rlgnCd}		, JOB_CD		= #{jobCd}
+			 , FST_DRUG_CD	= #{fstDrugCd}	, FST_DRUG		= #{fstDrug}
+			 , MAIN_DRUG_CD	= #{mainDrugCd}	, MAIN_DRUG		= #{mainDrug}
+			 , FST_AGE		= #{fstAge}		, LST_AGE		= #{lstAge}
+			 , USE_TERM		= #{useTerm}	, USE_FRQ_CD	= #{useFrqCd}
+			 , USE_CAU_CD	= #{useCauCd}	, USE_CAU_ETC	= #{useCauEtc}
+			 , LAW_PBM_CD	= #{lawPbmCd}	, LAW_PBM_ETC	= #{lawPbmEtc}
+			 , UPD_ID		= #{loginId}	, UPD_DT		= NOW()
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</update>
+
+	<select id="edMbr.getEdMbrListCount" parameterType="hashMap" resultType="int">
+	<![CDATA[
+		SELECT /* edMbr.getEdMbrListCount */ COUNT(EM.MBR_NO) AS CNT
+		  FROM ED_MBR EM
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNm != null and mbrNm != ''">
+		   AND EM.MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
+			</if>
+			<if test="juminNo1 != null and juminNo1 != ''">
+		   AND EM.JUMIN_NO1 = REPLACE(#{juminNo1}, ' ', '')
+			</if>
+		</trim>
+	</select>
+
+	<select id="edMbr.getEdMbrList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbr.getEdMbrList */ *
+		  FROM (
+				SELECT T.*, @RNUM := @RNUM + 1 AS ROWNUM
+				  FROM (
+						SELECT
+							   EM.MBR_NO		, EM.MBR_NM			, EM.JUMIN_NO1			, EM.GEND_CD		, SC01.CD_NM AS GEND_NM
+							 , EM.AGE			, EM.TEL_NO1		, EM.TEL_NO2			, EM.TEL_NO3		, DATE_FORMAT(EM.CRE_DT, '%Y%m%d') AS CRE_DT
+							 , EM.UPD_ID		, SU.USR_NM AS UPD_NM	, DATE_FORMAT(EM.UPD_DT, '%Y%m%d') AS UPD_DT
+						  FROM ED_MBR EM
+						  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+						  LEFT JOIN SYS_USR SU ON (EM.UPD_ID = SU.USR_ID)
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="mbrNm != null and mbrNm != ''">
+						   AND EM.MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
+			</if>
+			<if test="juminNo1 != null and juminNo1 != ''">
+						   AND EM.JUMIN_NO1 = REPLACE(#{juminNo1}, ' ', '')
+			</if>
+		</trim>
+	<![CDATA[
+						 ORDER BY EM.CRE_DT DESC
+				  ) T,(SELECT @RNUM := 0) RNUM
+				 ORDER BY T.MBR_NO DESC
+		  ) T1
+		 WHERE ROWNUM > (#{currentPageNo}-1) * #{recordCountPerPage}
+		 ORDER BY T1.CRE_DT DESC
+		 LIMIT #{recordCountPerPage}
+	]]>
+	</select>
+
+	<delete id="edMbr.deleteEdMbr" parameterType="String">
+	<![CDATA[
+		DELETE /* edMbr.deleteEdMbr */ FROM ED_MBR
+		 WHERE MBR_NO = #{mbrNo}
+	]]>
+	</delete>
+</mapper>

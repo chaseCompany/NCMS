@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import egovframework.rte.fdl.property.EgovPropertyService;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
@@ -42,6 +43,9 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 	@Resource(name = "FileManagerUtil")
 	private FileManagerUtil fileUtil;
 
+	@Resource(name="propertiesService")
+	protected EgovPropertyService propertiesService;
+
 	/**
 	 * 회원 정보 조회
 	 * @param mbrNo
@@ -53,7 +57,11 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 			throw new Exception("MemberServiceImpl.getMstMbr mbrNo 필수값 누락");
 		}
 
-		HashMap<String, Object> mbrInfoMap = mstMbrDao.getMstMbr(mbrNo);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("mbrNo", mbrNo);
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+
+		HashMap<String, Object> mbrInfoMap = mstMbrDao.getMstMbr(map);
 		if(mbrInfoMap != null) {
 			String fmlyTree = StringUtils.defaultIfEmpty((String)mbrInfoMap.get("FMLY_TREE"), "");
 			String personalInfo = StringUtils.defaultIfEmpty((String)mbrInfoMap.get("PERSONAL_INFO"), "");
@@ -109,6 +117,8 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 			throw new Exception("MemberServiceImpl.insertMstMbr mbrNo 필수값 누락");
 		}
 
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+
 		return mstMbrDao.insertMstMbr(map);
 	}
 
@@ -139,6 +149,8 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		if("".equals(StringUtils.defaultIfEmpty((String)map.get("mbrNo"), ""))) {
 			throw new Exception("MemberServiceImpl.updateMstMbr mbrNo 필수값 누락");
 		}
+
+		map.put("paswKey", propertiesService.getString("aes256Key"));
 
 		return mstMbrDao.updateMstMbr(map);
 	}

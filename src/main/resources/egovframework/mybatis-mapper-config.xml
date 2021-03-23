@@ -6,5 +6,6 @@
 	</settings>
 	<typeAliases>
 		<typeAlias alias="hashMap" type="java.util.HashMap" />
+		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
 	</typeAliases>
 </configuration>

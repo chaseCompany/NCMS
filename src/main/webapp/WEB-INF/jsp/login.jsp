@@ -30,6 +30,12 @@
 				}
 			});
 		}
+		<%-- Enter Key --%>
+		checkEvent = function(){
+			if(event.keyCode == 13){
+				goLogin();
+			}
+		}
 	});
 </script>
 <div class="login_wrap">
@@ -43,14 +49,14 @@
 		<form name='loginForm'>
 		<div class="input_box">
 			<div class="id_box">
-				<input type="text" name="usrId">
+				<input type="text" name="usrId" onkeydown="javaScript:checkEvent();">
 			</div>
 			<div class="pw_box">
-				<input type="password" name="passwd">
+				<input type="password" name="passwd" onkeydown="javaScript:checkEvent();">
 			</div>
 			<a href="javaScript:goLogin();" class="login_btn">로그인</a>
 		</div>
 		</form>
-		<div class="copy">Copyrightⓒ 2015 Agency All rights reserved.</div>
+		<div class="copy">Copyrightⓒ 2021 Agency All rights reserved.</div>
 	</div>
 </div>
