@@ -435,7 +435,7 @@
                                     <div role="alert" class="el-alert el-alert--info is-light mgt10" style="width: 196px;">
                                         <i class="el-alert__icon el-icon-info"></i>
                                         <div class="el-alert__content">
-                                            <span class="el-alert__title">초기 비밀번호는 12345</span>
+                                            <span class="el-alert__title">초기 비밀번호는 df4810@#</span>
                                             <i class="el-alert__closebtn el-icon-close" style="display: none;"></i>
                                         </div>
                                     </div>

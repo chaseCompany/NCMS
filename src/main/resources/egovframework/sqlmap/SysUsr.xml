@@ -149,9 +149,9 @@
 			, REG_DT			, CRE_DT			, CRE_ID			, UPD_DT
 			, UPD_ID
 		)VALUES(
-			  #{usrId}			, #{usrNm}			, #{passWd}			, #{roleCd}
+			  #{usrId}			, #{usrNm}						, SUBSTR(PASSWORD(#{passWd}) FROM 2)			, #{roleCd}
 			, #{siteCd}			, IFNULL(#{siteConsult}, '0')	, IFNULL(#{siteEdu}, '0')		, #{useYn}
-			, NOW()				, NOW()				, #{creId}			, NOW()
+			, NOW()				, NOW()							, #{creId}						, NOW()
 			, #{updId}
 		)
 	]]>

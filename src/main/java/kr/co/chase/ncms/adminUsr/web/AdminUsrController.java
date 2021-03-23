@@ -343,7 +343,7 @@ public class AdminUsrController {
 		
 		if(flag){
 			reqMap.put("usrId", usrId);
-			reqMap.put("passWd", "12345");
+			reqMap.put("passWd", "df4810@#");
 			reqMap.put("creId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 			reqMap.put("updId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
 
