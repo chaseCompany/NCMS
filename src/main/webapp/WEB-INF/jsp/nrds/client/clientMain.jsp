@@ -5,7 +5,7 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
-		$("input[name='creDt']").val(getToday());
+		$("input[name='creUsrDt']").datepicker('setDate', 'today');
 		<%-- 나이계산 --%>
 		checkAge = function(){
 			var juminNo = $("input[name='juminNo1']").val();
@@ -42,6 +42,78 @@
 		}
 		<%-- 정보 저장 --%>
 		infoSave = function(){
+			if($("input[name='mbrNm']").val() == ""){
+				alert("성명을 입력하세요.");
+				$("input[name='mbrNm']").focus();				return;
+			}
+			if($("select[name='gendCd']").val() == ""){
+				alert("성별을 선택하세요.");
+				$("select[name='gendCd']").focus();				return;
+			}
+			if(!$("input[name='frgCd']").is(":checked")){
+				alert("내/외국인 유무를 선택하세요.");
+				$("input[name='frgCd']").focus();				return;
+			}
+			if($("input[name='juminNo1']").val() == ""){
+				alert("생년월일을 입력하세요.");
+				$("input[name='juminNo1']").focus();			return;
+			}
+			if($("input[name='age']").val() == ""){
+				alert("연령을 입력하세요.");
+				$("input[name='age']").focus();					return;
+			}
+			if($("input[name='telNo1']").val() == "" || $("input[name='telNo2']").val() == "" || $("input[name='telNo3']").val() == ""){
+				alert("연락처를 입력하세요.");
+				$("input[name='telNo1']").focus();				return;
+			}
+			if($("input[name='zipCd']").val() == "" || $("input[name='addr1']").val() == ""){
+				alert("주소를 입력하세요.");
+				zipCodePop();									return;
+			}
+			if(
+				!($("input[name='mbrTp1']").is(":checked") || $("input[name='mbrTp2']").is(":checked") || $("input[name='mbrTp3']").is(":checked") ||
+				  $("input[name='mbrTp4']").is(":checked") || $("input[name='mbrTp5']").is(":checked") || $("input[name='mbrTp6']").is(":checked"))
+			  ){
+				alert("대상자구분을 선택하세요.");
+				$("input[name='mbrTp1']").focus();				return;
+			}
+			if($("select[name='fstDrugCd']").val() == ""){
+				alert("최초사용약물을 선택하세요.");
+				$("select[name='fstDrugCd']").focus();				return;
+			}
+			if($("select[name='mainDrugCd']").val() == ""){
+				alert("주요사용약물을 선택하세요.");
+				$("select[name='mainDrugCd']").focus();				return;
+			}
+			if($("input[name='fstAge']").val() == ""){
+				alert("최초 사용시기를 입력하세요.");
+				$("input[name='fstAge']").focus();					return;
+			}
+			if($("input[name='lstAge']").val() == ""){
+				alert("마지막 사용시기를 입력하세요.");
+				$("input[name='lstAge']").focus();					return;
+			}
+			if($("input[name='useTerm']").val() == ""){
+				alert("사용기간을 입력하세요.");
+				$("input[name='useTerm']").focus();					return;
+			}
+			if($("select[name='useFrqCd']").val() == ""){
+				alert("사용빈도를 선택하세요.");
+				$("select[name='useFrqCd']").focus();				return;
+			}
+			if($("select[name='useCauCd']").val() == ""){
+				alert("사용원인을 선택하세요.");
+				$("select[name='useCauCd']").focus();				return;
+			}
+			if($("select[name='lawPbmCd']").val() == ""){
+				alert("약물관련 법적문제를 선택하세요.");
+				$("select[name='lawPbmCd']").focus();				return;
+			}
+			if($("input[name='creUsrDt']").val() == ""){
+				alert("최초등록일자을 입력하세요.");
+				$("input[name='creUsrDt']").focus();				return;
+			}
+
 			$.ajax({
 				url : '<c:url value="/nrds/ajaxEdMbrAdd.do"/>',
 				type : 'POST',
@@ -165,8 +237,8 @@
 							$("input[name='lawPbmEtc']").val("");
 							$("input[name='lawPbmEtc']").attr("disabled", true);
 						}
-						$("input[name='creDt']").val(formatDate(info.CRE_DT));
-						$("input[name='updDt']").val(info.UPD_DT);
+						$("input[name='creUsrDt']").val(formatDate(info.CRE_DT));
+						$("input[name='updDt']").val(formatDate(info.UPD_DT));
 						$("input[name='updNm']").val(info.UPD_NM);
 
 						setButton("E");
@@ -217,7 +289,7 @@
 			$("select[name='lawPbmCd']").val("").prop("selected", true);
 			$("input[name='lawPbmEtc']").val("");
 			$("input[name='lawPbmEtc']").attr("disabled", true);
-			$("input[name='creDt']").val(getToday());
+			$("input[name='creUsrDt']").datepicker('setDate', 'today');
 			$("input[name='updDt']").val("");
 			$("input[name='updNm']").val("");
 
@@ -294,308 +366,315 @@
 </div>
 <!-- // 상단 버튼 -->
 <div class="formline" style="min-width: 1600px;">
-	<!-- 탭메뉴 -->
-	<div class="el-tabs__header is-top">
-		<div class="el-tabs__nav-wrap is-top">
-			<div class="el-tabs__nav-scroll">
-				<div role="tablist" class="el-tabs__nav is-top">
-					<a href="<c:url value="/nrds/clientMain.do" />">
-						<div class="el-tabs__item is-top is-active" data-id="tab-mem">
-							<span><i class="el-icon-s-help"></i> 대상자 정보관리</span>
-						</div>
-					</a>
-					<a href="<c:url value="/nrds/clientEduConMain.do"/>">
-						<div class="el-tabs__item is-top" data-id="tab-link">
-							<span><i class="el-icon-s-management"></i> 의뢰 교육조건부 기소유예</span>
-						</div>
-					</a>
-					<a href="<c:url value="/nrds/clientLeadConMain.do" />">
-						<div class="el-tabs__item is-top" data-id="tab-req">
-							<span><i class="el-icon-platform-eleme"></i> 의뢰 선도조건부 기소유예</span>
-						</div>
-					</a>
-					<a href="<c:url value="/nrds/clientLinkMain.do" />">
-						<div class="el-tabs__item is-top" data-id="tab-req">
-							<span><i class="el-icon-platform-eleme"></i> 연계</span>
-						</div>
-					</a>
+	<div class="section-sha" style="min-width: 1840px;">
+		<!-- 탭메뉴 -->
+		<div class="el-tabs__header is-top">
+			<div class="el-tabs__nav-wrap is-top">
+				<div class="el-tabs__nav-scroll">
+					<div role="tablist" class="el-tabs__nav is-top">
+						<a href="<c:url value="/nrds/clientMain.do" />">
+							<div class="el-tabs__item is-top is-active" data-id="tab-mem">
+								<span><i class="el-icon-s-help"></i> 대상자 정보관리</span>
+							</div>
+						</a>
+						<a href="<c:url value="/nrds/clientEduConMain.do"/>">
+							<div class="el-tabs__item is-top" data-id="tab-link">
+								<span><i class="el-icon-s-management"></i> 의뢰 교육조건부 기소유예</span>
+							</div>
+						</a>
+						<a href="<c:url value="/nrds/clientLeadConMain.do" />">
+							<div class="el-tabs__item is-top" data-id="tab-req">
+								<span><i class="el-icon-platform-eleme"></i> 의뢰 선도조건부 기소유예</span>
+							</div>
+						</a>
+						<a href="<c:url value="/nrds/clientLinkMain.do" />">
+							<div class="el-tabs__item is-top" data-id="tab-req">
+								<span><i class="el-icon-platform-eleme"></i> 연계</span>
+							</div>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- // 탭메뉴 -->
-	<form name="mainForm" id="mainForm" method="post">
-	<div class="el-row">
-		<div class="row2">
-			<div class="section pdn mgn">
-				<div class="el-card_header">
-					<h2><i class="el-icon-s-opportunity"></i> 기본 정보</h2>
-				</div>
-				<div class="el-card_body">
-					<table class="w-auto wr-form">
-						<tbody>
-						<tr>
-							<th>대상자등록번호</th>
-							<td>
-								<div class="search-input tac">
-									<input name="mbrNo" type="text" readonly placeholder="저장시 자동 생성" class="el-input__inner" style="width: 142px;" />
-<c:if test="${searchFlag ne 'N'}">
-									<button type="button" onclick="javaScript:mstMbrSearchPopup();"><i class="el-icon-search"></i></button>
-</c:if>
-								</div>
-							</td>
-							<th><span class="required">*</span> 성명</th>
-							<td><input name="mbrNm" type="text" class="el-input__inner" placeholder="성명" style="width: 130px;" /></td>
-							<th><span class="required">*</span> 성별</th>
-							<td>
-								<div class="gen-check">
-									<select name="gendCd">
+		<!-- // 탭메뉴 -->
+		<div class="el-tabs_content">
+			<form name="mainForm" id="mainForm" method="post">
+			<div class="el-row">
+				<div class="row2">
+					<div class="section pdn mgn">
+						<div class="el-card_header">
+							<h2><i class="el-icon-s-opportunity"></i> 기본 정보</h2>
+						</div>
+						<div class="el-card_body">
+							<table class="w-auto wr-form">
+								<tbody>
+								<tr>
+									<th>대상자등록번호</th>
+									<td>
+										<div class="search-input tac">
+											<input name="mbrNo" type="text" readonly placeholder="저장시 자동 생성" class="el-input__inner" style="width: 142px;" />
+											<button type="button" onclick="javaScript:mstMbrSearchPopup();"><i class="el-icon-search"></i></button>
+										</div>
+									</td>
+									<th><span class="required">*</span> 성명</th>
+									<td><input name="mbrNm" type="text" class="el-input__inner" placeholder="성명" maxlength="5" style="width: 130px;" /></td>
+									<th><span class="required">*</span> 성별</th>
+									<td>
+										<div class="gen-check">
+											<select name="gendCd">
 <c:if test="${gendCdList ne null and gendCdList ne ''}">
 	<c:forEach var="result" items="${gendCdList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-									</select>
-								</div>
-							</td>
-							<th><span class="required">*</span> 내/외국인</th>
-							<td>
+											</select>
+										</div>
+									</td>
+									<th><span class="required">*</span> 내/외국인</th>
+									<td>
 <c:if test="${frgCdList ne null and frgCdList ne ''}">
 	<c:forEach var="result" items="${frgCdList}" varStatus="status">
-								<span class="ck-bx">
-									<input type="radio" class="el-radio__original" name="frgCd" value="<c:out value="${result.CD_ID}" />" id="frgCd-<c:out value="${status.count}" />">
-									<label for="frgCd-<c:out value="${status.count}" />">
-										<span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" />
-									</label>
-								</span>
+										<span class="ck-bx">
+											<input type="radio" class="el-radio__original" name="frgCd" value="<c:out value="${result.CD_ID}" />" id="frgCd-<c:out value="${status.count}" />">
+											<label for="frgCd-<c:out value="${status.count}" />">
+												<span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" />
+											</label>
+										</span>
 	</c:forEach>
 </c:if>
-							</td>
-						</tr>
-						<tr>
-							<th content="저장시 성명과 생년월일(6자)로 중복 체크"><span class="required">*</span> 생년월일</th>
-							<td>
-								<input name="juminNo1" type="text" class="el-input__inner" style="width: 90px;" placeholder="6자리">
-								<button type="button" onclick="javaScript:checkAge();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 10px 8px;">
-									<i class="el-icon-d-arrow-right"></i>
-								</button>
-							</td>
-							<th><span class="required">*</span> 연령</th>
-							<td><input name="age" type="text" class="el-input__inner" style="width: 65px;" placeholder="연령"></td>
-							<th><span class="required">*</span> 연락처</th>
-							<td colspan="2">
-								<div class="dsp-ibk"><input name="telNo1" type="text" maxlength="4" class="el-input__inner" style="width:54px"></div>
-								<span>-</span>
-								<div class="dsp-ibk"><input name="telNo2" type="text" maxlength="4" class="el-input__inner" style="width:54px"></div>
-								<span>-</span>
-								<div class="dsp-ibk"><input name="telNo3" type="text" maxlength="4" class="el-input__inner" style="width:53px"></div>
-							</td>
-						</tr>
-						<tr>
-							<th class="v-top"><span class="required">*</span> 주소</th>
-							<td colspan="7">
-								<input type="text" name="zipCd" class="el-input__inner" readonly style="width: 65px;">
-								<button type="button" onclick="javaScript:zipCodePop();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 12px 8px;">
-									<i class="el-icon-search"></i>
-								</button>
-								<input name="addr1" type="text" class="el-input__inner" readonly style="width: 525px;">
-								<div style="margin-top:5px">
-									<input name="addr2" type="text" class="el-input__inner" style="width: 634px;">
-								</div>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-					<table class="w-auto wr-form">
-						<colgroup>
-							<col style="width: 100px;">
-						</colgroup>
-						<tbody>
-						<tr>
-							<th><span class="required">*</span> 대상자구분</th>
-							<td colspan="5">
-								<span class="ck-bx"><input type="checkbox" name="mbrTp1" value="1"> 수강명령 과정</span>
-								<span class="ck-bx"><input type="checkbox" name="mbrTp2" value="1"> 이수명령 과정</span>
-								<span class="ck-bx"><input type="checkbox" name="mbrTp3" value="1"> 기본과정</span>
-								<span class="ck-bx"><input type="checkbox" name="mbrTp4" value="1"> 집중과정</span>
-								<span class="ck-bx"><input type="checkbox" name="mbrTp5" value="1"> 심화과정</span>
-								<span class="ck-bx"><input type="checkbox" name="mbrTp6" value="1"> 단기과정</span>
-							</td>
-						</tr>
-						<tr>
-							<th> 결혼여부</th>
-							<td>
-								<select name="mrgCd" style="width: 150px;">
-									<option value="">선택</option>
+									</td>
+								</tr>
+								<tr>
+									<th content="저장시 성명과 생년월일(6자)로 중복 체크"><span class="required">*</span> 생년월일</th>
+									<td>
+										<input name="juminNo1" type="text" class="el-input__inner" style="width: 90px;" maxlength="6" placeholder="생년월일">
+										<button type="button" onclick="javaScript:checkAge();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 10px 8px;">
+											<i class="el-icon-d-arrow-right"></i>
+										</button>
+									</td>
+									<th><span class="required">*</span> 연령</th>
+									<td><input name="age" type="text" class="el-input__inner" style="width: 65px;" maxlength="3" placeholder="연령"></td>
+									<th><span class="required">*</span> 연락처</th>
+									<td colspan="2">
+										<div class="dsp-ibk"><input name="telNo1" type="text" maxlength="4" class="el-input__inner" style="width:54px"></div>
+										<span>-</span>
+										<div class="dsp-ibk"><input name="telNo2" type="text" maxlength="4" class="el-input__inner" style="width:54px"></div>
+										<span>-</span>
+										<div class="dsp-ibk"><input name="telNo3" type="text" maxlength="4" class="el-input__inner" style="width:53px"></div>
+									</td>
+								</tr>
+								<tr>
+									<th class="v-top"><span class="required">*</span> 주소</th>
+									<td colspan="7">
+										<input type="text" name="zipCd" class="el-input__inner" readonly style="width: 65px;">
+										<button type="button" onclick="javaScript:zipCodePop();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 12px 8px;">
+											<i class="el-icon-search"></i>
+										</button>
+										<input name="addr1" type="text" class="el-input__inner" readonly style="width: 525px;">
+										<div style="margin-top:5px">
+											<input name="addr2" type="text" class="el-input__inner" maxlength="25" style="width: 634px;">
+										</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+							<table class="w-auto wr-form">
+								<colgroup>
+									<col style="width: 100px;">
+								</colgroup>
+								<tbody>
+								<tr>
+									<th><span class="required">*</span> 대상자구분</th>
+									<td colspan="5">
+										<span class="ck-bx"><input type="checkbox" name="mbrTp1" value="1"> 수강명령 과정</span>
+										<span class="ck-bx"><input type="checkbox" name="mbrTp2" value="1"> 이수명령 과정</span>
+										<span class="ck-bx"><input type="checkbox" name="mbrTp3" value="1"> 기본과정</span>
+										<span class="ck-bx"><input type="checkbox" name="mbrTp4" value="1"> 집중과정</span>
+										<span class="ck-bx"><input type="checkbox" name="mbrTp5" value="1"> 심화과정</span>
+										<span class="ck-bx"><input type="checkbox" name="mbrTp6" value="1"> 단기과정</span>
+									</td>
+								</tr>
+								<tr>
+									<th> 결혼여부</th>
+									<td>
+										<select name="mrgCd" style="width: 150px;">
+											<option value="">선택</option>
 <c:if test="${mrgCdList ne null and mrgCdList ne ''}">
 	<c:forEach var="result" items="${mrgCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-							<th>학력</th>
-							<td colspan="5">
-								<select name="eduCd" style="width: 135px;">
-									<option value="">선택</option>
+										</select>
+									</td>
+									<th>학력</th>
+									<td colspan="5">
+										<select name="eduCd" style="width: 135px;">
+											<option value="">선택</option>
 <c:if test="${eduCdList ne null and eduCdList ne ''}">
 	<c:forEach var="result" items="${eduCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-								<select name="edu02Cd" style="width: 135px;">
-									<option value="">선택</option>
+										</select>
+										<select name="edu02Cd" style="width: 135px;">
+											<option value="">선택</option>
 <c:if test="${edu02CdList ne null and edu02CdList ne ''}">
 	<c:forEach var="result" items="${edu02CdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th>종교</th>
-							<td>
-								<select name="rlgnCd" style="width: 150px;">
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>종교</th>
+									<td>
+										<select name="rlgnCd" style="width: 150px;">
 <c:if test="${rlgnCdList ne null and rlgnCdList ne ''}">
 	<c:forEach var="result" items="${rlgnCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-							<th>직업</th>
-							<td colspan="5">
-								<select name="jobCd" style="width: 270px;">
-									<option value="">선택</option>
+										</select>
+									</td>
+									<th>직업</th>
+									<td colspan="5">
+										<select name="jobCd" style="width: 270px;">
+											<option value="">선택</option>
 <c:if test="${jobCdList ne null and jobCdList ne ''}">
 	<c:forEach var="result" items="${jobCdList}" varStatus="status">
-									<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-								</select>
-							</td>
-						</tr>
-						</tbody>
-					</table>
+										</select>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-		<div class="row2">
-			<div class="section pdn mgn">
-				<div class="el-card_header">
-					<h2><i class="el-icon-s-opportunity"></i> 중독력</h2>
-				</div>
-				<div class="el-card_body">
-					<table class="w-auto wr-form">
-						<colgroup>
-							<col style="width: 70px;">
-							<col style="width: 70px;">
-							<col style="width: 70px;">
-							<col style="width: 70px;">
-							<col style="width: 70px;">
-							<col>
-						</colgroup>
-						<tbody>
-							<tr>
-								<th class="v-top"><span class="required">*</span> 최초사용약물</th>
-								<td colspan="5">
-									<select name="fstDrugCd">
-										<option value="">선택</option>
+				<div class="row2">
+					<div class="section pdn mgn">
+						<div class="el-card_header">
+							<h2><i class="el-icon-s-opportunity"></i> 중독력</h2>
+						</div>
+						<div class="el-card_body">
+							<table class="w-auto wr-form">
+								<colgroup>
+									<col style="width: 70px;">
+									<col style="width: 70px;">
+									<col style="width: 70px;">
+									<col style="width: 70px;">
+									<col style="width: 70px;">
+									<col>
+								</colgroup>
+								<tbody>
+									<tr>
+										<th class="v-top"><span class="required">*</span> 최초사용약물</th>
+										<td colspan="5">
+											<select name="fstDrugCd">
+												<option value="">선택</option>
 <c:if test="${fstDrugList ne null and fstDrugList ne ''}">
 	<c:forEach var="result" items="${fstDrugList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-									</select>
-									<div style="margin-top:5px">
-										<input type="text" name="fstDrug" class="el-input__inner" style="width: 100%;">
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="v-top"><span class="required">*</span> 주요사용약물</th>
-								<td colspan="5">
-									<select name="mainDrugCd">
-										<option value="">선택</option>
+											</select>
+											<div style="margin-top:5px">
+												<input type="text" name="fstDrug" class="el-input__inner" maxlength="250" style="width: 100%;">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th class="v-top"><span class="required">*</span> 주요사용약물</th>
+										<td colspan="5">
+											<select name="mainDrugCd">
+												<option value="">선택</option>
 <c:if test="${mainDrugList ne null and mainDrugList ne ''}">
 	<c:forEach var="result" items="${mainDrugList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-									</select>
-									<div style="margin-top:5px">
-										<input type="text" name="mainDrug" class="el-input__inner" style="width: 100%;"/>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th><span class="required">*</span> 최초사용시기</th>
-								<td><input type="text" name="fstAge" class="el-input__inner" style="width: 100%;"></td>
-								<th>마지막 사용시기</th>
-								<td><input type="text" name="lstAge" class="el-input__inner" style="width: 100%;"></td>
-								<th>사용기간</th>
-								<td><input type="text" name="useTerm" class="el-input__inner" style="width: 100%;"></td>
-							</tr>
-							<tr>
-								<th>사용빈도</th>
-								<td>
-									<select name="useFrqCd">
-										<option value="">선택</option>
+											</select>
+											<div style="margin-top:5px">
+												<input type="text" name="mainDrug" class="el-input__inner" maxlength="250" style="width: 100%;"/>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th><span class="required">*</span> 최초 사용시기</th>
+										<td><input type="text" name="fstAge" class="el-input__inner" maxlength="4" style="width: 100%;"></td>
+										<th><span class="required">*</span> 마지막 사용시기</th>
+										<td><input type="text" name="lstAge" class="el-input__inner" maxlength="4" style="width: 100%;"></td>
+										<th><span class="required">*</span> 사용기간</th>
+										<td><input type="text" name="useTerm" class="el-input__inner" maxlength="10" style="width: 100%;"></td>
+									</tr>
+									<tr>
+										<th><span class="required">*</span> 사용빈도</th>
+										<td>
+											<select name="useFrqCd">
+												<option value="">선택</option>
 <c:if test="${useFrqList ne null and useFrqList ne ''}">
 	<c:forEach var="result" items="${useFrqList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-									</select>
-								</td>
-								<th>사용원인</th>
-								<td colspan="3">
-									<select name="useCauCd" onchange="javaScript:inputDisabledChang(this, 'useCauEtc');">
-										<option value="">선택</option>
+											</select>
+										</td>
+										<th><span class="required">*</span> 사용원인</th>
+										<td colspan="3">
+											<select name="useCauCd" onchange="javaScript:inputDisabledChang(this, 'useCauEtc');">
+												<option value="">선택</option>
 <c:if test="${useCauList ne null and useCauList ne ''}">
 	<c:forEach var="result" items="${useCauList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-									</select>
-									<input type="text" name="useCauEtc" class="el-input__inner" disabled style="width: 100%;"/>
-								</td>
-							</tr>
-							<tr>
-								<th>약물관련 법적문제</th>
-								<td colspan="5">
-									<select name="lawPbmCd" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');">
-										<option value="">선택</option>
+											</select>
+											<input type="text" name="useCauEtc" class="el-input__inner" disabled maxlength="200" style="width: 150px;"/>
+										</td>
+									</tr>
+									<tr>
+										<th><span class="required">*</span> 약물관련 법적문제</th>
+										<td colspan="5">
+											<select name="lawPbmCd" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');">
+												<option value="">선택</option>
 <c:if test="${lawPbmList ne null and lawPbmList ne ''}">
 	<c:forEach var="result" items="${lawPbmList}" varStatus="status">
-										<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
+												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
 	</c:forEach>
 </c:if>
-									</select>
-									<input type="text" name="lawPbmEtc" class="el-input__inner" disabled style="width: 100%;"/>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+											</select>
+											<input type="text" name="lawPbmEtc" class="el-input__inner" disabled maxlength="200" style="width: 100%;"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
+			<div class="section">
+				<table class="w-auto">
+					<tbody>
+					<tr>
+						<th><span class="required">*</span> 최초등록일자</th>
+						<td>
+							<div class="dat-pk">
+								<i class="el-input__icon el-icon-date"></i>
+								<input name="creUsrDt" type="text" class="el-input__inner datepicker" placeholder="날짜" style="width: 130px;">
+							</div>
+						</td>
+						<th>최종수정일시</th>
+						<td><input name="updDt" type="text" class="el-input__inner" readonly style="width:160px"></td>
+						<th>최종수정자</th>
+						<td><input name="updNm" type="text" class="el-input__inner" readonly style="width:120px"></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			</form>
 		</div>
-	</div>
-	</form>
-	<div class="section">
-		<table class="w-auto">
-			<tbody>
-			<tr>
-				<th><span class="required">*</span> 최초등록일자</th>
-				<td><input name="creDt" type="text" class="el-input__inner" placeholder="날짜" style="width: 130px;"></td>
-				<th>최종수정일시</th>
-				<td><input name="updDt" type="text" class="el-input__inner" readonly style="width:160px"></td>
-				<th>최종수정자</th>
-				<td><input name="updNm" type="text" class="el-input__inner" readonly style="width:120px"></td>
-			</tr>
-			</tbody>
-		</table>
 	</div>
 </div>

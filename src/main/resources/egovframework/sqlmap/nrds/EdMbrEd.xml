@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edMbrEd">
+	<insert id="edMbrEd.insertEdMbrEd" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* edMbrEd.insertEdMbrEd */ INTO ED_MBR_ED(
+			   MBR_NO			, R_ZIP_CD			, R_ADDR1			, R_ADDR2			, REQ_DT
+			 , DOC_NO			, CASE_NO			, CRIME_TYPE01		, CRIME_TYPE02		, CRIME_TYPE03
+			 , CRIME_TYPE04		, CRIME_TYPE_ETC	, DRUG1				, DRUG1_ETC			, DRUG2
+			 , DRUG2_ETC		, DRUG3				, DRUG3_ETC			, DRUG4				, DRUG4_ETC
+			 , USE_TERM			, REQ_DETAILS01		, REQ_DETAILS02		, REQ_DETAILS03		, REQ_DETAILS04
+			 , REQ_DETAILS_ETC	, REQ_ORG			, PROS_NO			, DETECTIVE			, FILE_ID
+			 , CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
+		)VALUES(
+			   #{mbrNo}			, #{rZipCd}			, #{rAddr1}			, #{rAddr2}			, #{reqDt}
+			 , #{docNo}			, #{caseNo}			, #{crimeType01}	, #{crimeType02}	, #{crimeType03}
+			 , #{crimeType04}	, #{crimeTypeEtc}	, #{drug1}			, #{drug1Etc}		, #{drug2}
+			 , #{drug2Etc}		, #{drug3}			, #{drug3Etc}		, #{drug4}			, #{drug4Etc}
+			 , #{useTerm}		, #{reqDetails01}	, #{reqDetails02}	, #{reqDetails03}	, #{reqDetails04}
+			 , #{reqDetailsEtc}	, #{reqOrg}			, #{prosNo}			, #{detective}		, #{fileId}
+			 , #{loginId}		, NOW()				, #{loginId}		, NOW()
+		)
+	]]>
+	</insert>
+
+	<select id="edMbrEd.getEdMbrEdLastInfo" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrEd.getEdMbrEdLastInfo */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, SC01.CD_NM AS GEND_NM	, EM.AGE
+			 , EME.REQ_ORG			, EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EME.CRE_ID
+			 , SC02.CD_NM AS SITE_NM
+		  FROM ED_MBR EM
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		  LEFT JOIN ED_MBR_ED EME ON (EM.MBR_NO = EME.MBR_NO)
+		  LEFT JOIN SYS_USR SU ON (EME.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3500' AND SU.SITE_CD = SC02.CD_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+		 ORDER BY EME.CRE_DT DESC
+		 LIMIT 1
+	]]>
+	</select>
+
+	<select id="edMbrEd.getEdMbrEdInfo" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrEd.getEdMbrEdInfo */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
+			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
+			 , EM.ADDR2				, EM.JOB_CD				, EME.R_ZIP_CD			, EME.R_ADDR1			, EME.R_ADDR2
+			 , EME.REQ_DT			, EME.DOC_NO			, EME.CASE_NO			, EME.CRIME_TYPE01		, EME.CRIME_TYPE02
+			 , EME.CRIME_TYPE03		, EME.CRIME_TYPE04		, EME.CRIME_TYPE_ETC	, EME.DRUG1				, EME.DRUG1_ETC
+			 , EME.DRUG2			, EME.DRUG2_ETC			, EME.DRUG3				, EME.DRUG3_ETC			, EME.DRUG4
+			 , EME.DRUG4_ETC		, EME.USE_TERM			, EME.REQ_DETAILS01		, EME.REQ_DETAILS02		, EME.REQ_DETAILS03
+			 , EME.REQ_DETAILS04	, EME.REQ_DETAILS_ETC	, EME.REQ_ORG			, EME.PROS_NO			, EME.DETECTIVE
+			 , EME.FILE_ID			, EME.MBR_ED_ID			, FI.ORIGNL_FILE_NM
+		  FROM ED_MBR EM
+		  LEFT JOIN ED_MBR_ED EME ON (EM.MBR_NO = EME.MBR_NO)
+		  LEFT JOIN FILE_INFO FI ON (EME.FILE_ID = FI.FILE_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+	]]>
+		<if test="mbrEdId != null and mbrEdId != ''">
+		   AND EME.MBR_ED_ID = #{mbrEdId}
+		</if>
+	</select>
+
+	<select id="edMbrEd.getEdMbrEdList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrEd.getEdMbrEdList */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
+			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
+			 , EM.ADDR2				, EM.JOB_CD				, EME.R_ZIP_CD			, EME.R_ADDR1			, EME.R_ADDR2
+			 , EME.REQ_DT			, EME.DOC_NO			, EME.CASE_NO			, EME.CRIME_TYPE01		, EME.CRIME_TYPE02
+			 , EME.CRIME_TYPE03		, EME.CRIME_TYPE04		, EME.CRIME_TYPE_ETC	, EME.DRUG1				, EME.DRUG1_ETC
+			 , EME.DRUG2			, EME.DRUG2_ETC			, EME.DRUG3				, EME.DRUG3_ETC			, EME.DRUG4
+			 , EME.DRUG4_ETC		, EME.USE_TERM			, EME.REQ_DETAILS01		, EME.REQ_DETAILS02		, EME.REQ_DETAILS03
+			 , EME.REQ_DETAILS04	, EME.REQ_DETAILS_ETC	, EME.REQ_ORG			, EME.PROS_NO			, EME.DETECTIVE
+			 , EME.FILE_ID			, EME.MBR_ED_ID
+			 , SC01.CD_NM AS GEND_NM
+			 , SC02.CD_NM AS SITE_NM
+		  FROM ED_MBR EM
+		  JOIN ED_MBR_ED EME ON (EM.MBR_NO = EME.MBR_NO)
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		  LEFT JOIN SYS_USR SU ON (EME.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3500' AND SU.SITE_CD = SC02.CD_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+	]]>
+		<if test="mbrEdId != null and mbrEdId != ''">
+		   AND EME.MBR_ED_ID = #{mbrEdId}
+		</if>
+		 ORDER BY EME.MBR_ED_ID DESC
+	</select>
+
+	<update id="edMbrEd.updateEdMbrEd" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* edMbrEd.updateEdMbrEd */ ED_MBR_ED
+		   SET R_ZIP_CD			= #{rZipCd}			, R_ADDR1		= #{rAddr1}
+			 , R_ADDR2			= #{rAddr2}			, REQ_DT		= #{reqDt}
+			 , DOC_NO			= #{docNo}			, CASE_NO		= #{caseNo}
+			 , CRIME_TYPE01		= #{crimeType01}	, CRIME_TYPE02	= #{crimeType02}
+			 , CRIME_TYPE03		= #{crimeType03}	, CRIME_TYPE04	= #{crimeType04}
+			 , CRIME_TYPE_ETC	= #{crimeTypeEtc}	, DRUG1			= #{drug1}
+			 , DRUG1_ETC		= #{drug1Etc}		, DRUG2			= #{drug2}
+			 , DRUG2_ETC		= #{drug2Etc}		, DRUG3			= #{drug3}
+			 , DRUG3_ETC		= #{drug3Etc}		, DRUG4			= #{drug4}
+			 , DRUG4_ETC		= #{drug4Etc}		, USE_TERM		= #{useTerm}
+			 , REQ_DETAILS01	= #{reqDetails01}	, REQ_DETAILS02	= #{reqDetails02}
+			 , REQ_DETAILS03	= #{reqDetails03}	, REQ_DETAILS04	= #{reqDetails04}
+			 , REQ_DETAILS_ETC	= #{reqDetailsEtc}	, REQ_ORG		= #{reqOrg}
+			 , PROS_NO			= #{prosNo}			, DETECTIVE		= #{detective}
+			 , FILE_ID			= #{fileId}			, UPD_ID		= #{loginId}
+			 , UPD_DT			= NOW()
+		 WHERE MBR_ED_ID = #{mbrEdId}
+	]]>
+	</update>
+
+	<delete id="edMbrEd.deleteEdMbrEd" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* edMbrEd.deleteEdMbrEd */ FROM ED_MBR_ED
+		 WHERE MBR_ED_ID = #{mbrEdId}
+		   AND MBR_NO = #{mbrNo}
+	]]>
+	</delete>
+</mapper>

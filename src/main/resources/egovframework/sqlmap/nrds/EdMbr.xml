@@ -12,7 +12,7 @@
 			 , EM.EDU02_CD		, EM.RLGN_CD		, EM.JOB_CD			, EM.FST_DRUG_CD	, EM.FST_DRUG
 			 , EM.MAIN_DRUG_CD	, EM.MAIN_DRUG		, EM.FST_AGE		, EM.LST_AGE		, EM.USE_TERM
 			 , EM.USE_FRQ_CD	, EM.USE_CAU_CD		, EM.USE_CAU_ETC	, EM.LAW_PBM_CD		, EM.LAW_PBM_ETC
-			 , EM.CRE_ID		, DATE_FORMAT(EM.CRE_DT, '%Y%m%d') AS CRE_DT
+			 , EM.CRE_ID		, DATE_FORMAT(EM.CRE_USR_DT, '%Y%m%d') AS CRE_DT
 			 , EM.UPD_ID		, SU.USR_NM AS UPD_NM		, DATE_FORMAT(EM.UPD_DT, '%Y%m%d') AS UPD_DT
 			 , SC01.CD_NM AS GEND_NM
 		  FROM ED_MBR EM
@@ -41,7 +41,7 @@
 			 , EDU02_CD			, RLGN_CD			, JOB_CD			, FST_DRUG_CD		, FST_DRUG
 			 , MAIN_DRUG_CD		, MAIN_DRUG			, FST_AGE			, LST_AGE			, USE_TERM
 			 , USE_FRQ_CD		, USE_CAU_CD		, USE_CAU_ETC		, LAW_PBM_CD		, LAW_PBM_ETC
-			 , CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
+			 , CRE_USR_DT		, CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
 		)VALUES(
 			   #{mbrNo}			, #{mbrNm}			, #{gendCd}			, #{frgCd}			, #{juminNo1}
 			 , #{age}			, #{telNo1}			, #{telNo2}			, #{telNo3}			, #{zipCd}
@@ -50,7 +50,7 @@
 			 , #{edu02Cd}		, #{rlgnCd}			, #{jobCd}			, #{fstDrugCd}		, #{fstDrug}
 			 , #{mainDrugCd}	, #{mainDrug}		, #{fstAge}			, #{lstAge}			, #{useTerm}
 			 , #{useFrqCd}		, #{useCauCd}		, #{useCauEtc}		, #{lawPbmCd}		, #{lawPbmEtc}
-			 , #{loginId}		, NOW()				, #{loginId}		, NOW()
+			 , #{creUsrDt}		, #{loginId}		, NOW()				, #{loginId}		, NOW()
 		)
 	]]>
 	</insert>
@@ -75,7 +75,8 @@
 			 , USE_TERM		= #{useTerm}	, USE_FRQ_CD	= #{useFrqCd}
 			 , USE_CAU_CD	= #{useCauCd}	, USE_CAU_ETC	= #{useCauEtc}
 			 , LAW_PBM_CD	= #{lawPbmCd}	, LAW_PBM_ETC	= #{lawPbmEtc}
-			 , UPD_ID		= #{loginId}	, UPD_DT		= NOW()
+			 , CRE_USR_DT	= #{creUsrDt}	, UPD_ID		= #{loginId}
+			 , UPD_DT		= NOW()
 		 WHERE MBR_NO = #{mbrNo}
 	]]>
 	</update>
@@ -118,12 +119,12 @@
 			</if>
 		</trim>
 	<![CDATA[
-						 ORDER BY EM.CRE_DT DESC
+						 ORDER BY EM.MBR_NO DESC
 				  ) T,(SELECT @RNUM := 0) RNUM
 				 ORDER BY T.MBR_NO DESC
 		  ) T1
 		 WHERE ROWNUM > (#{currentPageNo}-1) * #{recordCountPerPage}
-		 ORDER BY T1.CRE_DT DESC
+		 ORDER BY T1.MBR_NO DESC
 		 LIMIT #{recordCountPerPage}
 	]]>
 	</select>
