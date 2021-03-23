@@ -481,8 +481,9 @@
 						$("textarea[name='pgmRst']").val(recyclePrgInfo.pgmRst);
 						$("input[name='pgmEmp']").val(recyclePrgInfo.pgmEmp);
 						$("input[name='pgmVol']").val(recyclePrgInfo.pgmVol);
-
+						
 						if(recyclePrgInfo.fileList != undefined && recyclePrgInfo.fileList != ''){
+							alert(recyclePrgInfo.fileList.length);
 							for(let i=0 ; i<recyclePrgInfo.fileList.length ; i++){
 								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + recyclePrgInfo.fileList[i].FILE_ID + "\", \"" + recyclePrgInfo.fileList[i].FILE_SEQ + "\");'>" + recyclePrgInfo.fileList[i].ORIGNL_FILE_NM + "</a>"
 													 + "&nbsp;&nbsp;<a href='javaScript:deleteFile(\"fileName\");'>삭제</a>"

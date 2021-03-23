@@ -145,7 +145,7 @@ public class RecyclePrgController {
 			resultView.addObject("MSG", "교육일시 종료시간은 필수 입력 항목입니다.");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("mngUsrId"), ""))) {
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmMngUsrId"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "담당자는 필수 입력 항목입니다.");
 			return resultView;
