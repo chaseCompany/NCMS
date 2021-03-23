@@ -47,7 +47,7 @@ public class RecyclePrgController {
 
 		
 	/**
-	 * 주간 프로그램 메인 페이지
+	 * 재활교육프로그램 메인 페이지
 	 * @param model
 	 * @param cslRcpVO
 	 * @param session
@@ -94,14 +94,14 @@ public class RecyclePrgController {
 	}
 	
 	/**
-	 * 주간 프로그램 등록
+	 * 재활교육프로그램 등록
 	 * @param reqMap
 	 * @param request
 	 * @param session
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/ajaxRecyclePrgAdd.do")
+	@RequestMapping(value="/nrds/ajaxRecyclePrgAdd.do")
 	public @ResponseBody ModelAndView ajaxRecyclePrgAdd(final MultipartHttpServletRequest multiRequest, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
@@ -115,29 +115,34 @@ public class RecyclePrgController {
 			return resultView;
 		}
 
-/*		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmEdCd"), ""))) {
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmEdCd"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 대분류는 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육분류는 필수 입력 항목입니다.");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmCd"), ""))) {
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmClassNmCd"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 중분류는 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육과정명은 필수 입력 항목입니다.");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), ""))) {
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmStartDt"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 실시 일자는 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육기간 시작시간은 필수 입력 항목입니다.");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmFmTm"), ""))) {
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmEndDt"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 실시 시작시간은 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육기간 종료시간은 필수 입력 항목입니다.");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmToTm"), ""))) {
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmClassStartDt"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 실시 종료시간은 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육일시 시작시간은 필수 입력 항목입니다.");
+			return resultView;
+		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmClassEndDt"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "교육일시 종료시간은 필수 입력 항목입니다.");
 			return resultView;
 		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("mngUsrId"), ""))) {
@@ -150,26 +155,26 @@ public class RecyclePrgController {
 			resultView.addObject("MSG", "회기는 필수 입력 항목입니다.");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmTeacher"), ""))) {
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmMainLec"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "강사는 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "주강사는 필수 입력 항목입니다.");
 			return resultView;
 		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmSubject"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "주제는 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육주제는 필수 입력 항목입니다.");
 			return resultView;
 		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmCtnt"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "프로그램 내용은 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육내용은 필수 입력 항목입니다.");
 			return resultView;
 		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmRst"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "결과는 필수 입력 항목입니다.");
+			resultView.addObject("MSG", "교육결과는 필수 입력 항목입니다.");
 			return resultView;
-		} */
+		} 
 
 		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
 		String pgmDt = StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), "").replaceAll("-", "");
@@ -216,16 +221,16 @@ public class RecyclePrgController {
 		}
 
 		int resMap = recyclePrgService.insertEdPrmInfo(reqMap);
-		if(resMap > 1) {
-			//resultView.addObject("err", resMap.get("err"));
-			//resultView.addObject("MSG", resMap.get("MSG"));
+		if(resMap >= 1) {
+			resultView.addObject("err", ConstantObject.N);
+			resultView.addObject("MSG", "등록");
 		}
 
 		return resultView;
 	}
 	
 	/**
-	 * 재활 교육 프로그램 목록 조회
+	 * 재활교육프로그램 목록 조회
 	 * @param model
 	 * @param reqMap
 	 * @param session
@@ -298,4 +303,40 @@ public class RecyclePrgController {
 		return "nrds/recyclePrg/layer/recyclePrgList";
 	}
 	
+	/**
+	 * 재활교육프로그램 상세 조회
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/nrds/ajaxGetRecyclePrgInfo.do")
+	@ResponseBody
+	public ModelAndView ajaxGetRecyclePrgInfo(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView ("jsonView");
+
+		@SuppressWarnings("unchecked")
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+
+		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용 가능 합니다.");
+			resultView.addObject("actUrl", "/login.do");
+
+			return resultView;
+		}
+
+		String pgmId = StringUtils.defaultIfEmpty((String)reqMap.get("pgmId"), "");
+
+		if(!"".equals(pgmId) ) {
+			resultView.addObject("err", ConstantObject.N);
+			resultView.addObject("recyclePrgInfo", recyclePrgService.selectEdPrmInfo(reqMap));
+		}else {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수 입력 누락입니다.");
+		}
+
+		return resultView;
+	}
 }

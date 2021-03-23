@@ -11,13 +11,12 @@
 			getWeeklyPrgList();
 		},
 		<%-- 프로그램정보 상세 보기 --%>
-		viewPrgRow = function(PGM_CD, PGM_DT){
+		viewPrgRow = function(PGM_ID){
 			var pgmObj = {
-				pgmCd : PGM_CD,
-				pgmDt : PGM_DT
+				pgmId : PGM_ID
 			}
 
-			//reSetPgmForm(pgmObj);
+			reSetPgmForm(pgmObj);
 		}
 	});
 </script>

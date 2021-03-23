@@ -193,6 +193,59 @@
 			}
 		});
 		
+		<%-- 상세보기에서 교육분류에 따른 교육과정명 표시 --%>
+		var settingPgmEdCd = function(classNmCd, classSubCd){
+			if($("select#pgmEdCd").val() == "R0101"){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0101'},
+					success: function(data){
+						$("span[id='pgmClassNmCd']").html("");
+						$("span[id='pgmClassNmCd']").html("<select name='pgmClassNmCd' id='pgmClassNmCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassNmCd]").append(s);
+						$("select[id=pgmClassNmCd]").val(classNmCd);
+					}
+				});
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R010101'},
+					success: function(data){
+						$("span[id='pgmClassSubSpan']").html("");
+						$("span[id='pgmClassSubSpan']").html("<select name='pgmClassSubCd' id='pgmClassSubCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassSubCd]").append(s);
+						$("select[id=pgmClassSubCd]").val(classSubCd);
+					}
+				});
+			}else if($("select#pgmEdCd").val() == "R0102"){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0102'},
+					success: function(data){
+						$("span[id='pgmClassNmCd']").html("");
+						$("span[id='pgmClassSubSpan']").html("");
+						$("span[id='pgmClassNmCd']").html("<select name='pgmClassNmCd' id='pgmClassNmCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassNmCd]").append(s);
+						$("select[id=pgmClassNmCd]").val(classNmCd);
+					}
+				});
+				
+			}
+		};
 		<%-- 프로그램 정보 교육분류 선택시 교육과정명 셀렉트박스 표시 --%>
 		$("#pgmEdCdSpan").change(function(){
 			if($("select#pgmEdCd").val() == "R0101"){
@@ -321,7 +374,7 @@
 			} 
 
 			$.ajax({
-				url : '/ajaxRecyclePrgAdd.do',
+				url : '/nrds/ajaxRecyclePrgAdd.do',
 				type : 'POST',
 				processData : false,
 				contentType : false,
@@ -355,28 +408,40 @@
 				$("button#excelButYes").hide();
 
 				$("select[name='pgmEdCd']").val("").prop("selected", true);
-				$("select[name='pgmCd']").val("").prop("selected", true);
-				$("input[name='pgmDt']").datepicker('setDate', 'today');
-				$("input[name='pgmFmTm']").val("09:00");
-				$("input[name='pgmToTm']").val("18:00");
-				$("select[name='mngUsrId']").val("<c:out value="${loginUserId}" />").prop("selected", true);
-				$("input[name='siteNm']").val("<c:out value="${loginSiteNm}" />");
+				$("select[name='pgmClassNmCd']").html("<option>교육분류를 선택해주세요</option>");
+				$("#pgmClassSubSpan").html("");
 				$("input[name='pgmSession']").val("");
-				$("input[name='pgmTeacher']").val("");
+				$("input[name='pgmClass']").val("");
+				
+				$("input[name='pgmMainLec']").val("");
+				$("input[name='pgmSubLec']").val("");
+				//$("input[name='pgmStartDt']").datepicker('setDate', 'today');
+				$("input[name='pgmStartDt']").val("");
+				$("input[name='pgmStartTm']").val("09:00");
+				$("input[name='pgmEndDt']").val("");
+				$("input[name='pgmEndTm']").val("18:00");
+				$("input[name='pgmClassStartDt']").val("");
+				$("input[name='pgmClassStartTm']").val("09:00");
+				$("input[name='pgmClassEndDt']").val("");
+				$("input[name='pgmClassEndTm']").val("18:00");
+				
 				$("input[name='pgmSubject']").val("");
 				$("input[name='pgmGoal']").val("");
 				$("textarea[name='pgmCtnt']").val("");
 				$("textarea[name='pgmRst']").val("");
+				
 				$("input[name='file']").val("");
 				$("input[name='fileNameFlag']").val("N");
 				$("div#fileName").text("");
+				
+				$("#pgmEmp").val("");
+				$("#pgmVol").val("");
 			}else{
 				$.ajax({
-					url : '/ajaxGetRecyclePrgInfo.do',
+					url : '/nrds/ajaxGetRecyclePrgInfo.do',
 					type : 'POST',
 					data : {
-						pgmDt : obj.pgmDt,
-						pgmCd : obj.pgmCd
+						pgmId : obj.pgmId
 					},
 					success : function(res){
 						$("button#delBtnYes").show();
@@ -384,40 +449,42 @@
 						$("button#excelButNo").hide();
 						$("button#excelButYes").show();
 
-						var prgInfo = res.prgInfo;
-						var setDt = new Date(prgInfo.PGM_DT.substr(0, 4), prgInfo.PGM_DT.substr(4, 2), prgInfo.PGM_DT.substr(6, 2));
-						setDt.setMonth(setDt.getMonth() - 1);
+						var recyclePrgInfo = res.recyclePrgInfo;
+						//var setDt = new Date(recyclePrgInfo.PGM_DT.substr(0, 4), recyclePrgInfo.PGM_DT.substr(4, 2), recyclePrgInfo.PGM_DT.substr(6, 2));
+						//setDt.setMonth(setDt.getMonth() - 1);
 
-						$("select[name='pgmEdCd']").val(prgInfo.PGM_TP_CD).prop("selected", true);
-						$("select[name='pgmClassNmCd']").val(prgInfo.PGM_CD).prop("selected", true);
-						$("select[name='pgmClassSubCd']").val(prgInfo.PGM_CD).prop("selected", true);
-						$("input[name='pgmSession']").val(prgInfo.pgmSession);
-						$("input[name='pgmClass']").val(prgInfo.pgmClass);
-						$("input[name='pgmMainLec']").val(prgInfo.pgmMainLec);
-						$("input[name='pgmSubLec']").val(prgInfo.pgmSubLec);
-						$("input[name='pgmStartDt']").datepicker('setDate', setDt);
-						$("input[name='pgmEndDt']").datepicker('setDate', setDt);
-						$("input[name='pgmFmTm']").val(prgInfo.PGM_FM_TM);
-						$("input[name='pgmToTm']").val(prgInfo.PGM_TO_TM);
-						
-						$("input[name='pgmAgent']").val(prgInfo.pgmAgent);
-						$("select[name='pgmMngUsrId']").val(prgInfo.pgmMngUsrId);
-						
-						$("input[name='pgmClassStartDt']").datepicker('setDate', pgmClassStartDt);
-						$("input[name='pgmClassEndDt']").datepicker('setDate', pgmClassEndDt);
-						$("input[name='pgmClassStartTm']").val(prgInfo.pgmClassStartTm);
-						$("input[name='pgmClassEndTm']").val(prgInfo.pgmClassEndTm);
-						
-						$("input[name='pgmSubject']").val(prgInfo.pgmSubject);
-						$("input[name='pgmGoal']").val(prgInfo.pgmGoal);
-						$("input[name='pgmCtnt']").val(prgInfo.pgmCtnt);
-						$("input[name='pgmRst']").val(prgInfo.pgmRst);
-						$("textarea[name='pgmEmp']").val(prgInfo.pgmEmp);
-						$("textarea[name='pgmVol']").val(prgInfo.pgmVol);
+						$("select[name='pgmEdCd']").val(recyclePrgInfo.pgmEdCd).prop("selected", true);
 
-						if(prgInfo.fileList != undefined && prgInfo.fileList != ''){
-							for(let i=0 ; i<prgInfo.fileList.length ; i++){
-								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + prgInfo.fileList[i].FILE_ID + "\", \"" + prgInfo.fileList[i].FILE_SEQ + "\");'>" + prgInfo.fileList[i].ORIGNL_FILE_NM + "</a>"
+						settingPgmEdCd(recyclePrgInfo.pgmClassNmCd, recyclePrgInfo.pgmClassSubCd);
+						$("select[name='pgmClassNmCd']").val(recyclePrgInfo.pgmClassNmCd).prop("selected", true);
+						$("select[name='pgmClassSubCd']").val(recyclePrgInfo.pgmClassSubCd).prop("selected", true);
+						$("input[name='pgmSession']").val(recyclePrgInfo.pgmSession);
+						$("input[name='pgmClass']").val(recyclePrgInfo.pgmClass);
+						$("input[name='pgmMainLec']").val(recyclePrgInfo.pgmMainLec);
+						$("input[name='pgmSubLec']").val(recyclePrgInfo.pgmSubLec);
+						$("input[name='pgmStartDt']").datepicker('setDate', recyclePrgInfo.pgmStartDt);
+						$("input[name='pgmEndDt']").datepicker('setDate', recyclePrgInfo.pgmEndDt);
+						$("input[name='pgmStartTm']").val(recyclePrgInfo.pgmStartTm);
+						$("input[name='pgmEndTm']").val(recyclePrgInfo.pgmEndTm);
+						
+						$("input[name='pgmAgent']").val(recyclePrgInfo.pgmAgent);
+						$("select[name='pgmMngUsrId']").val(recyclePrgInfo.pgmMngUsrId);
+						
+						$("input[name='pgmClassStartDt']").datepicker('setDate', recyclePrgInfo.pgmClassStartDt);
+						$("input[name='pgmClassEndDt']").datepicker('setDate', recyclePrgInfo.pgmClassEndDt);
+						$("input[name='pgmClassStartTm']").val(recyclePrgInfo.pgmClassStartTm);
+						$("input[name='pgmClassEndTm']").val(recyclePrgInfo.pgmClassEndTm);
+						
+						$("input[name='pgmSubject']").val(recyclePrgInfo.pgmSubject);
+						$("input[name='pgmGoal']").val(recyclePrgInfo.pgmGoal);
+						$("textarea[name='pgmCtnt']").val(recyclePrgInfo.pgmCtnt);
+						$("textarea[name='pgmRst']").val(recyclePrgInfo.pgmRst);
+						$("input[name='pgmEmp']").val(recyclePrgInfo.pgmEmp);
+						$("input[name='pgmVol']").val(recyclePrgInfo.pgmVol);
+
+						if(recyclePrgInfo.fileList != undefined && recyclePrgInfo.fileList != ''){
+							for(let i=0 ; i<recyclePrgInfo.fileList.length ; i++){
+								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + recyclePrgInfo.fileList[i].FILE_ID + "\", \"" + recyclePrgInfo.fileList[i].FILE_SEQ + "\");'>" + recyclePrgInfo.fileList[i].ORIGNL_FILE_NM + "</a>"
 													 + "&nbsp;&nbsp;<a href='javaScript:deleteFile(\"fileName\");'>삭제</a>"
 													  );
 							}
@@ -431,7 +498,7 @@
 					}
 				});
 
-				getPgmMemList(obj.pgmDt, obj.pgmCd);
+				//getPgmMemList(obj.pgmDt, obj.pgmCd);
 			}
 		},
 		<%-- 프로그램회원 목록 --%>
@@ -651,7 +718,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 주간재활 프로그램 </h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 재활교육 프로그램 </h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
@@ -765,7 +832,7 @@
 									</div>
 									<div class="tm-in">
 										<i class="el-input__icon el-icon-time"></i>
-										<input type="text" name="pgmFmTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 80px;">
+										<input type="text" name="pgmStartTm" value="09:00" class="el-input__inner timepicker" placeholder="시작" style="width: 80px;">
 									</div>
 									<span>~</span>
 									<div class="dat-pk">
@@ -774,7 +841,7 @@
 									</div>
 									<div class="tm-in">
 										<i class="el-input__icon el-icon-time"></i>
-										<input type="text" name="pgmToTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 80px;">
+										<input type="text" name="pgmEndTm" value="18:00" class="el-input__inner timepicker" placeholder="종료" style="width: 80px;">
 									</div>
 								</td>
 							</tr>
