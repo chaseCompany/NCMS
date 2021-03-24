@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eduMng">
+
+	<delete id="eduMng.deleteEdPrm" parameterType="hashMap">
+		/* eduMng.deleteEdPrm */
+		DELETE FROM ED_PGM WHERE PGM_ID = #{pgmId}
+	</delete>
+	<update id="eduMng.updateEdPrmInfo" parameterType="hashMap">
+		/* edPrg.updateEdPrmInfo */ 
+		UPDATE ED_PGM
+		   SET PGM_ED_CD  			= #{pgmEdCd}
+			 , PGM_CLASS_NM_CD 		= #{pgmClassNmCd}
+		     , PGM_MAIN_LEC			= #{pgmMainLec}
+		     , PGM_SUB_LEC 	  		= #{pgmSubLec}
+		     , PGM_START_DT  		= #{pgmStartDt}
+		     , PGM_START_TM  		= #{pgmStartTm}			
+		     , PGM_END_DT			= #{pgmEndDt}
+		     , PGM_END_TM			= #{pgmEndTm}
+		     <if test="pgmDur != null and pgmDur != '' ">
+		     , PGM_DUR  			= #{pgmDur}
+		     </if>
+			 , PGM_SESSION			= #{pgmSession}
+			 , PGM_CLASS  			= #{pgmClass}					
+			 , PGM_CLASS_START_DT	= #{pgmClassStartDt}	
+			 , PGM_CLASS_END_DT		= #{pgmClassEndDt}
+			 , PGM_CLASS_START_TM  	= #{pgmClassStartTm}	
+			 , PGM_CLASS_END_TM		= #{pgmClassEndTm}
+			 <if test="pgmClassDur != null and pgmClassDur != '' ">	
+			 , PGM_CLASS_DUR  		= #{pgmClassDur}	
+			 </if>	
+			 , PGM_SUBJECT			= #{pgmSubject}
+			 , UPD_ID	  			= #{updId}				
+			 , UPD_DT 				= NOW()
+		 WHERE PGM_ID = #{pgmId}
+	</update>
+</mapper>
