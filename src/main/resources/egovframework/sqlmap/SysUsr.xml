@@ -136,6 +136,7 @@
 			   USR_ID
 		  FROM SYS_USR
 		  WHERE SITE_CD = #{siteCd}
+		  AND   USR_ID <> 'admin'
 		  ORDER BY USR_ID DESC
 		  LIMIT 1
 	]]>
@@ -149,9 +150,9 @@
 			, REG_DT			, CRE_DT			, CRE_ID			, UPD_DT
 			, UPD_ID
 		)VALUES(
-			  #{usrId}			, #{usrNm}						, SUBSTR(PASSWORD(#{passWd}) FROM 2)			, #{roleCd}
-			, #{siteCd}			, IFNULL(#{siteConsult}, '0')	, IFNULL(#{siteEdu}, '0')		, #{useYn}
-			, NOW()				, NOW()							, #{creId}						, NOW()
+			  #{usrId}			, #{usrNm}						, SUBSTR(PASSWORD(#{passWd}) FROM 2)	, #{roleCd}
+			, #{siteCd}			, IFNULL(#{siteConsult}, "0")	, IFNULL(#{siteEdu}, "0")				, #{useYn}
+			, NOW()				, NOW()							, #{creId}								, NOW()
 			, #{updId}
 		)
 	]]>

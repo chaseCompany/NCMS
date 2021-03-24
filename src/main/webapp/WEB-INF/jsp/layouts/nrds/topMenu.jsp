@@ -33,7 +33,7 @@
 	</div>
 	<div class="r">
 <c:if test="${LoginSiteConsult eq '1'}">
-		<a href="<c:url value="/counselMain.do"/>" class="f">상담</a>&nbsp;&nbsp;
+		<a href="<c:url value="/counselMain.do"/>" class="f">상담 바로가기</a>&nbsp;&nbsp;
 </c:if>
 		<a href="#" class="f"> <%=loginUserNm%>님
 			<i class="el-icon-arrow-down el-icon--right"></i>

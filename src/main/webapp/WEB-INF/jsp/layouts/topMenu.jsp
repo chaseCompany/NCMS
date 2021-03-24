@@ -5,7 +5,9 @@
 	String thisViewUrl = StringUtils.defaultIfEmpty((String)request.getAttribute("thisViewUrl"), "");
 	String loginUserNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserNm"), "");
 	String LoginSiteEdu = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginSiteEdu"), "0");
+	String loginUserId = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserId"), "");
 %>
+	<c:set var="logUserId" value="<%=loginUserId%>"/>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		logOut = function(){
@@ -32,9 +34,11 @@
 		</ul>
 	</div>
 	<div class="r">
+<%--
 <c:if test="${LoginSiteEdu eq '1'}">
-		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">교육</a>&nbsp;&nbsp;
+		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">재범 방지 교육 바로가기</a>&nbsp;&nbsp;
 </c:if>
+--%>
 		<a href="#" class="f"> <%=loginUserNm%>님
 			<i class="el-icon-arrow-down el-icon--right"></i>
 			<div class="pwd-layer">
@@ -74,6 +78,7 @@
 					<li>
 						<a href="javaScript:goTopMenuPage('/reportMain.do');"><i class="el-icon-printer"></i>통계관리</a>
 					</li>
+<c:if test="${logUserId eq 'admin'}">
 					<li>
 						<a href="#n">
 							<i class="el-icon-setting"></i>기초자료 관리
@@ -84,6 +89,7 @@
 							<li><a href="javaScript:goTopMenuPage('/adminCode.do');">코드 관리</a></li>
 						</ul>
 					</li>
+</c:if>
 				</ul>
 			</div>
 		</div>

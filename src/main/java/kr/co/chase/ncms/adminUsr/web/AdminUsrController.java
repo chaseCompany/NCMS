@@ -284,7 +284,7 @@ public class AdminUsrController {
 		boolean flag = true;
 		
 		LOGGER.debug("rm={}", reqMap.toString());
-
+		
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
@@ -325,7 +325,7 @@ public class AdminUsrController {
 		HashMap<String, Object> maxMap = adminUsrService.findMaxSiteUserId(siteCd);
 		
 		String usrId = null;
-
+		
 		// 해당 지부에 최초 유저일 경우
 		if (null == maxMap) {
 			usrId = "u" + siteCd + "001";

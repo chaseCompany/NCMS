@@ -21,14 +21,14 @@
 						$("select[id='siteCd']").val(res.usrView.SITE_CD);
 						$("select[id='roleCd']").val(res.usrView.ROLE_CD);
 						if(res.usrView.SITE_CONSULT == '1'){
-							$("input[name='siteConsult']").prop("checked", true);
+							$("input[name='siteConsultCheck']").prop("checked", true);
 						}else{
-							$("input[name='siteConsult']").prop("checked", false);
+							$("input[name='siteConsultCheck']").prop("checked", false);
 						}
 						if(res.usrView.SITE_EDU == '1'){
-							$("input[name='siteEdu']").prop("checked", true);
+							$("input[name='siteEduCheck']").prop("checked", true);
 						}else{
-							$("input[name='siteEdu']").prop("checked", false);
+							$("input[name='siteEduCheck']").prop("checked", false);
 						}
 						$("input[name='useYn']:radio[value='" + res.usrView.USE_YN + "']").prop("checked", true);
 						$("input[id='regDt']").val(res.usrView.REG_DT);
@@ -69,6 +69,18 @@
 				});
 			}
 			else if (uiFlag == "I") {
+				if ($("input[name='siteConsultCheck']").prop("checked") == false) {
+					$("input[name='siteConsult']").val("0");
+				}
+				else {
+					$("input[name='siteConsult']").val("1");
+				}
+				if ($("input[name='siteEduCheck']").prop("checked") == false) {
+					$("input[name='siteEdu']").val("0");
+				}
+				else {
+					$("input[name='siteEdu']").val("1");
+				}
 				$.ajax({
 					url : '/ajaxUsrInsert.do',
 					type : 'POST',
@@ -204,11 +216,12 @@
 			$("input[id='usrNm']").val("");
 			$("select[id='siteCd']").val("");
 			$("select[id='roleCd']").val("");
-			$("input[name='siteConsult']").prop("checked", false);
-			$("input[name='siteEdu']").prop("checked", false);
+			$("input[name='siteConsultCheck']").prop("checked", false);
+			$("input[name='siteEduCheck']").prop("checked", false);
 			$("input[name='useYn']:radio[value='Y']").prop("checked", true);
 			$("input[id='regDt']").val("");
-
+			$("input[name='siteConsult']").val("0");
+			$("input[name='siteEdu']").val("0");
 		}
 
 		$('#iInitializePwdActive').hide();
@@ -467,13 +480,16 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr>
                             	<th> 사용 시스템 </th>
                             	<td>
                             		<span class="ck-bx">
-                                        <input type="checkbox" value="1" name="siteConsult"> 상담
+                                        <input type="checkbox" value="1" name="siteConsultCheck" > 상담
+                                        <input type="hidden" name="siteConsult" />
                                     </span>
                                     <span class="ck-bx">
-                                        <input type="checkbox" value="1" name="siteEdu"> 교육
+                                        <input type="checkbox" value="1" name="siteEduCheck"> 재범방지교육
+                                        <input type="hidden" name="siteEdu" />
                                     </span>
                             	</td>
                             </tr>
