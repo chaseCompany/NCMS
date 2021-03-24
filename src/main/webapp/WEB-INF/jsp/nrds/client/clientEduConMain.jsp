@@ -472,7 +472,7 @@
 							<th>대상자등록번호</th>
 							<td>
 								<div class="search-input tac">
-									<input type="text" name="infoMbrNo" class="el-input__inner" style="width: 142px;" placeholder="저장시 자동 생성" readonly="readonly"/>
+									<input type="text" name="infoMbrNo" class="el-input__inner" style="width: 142px;" placeholder="대상자등록번호" readonly="readonly"/>
 									<button type="button" onclick="javaScript:mstMbrSearchPopup();"><i class="el-icon-search"></i></button>
 								</div>
 							</td>
@@ -541,9 +541,7 @@
 								<tbody>
 									<tr>
 										<th>대상자등록번호</th>
-										<td>
-											<input name="mbrNo" type="text" readonly placeholder="대상자등록번호" class="el-input__inner" style="width: 142px;" />
-										</td>
+										<td><input name="mbrNo" type="text" readonly placeholder="대상자등록번호" class="el-input__inner" style="width: 142px;" /></td>
 										<th><span class="required">*</span> 성명</th>
 										<td><input name="mbrNm" type="text" readonly class="el-input__inner" placeholder="성명" style="width: 130px;" /></td>
 										<th><span class="required">*</span> 성별</th>
@@ -561,9 +559,7 @@
 									</tr>
 									<tr>
 										<th content="저장시 성명과 생년월일(6자)로 중복 체크"><span class="required">*</span> 생년월일</th>
-										<td>
-											<input name="juminNo1" type="text" readonly class="el-input__inner" style="width: 90px;" placeholder="6자리">
-										</td>
+										<td><input name="juminNo1" type="text" readonly class="el-input__inner" style="width: 90px;" placeholder="6자리"></td>
 										<th><span class="required">*</span> 연령</th>
 										<td><input name="age" type="text" readonly class="el-input__inner" style="width: 65px;" placeholder="연령"></td>
 										<th><span class="required">*</span> 연락처</th>

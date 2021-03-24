@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edMbrGu">
+	<insert id="edMbrGu.insertEdMbrGu" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* edMbrGu.insertEdMbrGu */ INTO ED_MBR_GU(
+			   MBR_NO		, R_ZIP_CD		, R_ADDR1		, R_ADDR2		, CRIME_NAME
+			 , REQ_DT		, DOC_NO		, CASE_NO		, REQ_ORD_DT	, REQ_END_DT
+			 , REQ_ORG		, REQ_MNGR		, FILE_ID		, CRE_ID		, CRE_DT
+			 , UPD_ID		, UPD_DT
+		)VALUES(
+			   #{mbrNo}		, #{rZipCd}		, #{rAddr1}		, #{rAddr2}		, #{crimeName}
+			 , #{reqDt}		, #{docNo}		, #{caseNo}		, #{reqOrdDt}	, #{reqEndDt}
+			 , #{reqOrg}	, #{reqMngr}	, #{fileId}		, #{loginId}	, NOW()
+			 , #{loginId}	, NOW()
+		)
+	]]>
+	</insert>
+
+	<select id="edMbrGu.getEdMbrGuLastInfo" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrGu.getEdMbrGuLastInfo */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, SC01.CD_NM AS GEND_NM	, EM.AGE
+			 , EMG.REQ_ORG			, EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EMG.CRE_ID
+			 , SC02.CD_NM AS SITE_NM
+		  FROM ED_MBR EM
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		  LEFT JOIN ED_MBR_GU EMG ON (EM.MBR_NO = EMG.MBR_NO)
+		  LEFT JOIN SYS_USR SU ON (EMG.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3500' AND SU.SITE_CD = SC02.CD_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+		 ORDER BY EMG.MBR_GU_ID DESC
+		 LIMIT 1
+	]]>
+	</select>
+
+	<select id="edMbrGu.getEdMbrGuInfo" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrGu.getEdMbrGuInfo */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
+			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
+			 , EM.ADDR2				, EM.JOB_CD				, EMG.MBR_GU_ID			, EMG.R_ZIP_CD			, EMG.R_ADDR1
+			 , EMG.R_ADDR2			, EMG.CRIME_NAME		, EMG.REQ_DT			, EMG.DOC_NO			, EMG.CASE_NO
+			 , EMG.REQ_ORD_DT		, EMG.REQ_END_DT		, EMG.REQ_ORG			, EMG.REQ_MNGR			, EMG.FILE_ID
+			 , EMG.CRE_ID			, EMG.CRE_DT			, EMG.UPD_ID			, EMG.UPD_DT			, FI.ORIGNL_FILE_NM
+			 , FI.FILE_ID			, FI.FILE_SEQ
+		  FROM ED_MBR EM
+		  JOIN ED_MBR_GU EMG ON (EM.MBR_NO = EMG.MBR_NO)
+		  LEFT JOIN FILE_INFO FI ON (EMG.FILE_ID = FI.FILE_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+	]]>
+		<if test="mbrGuId != null and mbrGuId != ''">
+		   AND EMG.MBR_GU_ID = #{mbrGuId}
+		</if>
+	</select>
+
+	<select id="edMbrGu.getEdMbrGuList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrGu.getEdMbrGuList */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
+			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
+			 , EM.ADDR2				, EM.JOB_CD				, EMG.R_ZIP_CD			, EMG.R_ADDR1			, EMG.R_ADDR2
+			 , EMG.CRIME_NAME		, EMG.REQ_DT			, EMG.DOC_NO			, EMG.CASE_NO			, EMG.REQ_ORD_DT
+			 , EMG.REQ_END_DT		, EMG.REQ_ORG			, EMG.REQ_MNGR			, EMG.FILE_ID			, EMG.CRE_ID
+			 , EMG.CRE_DT			, EMG.UPD_ID			, EMG.UPD_DT
+			 , EMG.MBR_GU_ID AS MBR_ED_ID
+			 , SC01.CD_NM AS GEND_NM
+			 , SC02.CD_NM AS SITE_NM
+		  FROM ED_MBR EM
+		  JOIN ED_MBR_GU EMG ON (EM.MBR_NO = EMG.MBR_NO)
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		  LEFT JOIN SYS_USR SU ON (EMG.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3500' AND SU.SITE_CD = SC02.CD_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+	]]>
+		<if test="mbrGuId != null and mbrGuId != ''">
+		   AND EMG.MBR_GU_ID = #{mbrGuId}
+		</if>
+		 ORDER BY EMG.MBR_GU_ID DESC
+	</select>
+
+	<update id="edMbrGu.updateEdMbrGu" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* edMbrGu.updateEdMbrGu */ ED_MBR_GU
+		   SET R_ZIP_CD		= #{rZipCd}			, R_ADDR1		= #{rAddr1}
+			 , R_ADDR2		= #{rAddr2}			, CRIME_NAME	= #{crimeName}
+			 , REQ_DT		= #{reqDt}			, DOC_NO		= #{docNo}
+			 , CASE_NO		= #{caseNo}			, REQ_ORD_DT	= #{reqOrdDt}
+			 , REQ_END_DT	= #{reqEndDt}		, REQ_ORG		= #{reqOrg}
+			 , REQ_MNGR		= #{reqMngr}		, FILE_ID		= #{fileId}
+			 , UPD_ID		= #{loginId}		, UPD_DT		= NOW()
+		 WHERE MBR_GU_ID = #{mbrGuId}
+	]]>
+	</update>
+
+	<delete id="edMbrGu.deleteEdMbrGu" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* edMbrGu.deleteEdMbrGu */ FROM ED_MBR_GU
+		 WHERE MBR_GU_ID = #{mbrGuId}
+		   AND MBR_NO = #{mbrNo}
+	]]>
+	</delete>
+</mapper>
