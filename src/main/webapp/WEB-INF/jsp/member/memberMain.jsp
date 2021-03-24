@@ -180,35 +180,39 @@
 </div>
 <!-- // 상단 버튼 -->
 <div class="formline" style="min-width: 1600px;">
-	<!-- 탭메뉴 -->
-	<div class="el-tabs__header is-top">
-		<div class="el-tabs__nav-wrap is-top">
-			<div class="el-tabs__nav-scroll">
-				<div role="tablist" class="el-tabs__nav is-top">
-					<a href="/memberMain.do">
-						<div class="el-tabs__item is-top is-active" data-id="tab-mem">
-							<span><i class="el-icon-s-help"></i> 회원정보관리</span>
-						</div>
-					</a>
-					<a href="/memberLink.do">
-						<div class="el-tabs__item is-top" data-id="tab-link">
-							<span><i class="el-icon-s-management"></i> 연계</span>
-						</div>
-					</a>
-					<a href="/memberReq.do">
-						<div class="el-tabs__item is-top" data-id="tab-req">
-							<span><i class="el-icon-platform-eleme"></i> 의뢰</span>
-						</div>
-					</a>
+	<div class="section-sha" style="min-width: 1840px;">
+		<!-- 탭메뉴 -->
+		<div class="el-tabs__header is-top">
+			<div class="el-tabs__nav-wrap is-top">
+				<div class="el-tabs__nav-scroll">
+					<div role="tablist" class="el-tabs__nav is-top">
+						<a href="/memberMain.do">
+							<div class="el-tabs__item is-top is-active" data-id="tab-mem">
+								<span><i class="el-icon-s-help"></i> 회원정보관리</span>
+							</div>
+						</a>
+						<a href="/memberLink.do">
+							<div class="el-tabs__item is-top" data-id="tab-link">
+								<span><i class="el-icon-s-management"></i> 연계</span>
+							</div>
+						</a>
+						<a href="/memberReq.do">
+							<div class="el-tabs__item is-top" data-id="tab-req">
+								<span><i class="el-icon-platform-eleme"></i> 의뢰</span>
+							</div>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
+		<!-- // 탭메뉴 -->
+		<div class="el-tabs_content">
+			<form name="mbrInfoForm" id="mbrInfoForm" method="post" enctype="multipart/form-data">
+			<div id="memInfoView"></div>
+			</form>
+			<div id="memRegHistView"></div>
+		</div>
 	</div>
-	<!-- // 탭메뉴 -->
-	<form name="mbrInfoForm" id="mbrInfoForm" method="post" enctype="multipart/form-data">
-	<div id="memInfoView"></div>
-	</form>
-	<div id="memRegHistView"></div>
 </div>
 <!-- 등록 처리 팝업 -->
 <form name="stsChangForm" id="stsChangForm">
