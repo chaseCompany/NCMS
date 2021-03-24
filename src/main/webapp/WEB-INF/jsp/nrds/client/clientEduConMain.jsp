@@ -582,7 +582,7 @@
 										</td>
 									</tr>
 									<tr>
-										<th class="v-top"><span class="required">*</span> 실거주지</th>
+										<th class="v-top">실거주지</th>
 										<td colspan="5">
 											<input type="text" name="rZipCd" class="el-input__inner" readonly style="width: 65px;">
 											<button type="button" onclick="javaScript:zipCodePop();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 12px 8px;">

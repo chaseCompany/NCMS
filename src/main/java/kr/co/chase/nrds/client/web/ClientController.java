@@ -430,25 +430,25 @@ public class ClientController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		String loginUsrId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
-		String mbrNo = StringUtils.defaultString((String)reqMap.get("mbrNo"), "");
-		String rZipCd = StringUtils.defaultString((String)reqMap.get("rZipCd"), "");
-		String rAddr1 = StringUtils.defaultString((String)reqMap.get("rAddr1"), "");
-		String reqDt = StringUtils.defaultString((String)reqMap.get("reqDt"), "");
-		String docNo = StringUtils.defaultString((String)reqMap.get("docNo"), "");
-		String crimeType01 = StringUtils.defaultString((String)reqMap.get("crimeType01"), "");
-		String crimeType02 = StringUtils.defaultString((String)reqMap.get("crimeType02"), "");
-		String crimeType03 = StringUtils.defaultString((String)reqMap.get("crimeType03"), "");
-		String crimeType04 = StringUtils.defaultString((String)reqMap.get("crimeType04"), "");
-		String drug1 = StringUtils.defaultString((String)reqMap.get("drug1"), "");
-		String drug2 = StringUtils.defaultString((String)reqMap.get("drug2"), "");
-		String drug3 = StringUtils.defaultString((String)reqMap.get("drug3"), "");
-		String drug4 = StringUtils.defaultString((String)reqMap.get("drug4"), "");
-		String useTerm = StringUtils.defaultString((String)reqMap.get("useTerm"), "");
-		String reqDetails01 = StringUtils.defaultString((String)reqMap.get("reqDetails01"), "");
-		String reqDetails02 = StringUtils.defaultString((String)reqMap.get("reqDetails02"), "");
-		String reqDetails03 = StringUtils.defaultString((String)reqMap.get("reqDetails03"), "");
-		String reqDetails04 = StringUtils.defaultString((String)reqMap.get("reqDetails04"), "");
-		String reqOrg = StringUtils.defaultString((String)reqMap.get("reqOrg"), "");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String rZipCd = StringUtils.defaultIfEmpty((String)reqMap.get("rZipCd"), "");
+		String rAddr1 = StringUtils.defaultIfEmpty((String)reqMap.get("rAddr1"), "");
+		String reqDt = StringUtils.defaultIfEmpty((String)reqMap.get("reqDt"), "");
+		String docNo = StringUtils.defaultIfEmpty((String)reqMap.get("docNo"), "");
+		String crimeType01 = StringUtils.defaultIfEmpty((String)reqMap.get("crimeType01"), "");
+		String crimeType02 = StringUtils.defaultIfEmpty((String)reqMap.get("crimeType02"), "");
+		String crimeType03 = StringUtils.defaultIfEmpty((String)reqMap.get("crimeType03"), "");
+		String crimeType04 = StringUtils.defaultIfEmpty((String)reqMap.get("crimeType04"), "");
+		String drug1 = StringUtils.defaultIfEmpty((String)reqMap.get("drug1"), "");
+		String drug2 = StringUtils.defaultIfEmpty((String)reqMap.get("drug2"), "");
+		String drug3 = StringUtils.defaultIfEmpty((String)reqMap.get("drug3"), "");
+		String drug4 = StringUtils.defaultIfEmpty((String)reqMap.get("drug4"), "");
+		String useTerm = StringUtils.defaultIfEmpty((String)reqMap.get("useTerm"), "");
+		String reqDetails01 = StringUtils.defaultIfEmpty((String)reqMap.get("reqDetails01"), "");
+		String reqDetails02 = StringUtils.defaultIfEmpty((String)reqMap.get("reqDetails02"), "");
+		String reqDetails03 = StringUtils.defaultIfEmpty((String)reqMap.get("reqDetails03"), "");
+		String reqDetails04 = StringUtils.defaultIfEmpty((String)reqMap.get("reqDetails04"), "");
+		String reqOrg = StringUtils.defaultIfEmpty((String)reqMap.get("reqOrg"), "");
 
 		if("".equals(loginUsrId)) {
 			resultView.addObject("err", ConstantObject.Y);
@@ -576,11 +576,34 @@ public class ClientController {
 
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		String loginUsrId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
-		//String mbrNo = StringUtils.defaultString((String)reqMap.get("mbrNo"), "");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String reqDt = StringUtils.defaultIfEmpty((String)reqMap.get("reqDt"), "");
+		String docNo = StringUtils.defaultIfEmpty((String)reqMap.get("docNo"), "");
+		String reqOrg = StringUtils.defaultIfEmpty((String)reqMap.get("reqOrg"), "");
 
 		if("".equals(loginUsrId)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "로그인 후 이용");
+			return resultView;
+		}
+		if("".equals(mbrNo)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "회원을 선택하세요.");
+			return resultView;
+		}
+		if("".equals(reqDt)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "의뢰일을 선택하세요.");
+			return resultView;
+		}
+		if("".equals(docNo)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "문서번호를 입력하세요.");
+			return resultView;
+		}
+		if("".equals(reqOrg)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "의뢰처를 입력하세요.");
 			return resultView;
 		}
 
@@ -700,9 +723,141 @@ public class ClientController {
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
+		codeListMap.put("grpCd", "C1100");				// 성별
+		model.put("gendCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1200");				// 직업
+		model.put("jobCdList", sysCodeService.getSysCdList(codeListMap));
+
 		codeListMap.put("grpCd", "R0102");				// 교육의뢰경위
 		model.put("reqDetailsList", sysCodeService.getSysCdList(codeListMap));
 
 		return "nrds/client/clientLinkMain";
+	}
+
+	/**
+	 * 연계 타이틀 정보 조회
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrTrinsLastInfoJson.do")
+	public @ResponseBody ModelAndView ajaxEdMbrTrinsLastInfoJson(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		if(!"".equals(mbrNo)){
+			resultView.addObject("mbrTransInfo", clientService.getEdMbrTransLastInfo(mbrNo));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 연계 상세정보 조회
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxTransInfoJson.do")
+	public @ResponseBody ModelAndView ajaxTransInfoJson(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String mbrTransId = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTransId"), "");
+
+		if(!"".equals(mbrNo)){
+			if(!"".equals(mbrTransId)) {
+				resultView.addObject("mbrTransInfo", clientService.getEdMbrTransInfo(reqMap));
+			}else{
+				resultView.addObject("mbrTransInfo", clientService.getEdMbrInfo(reqMap));
+			}
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 연계 등록
+	 * @param multiRequest
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEmtAdd.do")
+	public @ResponseBody ModelAndView ajaxEmtAdd(MultipartHttpServletRequest multiRequest, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String loginUsrId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
+
+		if("".equals(loginUsrId)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용");
+			return resultView;
+		}
+
+		// 첨부 파일 정보
+		Map<String, MultipartFile> files = multiRequest.getFileMap();
+		reqMap.put("loginId", loginUsrId);
+		reqMap.put("acceptOrg", StringUtils.defaultString((String)usrInfo.get("SITE_NM"), ""));
+		reqMap.put("acceptMngr", StringUtils.defaultString((String)usrInfo.get("USR_NM"), ""));
+
+		HashMap<String, Object> resultMap = clientService.saveEdMbrTrans(files, reqMap);
+		if(resultMap != null) {
+			resultView.addObject("err", resultMap.get("err"));
+			resultView.addObject("MSG", resultMap.get("MSG"));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 연계 목록
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEmtList.do")
+	public String ajaxEmtList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String loginUsrId = StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		if(!"".equals(loginUsrId) && !"".equals(mbrNo)) {
+			model.put("resultList", clientService.getEdMbrTransList(reqMap));
+		}
+
+		return "nrds/client/layer/clientEduList";
+	}
+
+	/**
+	 * 연계 정보 삭제
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEmtDel.do")
+	public @ResponseBody ModelAndView ajaxEmtDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String mbrTransId = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTransId"), "");
+		int result = 0;
+
+		if(!"".equals(mbrNo) && !"".equals(mbrTransId)) {
+			result = clientService.deleteEdMbrTrans(reqMap);
+		}
+
+		if(result <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "삭제 처리 오류");
+		}
+
+		return resultView;
 	}
 }

@@ -18,6 +18,7 @@ import kr.co.chase.nrds.client.service.ClientService;
 import kr.co.chase.nrds.dao.EdMbrDao;
 import kr.co.chase.nrds.dao.EdMbrEdDao;
 import kr.co.chase.nrds.dao.EdMbrGuDao;
+import kr.co.chase.nrds.dao.EdMbrTransDao;
 
 @Service("clientService")
 public class ClientServiceImpl extends EgovAbstractServiceImpl implements ClientService {
@@ -35,6 +36,9 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 
 	@Resource(name="edMbrGuDao")
 	private EdMbrGuDao edMbrGuDao;
+
+	@Resource(name="edMbrTransDao")
+	private EdMbrTransDao edMbrTransDao;
 
 	@Override
 	public HashMap<String, Object> getEdMbrInfo(HashMap<String, Object> map) throws Exception {
@@ -267,6 +271,92 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 			map.put("fileId", fileId);
 
 			result = this.insertEdMbrGu(map);
+			resultMap.put("MSG", "등록");
+		}
+
+		if(result > 0) {
+			resultMap.put("err", ConstantObject.N);
+		}else{
+			resultMap.put("err", ConstantObject.Y);
+			resultMap.put("MSG", resultMap.get("MSG") + " 오류");
+		}
+
+		return resultMap;
+	}
+
+	@Override
+	public int insertEdMbrTrans(HashMap<String, Object> map) throws Exception {
+		return edMbrTransDao.insertEdMbrTrans(map);
+	}
+
+	@Override
+	public HashMap<String, Object> getEdMbrTransLastInfo(String mbrNo) throws Exception {
+		return edMbrTransDao.getEdMbrTransLastInfo(mbrNo);
+	}
+
+	@Override
+	public HashMap<String, Object> getEdMbrTransInfo(HashMap<String, Object> map) throws Exception {
+		return edMbrTransDao.getEdMbrTransInfo(map);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getEdMbrTransList(HashMap<String, Object> map) throws Exception {
+		return edMbrTransDao.getEdMbrTransList(map);
+	}
+
+	@Override
+	public int updateEdMbrTrans(HashMap<String, Object> map) throws Exception {
+		return edMbrTransDao.updateEdMbrTrans(map);
+	}
+
+	@Override
+	public int deleteEdMbrTrans(HashMap<String, Object> map) throws Exception {
+		return edMbrTransDao.deleteEdMbrTrans(map);
+	}
+
+	@Override
+	public HashMap<String, Object> saveEdMbrTrans(Map<String, MultipartFile> files, HashMap<String, Object> map) throws Exception {
+		int result = 0;
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String loginId = StringUtils.defaultIfEmpty((String)map.get("loginId"), "");
+		String mbrTransId = StringUtils.defaultIfEmpty((String)map.get("mbrTransId"), "");
+		String fileDelFlag = StringUtils.defaultIfEmpty((String)map.get("fileDelFlag"), ConstantObject.N);
+		String fileId = "";
+
+		if(!files.isEmpty()){
+			boolean flag = fileUtil.checkFiles(files);
+
+			if(flag){
+				HashMap<String, Object> fileMng = fileUtil.parseFileInf(files, "EMG", loginId);
+				if(!fileMng.isEmpty()) {
+					List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)fileMng.get("fileList");
+
+					for(HashMap<String, Object> info : fileList){
+						fileInfoService.insertFileInfo(info);
+		 			}
+
+					fileId = (String)fileMng.get("fileId");
+				}
+			}
+		}
+
+		if(!"".equals(mbrTransId)) {
+			if("".equals(fileId) && ConstantObject.N.equals(fileDelFlag)) {
+				HashMap<String, Object> edMbrTransInfo = this.getEdMbrTransInfo(map);
+
+				if(edMbrTransInfo != null) {
+					fileId = StringUtils.defaultIfEmpty((String)edMbrTransInfo.get("FILE_ID"), "");
+				}
+			}
+
+			map.put("fileId", fileId);
+
+			result = this.updateEdMbrTrans(map);
+			resultMap.put("MSG", "수정");
+		}else{
+			map.put("fileId", fileId);
+
+			result = this.insertEdMbrTrans(map);
 			resultMap.put("MSG", "등록");
 		}
 

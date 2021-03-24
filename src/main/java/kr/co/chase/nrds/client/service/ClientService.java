@@ -183,4 +183,61 @@ public interface ClientService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> saveEdMbrGu(Map<String, MultipartFile> files, HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계 정보 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertEdMbrTrans(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계 기본 정보 조회
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getEdMbrTransLastInfo(String mbrNo) throws Exception;
+
+	/**
+	 * 연계 상세 정보 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getEdMbrTransInfo(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계 목록 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getEdMbrTransList(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계 정보 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateEdMbrTrans(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계 정보 삭제
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteEdMbrTrans(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 연계 정보 저장
+	 * @param files
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> saveEdMbrTrans(Map<String, MultipartFile> files, HashMap<String, Object> map) throws Exception;
 }

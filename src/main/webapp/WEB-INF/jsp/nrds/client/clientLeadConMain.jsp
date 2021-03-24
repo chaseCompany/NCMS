@@ -129,6 +129,23 @@
 		}
 		<%-- 정보 저장 --%>
 		infoSave = function(){
+			if($("input[name='mbrNo']").val() == ""){
+				alert("회원을 선택하세요.");
+				mstMbrSearchPopup();							return;
+			}
+			if($("input[name='reqDt']").val() == ""){
+				alert("의뢰일을 선택하세요.");
+				$("input[name='reqDt']").focus();				return;
+			}
+			if($("input[name='docNo']").val() == ""){
+				alert("문서번호를 입력하세요.");
+				$("input[name='docNo']").focus();				return;
+			}
+			if($("input[name='reqOrg']").val() == ""){
+				alert("의뢰처를 입력하세요.");
+				$("input[name='reqOrg']").focus();				return;
+			}
+
 			$.ajax({
 				url : '<c:url value="/nrds/ajaxEmgAdd.do"/>',
 				type : 'POST',
@@ -171,7 +188,7 @@
 		<%-- 정보삭제 --%>
 		delInfo = function(){
 			if($("input[name='mbrGuId']").val() == ""){
-				alert("의로 정보를 선택 하세요.");			return;
+				alert("의뢰 정보를 선택 하세요.");			return;
 			}
 
 			if(confirm("정말로 삭제하시겠습니까?\n삭제한 데이터는 복구가 불가합니다.")){
@@ -407,7 +424,7 @@
 										</td>
 									</tr>
 									<tr>
-										<th class="v-top"><span class="required">*</span> 실거주지</th>
+										<th class="v-top">실거주지</th>
 										<td colspan="5">
 											<input type="text" name="rZipCd" class="el-input__inner" readonly style="width: 65px;">
 											<button type="button" onclick="javaScript:zipCodePop();" class="el-button el-button--primary el-button--small is-plain" style="padding: 9px 12px 8px;">
