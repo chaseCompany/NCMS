@@ -1209,6 +1209,9 @@ span.readonly{display: inline-block;width:50px;border-radius: 4px;border: 1px so
 .week-pg:after{display: block;content: '';clear: both;}
 .week-pg .l{float: left;width: 37.5%;padding: 0 5px 0 5px;}
 .week-pg .r{float: left;width: 62.5%;padding: 0 5px 0 5px;}
+.center-pg:after{display: block;content: '';clear: both;}
+.center-pg .l{float: left;width: 50%;padding: 0 5px 0 5px;}
+.center-pg .r{float: left;width: 50%;padding: 0 5px 0 5px;}
 .mgt5{margin-top: 5px !important}
 .mgt10{margin-top: 10px;background: #fff;}
 .text{display: inline-block;margin-left: 8px;vertical-align: middle;}
