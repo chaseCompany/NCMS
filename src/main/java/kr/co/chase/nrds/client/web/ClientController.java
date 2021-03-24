@@ -553,11 +553,142 @@ public class ClientController {
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
+		codeListMap.put("grpCd", "C1100");				// 성별
+		model.put("gendCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1200");				// 직업
+		model.put("jobCdList", sysCodeService.getSysCdList(codeListMap));
+
 		return "nrds/client/clientLeadConMain";
 	}
 
 	/**
-	 * 의뢰 선도조건부 기소유예
+	 * 의뢰 선도조건부 기소유에 등록
+	 * @param multiRequest
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEmgAdd.do")
+	public @ResponseBody ModelAndView ajaxEmgAdd(MultipartHttpServletRequest multiRequest, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String loginUsrId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
+		//String mbrNo = StringUtils.defaultString((String)reqMap.get("mbrNo"), "");
+
+		if("".equals(loginUsrId)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용");
+			return resultView;
+		}
+
+		// 첨부 파일 정보
+		Map<String, MultipartFile> files = multiRequest.getFileMap();
+		reqMap.put("loginId", loginUsrId);
+
+		HashMap<String, Object> resultMap = clientService.saveEdMbrGu(files, reqMap);
+		if(resultMap != null) {
+			resultView.addObject("err", resultMap.get("err"));
+			resultView.addObject("MSG", resultMap.get("MSG"));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 의뢰 선도조건부 기소유예 타이틀 정보 조회
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrGuLastInfoJson.do")
+	public @ResponseBody ModelAndView ajaxEdMbrGuLastInfoJson(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		if(!"".equals(mbrNo)){
+			resultView.addObject("mbrEdInfo", clientService.getEdMbrGuLastInfo(mbrNo));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 의뢰 선도조건부 기소유예 상세
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxGuInfoJson.do")
+	public @ResponseBody ModelAndView ajaxGuInfoJson(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String mbrGuId = StringUtils.defaultIfEmpty((String)reqMap.get("mbrGuId"), "");
+
+		if(!"".equals(mbrNo)){
+			if(!"".equals(mbrGuId)) {
+				resultView.addObject("mbrEdInfo", clientService.getEdMbrGuInfo(reqMap));
+			}else{
+				resultView.addObject("mbrEdInfo", clientService.getEdMbrInfo(reqMap));
+			}
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 의뢰 선도조건부 기소유예 목록
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrGuList.do")
+	public String ajaxEdMbrGuList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String loginUsrId = StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		if(!"".equals(loginUsrId) && !"".equals(mbrNo)) {
+			model.put("resultList", clientService.getEdMbrGuList(reqMap));
+		}
+
+		return "nrds/client/layer/clientEduList";
+	}
+
+	/**
+	 * 의뢰 선도조건부 기소유예 삭제
+	 * @param mbrNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrGuDel.do")
+	public @ResponseBody ModelAndView ajaxEdMbrGuDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String mbrGuId = StringUtils.defaultIfEmpty((String)reqMap.get("mbrGuId"), "");
+		int result = 0;
+
+		if(!"".equals(mbrNo) && !"".equals(mbrGuId)) {
+			result = clientService.deleteEdMbrGu(reqMap);
+		}
+
+		if(result <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "삭제 처리 오류");
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 연계
 	 * @param model
 	 * @param reqMap
 	 * @param session
