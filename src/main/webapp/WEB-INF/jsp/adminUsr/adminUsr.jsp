@@ -21,14 +21,14 @@
 						$("select[id='siteCd']").val(res.usrView.SITE_CD);
 						$("select[id='roleCd']").val(res.usrView.ROLE_CD);
 						if(res.usrView.SITE_CONSULT == '1'){
-							$("input[name='siteConsultCheck']").prop("checked", true);
+							$("input[name='siteConsult']").prop("checked", true);
 						}else{
-							$("input[name='siteConsultCheck']").prop("checked", false);
+							$("input[name='siteConsult']").prop("checked", false);
 						}
 						if(res.usrView.SITE_EDU == '1'){
-							$("input[name='siteEduCheck']").prop("checked", true);
+							$("input[name='siteEdu']").prop("checked", true);
 						}else{
-							$("input[name='siteEduCheck']").prop("checked", false);
+							$("input[name='siteEdu']").prop("checked", false);
 						}
 						$("input[name='useYn']:radio[value='" + res.usrView.USE_YN + "']").prop("checked", true);
 						$("input[id='regDt']").val(res.usrView.REG_DT);
@@ -50,6 +50,10 @@
 			var uiFlag = $("input[id='uiFlag']").val();
 
 			if (uiFlag == "U") {
+
+				if (fnCheckValidation() == false)
+					return false;
+				
 				$.ajax({
 					url : '/ajaxUsrUpdate.do',
 					type : 'POST',
@@ -69,18 +73,10 @@
 				});
 			}
 			else if (uiFlag == "I") {
-				if ($("input[name='siteConsultCheck']").prop("checked") == false) {
-					$("input[name='siteConsult']").val("0");
-				}
-				else {
-					$("input[name='siteConsult']").val("1");
-				}
-				if ($("input[name='siteEduCheck']").prop("checked") == false) {
-					$("input[name='siteEdu']").val("0");
-				}
-				else {
-					$("input[name='siteEdu']").val("1");
-				}
+				
+				if (fnCheckValidation() == false)
+					return false;
+				
 				$.ajax({
 					url : '/ajaxUsrInsert.do',
 					type : 'POST',
@@ -216,18 +212,36 @@
 			$("input[id='usrNm']").val("");
 			$("select[id='siteCd']").val("");
 			$("select[id='roleCd']").val("");
-			$("input[name='siteConsultCheck']").prop("checked", false);
-			$("input[name='siteEduCheck']").prop("checked", false);
+			$("input[name='siteConsult']").prop("checked", true);
+			$("input[name='siteEdu']").prop("checked", false);
 			$("input[name='useYn']:radio[value='Y']").prop("checked", true);
 			$("input[id='regDt']").val("");
-			$("input[name='siteConsult']").val("0");
-			$("input[name='siteEdu']").val("0");
 		}
 
 		$('#iInitializePwdActive').hide();
 		$('#deleteBtnActive').hide();
 		$('#uiFlag').val("U");
 	});
+	
+	function fnCheckValidation() {
+		if (!($("input[id='usrNm']").val())) {
+			alert("사용자 이름을 입력하세요.");
+			return false;
+		}
+		if (!($("select[id='siteCd']").val()) || $("select[id='siteCd']").val() == 0) {
+			alert("소속 본부를 선택하세요.");
+			return false;
+		}
+		if (!($("select[id='roleCd']").val()) || $("select[id='roleCd']").val() == 0) {
+			alert("사용자 권한을 선택하세요.");
+			return false;
+		}
+		if ($("input[name='siteConsult']").is(":checked") == false && $("input[name='siteEdu']").is(":checked") == false) {
+			alert("사용 시스템을 1개이상 선택하세요.");
+			return false;
+		}
+	}
+
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
@@ -484,12 +498,10 @@
                             	<th> 사용 시스템 </th>
                             	<td>
                             		<span class="ck-bx">
-                                        <input type="checkbox" value="1" name="siteConsultCheck" > 상담
-                                        <input type="hidden" name="siteConsult" />
+                                        <input type="checkbox" value="1" name="siteConsult" > 상담
                                     </span>
                                     <span class="ck-bx">
-                                        <input type="checkbox" value="1" name="siteEduCheck"> 재범방지교육
-                                        <input type="hidden" name="siteEdu" />
+                                        <input type="checkbox" value="1" name="siteEdu"> 재범방지교육
                                     </span>
                             	</td>
                             </tr>
