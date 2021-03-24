@@ -638,7 +638,10 @@
 										<td colspan="5">
 <c:if test="${crimeTypeList ne null and crimeTypeList ne ''}">
 	<c:forEach var="result" items="${crimeTypeList}" varStatus="status">
-											<span class="ck-bx"><input type="checkbox" name="crimeType0<c:out value="${status.count}" />" value="1" onchange="javaScript:changValEtc(this, 'crimeType04', 'crimeTypeEtc');"/> <c:out value="${result.CD_NM}" /></span>
+											<span class="ck-bx">
+												<input type="checkbox" name="crimeType0<c:out value="${status.count}" />" id="crimeType_<c:out value="${status.count}" />" value="1" onchange="javaScript:changValEtc(this, 'crimeType04', 'crimeTypeEtc');"/>
+												<label for="crimeType_<c:out value="${status.count}" />"><c:out value="${result.CD_NM}" /></label>
+											</span>
 	</c:forEach>
 </c:if>
 											<input type="text" name="crimeTypeEtc" class="el-input__inner" placeholder="범죄유형 기타" maxlength="50" disabled style="width: 200px;" />
@@ -647,13 +650,25 @@
 									<tr>
 										<th><span class="required">*</span> 사용마약류</th>
 										<td colspan="5">
-											<span class="ck-bx"><input type="checkbox" name="drug1" value="1" onchange="javaScript:changValEtc(this, 'drug1', 'drug1Etc');"/> 마약</span>
+											<span class="ck-bx">
+												<input type="checkbox" name="drug1" id="drug1" value="1" onchange="javaScript:changValEtc(this, 'drug1', 'drug1Etc');"/>
+												<label for="drug1">마약</label>
+											</span>
 											<input type="text" name="drug1Etc" placeholder="사용 마약류 마약" maxlength="50" disabled style="width:130px;" />
-											<span class="ck-bx"><input type="checkbox" name="drug2" value="1" onchange="javaScript:changValEtc(this, 'drug2', 'drug2Etc');"/> 향정</span>
+											<span class="ck-bx">
+												<input type="checkbox" name="drug2" id="drug2" value="1" onchange="javaScript:changValEtc(this, 'drug2', 'drug2Etc');"/>
+												<label for="drug2">향정</label>
+											</span>
 											<input type="text" name="drug2Etc" placeholder="사용 마약류 향정" maxlength="50" disabled style="width:130px;" />
-											<span class="ck-bx"><input type="checkbox" name="drug3" value="1" onchange="javaScript:changValEtc(this, 'drug3', 'drug3Etc');"/> 대마</span>
+											<span class="ck-bx">
+												<input type="checkbox" name="drug3" id="drug3" value="1" onchange="javaScript:changValEtc(this, 'drug3', 'drug3Etc');"/>
+												<label for="drug3">대마</label>
+											</span>
 											<input type="text" name="drug3Etc" placeholder="사용 마약류 대마" maxlength="50" disabled style="width:130px;" />
-											<span class="ck-bx"><input type="checkbox" name="drug4" value="1" onchange="javaScript:changValEtc(this, 'drug4', 'drug4Etc');"/> 기타</span>
+											<span class="ck-bx">
+												<input type="checkbox" name="drug4" id="drug4" value="1" onchange="javaScript:changValEtc(this, 'drug4', 'drug4Etc');"/>
+												<label for="drug4">기타</label>
+											</span>
 											<input type="text" name="drug4Etc" placeholder="사용 마약류 기타" maxlength="50" disabled style="width:130px;" />
 										</td>
 									</tr>
@@ -662,7 +677,10 @@
 										<td colspan="5">
 <c:if test="${useTermList ne null and useTermList ne ''}">
 	<c:forEach var="result" items="${useTermList}" varStatus="status">
-											<span class="ck-bx"><input type="radio" name="useTerm" value="<c:out value="${result.CD_ID}" />"/> <c:out value="${result.CD_NM}" /></span>
+											<span class="ck-bx">
+												<input type="radio" name="useTerm" id="useTerm_<c:out value="${status.count}" />" value="<c:out value="${result.CD_ID}" />"/>
+												<label for="useTerm_<c:out value="${status.count}" />"><c:out value="${result.CD_NM}" /></label>
+											</span>
 	</c:forEach>
 </c:if>
 										</td>
@@ -672,7 +690,10 @@
 										<td colspan="5">
 <c:if test="${reqDetailsList ne null and reqDetailsList ne ''}">
 	<c:forEach var="result" items="${reqDetailsList}" varStatus="status">
-											<span class="ck-bx"><input type="checkbox" name="reqDetails0<c:out value="${status.count}" />" value="1" onchange="javaScript:changValEtc(this, 'reqDetails04', 'reqDetailsEtc');"/> <c:out value="${result.CD_NM}" /></span>
+											<span class="ck-bx">
+												<input type="checkbox" name="reqDetails0<c:out value="${status.count}" />" id="reqDetails_<c:out value="${status.count}" />" value="1" onchange="javaScript:changValEtc(this, 'reqDetails04', 'reqDetailsEtc');"/>
+												<label for="reqDetails_<c:out value="${status.count}" />"><c:out value="${result.CD_NM}" /></label>
+											</span>
 	</c:forEach>
 </c:if>
 											<input type="text" name="reqDetailsEtc" class="el-input__inner" placeholder="교육의뢰경위 기타" maxlength="50" disabled style="width: 200px;" />

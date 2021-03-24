@@ -486,12 +486,30 @@
 								<tr>
 									<th><span class="required">*</span> 대상자구분</th>
 									<td colspan="5">
-										<span class="ck-bx"><input type="checkbox" name="mbrTp1" value="1"> 수강명령 과정</span>
-										<span class="ck-bx"><input type="checkbox" name="mbrTp2" value="1"> 이수명령 과정</span>
-										<span class="ck-bx"><input type="checkbox" name="mbrTp3" value="1"> 기본과정</span>
-										<span class="ck-bx"><input type="checkbox" name="mbrTp4" value="1"> 집중과정</span>
-										<span class="ck-bx"><input type="checkbox" name="mbrTp5" value="1"> 심화과정</span>
-										<span class="ck-bx"><input type="checkbox" name="mbrTp6" value="1"> 단기과정</span>
+										<span class="ck-bx">
+											<input type="checkbox" name="mbrTp1" id="mbrTp1" value="1">
+											<label for="mbrTp1">수강명령 과정</label>
+										</span>
+										<span class="ck-bx">
+											<input type="checkbox" name="mbrTp2" id="mbrTp2" value="1">
+											<label for="mbrTp2">이수명령 과정</label>
+										</span>
+										<span class="ck-bx">
+											<input type="checkbox" name="mbrTp3" id="mbrTp3" value="1">
+											<label for="mbrTp3">기본과정</label>
+										</span>
+										<span class="ck-bx">
+											<input type="checkbox" name="mbrTp4" id="mbrTp4" value="1">
+											<label for="mbrTp4">집중과정</label>
+										</span>
+										<span class="ck-bx">
+											<input type="checkbox" name="mbrTp5" id="mbrTp5" value="1">
+											<label for="mbrTp5">심화과정</label>
+										</span>
+										<span class="ck-bx">
+											<input type="checkbox" name="mbrTp6" id="mbrTp6" value="1">
+											<label for="mbrTp6">단기과정</label>
+										</span>
 									</td>
 								</tr>
 								<tr>
