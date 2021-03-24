@@ -69,10 +69,17 @@ public class LoginController {
 			if(usrInfoMap != null) {
 				session.setAttribute(ConstantObject.LOGIN_SESSEION_INFO, usrInfoMap);
 
-				resultView.addObject("err", "N");
+				resultView.addObject("err", ConstantObject.N);
 				resultView.addObject("usrInfo", usrInfoMap);
+
+				if("1".equals(StringUtils.defaultIfEmpty((String)usrInfoMap.get("SITE_EDU"), ""))) {
+					resultView.addObject("returnUrl", "/nrds/recyclePrgMain.do");
+				}
+				if("1".equals(StringUtils.defaultIfEmpty((String)usrInfoMap.get("SITE_CONSULT"), ""))) {
+					resultView.addObject("returnUrl", "/counselMain.do");
+				}
 			}else{
-				resultView.addObject("err", "Y");
+				resultView.addObject("err", ConstantObject.Y);
 				resultView.addObject("MSG", "사용자 ID가 존재하지 않거나 비밀번호가 맞지 않습니다.");
 			}
 		}

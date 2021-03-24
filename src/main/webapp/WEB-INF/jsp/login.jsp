@@ -19,7 +19,11 @@
 						window.location.href = '<c:out value="${reDirect}" />';
 </c:if>
 <c:if test="${reDirect eq null || reDirect eq ''}">
-						window.location.href = '/counselMain.do';
+						if(data.returnUrl != "" && data.returnUrl != undefined){
+							window.location.href = data.returnUrl;
+						}else{
+							window.location.href = '<c:url value="/counselMain.do" />';
+						}
 </c:if>
 					}else{
 						alert(data.MSG);
