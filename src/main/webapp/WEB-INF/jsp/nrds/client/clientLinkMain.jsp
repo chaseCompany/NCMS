@@ -45,6 +45,7 @@
 		<%-- 회원연계 정보 조회 --%>
 		getTransLastInfo = function(tagMbrNo){
 			setButton();
+			newInfo();
 
 			$.ajax({
 				url : '<c:url value="/nrds/ajaxEdMbrTrinsLastInfoJson.do"/>',
