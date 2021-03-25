@@ -17,5 +17,17 @@ public interface RecyclePrgService {
 	
 	public int updateEdPrmInfo(HashMap<String, Object> map) throws Exception;
 	
-	public void deleteEdPrmInfo(HashMap<String, Object> map) throws Exception;
+	public int deleteEdPrmInfo(HashMap<String, Object> map) throws Exception;
+
+	public int deleteEdPrmMbr(HashMap<String, Object> map) throws Exception;
+
+	public int deleteEdPrm(HashMap<String, Object> map) throws Exception;
+	
+	public HashMap<String, Object> processEdPrm(HashMap<String, Object> map) throws Exception;
+	
+	public HashMap<String, Object> getEdPrm(HashMap<String, Object> map) throws Exception;
+
+	public List<HashMap<String, Object>> getEdPgmMbrList(HashMap<String, Object> map) throws Exception;
+
+	public int deleteAllEdPrmMbr(HashMap<String, Object> map) throws Exception;
 }

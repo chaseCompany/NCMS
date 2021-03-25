@@ -283,6 +283,62 @@ public class ClientController {
 	}
 
 	/**
+	 * 회원 목록 조회
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxPrgEdMbrList.do")
+	public String ajaxPrgEdMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String searchType = StringUtils.defaultIfEmpty((String)reqMap.get("searchType"), "");
+		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "");
+		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
+
+		PaginationInfo paginginfo = new PaginationInfo();
+		if(currentPageNo == "" || recordCountPerPage == ""){
+			paginginfo.setCurrentPageNo(1);
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.parseInt(ConstantObject.defaultRowSize));
+		}else{
+			paginginfo.setCurrentPageNo(Integer.valueOf(currentPageNo));
+			paginginfo.setPageSize(Integer.parseInt(ConstantObject.defaultPageSize));
+			paginginfo.setRecordCountPerPage(Integer.valueOf(recordCountPerPage));
+		}
+
+		String mbrNm = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNm"), "");
+		String telNo = StringUtils.defaultIfEmpty((String)reqMap.get("telNo"), "").replaceAll("-", "");
+		model.put("mbrNm", mbrNm);
+		model.put("telNo", telNo);
+		model.put("pageNo", currentPageNo);
+
+		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
+		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
+
+		// 관리자가 아닌 경우
+		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
+			if("S".equals(searchType)) {
+				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "X"));
+			}
+		}
+
+		int totalCount = clientService.getEdMbrListCount(reqMap);
+		paginginfo.setTotalRecordCount(totalCount);
+
+		model.put("totalCount", totalCount);
+		model.put("paginationInfo", paginginfo);
+
+		if(totalCount > 0) {
+			List<HashMap<String, Object>> resultList = clientService.getEdMbrList(reqMap);
+			model.put("resultList", resultList);
+		}
+
+		return "nrds/client/layer/prgMbrSearchLayer";
+	}
+
+	/**
 	 * 회원 정보 상세 조회
 	 * @param reqMap
 	 * @param session

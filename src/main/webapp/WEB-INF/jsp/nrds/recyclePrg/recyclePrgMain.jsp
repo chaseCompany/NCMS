@@ -434,8 +434,8 @@
 				$("input[name='fileNameFlag']").val("N");
 				$("div#fileName").text("");
 				
-				$("#pgmEmp").val("");
-				$("#pgmVol").val("");
+				$("input[name='pgmEmp']").val("");
+				$("input[name='pgmVol']").val("");
 			}else{
 				$.ajax({
 					url : '/nrds/ajaxGetRecyclePrgInfo.do',
@@ -452,6 +452,8 @@
 						var recyclePrgInfo = res.recyclePrgInfo;
 						//var setDt = new Date(recyclePrgInfo.PGM_DT.substr(0, 4), recyclePrgInfo.PGM_DT.substr(4, 2), recyclePrgInfo.PGM_DT.substr(6, 2));
 						//setDt.setMonth(setDt.getMonth() - 1);
+						
+						$("input[name='pgmId']").val(recyclePrgInfo.pgmId);
 
 						$("select[name='pgmEdCd']").val(recyclePrgInfo.pgmEdCd).prop("selected", true);
 
@@ -483,7 +485,7 @@
 						$("input[name='pgmVol']").val(recyclePrgInfo.pgmVol);
 						
 						if(recyclePrgInfo.fileList != undefined && recyclePrgInfo.fileList != ''){
-							alert(recyclePrgInfo.fileList.length);
+//							alert(recyclePrgInfo.fileList.length);
 							for(let i=0 ; i<recyclePrgInfo.fileList.length ; i++){
 								$("div#fileName").html("<a href='javaScript:downloadFile(\"" + recyclePrgInfo.fileList[i].FILE_ID + "\", \"" + recyclePrgInfo.fileList[i].FILE_SEQ + "\");'>" + recyclePrgInfo.fileList[i].ORIGNL_FILE_NM + "</a>"
 													 + "&nbsp;&nbsp;<a href='javaScript:deleteFile(\"fileName\");'>삭제</a>"
@@ -499,17 +501,16 @@
 					}
 				});
 
-				//getPgmMemList(obj.pgmDt, obj.pgmCd);
+				getPgmMemList(obj.pgmId);
 			}
 		},
 		<%-- 프로그램회원 목록 --%>
-		getPgmMemList = function(tagPgmDt, tagPgmCd){
+		getPgmMemList = function(tagPgmId){
 			$.ajax({
-				url : '/getPgmMemList.do',
+				url : '/nrds/getEdMemList.do',
 				type : 'POST',
 				data : {
-					pgmDt : tagPgmDt,
-					pgmCd : tagPgmCd
+					pgmId : tagPgmId
 				},
 				success : function(res){
 					$("div#weeklyPgmMemList").html(res);
@@ -522,14 +523,13 @@
 		<%-- 회원 조회 --%>
 		mstMbrSearchPopup = function(){
 			$.ajax({
-				url : '/ajaxMstMbrList.do',
+				url : '/nrds/ajaxPrgEdMbrList.do',
 				type : 'POST',
 				data : {
 					listType : "MEDIC",
 					pageNo : $("input[name='memPageNo']").val(),
 					mbrNm : $("input[name='memSchMbrNm']").val(),
-					telNo : $("input[name='memSchTelNo']").val(),
-					closeFlg : "N"
+					telNo : $("input[name='memSchTelNo']").val()
 				},
 				success : function(res){
 					$("div[id='layerpopup']").html(res);
@@ -556,7 +556,7 @@
 
 			var inHtml = "";
 			var pgmMemCount = Number($("input[name='pgmMemCount']").val()) + 1;
-
+			
 			if(pgmMemCount <= 1){
 				inHtml = "<table id='pgmMemTable'>"
 					   + "	<colgroup>"
@@ -574,7 +574,7 @@
 					   + "		<td><div class='cell'>" + pgmMemCount + "</div></td>"
 					   + "		<td>"
 					   + "			<div class='cell'>"
-					   + "				<button type='button' onclick='javaScript:pgmMemDel(\"" + pgmMemCount + "\", \"0\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+					   + "				<button type='button' onclick='javaScript:pgmMemDel(\"" + pgmMemCount + "\", \"" + obj.MBR_NO + "\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
 					   + "					<span>삭제</span>"
 					   + "				</button>"
 					   + "			</div>"
@@ -584,11 +584,11 @@
 					   + "		<td class='txt-left'><div class='cell' id='ctntView'></div></td>"
 					   + "		<td>"
 					   + "			<div class='cell'>"
-					   + "				<button type='button' onclick='javaScript:viewCtnt(\"mbrCtnt\", \"" + pgmMemCount + "\");' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+					   + "				<button type='button' onclick='javaScript:viewCtnt(\"pgmUserCnt\", \"" + pgmMemCount + "\");' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
 					   + "					<i class='el-icon-search'></i>"
 					   + "				</button>"
 					   + "			</div>"
-					   + "			<textarea name='mbrCtnt' style='display:none;'></textarea>"
+					   + "			<textarea name='pgmUserCnt' style='display:none;'></textarea>"
 					   + "		</td>"
 					   + "	</tr>"
 					   + "	</tbody>"
@@ -602,7 +602,7 @@
 					   + "		<td><div class='cell'>" + pgmMemCount + "</div></td>"
 					   + "		<td>"
 					   + "			<div class='cell'>"
-					   + "				<button type='button' onclick='javaScript:pgmMemDel(\"" + pgmMemCount + "\", \"0\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+					   + "				<button type='button' onclick='javaScript:pgmMemDel(\"" + pgmMemCount + "\", \"" + obj.MBR_NO + "\");' class='el-button el-button--danger el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
 					   + "					<span>삭제</span>"
 					   + "				</button>"
 					   + "			</div>"
@@ -612,11 +612,11 @@
 					   + "		<td class='txt-left'><div class='cell' id='ctntView'></div></td>"
 					   + "		<td>"
 					   + "			<div class='cell'>"
-					   + "				<button type='button' onclick='javaScript:viewCtnt(\"mbrCtnt\", \"" + pgmMemCount + "\");' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
+					   + "				<button type='button' onclick='javaScript:viewCtnt(\"pgmUserCnt\", \"" + pgmMemCount + "\");' class='el-button el-button--success el-button--mini is-plain' slot='reference' style='margin-left: 1px; padding: 4px 9px;'>"
 					   + "					<i class='el-icon-search'></i>"
 					   + "				</button>"
 					   + "			</div>"
-					   + "			<textarea name='mbrCtnt' style='display:none;'></textarea>"
+					   + "			<textarea name='pgmUserCnt' style='display:none;'></textarea>"
 					   + "		</td>"
 					   + "	</tr>";
 
@@ -666,6 +666,7 @@
 		newBtn = function(){
 			reSetPgmForm();
 			getPgmMemList();
+			$("input[name='pgmId']").val("");
 		},
 		<%-- 삭제 --%>
 		pgmDel = function(){
@@ -678,12 +679,12 @@
 
 			if(confirm("등록된 프로그램 실시 내역을 삭제하시겠습니까?")){
 				$.ajax({
-					url : '/ajaxGrpPgmDel.do',
+					url : '/nrds/ajaxGrpPgmDel.do',
 					type : 'POST',
-					data : {
-						pgmCd : $("select[name='pgmCd']").val(),
-						pgmDt : $("input[name='pgmDt']").val()
-					},
+					processData : false,
+					contentType : false,
+					enctype : 'multipart/form-data',
+					data : new FormData($("#pgmInfoForm")[0]),
 					success : function(res){
 						if(res.err == "Y"){
 							alert(res.MSG);
@@ -707,12 +708,10 @@
 		weeklyExel = function(){
 			alert("준비중");
 		}
-
-		
-		
 		
 		getRecyclePrgList();
 		getPgmMemList();
+		$("input[name='pgmId']").val("");
 	});
 	
 	
@@ -790,6 +789,7 @@
 		<div class="r">
 			<!-- 프로그램 정보 -->
 			<form name="pgmInfoForm" id="pgmInfoForm" enctype="multipart/form-data">
+			<input type="hidden" name="pgmId" />
 			<div class="section pdn">
 				<div class="el-card_header">
 					<h2><i class="el-icon-s-opportunity"></i> 프로그램 정보</h2>					

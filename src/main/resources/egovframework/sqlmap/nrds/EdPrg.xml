@@ -108,6 +108,45 @@
 	]]>
 	</select>
 
+	<select id="edPrg.selectEdPrmInfoMap" parameterType="hashMap" resultType="hashMap">
+		/* edPrg.selectEdPrmInfoMap */
+	<![CDATA[
+		SELECT PGM_ID
+			 , PGM_ED_CD
+			 , PGM_CLASS_NM_CD
+			 , PGM_CLASS_SUB_CD
+			 , PGM_MAIN_LEC
+			 , PGM_SUB_LEC
+			 , PGM_START_DT
+			 , PGM_END_DT
+			 , PGM_START_TM
+			 , PGM_END_TM
+			 , PGM_DUR
+			 , PGM_SESSION
+			 , PGM_CLASS
+			 , PGM_AGENT
+			 , PGM_MNG_USR_ID
+			 , PGM_CLASS_START_DT
+			 , PGM_CLASS_START_TM
+			 , PGM_CLASS_END_DT
+			 , PGM_CLASS_END_TM
+			 , PGM_CLASS_DUR
+			 , PGM_SUBJECT
+			 , PGM_GOAL
+			 , PGM_CTNT
+			 , PGM_RST
+			 , FILE_ID
+			 , PGM_EMP
+			 , PGM_VOL
+			 , CRE_ID
+			 , CRE_DT
+			 , UPD_ID
+			 , UPD_DT 
+		  FROM ED_PGM
+		 WHERE PGM_ID = #{pgmId}
+	]]>
+	</select>
+
 	<insert id="edPrg.insertEdPrmInfo" parameterType="hashMap">
 		/* edPrg.insertEdPrmInfo */
 	<![CDATA[
@@ -121,7 +160,7 @@
 				, PGM_EMP		, PGM_VOL			, CRE_ID			, CRE_DT				, UPD_ID
 				, UPD_DT 
 		) VALUES (
-				  #{pgmEdCd}	, #{pgmClassNmCd}	,#{pgmClassSubCd}	, #{pgmMainLec}		, #{pgmSubLec}		
+				  #{pgmEdCd}	, #{pgmClassNmCd}	, #{pgmClassSubCd}	, #{pgmMainLec}		, #{pgmSubLec}		
 				, #{pgmStartDt} , #{pgmStartTm}		, #{pgmEndDt}		, #{pgmEndTm}		, #{pgmDur}
 				, #{pgmSession}	, #{pgmClass}		, #{pgmAgent}
 				, #{pgmMngUsrId}, #{pgmClassStartDt}, #{pgmClassStartTm}, #{pgmClassEndDt}	, #{pgmClassEndTm}	
@@ -138,9 +177,11 @@
 		/* edPrg.updateEdPrmInfo */ 
 	<![CDATA[
 		UPDATE ED_PGM
-		   SET PGM_ED_CD  			= #{pgmEdCd}			, PGM_CLASS_NM_CD 	= #{pgmClassNnCd}	
+		   SET PGM_ED_CD  			= #{pgmEdCd}			, PGM_CLASS_NM_CD 	= #{pgmClassNmCd}	
+		   	 , PGM_CLASS_SUB_CD		= #{pgmClassSubCd}
 		     , PGM_MAIN_LEC			= #{pgmMainLec}			, PGM_SUB_LEC 	  	= #{pgmSubLec}
-		     , PGM_START_DT  		= #{pgmStartDt}			, PGM_END_DT		= #{pgmEndDt}
+		     , PGM_START_DT  		= #{pgmStartDt}			, PGM_START_TM		= #{pgmStartTm}
+		     , PGM_END_DT			= #{pgmEndDt}			, PGM_END_TM		= #{pgmEndTm}
 			 , PGM_DUR  			= #{pgmDur}				, PGM_SESSION		= #{pgmSession}
 			 , PGM_CLASS  			= #{pgmClass}			, PGM_AGENT			= #{pgmAgent}
 			 , PGM_MNG_USR_ID  		= #{pgmMngUsrId}		
@@ -166,5 +207,10 @@
 	<delete id="edPrg.deleteEdPrm" parameterType="hashMap">
 		/* edPrg.deleteEdPrm */
 		DELETE FROM ED_PGM WHERE PGM_ID = #{pgmId}
+	</delete>
+	
+	<delete id="edPrg.deleteEdPrmMbr" parameterType="hashMap">
+		/* edPrg.deleteEdPrmMbr */
+		DELETE FROM ED_PGM_MBR WHERE PGM_ID = #{pgmId}
 	</delete>
 </mapper>

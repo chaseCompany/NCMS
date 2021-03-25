@@ -4,16 +4,15 @@
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
 		<%-- 프로그램 참여자 삭제 --%>
-		pgmMemDel = function(rowNum, tagSeqNo){
-			console.log(rowNum + ":" + tagSeqNo);
-			if(tagSeqNo != 0){
-				if($("input[name='deletePgmSeq']").val() != ""){
-					$("input[name='deletePgmSeq']").val($("input[name='deletePgmSeq']").val() + "," + tagSeqNo);
+		pgmMemDel = function(rowNum, tagMbrNo){
+			console.log(rowNum + ":" + tagMbrNo);
+			if(!tagMbrNo){
+				if($("input[name='deleteMbrNo']").val() != ""){
+					$("input[name='deleteMbrNo']").val($("input[name='deleteMbrNo']").val() + "," + tagMbrNo);
 				}else{
-					$("input[name='deletePgmSeq']").val(tagSeqNo);
+					$("input[name='deleteMbrNo']").val(tagMbrNo);
 				}
 			}
-
 			$("table#pgmMemTable tr").each(function(){
 				if($(this).attr("id") == rowNum){
 					$(this).remove();
@@ -27,7 +26,7 @@
 	});
 </script>
 <input type="hidden" name="pgmMemCount" value="<c:out value="${pgmMemListCount}" />" />
-<input type="hidden" name="deletePgmSeq" />
+<input type="hidden" name="deleteMbrNo" />
 <div class="el-table_body-wrapper" style="height: 370px;" id="pgmMemTableDiv">
 <c:if test="${pgmMemListCount > 0}">
 	<c:if test="${pgmMemList ne null and pgmMemList ne ''}">
@@ -44,25 +43,24 @@
 		<c:forEach var="result" items="${pgmMemList}" varStatus="status">
 		<tr id='<c:out value="${status.index + 1}" />'>
 			<input type="hidden" name="pgmMbrNo" value="<c:out value="${result.MBR_NO}" />" />
-			<input type="hidden" name="mbrSeqNo" value="<c:out value="${result.SEQ_NO}" />" />
 			<td><div class="cell"><c:out value="${status.index + 1}" /></div></td>
 			<td>
 				<div class="cell">
-					<button type="button" onclick="javaScript:pgmMemDel('<c:out value="${status.index + 1}" />', '<c:out value="${result.SEQ_NO}" />');" class="el-button el-button--danger el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
+					<button type="button" onclick="javaScript:pgmMemDel('<c:out value="${status.index + 1}" />', \''<c:out value="${result.MBR_NO}" />\'');" class="el-button el-button--danger el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
 						<span>삭제</span>
 					</button>
 				</div>
 			</td>
 			<td><div class="cell"><c:out value="${result.MBR_NO}" /></div></td>
 			<td><div class="cell"><c:out value="${result.MBR_NM}" /></div></td>
-			<td class="txt-left"><div class="cell" id="ctntView"><c:out value="${result.MBR_CTNT}" /></div></td>
+			<td class="txt-left"><div class="cell" id="ctntView"><c:out value="${result.PGM_USER_CNT}" /></div></td>
 			<td>
 				<div class="cell">
-					<button type="button" onclick="javaScript:viewCtnt('mbrCtnt', '<c:out value="${status.index + 1}" />');" class="el-button el-button--success el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
+					<button type="button" onclick="javaScript:viewCtnt('pgmUserCnt', '<c:out value="${status.index + 1}" />');" class="el-button el-button--success el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
 						<i class="el-icon-search"></i>
 					</button>
 				</div>
-				<textarea name="mbrCtnt" style="display:none;"><c:out value="${result.MBR_CTNT}" /></textarea>
+				<textarea name="pgmUserCnt" style="display:none;"><c:out value="${result.PGM_USER_CNT}" /></textarea>
 			</td>
 		</tr>
 		</c:forEach>
