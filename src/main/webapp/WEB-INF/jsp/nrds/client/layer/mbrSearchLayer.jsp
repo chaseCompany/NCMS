@@ -125,7 +125,7 @@
 		<c:if test="${result.STS_CD eq 'RG'}">
 							<td><div class="cell"></div></td>
 		</c:if>
-							<td><div class="cell"><fmt:formatDate value="${result.CRE_DT}" pattern="yyyy-MM-dd"/></div></td>
+							<td><div class="cell"><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></div></td>
 						</tr>
 	</c:forEach>
 </c:if>
