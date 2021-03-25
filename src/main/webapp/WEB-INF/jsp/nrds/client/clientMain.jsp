@@ -120,7 +120,7 @@
 				data : $('#mainForm').serialize(),
 				success : function(res){
 					if(res.err != "Y"){
-						alert(res.MSG + " 성공");
+						alert(res.MSG + "되었습니다.");
 
 						viewMemInfo(res.mbrNo);
 					}else{
@@ -306,7 +306,7 @@
 					},
 					success : function(res){
 						if(res.err != "Y"){
-							alert("삭제 성공");
+							alert("삭제되었습니다.");
 
 							newMemInfo();
 						}else{

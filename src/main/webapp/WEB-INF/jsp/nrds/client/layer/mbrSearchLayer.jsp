@@ -103,7 +103,7 @@
 					<tbody>
 <c:if test="${totalCount > 0}">
 	<c:forEach var="result" items="${resultList}" varStatus="status">
-		<fmt:parseDate value="${result.REG_DT}" var="regDt" pattern="yyyyMMdd"/>
+		<fmt:parseDate value="${result.CRE_DT}" var="regDt" pattern="yyyyMMdd"/>
 						<tr>
 							<td><div class="cell"><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></div></td>
 							<td>

@@ -192,7 +192,9 @@
 							$("input[name='detective']").val(info.DETECTIVE);
 							$("input[name='fileId']").val("");
 							if(info.ORIGNL_FILE_NM != '' && info.ORIGNL_FILE_NM != undefined){
-								var fileNameHtml = info.ORIGNL_FILE_NM + "&nbsp;&nbsp;<a href='javaScript:setFileDelFlag();'>삭제</a>";
+								var fileNameHtml = '<a href="javaScript:downloadFile(\'' + info.FILE_ID + '\', \'' + info.FILE_SEQ + '\');">'
+												 + info.ORIGNL_FILE_NM
+												 + "</a>&nbsp;&nbsp;&nbsp;<a href='javaScript:setFileDelFlag();'>삭제</a>";
 								$("div#fileInfo").html(fileNameHtml);
 							}else{
 								$("div#fileInfo").html("");
@@ -235,7 +237,7 @@
 		<%-- 저장 --%>
 		infoSave = function(){
 			if($("input[name='mbrNo']").val() == ""){
-				alert("회원을 선택하세요.");
+				alert("대상자를 선택해 주세요.");
 				mstMbrSearchPopup();							return;
 			}
 			if($("input[name='rZipCd']").val() == "" || $("input[name='rAddr1']").val() == ""){
@@ -293,7 +295,7 @@
 				data : new FormData($("#mainForm")[0]),
 				success : function(res){
 					if(res.err != "Y"){
-						alert(res.MSG + " 성공");
+						alert(res.MSG + "되었습니다.");
 
 						setButton();
 						getEdMbrEdList($("input[name='mbrNo']").val());
@@ -339,7 +341,7 @@
 					},
 					success : function(res){
 						if(res.err != "Y"){
-							alert("삭제 성공");
+							alert("삭제되었습니다.");
 
 							setButton();
 							getEdMbrEdList($("input[name='mbrNo']").val());
