@@ -385,7 +385,7 @@
 									<tr>
 										<th>대상자등록번호</th>
 										<td>
-											<input name="mbrNo" type="text" readonly placeholder="저장시 자동 생성" class="el-input__inner" style="width: 142px;" />
+											<input name="mbrNo" type="text" readonly placeholder="대상자등록번호" class="el-input__inner" style="width: 142px;" />
 										</td>
 										<th><span class="required">*</span> 성명</th>
 										<td><input name="mbrNm" type="text" readonly class="el-input__inner" placeholder="성명" style="width: 130px;" /></td>
