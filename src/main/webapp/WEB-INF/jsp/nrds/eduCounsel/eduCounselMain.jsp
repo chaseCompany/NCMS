@@ -198,6 +198,9 @@
 		},
 		<%-- 교육상담 상담내용 삭제 --%>
 		idvDel = function(tagCslNo, idx){
+			var con = confirm("삭제하시겠습니까?");
+			if(con==false) return false;
+			
 			$.ajax({
 				url : '/nrds/ajaxClsCureDel.do',
 				type : 'POST',
@@ -227,7 +230,7 @@
 		<%-- 교육상담 상담 저장 --%>
 		saveIdv = function(){
 			if($("input[name='mbrNo']").val() == ""){
-				alert("회원을 선택하세요.");
+				alert("대상자를 선택해주세요.");
 				return;
 			}
 			if($("input[name='cslDt']").val() == ""){
@@ -789,7 +792,7 @@
 	<input type="hidden" name="tagName" />
 	<div class="popup">
 		<div class="pop-header">
-			<span>상세내용</span>
+			<span>상담결과 상세내용</span>
 			<button type="button" class="el-dialog__headerbtn" onclick="javaScript:layerPopupClose('counwrite');">
 				<i class="el-dialog__close el-icon el-icon-close"></i>
 			</button>

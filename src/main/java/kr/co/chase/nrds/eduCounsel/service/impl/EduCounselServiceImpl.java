@@ -140,10 +140,10 @@ public class EduCounselServiceImpl extends EgovAbstractServiceImpl implements Ed
 			int result = this.insertCslCure(map);
 			if(result > 0){
 				resultMap.put("err", ConstantObject.N);
-				resultMap.put("MSG", "심리치유 등록 완료");
+				resultMap.put("MSG", "등록되었습니다.");
 			}else{
 				resultMap.put("err", ConstantObject.Y);
-				resultMap.put("MSG", "심리치유 등록 실패");
+				resultMap.put("MSG", "등록실패하였습니다.");
 			}
 		}else{
 			HashMap<String, Object> cslIdvInfo = this.getCslCure(cslNo);
@@ -167,10 +167,10 @@ public class EduCounselServiceImpl extends EgovAbstractServiceImpl implements Ed
 			int result = this.updateCslCure(map);
 			if(result > 0){
 				resultMap.put("err", ConstantObject.N);
-				resultMap.put("MSG", "심리치유 수정 완료");
+				resultMap.put("MSG", "수정되었습니다.");
 			}else{
 				resultMap.put("err", ConstantObject.Y);
-				resultMap.put("MSG", "심리치유 수정 실패");
+				resultMap.put("MSG", "수정실패하였습니다.");
 			}
 		}
 
