@@ -90,8 +90,8 @@
 			<if test="mbrNm != null and mbrNm != ''">
 		   AND EM.MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
 			</if>
-			<if test="juminNo1 != null and juminNo1 != ''">
-		   AND EM.JUMIN_NO1 = REPLACE(#{juminNo1}, ' ', '')
+			<if test="telNo != null and telNo != ''">
+		   AND CONCAT(EM.TEL_NO1, EM.TEL_NO2, EM.TEL_NO3) LIKE CONCAT('%', REPLACE(#{telNo}, ' ', ''), '%')
 			</if>
 		</trim>
 	</select>
@@ -114,8 +114,8 @@
 			<if test="mbrNm != null and mbrNm != ''">
 						   AND EM.MBR_NM LIKE CONCAT('%', REPLACE(#{mbrNm}, ' ', ''), '%')
 			</if>
-			<if test="juminNo1 != null and juminNo1 != ''">
-						   AND EM.JUMIN_NO1 = REPLACE(#{juminNo1}, ' ', '')
+			<if test="telNo != null and telNo != ''">
+						   AND CONCAT(EM.TEL_NO1, EM.TEL_NO2, EM.TEL_NO3) LIKE CONCAT('%', REPLACE(#{telNo}, ' ', ''), '%')
 			</if>
 		</trim>
 	<![CDATA[
