@@ -34,11 +34,11 @@
 		</ul>
 	</div>
 	<div class="r">
-		<a href="#" class="f"> <%=loginUserNm%>님
+		<a href="javaScript:goTopMenuPage('/usrChgPwd.do');" class="f"> <%=loginUserNm%>님
 			<i class="el-icon-arrow-down el-icon--right"></i>
 			<div class="pwd-layer">
 				<ul class="el-dropdown-menu el-popper" id="dropdown-menu-133">
-					<li tabindex="-1" class="el-dropdown-menu__item"><a href="javaScript:goTopMenuPage('/usrChgPwd.do');"><i class="el-icon-lock"></i>비밀번호 변경</a></li>
+					<li tabindex="-1" class="el-dropdown-menu__item"><i class="el-icon-lock"></i>비밀번호 변경</li>
 				</ul>
 			</div>
 		</a>

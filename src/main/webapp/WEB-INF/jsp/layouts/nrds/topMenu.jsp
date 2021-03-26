@@ -41,7 +41,7 @@
 		<a href="<c:url value="/counselMain.do"/>" class="f">상담 바로가기</a>&nbsp;&nbsp;
 </c:if>
 --%>
-		<a href="#" class="f"> <%=loginUserNm%>님
+		<a href="javaScript:goTopMenuPage('/usrChgPwd.do');" class="f"> <%=loginUserNm%>님
 			<i class="el-icon-arrow-down el-icon--right"></i>
 			<div class="pwd-layer">
 				<ul class="el-dropdown-menu el-popper" id="dropdown-menu-133">
