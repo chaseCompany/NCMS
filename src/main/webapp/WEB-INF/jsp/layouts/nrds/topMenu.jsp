@@ -27,14 +27,20 @@
 			<li><a href="javaScript:goTopMenuPage('/nrds/eduCounselMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>교육상담</a></li>
 			<li><a href="javaScript:goTopMenuPage('/nrds/eduMngMain.do');"<c:if test="${thisViewUrl eq 'mentalityMain.do'}"> class="on"</c:if>>교육관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/nrds/clientMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>대상자관리</a></li>
+			<%--
 			<li><a href="javaScript:goTopMenuPage('/nrds/surveyMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>설문지관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/nrds/statMain.do');"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계관리</a></li>
+			--%>
+			<li><a href="#"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>설문지관리</a></li>
+			<li><a href="#"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계관리</a></li>
 		</ul>
 	</div>
 	<div class="r">
+<%--
 <c:if test="${LoginSiteConsult eq '1'}">
 		<a href="<c:url value="/counselMain.do"/>" class="f">상담 바로가기</a>&nbsp;&nbsp;
 </c:if>
+--%>
 		<a href="#" class="f"> <%=loginUserNm%>님
 			<i class="el-icon-arrow-down el-icon--right"></i>
 			<div class="pwd-layer">
@@ -44,6 +50,7 @@
 			</div>
 		</a>
 		<a href="javaScript:logOut();" class="el-button el-button--default el-button--mini s"><i class="el-icon-switch-button"></i> <span>로그아웃</span></a>
+		<a href="<c:url value="/counselMain.do"/>" class="el-button el-button--default el-button--mini s"><i class="el-icon-s-order"></i> <span>상담 바로가기</span></a>
 	</div>
 	<!-- 사이드 메뉴 -->
 	<div class="side-menu-wrap">
@@ -69,10 +76,16 @@
 						<a href="javaScript:goTopMenuPage('/nrds/clientMain.do');"><i class="el-icon-s-platform"></i>대상자관리</a>
 					</li>
 					<li>
+						<%--
 						<a href="javaScript:goTopMenuPage('/nrds/surveyMain.do');"><i class="el-icon-s-custom"></i>설문지관리</a>
+						--%>
+						<a href="#"><i class="el-icon-s-custom"></i>설문지관리</a>
 					</li>
 					<li>
+						<%--
 						<a href="javaScript:goTopMenuPage('/nrds/statMain.do');"><i class="el-icon-printer"></i>통계관리</a>
+						--%>
+						<a href="#"><i class="el-icon-printer"></i>통계관리</a>
 					</li>
 					<li>
 						<a href="#n">

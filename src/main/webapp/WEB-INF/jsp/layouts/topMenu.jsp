@@ -34,19 +34,24 @@
 		</ul>
 	</div>
 	<div class="r">
-<c:if test="${LoginSiteEdu eq '1'}">
-		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">재범 방지 교육 바로가기</a>&nbsp;&nbsp;
-</c:if>
 		<a href="#" class="f"> <%=loginUserNm%>님
 			<i class="el-icon-arrow-down el-icon--right"></i>
 			<div class="pwd-layer">
 				<ul class="el-dropdown-menu el-popper" id="dropdown-menu-133">
-					<li tabindex="-1" class="el-dropdown-menu__item"><i class="el-icon-lock"></i>비밀번호 변경</li>
+					<li tabindex="-1" class="el-dropdown-menu__item"><a href="javaScript:goTopMenuPage('/usrChgPwd.do');"><i class="el-icon-lock"></i>비밀번호 변경</a></li>
 				</ul>
 			</div>
 		</a>
 		<a href="javaScript:logOut();" class="el-button el-button--default el-button--mini s"><i class="el-icon-switch-button"></i> <span>로그아웃</span></a>
+<%--
+<c:if test="${LoginSiteEdu eq '1'}">
+		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">재범 방지 교육 바로가기</a>&nbsp;&nbsp;
+--%>
+<c:if test="${logUserId eq 'admin'}">
+		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="el-button el-button--default el-button--mini s"><i class="el-icon-s-order"></i> <span>재범 방지 교육 바로가기</span></a>
+</c:if>
 	</div>
+	
 	<!-- 사이드 메뉴 -->
 	<div class="side-menu-wrap">
 		<div class="side-menu">
