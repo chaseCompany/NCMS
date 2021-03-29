@@ -46,7 +46,7 @@
 		</table>
 	</div>
 	<div class="el-table_body-wrapper" style="height: 300px;">
-<c:if test="${fn:length(prgList) > 0}">
+		<c:if test="${fn:length(prgList) > 0}">
 		<table>
 			<colgroup>
 				<col style="width:80px">
@@ -58,7 +58,7 @@
 				<col>
 			</colgroup>
 			<tbody>
-	<c:forEach var="result" items="${prgList}" varStatus="status">
+				<c:forEach var="result" items="${prgList}" varStatus="status">
 		<%-- <fmt:parseDate value="${result.PGM_DT}" var="regDt" pattern="yyyyMMdd"/> --%>
 				<tr>
 					<td><fmt:formatNumber value="${result.rownum}" pattern="#" /></td>
@@ -69,13 +69,13 @@
 					<td><a href='javaScript:viewPrgRow("<c:out value="${result.pgmId}"/>");' class='row_link'><c:out value="${result.pgmClassNm}" /></a></td>
 					<td><c:out value="${result.pgmMbrCount}" /></td>
 				</tr>
-	</c:forEach>
+				</c:forEach>
 			</tbody>
 		</table>
-</c:if>
-<%-- <c:if test="${totalCount <= 0}">
+		</c:if>
+	<c:if test="${fn:length(prgList) == 0}">
 		<div class="no-data">조회된 데이터가 없습니다.</div>
-</c:if> --%>
+	</c:if>
 	</div>
 </div>
 <%-- <div class="paging">

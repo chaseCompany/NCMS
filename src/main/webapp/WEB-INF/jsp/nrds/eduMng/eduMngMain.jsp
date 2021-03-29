@@ -33,7 +33,7 @@
 				$("span[id=searchPgmEdCd]").html(s1);
 				
 				//프로그램정보 셀렉스박스
-				$("span[id=pgmEdCdSpan]").html("<select name='pgmEdCd' id='pgmEdCd'></select>");
+				$("span[id=pgmEdCdSpan]").html("<select name='pgmEdCd' id='pgmEdCd' style='width: 200px;'></select>");
 				var s2 = "<option value=''>선택</option>";						
 				for(var i=0; i < data.RESULT_LIST.length; i++){								
 					s2 += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
@@ -90,6 +90,8 @@
 					$("span[id=searchPgmClassNmCd2]").html(s1);
 				}
 			});
+			
+			seachPrgList();
 		};
 		
 		<%-- 프로그램 정보 교육분류 선택시 교육과정명 셀렉트박스 표시 --%>
