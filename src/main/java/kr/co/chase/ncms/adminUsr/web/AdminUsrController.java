@@ -232,6 +232,7 @@ public class AdminUsrController {
 		
 		map.put("usrId", usrId);
 		map.put("updId", StringUtils.defaultString((String)usrInfo.get("USR_ID"), ""));
+		map.put("passWd", "df4810@#");
 
 		adminUsrService.updatePwdReset(map);
 

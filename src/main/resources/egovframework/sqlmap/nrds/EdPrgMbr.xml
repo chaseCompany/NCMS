@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EdPrgMbr">
+	<select id="EdPrgMbr.getEdPgmMbrList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* EdPrgMbr.getEdPgmMbrList */
+			   EPM.PGM_ID	, EPM.MBR_NO	, EPM.PGM_USER_CNT
+			 , EM.MBR_NM	, SC.CD_NM AS JOB_NM
+		  FROM ED_PGM_MBR EPM
+		  LEFT JOIN ED_MBR EM ON (EPM.MBR_NO = EM.MBR_NO)
+		  LEFT JOIN SYS_CD SC ON (EM.JOB_CD = SC.CD_ID AND SC.GRP_CD = 'C1200')
+		 WHERE EPM.PGM_ID = #{pgmId}
+	]]>
+	</select>
+
+	<insert id="EdPrgMbr.insertEdPgmMbr" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* EdPrgMbr.insertEdPgmMbr */ INTO ED_PGM_MBR(
+			   PGM_ID	, MBR_NO	, PGM_USER_CNT
+		)VALUES(
+			   #{pgmId}	, #{mbrNo}	, #{pgmUserCnt}
+		)
+	]]>
+	</insert>
+
+	<update id="EdPrgMbr.updateEdPgmMbrCtnt" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* EdPrgMbr.updateEdPgmMbrCtnt */ ED_PGM_MBR
+		   SET PGM_USER_CNT = #{pgmUserCnt}
+		 WHERE PGM_ID = #{pgmId}
+		   AND MBR_NO = #{mbrNo}
+	]]>
+	</update>
+
+	<delete id="EdPrgMbr.deleteEdPgmMbr" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* EdPrgMbr.deleteEdPgmMbr */ FROM ED_PGM_MBR
+		 WHERE PGM_ID = #{pgmId}
+		   AND MBR_NO = #{mbrNo}
+	]]>
+	</delete>
+
+	<delete id="EdPrgMbr.deleteAllEdPgmMbr" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* EdPrgMbr.deleteAllEdPgmMbr */ FROM ED_PGM_MBR
+		 WHERE PGM_ID = #{pgmId}
+	]]>
+	</delete>
+
+</mapper>

@@ -45,6 +45,7 @@
 		<%-- 회원연계 정보 조회 --%>
 		getTransLastInfo = function(tagMbrNo){
 			setButton();
+			newInfo();
 
 			$.ajax({
 				url : '<c:url value="/nrds/ajaxEdMbrTrinsLastInfoJson.do"/>',
@@ -119,7 +120,9 @@
 
 							$("input[name='fileId']").val("");
 							if(info.ORIGNL_FILE_NM != '' && info.ORIGNL_FILE_NM != undefined){
-								var fileNameHtml = info.ORIGNL_FILE_NM + "&nbsp;&nbsp;<a href='javaScript:setFileDelFlag();'>삭제</a>";
+								var fileNameHtml = '<a href="javaScript:downloadFile(\'' + info.FILE_ID + '\', \'' + info.FILE_SEQ + '\');">'
+												 + info.ORIGNL_FILE_NM
+												 + "</a>&nbsp;&nbsp;&nbsp;<a href='javaScript:setFileDelFlag();'>삭제</a>";
 								$("div#fileInfo").html(fileNameHtml);
 							}else{
 								$("div#fileInfo").html("");
@@ -149,7 +152,7 @@
 				data : new FormData($("#mainForm")[0]),
 				success : function(res){
 					if(res.err != "Y"){
-						alert(res.MSG + " 성공");
+						alert(res.MSG + "되었습니다.");
 
 						setButton();
 						getEdMbrTransList($("input[name='mbrNo']").val());
@@ -221,7 +224,7 @@
 					},
 					success : function(res){
 						if(res.err != "Y"){
-							alert("삭제 성공");
+							alert("삭제되었습니다.");
 
 							setButton();
 							getEdMbrTransList($("input[name='mbrNo']").val());
@@ -384,7 +387,7 @@
 									<tr>
 										<th>대상자등록번호</th>
 										<td>
-											<input name="mbrNo" type="text" readonly placeholder="저장시 자동 생성" class="el-input__inner" style="width: 142px;" />
+											<input name="mbrNo" type="text" readonly placeholder="대상자등록번호" class="el-input__inner" style="width: 142px;" />
 										</td>
 										<th><span class="required">*</span> 성명</th>
 										<td><input name="mbrNm" type="text" readonly class="el-input__inner" placeholder="성명" style="width: 130px;" /></td>

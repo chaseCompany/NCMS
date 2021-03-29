@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import kr.co.chase.ncms.adminUsr.web.AdminUsrController;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.SysCodeService;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
@@ -45,7 +48,8 @@ public class RecyclePrgController {
 	@Resource(name = "FileManagerUtil")
 	private FileManagerUtil fileUtil;
 
-		
+	private Logger LOGGER = LoggerFactory.getLogger(AdminUsrController.class);
+
 	/**
 	 * 재활교육프로그램 메인 페이지
 	 * @param model
@@ -177,14 +181,11 @@ public class RecyclePrgController {
 		} 
 
 		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
-		String pgmDt = StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), "").replaceAll("-", "");
-		String pgmCd = StringUtils.defaultIfEmpty((String)reqMap.get("pgmCd"), "");
+		String pgmId = StringUtils.defaultIfEmpty((String)reqMap.get("pgmId"), "");
 		String[] pgmMbrNoList = multiRequest.getParameterValues("pgmMbrNo");
-		String[] mbrSeqNoList = multiRequest.getParameterValues("mbrSeqNo");
-		String[] mbrCtntList = multiRequest.getParameterValues("mbrCtnt");
+		String[] pgmUserCntList = multiRequest.getParameterValues("pgmUserCnt");
 
-		reqMap.put("pgmDt", pgmDt);
-		reqMap.put("cslId", cslId);
+//		reqMap.put("pgmId", pgmId);
 
 		// 첨부 파일 정보
 		final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -208,25 +209,24 @@ public class RecyclePrgController {
 
 			for(int i=0 ; i<pgmMbrNoList.length ; i++) {
 				HashMap<String, Object> mbrMap = new HashMap<String, Object>();
-				mbrMap.put("pgmDt", pgmDt);
-				mbrMap.put("pgmCd", pgmCd);
-				mbrMap.put("seqNo", mbrSeqNoList[i]);
+				mbrMap.put("pgmId", pgmId);
 				mbrMap.put("mbrNo", pgmMbrNoList[i]);
-				mbrMap.put("mbrCtnt", mbrCtntList[i]);
+				mbrMap.put("pgmUserCnt", pgmUserCntList[i]);
 
 				mbrList.add(mbrMap);
 			}
 
 			reqMap.put("grpPgmMbrList", mbrList);
 		}
-
-		int resMap = recyclePrgService.insertEdPrmInfo(reqMap);
-		if(resMap >= 1) {
-			resultView.addObject("err", ConstantObject.N);
-			resultView.addObject("MSG", "등록");
+		
+		HashMap<String, Object> resMap = recyclePrgService.processEdPrm(reqMap);
+		if(resMap != null) {
+			resultView.addObject("err", resMap.get("err"));
+			resultView.addObject("MSG", resMap.get("MSG"));
 		}
 
 		return resultView;
+		
 	}
 	
 	/**
@@ -338,5 +338,57 @@ public class RecyclePrgController {
 		}
 
 		return resultView;
+	}
+
+	/**
+	 * 교육프로그램 삭제
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/nrds/ajaxGrpPgmDel.do")
+	public @ResponseBody ModelAndView ajaxGrpPgmDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		if(StringUtils.defaultString(reqMap.get("pgmId").toString(), "") == "") {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "필수정보 누락");
+
+			return resultView;
+		}
+
+		int resultNum = recyclePrgService.deleteEdPrmInfo(reqMap);
+		if(resultNum <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "삭제 오류");
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 프로그램 참여회원 목록
+	 * @param model
+	 * @param reqMap
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/nrds/getEdMemList.do")
+	public String getPgmMemList(ModelMap model, @RequestParam HashMap<String, Object> reqMap) throws Exception{
+		String pgmId = StringUtils.defaultIfEmpty((String)reqMap.get("pgmId"), "");
+
+		if(!"".equals(pgmId)) {
+			HashMap<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("pgmId", pgmId);
+
+			List<HashMap<String, Object>> resultList = recyclePrgService.getEdPgmMbrList(paramMap);
+			model.put("pgmMemListCount", resultList.size());
+			model.put("pgmMemList", resultList);
+		}else {
+			model.put("pgmMemListCount", "0");
+		}
+
+		return "nrds/recyclePrg/layer/recyclePrgMemList";
 	}
 }

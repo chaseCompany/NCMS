@@ -47,11 +47,7 @@ public class AdminUsrServiceImpl extends EgovAbstractServiceImpl implements Admi
 		
 		result = sysUsrDao.updateSysUsrAdmin(map);
 
-		if(result <= 0) {
-			
-		}else {
-			
-		}
+		resultMap.put("result", result);
 
 		return resultMap;
 	}
@@ -63,17 +59,12 @@ public class AdminUsrServiceImpl extends EgovAbstractServiceImpl implements Admi
 
 	@Override
 	public HashMap<String, Object> updatePwdReset(HashMap<String, Object> map) throws Exception {
-
 		int result = 0;
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		result = sysUsrDao.updatePwdReset(map);
 
-		if(result <= 0) {
-			
-		}else {
-			
-		}
+		resultMap.put("result", result);
 
 		return resultMap;
 	}
@@ -85,11 +76,7 @@ public class AdminUsrServiceImpl extends EgovAbstractServiceImpl implements Admi
 		
 		result = sysUsrDao.deleteSysUsr(usrId);
 
-		if(result <= 0) {
-			
-		}else {
-			
-		}
+		resultMap.put("result", result);
 
 		return resultMap;
 	}
@@ -106,11 +93,7 @@ public class AdminUsrServiceImpl extends EgovAbstractServiceImpl implements Admi
 		
 		result = sysUsrDao.insertSysUsr(map);
 
-		if(result <= 0) {
-			
-		}else {
-			
-		}
+		resultMap.put("result", result);
 
 		return resultMap;
 	}

@@ -116,7 +116,7 @@
 	<update id="sysUsr.updatePwdReset" parameterType="hashMap">
 	<![CDATA[
 		UPDATE /* sysUsr.updatePwdReset */ SYS_USR
-		   SET PASSWD			= '12345'
+		   SET PASSWD			= SUBSTR(PASSWORD(#{passWd}) FROM 2)
 			 , UPD_ID			= #{updId}			 				, UPD_DT			= NOW()
 		 WHERE	USR_ID = #{usrId}
 	]]>

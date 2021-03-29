@@ -61,7 +61,7 @@
 	<c:forEach var="result" items="${prgList}" varStatus="status">
 		<fmt:parseDate value="${result.PGM_DT}" var="regDt" pattern="yyyyMMdd"/>
 				<tr>
-					<td><fmt:formatNumber value="${result.ROWNUM}" pattern="#" /></td>
+					<td><c:out value="${status.count}" /></td>
 					<td><c:out value="${result.pgmAgent}" /></td>
 					<td><%-- <fmt:formatDate value="${result.pgmClassStartDt}" pattern="yyyy-MM-dd"/> --%>${result.pgmClassStartDt}</td>
 					<td><c:out value="${result.pgmMngUsrId}" /></td>
