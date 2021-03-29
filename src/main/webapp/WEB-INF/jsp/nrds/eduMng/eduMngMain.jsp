@@ -541,44 +541,6 @@
 			</div>
 		</div>
 	</div>
-	<%-- <div class="section-sha" style="min-width: 1840px;">
-		<div class="el-tabs_content">
-			<div class="tab-tb-box">
-				<div class="table-box">
-					<div class="el-table_header-wrapper">
-						<table>
-							<colgroup>
-								<col style="width:46px">
-								<col style="width:150px">
-								<col style="width:100px">
-								<col style="width:120px">
-								<col style="width:80px">
-								<col style="width:400px">
-								<col style="width:690px">
-								<col style="width:150px">
-								<col>
-							</colgroup>
-							<thead>
-							<tr>
-								<th>#</th>
-								<th>번호</th>
-								<th>기관명</th>
-								<th>시작/종료 시간</th>
-								<th>소요(분)</th>
-								<th>상담주제</th>
-								<th>상담목표</th>
-								<th>상담자</th>
-								<th>작업</th>
-							</tr>
-							</thead>
-						</table>
-					</div>
-					
-				</div>
-			</div>
-			
-		</div>
-	</div> --%>
 </div>
 </form>
 <!-- 상담내용 팝업 -->
