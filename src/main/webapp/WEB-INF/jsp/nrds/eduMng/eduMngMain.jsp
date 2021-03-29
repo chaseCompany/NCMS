@@ -92,6 +92,58 @@
 			});
 		};
 		
+		<%-- 프로그램 정보 교육분류 선택시 교육과정명 셀렉트박스 표시 --%>
+		$("#pgmEdCdSpan").change(function(){
+			if($("select#pgmEdCd").val() == "R0101"){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0101'},
+					success: function(data){
+						$("span[id='pgmClassNmCd']").html("");
+						$("span[id='pgmClassNmCd']").html("<select name='pgmClassNmCd' id='pgmClassNmCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassNmCd]").append(s);
+						
+					}
+				});
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R010101'},
+					success: function(data){
+						$("span[id='pgmClassSubSpan']").html("");
+						$("span[id='pgmClassSubSpan']").html("<select name='pgmClassSubCd' id='pgmClassSubCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassSubCd]").append(s);
+						
+					}
+				});
+			}else if($("select#pgmEdCd").val() == "R0102"){
+				$.ajax({
+					url: '/nrds/SysCdList.do',
+					type: 'POST',
+					data: {grpCd : 'R0102'},
+					success: function(data){
+						$("span[id='pgmClassNmCd']").html("");
+						$("span[id='pgmClassSubSpan']").html("");
+						$("span[id='pgmClassNmCd']").html("<select name='pgmClassNmCd' id='pgmClassNmCd'></select>");
+						var s = "<option value=''>선택</option>";						
+						for(var i=0; i < data.RESULT_LIST.length; i++){								
+							s += "<option value='"+data.RESULT_LIST[i].CD_ID+"'>"+data.RESULT_LIST[i].CD_NM+"</option>";
+						}
+						$("select[id=pgmClassNmCd]").append(s);
+					}
+				});
+				
+			}
+		});
 		
 		<%-- 검색버튼 클릭 --%>
 		seachPrgList = function(){
