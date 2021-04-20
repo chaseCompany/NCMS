@@ -44,7 +44,7 @@
 		</bean>
 	</beans>
 
-	<beans profile="loacl">
+	<beans profile="local">
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 			<property name="maxActive" value="3"/>
 			<property name="maxIdle" value="3"/>

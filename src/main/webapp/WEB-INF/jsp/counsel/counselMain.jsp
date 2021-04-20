@@ -177,7 +177,7 @@
 		counselExel = function(){
 			if($("input[name='rcpNo']").val() != ""){
 				$("form#excelForm").append("<input type='hidden' name='rcpNo' value='" + $("input[name='rcpNo']").val() + "' />");
-				$("form#excelForm").attr("action", "/counselExelDownload.do");
+				$("form#excelForm").attr("action", "/counselExcelDownload.do");
 				$("form#excelForm").submit();
 			}else{
 				alert("접수번호를 선택 하세요.");

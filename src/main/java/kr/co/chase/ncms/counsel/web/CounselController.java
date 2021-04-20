@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -484,8 +485,8 @@ public class CounselController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/counselExelDownload.do")
-	public String counselExelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response) throws Exception {
+	@RequestMapping("/counselExcelDownload.do")
+	public String counselExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
 		String title = "중독예방상담";
 		String rcpNo = StringUtils.defaultIfEmpty((String)reqMap.get("rcpNo"), "");
 
@@ -499,7 +500,8 @@ public class CounselController {
 		HashMap<String, Object> cslInfo = counselService.getCslRcp(rcpNo);
 
 		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
 
-		return "counselExel";
+		return "counselExcel";
 	}
 }

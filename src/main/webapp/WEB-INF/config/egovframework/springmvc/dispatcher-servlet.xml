@@ -118,7 +118,7 @@
 		</property>
 	</bean>
 	<!-- 엑셀다운로드 -->
-	<bean id="counselExel" class="kr.co.chase.ncms.common.excel.CounselExel" />
+	<bean id="counselExcel" class="kr.co.chase.ncms.common.excel.CounselExcel" />
 	<bean id="EduCounselExcel" class="kr.co.chase.ncms.common.excel.EduCounselExcel" />
 
 	<mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
