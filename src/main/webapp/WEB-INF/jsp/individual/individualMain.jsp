@@ -22,11 +22,22 @@
 		},
 		individualExel = function(){
 			if($("input[name='cslNo']").val() != ""){
+				$("form#excelForm")[0].reset();
 				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
 				$("form#excelForm").attr("action", "/individualExcelDownload.do");
 				$("form#excelForm").submit();
 			}else{
 				alert("상담번호를 선택 하세요.");
+			}
+		},
+		cureExel = function(){
+			if($("input[name='cslNo']").val() != ""){
+				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
+				$("form#excelForm").attr("action", "/cureExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("치료정보등록일자를 선택 하세요.");
 			}
 		},
 		<%-- 회원 조회 --%>
@@ -65,9 +76,7 @@
 			getCslIspList(obj.MBR_NO);
 			getCslAnmList(obj.MBR_NO);
 			getCslHealList(obj.MBR_NO);
-
-			$("button#excelNo").hide();
-			$("button#excelYes").show();
+			
 			$("button#idvSaveBtnNo").hide();
 			$("button#idvSaveBtnYes").show();
 			$("button#ispSaveButNo").hide();
@@ -225,7 +234,10 @@
 							$("span#cslTermTm").text(termTm);
 							$("input[name='cslTermTm']").val(termTm);
 						}
-
+						
+						$("button#excelNo").hide();
+						$("button#excelYes").show();
+						
 						changRating();
 					}else{
 						console.log("ERR")
@@ -1174,6 +1186,9 @@
 						$("select[name='organFormCd']").val(resultObj.ORGAN_FORM_CD).prop("selected", true);
 						$("input[name='organName']").val(resultObj.ORGAN_NAME);
 						$("textarea[name='organCtnt']").val(resultObj.ORGAN_CTNT);
+						
+						$("#cureExcelNo").hide();
+						$("#cureExcelYes").show();
 					}else{
 						newHeal();
 					}
@@ -1260,12 +1275,6 @@
 <div class="top-right-btn">
 	<button type="button" onclick="javaScript:individualNew();" class="el-button normal el-button--default el-button--small is-plain" style="margin-left: 8px;">
 		<i class="el-icon-refresh"></i> <span>초기화</span>
-	</button>
-	<button id="excelNo" type="button" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
-		<i class="el-icon-document"></i> <span>엑셀다운로드</span>
-	</button>
-	<button id="excelYes" onclick="javaScript:individualExel();" type="button" class="el-button normal el-button--default el-button--small is-plain" style="display:none;">
-		<i class="el-icon-document"></i> <span>엑셀다운로드</span>
 	</button>
 </div>
 <!-- // 상단 버튼 -->
@@ -1356,6 +1365,12 @@
 					</button>
 					<button type="button" onclick="javaScript:newIdv();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
 						<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
+					</button>
+					<button id="excelNo" type="button" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
+						<i class="el-icon-document"></i> <span>엑셀다운로드</span>
+					</button>
+					<button id="excelYes" onclick="javaScript:individualExel();" type="button" class="el-button normal el-button--default el-button--small is-plain" style="display:none;">
+						<i class="el-icon-document"></i> <span>엑셀다운로드</span>
 					</button>
 				</div>
 				<div class="tab-tb-box">
@@ -2574,6 +2589,12 @@
 						</button>
 						<button type="button" onclick="javaScript:newHeal();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
 							<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
+						</button>
+						<button id="cureExcelNo" type="button" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
+							<i class="el-icon-document"></i> <span>엑셀다운로드</span>
+						</button>
+						<button id="cureExcelYes" onclick="javaScript:cureExel();" type="button" class="el-button normal el-button--default el-button--small is-plain" style="display:none;">
+							<i class="el-icon-document"></i> <span>엑셀다운로드</span>
 						</button>
 					</div>
 					<div class="tab-tb-box">
