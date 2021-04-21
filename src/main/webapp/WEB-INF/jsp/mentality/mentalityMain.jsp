@@ -344,6 +344,16 @@
 					$("input[name='cslTermTm']").val(termTm);
 				}
 			}
+		},
+		<%-- 엑셀다운로드 --%>
+		mentalityExel = function(){
+			if($("input[name='cslNo']").val() != ""){
+				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
+				$("form#excelForm").attr("action", "/mentalityExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("상담번호를 선택 하세요.");
+			}
 		}
 	});
 </script>
@@ -366,7 +376,7 @@
 	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain">
 		<i class="el-icon-document"></i><span>엑셀다운로드</span>
 	</button>
-	<button type="button" onclick="javaScript:weeklyExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+	<button type="button" onclick="javaScript:mentalityExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
 		<i class="el-icon-document"></i><span>엑셀다운로드</span>
 	</button>
 </div>

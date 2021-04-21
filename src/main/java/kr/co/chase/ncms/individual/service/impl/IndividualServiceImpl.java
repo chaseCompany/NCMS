@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import egovframework.rte.fdl.property.EgovPropertyService;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
 import kr.co.chase.ncms.common.util.DateUtil;
@@ -42,6 +43,9 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 
 	@Resource(name = "FileManagerUtil")
 	private FileManagerUtil fileUtil;
+	
+	@Resource(name="propertiesService")
+	protected EgovPropertyService propertiesService;
 
 	/**
 	 * 회원별 집중상담 이력 조회
@@ -60,7 +64,11 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslIdv(String cslNo) throws Exception{
-		HashMap<String, Object> result = cslIdvDao.getCslIdv(cslNo);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cslNo", cslNo);
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		
+		HashMap<String, Object> result = cslIdvDao.getCslIdv(map);
 
 		if(!result.isEmpty()) {
 			String fileId = StringUtils.defaultIfEmpty((String)result.get("FILE_ID"), "");

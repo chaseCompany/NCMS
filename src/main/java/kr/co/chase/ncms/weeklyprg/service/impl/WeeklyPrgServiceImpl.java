@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import egovframework.rte.fdl.property.EgovPropertyService;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
@@ -33,6 +34,9 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 
 	@Resource(name = "FileManagerUtil")
 	private FileManagerUtil fileUtil;
+
+	@Resource(name="propertiesService")
+	protected EgovPropertyService propertiesService;
 
 	/**
 	 * 주간프로그램 목록 조회 카운트
@@ -218,6 +222,8 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 	 * @throws Exception
 	 */
 	public List<HashMap<String, Object>> getGrpPgmMbrList(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		
 		if("".equals(StringUtils.defaultIfEmpty((String)map.get("pgmDt"), ""))) {
 			throw new Exception("WeeklyPrgServiceImp.getGrpPgmMbrList pgmDt 필수값 누락");
 		}

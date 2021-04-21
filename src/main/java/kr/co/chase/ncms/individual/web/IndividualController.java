@@ -1,5 +1,6 @@
 package kr.co.chase.ncms.individual.web;
 
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -932,5 +934,33 @@ public class IndividualController {
 		model.put("listType", StringUtils.defaultIfEmpty((String)reqMap.get("listType"), ""));
 */
 		return "counsel/layer/mbrSearchLayer";
+	}
+	
+
+	/**
+	 * 사례관리상담 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/individualExcelDownload.do")
+	public String individualExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "사례관리상담";
+		String cslNo = StringUtils.defaultIfEmpty((String)reqMap.get("cslNo"), "");
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + cslNo + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> cslInfo = individualService.getCslIdv(cslNo);
+
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+
+		return "IndividualExcel";
 	}
 }

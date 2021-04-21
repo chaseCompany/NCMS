@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import egovframework.rte.fdl.property.EgovPropertyService;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
 import kr.co.chase.ncms.common.util.FileManagerUtil;
@@ -29,6 +30,9 @@ public class MentalityServiceImpl extends EgovAbstractServiceImpl implements Men
 
 	@Resource(name = "FileManagerUtil")
 	private FileManagerUtil fileUtil;
+	
+	@Resource(name="propertiesService")
+	protected EgovPropertyService propertiesService;
 
 	/**
 	 * 회원별 심리치유 이력 조회
@@ -47,7 +51,11 @@ public class MentalityServiceImpl extends EgovAbstractServiceImpl implements Men
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslCure(String cslNo) throws Exception{
-		HashMap<String, Object> result = cslCureDao.getCslCure(cslNo);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cslNo", cslNo);
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		
+		HashMap<String, Object> result = cslCureDao.getCslCure(map);
 
 		if(!result.isEmpty()) {
 			String fileId = StringUtils.defaultIfEmpty((String)result.get("FILE_ID"), "");

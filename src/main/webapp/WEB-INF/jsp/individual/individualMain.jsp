@@ -21,8 +21,13 @@
 			window.location.reload();
 		},
 		individualExel = function(){
-			alert('준비중 입니다.');
-			console.log("엑셀다운로드");
+			if($("input[name='cslNo']").val() != ""){
+				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
+				$("form#excelForm").attr("action", "/individualExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("상담번호를 선택 하세요.");
+			}
 		},
 		<%-- 회원 조회 --%>
 		mstMbrSearchPopup = function(){

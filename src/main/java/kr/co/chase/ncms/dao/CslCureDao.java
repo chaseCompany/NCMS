@@ -26,8 +26,8 @@ public class CslCureDao extends EgovAbstractMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<String, Object> getCslCure(String cslNo) throws SQLException{
-		return selectOne("cslCure.getCslCure", cslNo);
+	public HashMap<String, Object> getCslCure(HashMap<String, Object> map) throws SQLException{
+		return selectOne("cslCure.getCslCure", map);
 	}
 
 	/**

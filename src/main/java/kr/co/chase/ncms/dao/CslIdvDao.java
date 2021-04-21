@@ -26,8 +26,8 @@ public class CslIdvDao extends EgovAbstractMapper {
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<String, Object> getCslIdv(String cslNo) throws SQLException{
-		return selectOne("cslIdv.getCslIdv", cslNo);
+	public HashMap<String, Object> getCslIdv(HashMap<String, Object> map) throws SQLException{
+		return selectOne("cslIdv.getCslIdv", map);
 	}
 
 	/**

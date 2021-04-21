@@ -387,8 +387,15 @@
 			$("input[name='siteNm']").val($("select[name='" + $(obj).attr("name") + "'] option:selected").attr("siteNm"));
 		},
 		<%-- 엑셀다운로드 --%>
-		weeklyExel = function(){
-			alert("준비중");
+		weeklyExcel = function(){
+			if($("select[name='pgmCd']").val() != "" && $("input[name='pgmDt']").val() != ""){
+				$("form#excelForm").append("<input type='hidden' name='pgmCd' value='" + $("select[name='pgmCd']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='pgmDt' value='" + $("input[name='pgmDt']").val() + "' />");
+				$("form#excelForm").attr("action", "/weeklyExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("프로그램을 선택 하세요.");
+			}
 		}
 
 		getWeeklyPrgList();
@@ -420,7 +427,7 @@
 	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain">
 		<i class="el-icon-document"></i><span>엑셀다운로드</span>
 	</button>
-	<button type="button" onclick="javaScript:weeklyExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+	<button type="button" onclick="javaScript:weeklyExcel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
 		<i class="el-icon-document"></i><span>엑셀다운로드</span>
 	</button>
 </div>

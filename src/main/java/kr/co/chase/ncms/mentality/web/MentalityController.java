@@ -1,10 +1,13 @@
 package kr.co.chase.ncms.mentality.web;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -252,5 +255,32 @@ public class MentalityController {
 		resultView.addObject("clsCureInfo", mentalityService.getCslCure(cslNo));
 
 		return resultView;
+	}
+	
+	/**
+	 * 심리치유 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/mentalityExcelDownload.do")
+	public String mentalityExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "심리치유상담";
+		String cslNo = StringUtils.defaultIfEmpty((String)reqMap.get("cslNo"), "");
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + cslNo + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> cslInfo = mentalityService.getCslCure(cslNo);
+
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+
+		return "MentalityExcel";
 	}
 }
