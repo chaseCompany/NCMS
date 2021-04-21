@@ -35,6 +35,12 @@
 				$("form#excelForm")[0].reset();
 				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='mbrNm' value='" + $("input[name='mbrNm']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='gendNm' value='" + $("input[name='gendNm']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='age' value='" + $("input[name='age']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='regDt' value='" + $("input[name='regDt']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='medicCareNm' value='" + $("input[name='medicCareNm']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='mngUsrId' value='" + $("input[name='mngUsrId']").val() + "' />");
 				$("form#excelForm").attr("action", "/cureExcelDownload.do");
 				$("form#excelForm").submit();
 			}else{

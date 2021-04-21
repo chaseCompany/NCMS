@@ -124,6 +124,7 @@
 	<bean id="IndividualExcel" class="kr.co.chase.ncms.common.excel.IndividualExcel" />
 	<bean id="MentalityExcel" class="kr.co.chase.ncms.common.excel.MentalityExcel" />
 	<bean id="WeeklyExcel" class="kr.co.chase.ncms.common.excel.WeeklyExcel" />
+	<bean id="CureExcel" class="kr.co.chase.ncms.common.excel.CureExcel" />
 
 	<mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>

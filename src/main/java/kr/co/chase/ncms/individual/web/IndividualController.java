@@ -963,4 +963,48 @@ public class IndividualController {
 
 		return "IndividualExcel";
 	}
+	
+	/**
+	 * 치료재활정보 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/cureExcelDownload.do")
+	public String cureExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "치료 재활정보";
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String cslNo = StringUtils.defaultIfEmpty((String)reqMap.get("cslNo"), "");
+		String mbrNm = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNm"), "");
+		String gendNm = StringUtils.defaultIfEmpty((String)reqMap.get("gendNm"), "");
+		String age = StringUtils.defaultIfEmpty((String)reqMap.get("age"), "");
+		String regDt = StringUtils.defaultIfEmpty((String)reqMap.get("regDt"), "");
+		String medicCareNm = StringUtils.defaultIfEmpty((String)reqMap.get("medicCareNm"), "");
+		String mngUsrId = StringUtils.defaultIfEmpty((String)reqMap.get("mngUsrId"), "");
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + cslNo + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mbrNo", mbrNo);
+		paramMap.put("cslNo", cslNo);
+
+		HashMap<String, Object> cslInfo = individualService.getCslHealInfo(paramMap);
+		
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("mbrNm", mbrNm);
+		modelMap.put("gendNm", gendNm);
+		modelMap.put("age", age);
+		modelMap.put("regDt", regDt);
+		modelMap.put("medicCareNm", medicCareNm);
+		modelMap.put("mngUsrId", mngUsrId);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+		
+		return "CureExcel";
+	}
 }
