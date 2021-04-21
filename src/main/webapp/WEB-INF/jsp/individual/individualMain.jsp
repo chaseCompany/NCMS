@@ -32,6 +32,7 @@
 		},
 		cureExel = function(){
 			if($("input[name='cslNo']").val() != ""){
+				$("form#excelForm")[0].reset();
 				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
 				$("form#excelForm").attr("action", "/cureExcelDownload.do");
