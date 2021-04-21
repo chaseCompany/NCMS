@@ -1,10 +1,13 @@
 package kr.co.chase.ncms.member.web;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -198,6 +201,38 @@ public class MemberController {
 		return "member/layer/memInfo";
 	}
 
+	
+	/**
+	 * 회원정보 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/memberExcelDownload.do")
+	public String memberExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "회원정보관리 기록지";
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + mbrNo + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> mbrInfo = memberService.getMstMbr(mbrNo);
+		List<HashMap<String, Object>> fmlyTreeFileList = (List<HashMap<String, Object>>) mbrInfo.get("fmlyTreeFileList");
+		List<HashMap<String, Object>> personalInfoFileList = (List<HashMap<String, Object>>) mbrInfo.get("personalInfoFileList");
+		modelMap.put("mbrInfo", mbrInfo);
+		modelMap.put("fmlyTreeFileList", fmlyTreeFileList);
+		modelMap.put("personalInfoFileList", personalInfoFileList);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+
+		return "MemberExcel";
+	}
+	
 	/**
 	 * 회원 퇴록 이력 조회
 	 * @param model

@@ -120,6 +120,7 @@
 	<!-- 엑셀다운로드 -->
 	<bean id="counselExcel" class="kr.co.chase.ncms.common.excel.CounselExcel" />
 	<bean id="EduCounselExcel" class="kr.co.chase.ncms.common.excel.EduCounselExcel" />
+	<bean id="MemberExcel" class="kr.co.chase.ncms.common.excel.MemberExcel" />
 
 	<mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>

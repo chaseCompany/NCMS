@@ -29,6 +29,8 @@
 					$("div[id='layerpopup']").attr("data-popup", "memberPopUp");
 					$("input[name='reFunName']").val("viewMemInfo");
 					layerPopupOpen('memberPopUp');
+					$("button#excelButNo").hide();
+					$("button#excelButYes").show();
 				},
 				error : function(xhr, status){
 					console.log(xhr);
