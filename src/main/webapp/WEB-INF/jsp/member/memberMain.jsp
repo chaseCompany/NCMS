@@ -111,6 +111,7 @@
 		<%-- 엑셀다운로드 --%>
 		memberExel = function(){
 			if($("input[name='mbrNo']").val() != ""){
+				$("form#excelForm")[0].reset();
 				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
 				$("form#excelForm").attr("action", "/memberExcelDownload.do");
 				$("form#excelForm").submit();

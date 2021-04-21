@@ -2,7 +2,9 @@ package kr.co.chase.ncms.common.excel;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -25,10 +27,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import kr.co.chase.ncms.common.util.DateUtil;
 
 public class WeeklyExcel extends AbstractExcelView{
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook) throws Exception{
-		@SuppressWarnings("unchecked")
 		HashMap<String, Object> cslInfo = (HashMap<String, Object>)model.get("cslInfo");
+		List<HashMap<String, Object>> mbrList = (List<HashMap<String, Object>>)model.get("mbrList");
 		String sheetName = StringUtils.defaultIfEmpty((String)model.get("sheetName"), "");
 
 		Sheet sheet = workbook.createSheet(sheetName);
@@ -47,6 +50,9 @@ public class WeeklyExcel extends AbstractExcelView{
 
 		if(cslInfo == null) {
 			cslInfo = new HashMap<String, Object>();
+		}
+		if(mbrList == null) {
+			mbrList = new ArrayList<HashMap<String, Object>>();
 		}
 
 		//셀 스타일 - title
@@ -187,7 +193,7 @@ public class WeeklyExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "기관명");
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SITE_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "회기");
-		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SESSION"), ""));
+		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SESSION"), ""+"회기"));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
@@ -225,6 +231,20 @@ public class WeeklyExcel extends AbstractExcelView{
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\r\n결과").toString());
 		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
+
+		if(mbrList.size() > 0) {
+			for(int i=0; i<mbrList.size(); i++) {
+				rowCount++;
+				row = sheet.createRow(rowCount);
+				row.setHeight((short) (26*15));
+				if(i == 0) tempRowCnt = rowCount;
+				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\r\n관련").toString() : ""));
+				this.cellStyleLoop(2, 2, (i == 0 ? topCellStyle : basicCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_NM"), ""));
+				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), ""));
+				sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
+			}
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+(mbrList.size()-1), 1, 1));
+		}
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
