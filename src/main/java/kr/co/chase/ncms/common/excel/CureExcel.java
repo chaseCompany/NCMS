@@ -24,6 +24,8 @@ import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import kr.co.chase.ncms.common.util.DateUtil;
+
 public class CureExcel extends AbstractExcelView{
 	@SuppressWarnings("unchecked")
 	@Override
@@ -36,10 +38,6 @@ public class CureExcel extends AbstractExcelView{
 		String medicCareNm = StringUtils.defaultIfEmpty((String)model.get("medicCareNm"), "");
 		String mngUsrId = StringUtils.defaultIfEmpty((String)model.get("mngUsrId"), "");
 		String sheetName = StringUtils.defaultIfEmpty((String)model.get("sheetName"), "");
-		
-		Date date = null;
-		DateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
-        DateFormat targetFormat = new SimpleDateFormat("yyyy.MM.dd");
 		 
 		Sheet sheet = workbook.createSheet(sheetName);
 		sheet.setColumnWidth(0, (short) (27*32));
@@ -217,7 +215,7 @@ public class CureExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "발병시기");
-		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("ATT_DT"), ""));
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("HEAL_ST_DT"), ""), "-"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -265,11 +263,9 @@ public class CureExcel extends AbstractExcelView{
 		tempRowCnt = rowCount;
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "직업력");
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "취업시작일");
-		date = originalFormat.parse((String)cslInfo.get("JOB_ST_DT"));
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty(targetFormat.format(date), ""));
+		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("JOB_ST_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "취업종료일");
-		date = originalFormat.parse((String)cslInfo.get("JOB_END_DT"));
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty(targetFormat.format(date), ""));
+		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("JOB_END_DT"), ""), "-"));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
@@ -301,11 +297,9 @@ public class CureExcel extends AbstractExcelView{
 		tempRowCnt = rowCount;
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "재활정보");
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "이용시작일");
-		date = originalFormat.parse((String)cslInfo.get("HEAL_ST_DT"));
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty(targetFormat.format(date), ""));
+		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("HEAL_ST_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "이용종료일");
-		date = originalFormat.parse((String)cslInfo.get("HEAL_END_DT"));
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty(targetFormat.format(date), ""));
+		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("HEAL_END_DT"), ""), "-"));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));

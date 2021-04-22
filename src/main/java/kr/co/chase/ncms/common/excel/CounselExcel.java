@@ -193,6 +193,7 @@ public class CounselExcel extends AbstractExcelView{
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
+		tempRowCnt = rowCount;
 		row.setHeight((short) (26*15));
 //		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount+3, 1, 1));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "정보제공자");
@@ -200,6 +201,7 @@ public class CounselExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("IFP_NM"), ""));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "회원번호");
 		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("IFP_MBR_NO"), ""));
+		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
@@ -231,9 +233,11 @@ public class CounselExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("IFP_AREA_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "기타");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("IFP_AREA_ETC"), ""));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
+		tempRowCnt = rowCount;
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "대상자");
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "성명");
@@ -271,6 +275,7 @@ public class CounselExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("TGP_AREA_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "기타");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("TGP_AREA_ETC"), ""));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);

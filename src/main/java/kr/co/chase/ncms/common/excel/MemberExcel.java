@@ -30,7 +30,7 @@ public class MemberExcel extends AbstractExcelView{
 		HashMap<String, Object> mbrInfo = (HashMap<String, Object>)model.get("mbrInfo");
 		List<HashMap<String, Object>> fmlyTreeFileList = (List<HashMap<String, Object>>)model.get("fmlyTreeFileList");
 		String fileList1 = "";
-		if(fmlyTreeFileList.size()>0) {
+		if(fmlyTreeFileList!=null && fmlyTreeFileList.size()>0) {
 			for(int i=0;i<fmlyTreeFileList.size();i++) {
 				if(i>0) {
 					fileList1 += ","+fmlyTreeFileList.get(i).get("ORIGNL_FILE_NM");
@@ -41,7 +41,7 @@ public class MemberExcel extends AbstractExcelView{
 		}
 		List<HashMap<String, Object>> personalInfoFileList = (List<HashMap<String, Object>>)model.get("personalInfoFileList");
 		String fileList2 = "";
-		if(personalInfoFileList.size()>0) {
+		if(personalInfoFileList!=null && personalInfoFileList.size()>0) {
 			for(int i=0;i<personalInfoFileList.size();i++) {
 				if(i>0) {
 					fileList2 += ","+personalInfoFileList.get(i).get("ORIGNL_FILE_NM");
@@ -342,7 +342,7 @@ public class MemberExcel extends AbstractExcelView{
 		tempRowCnt = rowCount;
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "퇴록정보");
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "퇴록일자");
-		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)mbrInfo.get("RG_CRE_DT"), ""));
+		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)mbrInfo.get("RL_CRE_DT"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 		rowCount++;
 		row = sheet.createRow(rowCount);

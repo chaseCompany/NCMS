@@ -25,6 +25,7 @@ import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import kr.co.chase.ncms.common.ConstantObject;
+import kr.co.chase.ncms.common.util.DateUtil;
 
 public class CslAnmExcel extends AbstractExcelView{
 	@SuppressWarnings("unchecked")
@@ -39,10 +40,6 @@ public class CslAnmExcel extends AbstractExcelView{
 		String mngUsrId = StringUtils.defaultIfEmpty((String)model.get("mngUsrId"), "");
 		String lawPbmList = StringUtils.defaultIfEmpty((String)model.get("lawPbmList"), "");
 		String sheetName = StringUtils.defaultIfEmpty((String)model.get("sheetName"), "");
-		
-		Date date = null;
-		DateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
-        DateFormat targetFormat = new SimpleDateFormat("yyyy.MM.dd");
 		 
 		Sheet sheet = workbook.createSheet(sheetName);
 		sheet.setColumnWidth(0, (short) (27*32));
@@ -301,8 +298,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		tempRowCnt = rowCount;
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "자살시도력");
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "입력일자");
-		date = originalFormat.parse((String)cslInfo.get("SUD_INDT"));
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty(targetFormat.format(date), ""));
+		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("SUD_INDT"), ""), "-"));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "시도나이");
 		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SUD_AGE"), ""));
 		rowCount++;
@@ -326,7 +322,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "상세내용");
-		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SUD_CNT"), ""));
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SUD_CTNT"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
 		

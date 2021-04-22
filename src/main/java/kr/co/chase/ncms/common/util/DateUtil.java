@@ -147,7 +147,9 @@ public class DateUtil {
 	*/
 	public static String getDateFormat( String date, String type) {
 		String rDateString = null;
-		rDateString = date.substring(0,4) + type + date.substring(4,6)+ type + date.substring(6) ;
+		if(date!=null && date!="") {
+			rDateString = date.substring(0,4) + type + date.substring(4,6)+ type + date.substring(6) ;
+		}
 		return rDateString;
 	}
 	/**
