@@ -20,6 +20,7 @@
 		individualNew = function(){
 			window.location.reload();
 		},
+		<%-- 사례관리 상담 엑셀 --%>
 		individualExel = function(){
 			if($("input[name='cslNo']").val() != ""){
 				$("form#excelForm")[0].reset();
@@ -30,6 +31,25 @@
 				alert("상담번호를 선택 하세요.");
 			}
 		},
+		<%-- 병력정보 엑셀 --%>
+		cslAnmExel = function(){
+			if($("input[name='cslNo']").val() != ""){
+				$("form#excelForm")[0].reset();
+				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='mbrNm' value='" + $("input[name='mbrNm']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='gendNm' value='" + $("input[name='gendNm']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='age' value='" + $("input[name='age']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='regDt' value='" + $("input[name='regDt']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='medicCareNm' value='" + $("input[name='medicCareNm']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='mngUsrId' value='" + $("input[name='mngUsrId']").val() + "' />");
+				$("form#excelForm").attr("action", "/cslAnmExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("중독력등록일자를 선택 하세요.");
+			}
+		},
+		<%-- 치료 재활정보 엑셀 --%>
 		cureExel = function(){
 			if($("input[name='cslNo']").val() != ""){
 				$("form#excelForm")[0].reset();
@@ -891,8 +911,13 @@
 						$("select[name='devAdulRelationCd']").val(resultObj.DEV_ADUL_RELATION_CD).prop("selected", true);
 						$("select[name='devAdulSexCd']").val(resultObj.DEV_ADUL_SEX_CD).prop("selected", true);
 						$("input[name='devAdulEtc']").val(resultObj.DEV_ADUL_ETC);
+						
+						$("#cslAnmExcelNo").hide();
+						$("#cslAnmExcelYes").show();
 					}else{
 						newAnm();
+						$("#cslAnmExcelNo").show();
+						$("#cslAnmExcelYes").hide();
 					}
 				},
 				error : function(xhr, status){}
@@ -1198,6 +1223,8 @@
 						$("#cureExcelYes").show();
 					}else{
 						newHeal();
+						$("#cureExcelNo").show();
+						$("#cureExcelYes").hide();
 					}
 				},
 				error : function(xhr, status){}
@@ -2169,6 +2196,12 @@
 						<button type="button" onclick="javaScript:newAnm();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
 							<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
 						</button>
+						<button id="cslAnmExcelNo" type="button" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
+							<i class="el-icon-document"></i> <span>엑셀다운로드</span>
+						</button>
+						<button id="cslAnmExcelYes" onclick="javaScript:cslAnmExel();" type="button" class="el-button normal el-button--default el-button--small is-plain" style="display:none;">
+							<i class="el-icon-document"></i> <span>엑셀다운로드</span>
+						</button>
 					</div>
 					<div class="tab-tb-box">
 						<div class="table-box">
@@ -2334,7 +2367,7 @@
 													<option value="N">무</option>
 												</select>
 											</td>
-											<th>단양횟수</th>
+											<th>단약횟수</th>
 											<td><input type="text" name="cureoffNum" class="el-input__inner" placeholder="단양횟수" style="width: 100px;" /></td>
 											<th>최장단약기간</th>
 											<td><input type="text" name="cureoffDay" class="el-input__inner" placeholder="최장단약기간" style="width: 113px;" /></td>

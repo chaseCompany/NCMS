@@ -3,6 +3,7 @@ package kr.co.chase.ncms.individual.web;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,10 +135,10 @@ public class IndividualController {
 		codeListMap.put("grpCd", "C2600");				// 사용빈도
 		model.put("useFrqCdList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C4100");				// 사용빈도
+		codeListMap.put("grpCd", "C4100");				// 사용원인
 		model.put("useCauCdList", sysCodeService.getSysCdList(codeListMap));
 
-		codeListMap.put("grpCd", "C3200");				// 사용빈도
+		codeListMap.put("grpCd", "C3200");				// 약물관련 법적문제
 		model.put("lawPbmCdList", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C4000");				// 정신적 건강문제
@@ -1006,5 +1007,71 @@ public class IndividualController {
 		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
 		
 		return "CureExcel";
+	}
+	
+	/**
+	 * 병력정보 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/cslAnmExcelDownload.do")
+	public String cslAnmDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "병력 정보기록지";
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String cslNo = StringUtils.defaultIfEmpty((String)reqMap.get("cslNo"), "");
+		String mbrNm = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNm"), "");
+		String gendNm = StringUtils.defaultIfEmpty((String)reqMap.get("gendNm"), "");
+		String age = StringUtils.defaultIfEmpty((String)reqMap.get("age"), "");
+		String regDt = StringUtils.defaultIfEmpty((String)reqMap.get("regDt"), "");
+		String medicCareNm = StringUtils.defaultIfEmpty((String)reqMap.get("medicCareNm"), "");
+		String mngUsrId = StringUtils.defaultIfEmpty((String)reqMap.get("mngUsrId"), "");
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + cslNo + ".xlsx");
+		modelMap.put("sheetName", title);
+		
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("mbrNo", mbrNo);
+		paramMap.put("cslNo", cslNo);
+		
+		HashMap<String, Object> cslInfo = individualService.getCslAnmInfo(paramMap);
+		
+		//약물관련 법적문제
+		String LAW_PBM_CD = ((String)cslInfo.get("LAW_PBM_CD"));
+		LAW_PBM_CD = LAW_PBM_CD.replace("[", "");
+		LAW_PBM_CD = LAW_PBM_CD.replace("]", "");		
+		String[] lawPbmCdList = LAW_PBM_CD.split(",");
+		
+		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
+		codeListMap.put("useYn", ConstantObject.Y);
+		codeListMap.put("grpCd", "C3200");		
+		String lawPbmList = "";
+		if(lawPbmCdList.length>0) {
+			for(int i = 0;i<lawPbmCdList.length;i++) {
+				codeListMap.put("cdId", lawPbmCdList[i]);
+				if(i==0) {
+					lawPbmList += (String) sysCodeService.getSysCd(codeListMap).get("CD_NM");
+				}else {
+					lawPbmList += ", "+(String) sysCodeService.getSysCd(codeListMap).get("CD_NM");
+				}
+			}
+		}
+		
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("mbrNm", mbrNm);
+		modelMap.put("gendNm", gendNm);
+		modelMap.put("age", age);
+		modelMap.put("regDt", regDt);
+		modelMap.put("medicCareNm", medicCareNm);
+		modelMap.put("mngUsrId", mngUsrId);
+		modelMap.put("lawPbmList", lawPbmList);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+		
+		return "CslAnmExcel";
 	}
 }

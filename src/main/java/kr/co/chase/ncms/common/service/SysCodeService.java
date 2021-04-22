@@ -1,5 +1,6 @@
 package kr.co.chase.ncms.common.service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,4 +20,11 @@ public interface SysCodeService {
 	 * @throws Exception
 	 */
 	public int insertSysCd(HashMap<String, Object> map) throws Exception;
+	
+	/**
+	 * 시스템 코드를 조회한다.
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getSysCd(HashMap<String, Object> map) throws SQLException;
 }
