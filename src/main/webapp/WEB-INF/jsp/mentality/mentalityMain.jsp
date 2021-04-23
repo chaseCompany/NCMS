@@ -348,7 +348,7 @@
 		<%-- 엑셀다운로드 --%>
 		mentalityExel = function(){
 			if($("input[name='cslNo']").val() != ""){
-				$("form#excelForm")[0].reset();
+				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
 				$("form#excelForm").attr("action", "/mentalityExcelDownload.do");
 				$("form#excelForm").submit();

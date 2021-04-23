@@ -23,7 +23,7 @@
 		<%-- 사례관리 상담 엑셀 --%>
 		individualExel = function(){
 			if($("input[name='cslNo']").val() != ""){
-				$("form#excelForm")[0].reset();
+				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
 				$("form#excelForm").attr("action", "/individualExcelDownload.do");
 				$("form#excelForm").submit();
@@ -34,7 +34,7 @@
 		<%-- ISP수립 엑셀 --%>
 		ispExcel = function(){
 			if($("input[name='choiceMbrNo']").val() != "" && $("input[name='choiceIspDt']").val() != ""){
-				$("form#excelForm")[0].reset();
+				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='choiceMbrNo']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='ispDt' value='" + $("input[name='choiceIspDt']").val() + "' />");
 				$("form#excelForm").attr("action", "/ispExcelDownload.do");
@@ -53,7 +53,7 @@
 		<%-- 병력정보 엑셀 --%>
 		cslAnmExel = function(){
 			if($("input[name='cslNo']").val() != ""){
-				$("form#excelForm")[0].reset();
+				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='mbrNm' value='" + $("input[name='mbrNm']").val() + "' />");
@@ -71,7 +71,7 @@
 		<%-- 치료 재활정보 엑셀 --%>
 		cureExel = function(){
 			if($("input[name='cslNo']").val() != ""){
-				$("form#excelForm")[0].reset();
+				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='cslNo' value='" + $("input[name='cslNo']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='mbrNm' value='" + $("input[name='mbrNm']").val() + "' />");

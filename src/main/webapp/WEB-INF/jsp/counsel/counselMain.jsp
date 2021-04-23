@@ -176,7 +176,7 @@
 		<%-- 엑셀다운로드 --%>
 		counselExel = function(){
 			if($("input[name='rcpNo']").val() != ""){
-				$("form#excelForm")[0].reset();
+				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='rcpNo' value='" + $("input[name='rcpNo']").val() + "' />");
 				$("form#excelForm").attr("action", "/counselExcelDownload.do");
 				$("form#excelForm").submit();

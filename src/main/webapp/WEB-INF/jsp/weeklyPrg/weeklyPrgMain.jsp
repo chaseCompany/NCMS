@@ -389,7 +389,7 @@
 		<%-- 엑셀다운로드 --%>
 		weeklyExcel = function(){
 			if($("select[name='pgmCd']").val() != "" && $("input[name='pgmDt']").val() != ""){
-				$("form#excelForm")[0].reset();
+				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='pgmCd' value='" + $("select[name='pgmCd']").val() + "' />");
 				$("form#excelForm").append("<input type='hidden' name='pgmDt' value='" + $("input[name='pgmDt']").val() + "' />");
 				$("form#excelForm").attr("action", "/weeklyExcelDownload.do");
