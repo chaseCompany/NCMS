@@ -966,6 +966,39 @@ public class IndividualController {
 	}
 	
 	/**
+	 * ISP 수립 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/ispExcelDownload.do")
+	public String ispExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "ISP수립";
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String ispDt = StringUtils.defaultIfEmpty((String)reqMap.get("ispDt"), "").replaceAll("-", "");
+		reqMap.put("ispDt", ispDt);
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + mbrNo + "_" + ispDt + ".xlsx");
+		modelMap.put("sheetName", title);
+		
+		HashMap<String, Object> cslInfo = individualService.getCslIspInfo(reqMap);
+		
+		reqMap.put("grpCd", "C6100");				// 연계구분
+		reqMap.put("useYn", "Y");						
+		modelMap.put("linkCdList", sysCodeService.getSysCdList(reqMap));
+
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+		
+		return "IspExcel";
+	}
+	
+	/**
 	 * 치료재활정보 엑셀다운로드
 	 * @param modelMap
 	 * @param response

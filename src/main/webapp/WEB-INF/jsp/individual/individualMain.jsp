@@ -31,6 +31,25 @@
 				alert("상담번호를 선택 하세요.");
 			}
 		},
+		<%-- ISP수립 엑셀 --%>
+		ispExcel = function(){
+			if($("input[name='choiceMbrNo']").val() != "" && $("input[name='choiceIspDt']").val() != ""){
+				$("form#excelForm")[0].reset();
+				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='choiceMbrNo']").val() + "' />");
+				$("form#excelForm").append("<input type='hidden' name='ispDt' value='" + $("input[name='choiceIspDt']").val() + "' />");
+				$("form#excelForm").attr("action", "/ispExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				if($("input[name='choiceMbrNo']").val() == ""){
+					alert("회원을 선택하세요.");
+					return;
+				}
+				if($("input[name='choiceIspDt']").val() == ""){
+					alert("수립일자를 선택하세요.");
+					return;
+				}
+			}
+		},
 		<%-- 병력정보 엑셀 --%>
 		cslAnmExel = function(){
 			if($("input[name='cslNo']").val() != ""){
@@ -454,6 +473,8 @@
 						var resultInfo = res.ispInfo;
 
 						$("input[name='newFlag']").val("N");
+						$("input[name='choiceMbrNo']").val(tagMbrNo);
+						$("input[name='choiceIspDt']").val(tagIspDt);
 						$("input[name='ispDt']").val(formatDate(resultInfo.ISP_DT));
 						$("input[name='mngTpNm']").val(resultInfo.MNG_TP_NM);
 						$("input[name='mngTpCd']").val(resultInfo.MNG_TP_CD);
@@ -549,6 +570,9 @@
 								changEvlItemSco($("select[name='" + tagName + "']"));
 							}
 						}
+						
+						$("#ispExcelNo").hide();
+						$("#ispExcelYes").show();
 					}
 				},
 				error : function(xhr, status){}
@@ -1321,6 +1345,8 @@
 <input type="hidden" name="devCreDt" />
 <input type="hidden" name="jobCreDt" />
 <input type="hidden" name="healCreDt" />
+<input type="hidden" name="choiceMbrNo" />
+<input type="hidden" name="choiceIspDt" />
 <div class="formline">
 	<!-- 회원등록번호 ~ 사례관리자 -->
 	<div class="section">
@@ -1742,6 +1768,12 @@
 					</button>
 					<button type="button" onclick="javaScript:newIsp();" class="el-button el-button--default el-button--small is-plain" style="padding: 7px 13px;">
 						<i class="el-icon-circle-plus-outline"></i> <span>신규</span>
+					</button>
+					<button id="ispExcelNo" type="button" disabled="disabled" class="el-button normal el-button--default el-button--small is-disabled is-plain">
+						<i class="el-icon-document"></i> <span>엑셀다운로드</span>
+					</button>
+					<button id="ispExcelYes" onclick="javaScript:ispExcel();" type="button" class="el-button normal el-button--default el-button--small is-plain" style="display:none;">
+						<i class="el-icon-document"></i> <span>엑셀다운로드</span>
 					</button>
 				</div>
 				<div class="tab-tb-box">

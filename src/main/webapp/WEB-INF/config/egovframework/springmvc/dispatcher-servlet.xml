@@ -126,6 +126,7 @@
 	<bean id="WeeklyExcel" class="kr.co.chase.ncms.common.excel.WeeklyExcel" />
 	<bean id="CureExcel" class="kr.co.chase.ncms.common.excel.CureExcel" />
 	<bean id="CslAnmExcel" class="kr.co.chase.ncms.common.excel.CslAnmExcel" />
+	<bean id="IspExcel" class="kr.co.chase.ncms.common.excel.IspExcel" />
 
 	<mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>

@@ -213,6 +213,7 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslIspInfo(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
 		return cslIspDao.getCslIspInfo(map);
 	}
 
