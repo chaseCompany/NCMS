@@ -47,7 +47,8 @@
 <c:if test="${LoginSiteEdu eq '1'}">
 		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">재범 방지 교육 바로가기</a>&nbsp;&nbsp;
 --%>
-<c:if test="${logUserId eq 'admin'}">
+<c:if test="${LoginSiteEdu eq '1'}">
+<!-- LoginSiteEdu -->
 		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="el-button el-button--default el-button--mini s"><i class="el-icon-s-order"></i> <span>재범 방지 교육 바로가기</span></a>
 </c:if>
 	</div>

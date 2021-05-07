@@ -50,7 +50,9 @@
 			</div>
 		</a>
 		<a href="javaScript:logOut();" class="el-button el-button--default el-button--mini s"><i class="el-icon-switch-button"></i> <span>로그아웃</span></a>
-		<a href="<c:url value="/counselMain.do"/>" class="el-button el-button--default el-button--mini s"><i class="el-icon-s-order"></i> <span>상담 바로가기</span></a>
+		<c:if test="${LoginSiteConsult eq '1'}">
+			<a href="<c:url value="/counselMain.do"/>" class="el-button el-button--default el-button--mini s"><i class="el-icon-s-order"></i> <span>상담 바로가기</span></a>
+		</c:if>
 	</div>
 	<!-- 사이드 메뉴 -->
 	<div class="side-menu-wrap">
@@ -96,7 +98,7 @@
 							<li><a href="javaScript:goTopMenuPage('/nrds/adminUsr.do');">사용자 관리</a></li>
 							<li><a href="javaScript:goTopMenuPage('/nrds/adminCode.do');">코드 관리</a></li>
 						</ul>
-					</li>
+					</li>-->
 				</ul>
 			</div>
 		</div>
