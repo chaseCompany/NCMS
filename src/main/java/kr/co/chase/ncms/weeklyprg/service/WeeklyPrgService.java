@@ -27,6 +27,7 @@ public interface WeeklyPrgService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getGrpPgm(HashMap<String, Object> map) throws Exception;
+	public List<HashMap<String, Object>> getGrpPgmStatistics(HashMap<String, Object> map) throws Exception;
 
 	/**
 	 * 주간프로그램 등록

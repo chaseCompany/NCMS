@@ -1,6 +1,6 @@
 package kr.co.chase.nrds.recyclePrg.web;
 
-import java.sql.Array;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -381,5 +381,35 @@ public class RecyclePrgController {
 		}
 
 		return "nrds/recyclePrg/layer/recyclePrgMemList";
+	}
+	
+	/**
+	 * 재활교육 프로그램 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/recycleExcelDownload.do")
+	public String recycleExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "재활교육 프로그램";
+		String pgmId = StringUtils.defaultIfEmpty((String)reqMap.get("pgmId"), "");
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + pgmId + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> cslInfo = recyclePrgService.getEdPrm(reqMap);
+		
+		List<HashMap<String, Object>> mbrList = recyclePrgService.getEdPgmMbrList(reqMap);
+
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("mbrList", mbrList);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+
+		return "RecycleExcel";
 	}
 }

@@ -127,6 +127,14 @@
 	<bean id="CureExcel" class="kr.co.chase.ncms.common.excel.CureExcel" />
 	<bean id="CslAnmExcel" class="kr.co.chase.ncms.common.excel.CslAnmExcel" />
 	<bean id="IspExcel" class="kr.co.chase.ncms.common.excel.IspExcel" />
+	<bean id="CounselStatisticsExcel" class="kr.co.chase.ncms.common.excel.CounselStatisticsExcel" />
+	<bean id="IndividualStatisticsExcel" class="kr.co.chase.ncms.common.excel.IndividualStatisticsExcel" />
+	<bean id="IspStatisticsExcel" class="kr.co.chase.ncms.common.excel.IspStatisticsExcel" />
+	<bean id="MentalityStatisticsExcel" class="kr.co.chase.ncms.common.excel.MentalityStatisticsExcel" />
+	<bean id="WeeklyStatisticsExcel" class="kr.co.chase.ncms.common.excel.WeeklyStatisticsExcel" />
+	<!-- 엑셀다운로드 재범방지교육-->
+	<bean id="RecycleExcel" class="kr.co.chase.nrds.comm.excel.RecycleExcel" />
+	<bean id="EduMngExcel" class="kr.co.chase.nrds.comm.excel.EduMngExcel" />
 
 	<mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>

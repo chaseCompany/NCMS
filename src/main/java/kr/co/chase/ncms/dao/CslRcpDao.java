@@ -23,6 +23,9 @@ public class CslRcpDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getCslRcp(HashMap<String, Object> map) throws SQLException{
 		return selectOne("cslRcp.getCslRcp", map);
 	}
+	public List<HashMap<String, Object>> getCslRcpStatistics(HashMap<String, Object> map) throws SQLException{
+		return selectList("cslRcp.getCslRcp", map);
+	}
 
 	/**
 	 * 상담이력 번호 생성

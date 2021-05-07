@@ -29,6 +29,9 @@ public class CslCureDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getCslCure(HashMap<String, Object> map) throws SQLException{
 		return selectOne("cslCure.getCslCure", map);
 	}
+	public List<HashMap<String, Object>> getCslCureStatistics(HashMap<String, Object> map) throws SQLException{
+		return selectList("cslCure.getCslCure", map);
+	}
 
 	/**
 	 * 심리치유 이력을 등록 한다.

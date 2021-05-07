@@ -29,6 +29,9 @@ public class CslIdvDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getCslIdv(HashMap<String, Object> map) throws SQLException{
 		return selectOne("cslIdv.getCslIdv", map);
 	}
+	public List<HashMap<String, Object>> getCslIdvStatistics(HashMap<String, Object> map) throws Exception{
+		return selectList("cslIdv.getCslIdv", map);
+	}
 
 	/**
 	 * 집중 상담이력을 등록 한다.

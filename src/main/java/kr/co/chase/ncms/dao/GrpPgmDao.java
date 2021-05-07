@@ -19,6 +19,9 @@ public class GrpPgmDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getGrpPgm(HashMap<String, Object> map) throws SQLException{
 		return selectOne("grpPgm.getGrpPgm", map);
 	}
+	public List<HashMap<String, Object>> getGrpPgmStatsistics(HashMap<String, Object> map) throws SQLException{
+		return selectList("grpPgm.getGrpPgm", map);
+	}
 
 	/**
 	 * 주간프로그램 목록 조회 카운트

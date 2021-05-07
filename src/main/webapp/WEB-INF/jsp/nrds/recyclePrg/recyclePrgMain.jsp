@@ -705,8 +705,17 @@
 			$("input[name='siteNm']").val($("select[name='" + $(obj).attr("name") + "'] option:selected").attr("siteNm"));
 		},
 		<%-- 엑셀다운로드 --%>
-		weeklyExel = function(){
+		recycleExcel = function(){
 			alert("준비중");
+			return;
+			if($("input[name='pgmId']").val() != ""){
+				$("form#excelForm").empty();
+				$("form#excelForm").append("<input type='hidden' name='pgmId' value='" + $("input[name='pgmId']").val() + "' />");
+				$("form#excelForm").attr("action", "/recycleExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("프로그램을 선택 하세요.");
+			}
 		}
 		
 		getRecyclePrgList();
@@ -741,7 +750,7 @@
 	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain">
 		<i class="el-icon-document"></i><span>엑셀다운로드</span>
 	</button>
-	<button type="button" onclick="javaScript:weeklyExel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+	<button type="button" onclick="javaScript:recycleExcel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
 		<i class="el-icon-document"></i><span>엑셀다운로드</span>
 	</button>
 </div>

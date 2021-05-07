@@ -82,6 +82,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 
 		return result;
 	}
+	public List<HashMap<String, Object>> getCslIdvStatistics(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return cslIdvDao.getCslIdvStatistics(map); 
+	}
 
 	/**
 	 * 집중 상담이력을 등록 한다.
@@ -215,6 +219,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 	public HashMap<String, Object> getCslIspInfo(HashMap<String, Object> map) throws Exception{
 		map.put("paswKey", propertiesService.getString("aes256Key"));
 		return cslIspDao.getCslIspInfo(map);
+	}
+	public List<HashMap<String, Object>> getCslIspInfoStatistics(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return cslIspDao.getCslIspInfoStatistics(map);
 	}
 
 	/**

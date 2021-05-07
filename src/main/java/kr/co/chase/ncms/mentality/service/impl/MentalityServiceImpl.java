@@ -69,6 +69,10 @@ public class MentalityServiceImpl extends EgovAbstractServiceImpl implements Men
 
 		return result;
 	}
+	public List<HashMap<String, Object>> getCslCureStatistics(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return cslCureDao.getCslCureStatistics(map);
+	}
 
 	/**
 	 * 심리치유 이력을 등록 한다.

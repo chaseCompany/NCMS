@@ -1,9 +1,11 @@
 package kr.co.chase.nrds.eduMng.web;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -278,5 +280,33 @@ public class EduMngController {
 		}
 
 		return resultView;
+	}
+	
+	
+	/**
+	 * 교육관리 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/eduMngExcelDownload.do")
+	public String eduMngExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "교육관리";
+		String pgmId = StringUtils.defaultIfEmpty((String)reqMap.get("pgmId"), "");
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + pgmId + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> cslInfo = recyclePrgService.getEdPrm(reqMap);
+
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+
+		return "EduMngExcel";
 	}
 }

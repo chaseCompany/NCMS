@@ -85,6 +85,10 @@ public class WeeklyPrgServiceImpl extends EgovAbstractServiceImpl implements Wee
 
 		return result;
 	}
+	public List<HashMap<String, Object>> getGrpPgmStatistics(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return grpPgmDao.getGrpPgmStatsistics(map);
+	}
 
 	/**
 	 * 주간프로그램 등록

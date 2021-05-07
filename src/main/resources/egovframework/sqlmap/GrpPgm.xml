@@ -15,15 +15,30 @@
 			 , FLOOR(TIME_TO_SEC(TIMEDIFF(GP.PGM_TO_TM, GP.PGM_FM_TM))/60) AS PGM_TERM_TM
 			 , (SELECT COUNT(*) FROM GRP_PGM_MBR GPM WHERE GPM.PGM_DT = GP.PGM_DT AND GPM.PGM_CD = GP.PGM_CD) AS MBR_CNT
 			 , FI.ORIGNL_FILE_NM
+			 , SU.USR_NM AS MNG_USR_NM
+			 ]]>
+			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null">
+				, GPM.MBR_NO
+				, GPM.MBR_CTNT
+				, IFNULL(CAST(AES_DECRYPT(UNHEX(MM.MBR_NM), #{paswKey}) AS CHAR), MM.MBR_NM) AS MBR_NM
+			 </if>
+			 <![CDATA[
 		  FROM GRP_PGM GP
 		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C4500' AND SC01.CD_ID = GP.PGM_CD)
 		  LEFT JOIN SYS_USR SU ON (GP.MNG_USR_ID = SU.USR_ID)
 		  LEFT JOIN SYS_CD SC02 ON (SU.SITE_CD = SC02.CD_ID AND SC02.GRP_CD = 'C3500')
 		  LEFT JOIN SYS_CD SC03 ON (GP.PGM_TP_CD = SC03.CD_ID AND SC03.GRP_CD = 'C3800')
 		  LEFT JOIN FILE_INFO FI ON (FI.FILE_ID = GP.FILE_ID)
-		 WHERE GP.PGM_DT = #{pgmDt}
-		   AND GP.PGM_CD = #{pgmCd}
 	]]>
+		<if test="pgmDt != '' and pgmDt != null and pgmCd != '' and pgmCd != null "><!-- 상세 조회시  -->
+		 	WHERE GP.PGM_DT = #{pgmDt}
+			   AND GP.PGM_CD = #{pgmCd}
+		 </if>
+		 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+		 	LEFT JOIN GRP_PGM_MBR GPM ON GPM.PGM_DT = GP.PGM_DT AND GPM.PGM_CD AND GP.PGM_DT
+		  	LEFT JOIN MST_MBR MM ON (GPM.MBR_NO = MM.MBR_NO)
+		 	WHERE GP.PGM_DT BETWEEN #{fmDt} AND #{toDt}
+		 </if>
 	</select>
 
 	<select id="grpPgm.getGrpPgmListCount" parameterType="hashMap" resultType="int">

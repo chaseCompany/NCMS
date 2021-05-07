@@ -81,8 +81,16 @@
 					  LEFT JOIN SYS_CD SC22 ON (SC22.GRP_CD = 'C7700' AND SC22.CD_ID = CI.EVL_ITM_SCO23)
 					  LEFT JOIN SYS_CD SC23 ON (SC23.GRP_CD = 'C7700' AND SC23.CD_ID = CI.EVL_ITM_SCO24)
 					  LEFT JOIN SYS_CD SC24 ON (SC24.GRP_CD = 'C7700' AND SC24.CD_ID = CI.EVL_ITM_SCO25)
-					 WHERE MBR_NO = #{mbrNo}
-					   AND ISP_DT = #{ispDt}
+		  	]]>
+					  <if test="mbrNo != '' and mbrNo != null and ispDt != '' and ispDt != null"><!-- 상세 조회시  -->
+					 	WHERE CI.MBR_NO = #{mbrNo}
+					  	AND CI.ISP_DT = #{ispDt}
+					 </if>
+					 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+					 	WHERE CI.ISP_DT BETWEEN #{fmDt} AND #{toDt}
+					 </if>
+			 <![CDATA[
+					  
 		   ) A
 			INNER JOIN MST_MBR MM ON MM.MBR_NO = A.MBR_NO
 			LEFT JOIN SYS_USR SU2 ON (SU2.USR_ID = MM.MNG_USR_ID)

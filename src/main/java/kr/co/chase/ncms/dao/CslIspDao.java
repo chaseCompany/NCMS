@@ -29,6 +29,9 @@ public class CslIspDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getCslIspInfo(HashMap<String, Object> map) throws SQLException{
 		return selectOne("cslIsp.getCslIspInfo", map);
 	}
+	public List<HashMap<String, Object>> getCslIspInfoStatistics(HashMap<String, Object> map) throws SQLException{
+		return selectList("cslIsp.getCslIspInfo", map);
+	}
 
 	/**
 	 * ISP 수립 삭제

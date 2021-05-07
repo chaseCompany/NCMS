@@ -185,7 +185,7 @@ public class WeeklyExcel extends AbstractExcelView{
 				  + "~"
 				  + StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_TO_TM"), "")
 				  + "("
-				  + StringUtils.defaultIfEmpty(cslInfo.get("PGM_TERM_TM").toString(), "") + "분)");
+				  + (cslInfo.get("PGM_TERM_TM") == null ? "" : String.valueOf(cslInfo.get("PGM_TERM_TM"))) + "분)");
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));

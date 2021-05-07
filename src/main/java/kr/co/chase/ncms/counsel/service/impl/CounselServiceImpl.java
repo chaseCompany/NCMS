@@ -47,6 +47,10 @@ public class CounselServiceImpl extends EgovAbstractServiceImpl implements Couns
 
 		return cslRcpDao.getCslRcp(map);
 	}
+	public List<HashMap<String, Object>> getCslRcpStatistics(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return cslRcpDao.getCslRcpStatistics(map);
+	}
 
 	/**
 	 * 상담이력 등록

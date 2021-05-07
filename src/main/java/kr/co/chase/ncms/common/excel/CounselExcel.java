@@ -42,7 +42,7 @@ public class CounselExcel extends AbstractExcelView{
 		Row row = null;
 		Cell cell = null;
 		int rowCount = 0;
-		int tempRowCnt = 0;;
+		int tempRowCnt = 0;
 		int maxCellCount = 5;
 
 		if(cslInfo == null) {
@@ -171,7 +171,7 @@ public class CounselExcel extends AbstractExcelView{
 				  + "~"
 				  + StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_TO_TM"), "")
 				  + "("
-				  + StringUtils.defaultIfEmpty(cslInfo.get("CSL_TERM_TM").toString(), "") + "분)");
+				  + (cslInfo.get("CSL_TERM_TM") == null ? "" : String.valueOf(cslInfo.get("CSL_TERM_TM")) + "분)"));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));

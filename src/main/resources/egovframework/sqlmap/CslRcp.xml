@@ -34,6 +34,7 @@
 			 , SC13.CD_NM AS FST_DRUG_NM						, SC14.CD_NM AS MAIN_DRUG_NM
 			 , SC15.CD_NM AS RSKA_TP_NM							, SC16.CD_NM AS RSKB_TP_NM
 			 , SC17.CD_NM AS RSKC_TP_NM							, SC18.CD_NM AS URS_NM
+			 , SC19.CD_NM AS TGP_FRG_NM
 		  FROM CSL_RCP CR
 		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1000' AND SC01.CD_ID = CR.IFP_GB_CD)
 		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C1100' AND SC02.CD_ID = CR.IFP_GEND_CD)
@@ -52,9 +53,15 @@
 		  LEFT JOIN SYS_CD SC15 ON (SC15.GRP_CD = 'C2100' AND SC15.CD_ID = CR.RSKA_TP_CD)
 		  LEFT JOIN SYS_CD SC16 ON (SC16.GRP_CD = 'C2200' AND SC16.CD_ID = CR.RSKB_TP_CD)
 		  LEFT JOIN SYS_CD SC17 ON (SC17.GRP_CD = 'C2300' AND SC17.CD_ID = CR.RSKC_TP_CD)
-		  LEFT JOIN SYS_CD SC18 ON (SC18.GRP_CD = 'C5600' AND SC18.CD_ID = CR.URS_CD)		  
-		 WHERE CR.RCP_NO = #{rcpNo}
+		  LEFT JOIN SYS_CD SC18 ON (SC18.GRP_CD = 'C5600' AND SC18.CD_ID = CR.URS_CD)
+		  LEFT JOIN SYS_CD SC19 ON (SC19.GRP_CD = 'C1300' AND SC19.CD_ID = CR.TGP_FRG_CD)		  
 	]]>
+		 <if test="rcpNo != '' and rcpNo != null"><!-- 상세 조회시  -->
+		 	WHERE CR.RCP_NO = #{rcpNo}
+		 </if>
+		 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+		 	WHERE CR.CSL_DT BETWEEN #{fmDt} AND #{toDt}
+		 </if>
 	</select>
 
 	<select id="cslRcp.getCslRcpSeq" resultType="String">

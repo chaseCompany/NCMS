@@ -378,7 +378,7 @@ public class WeeklyPrgController {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Pragma", "public");
 		response.setHeader("Expires", "0");
-		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + pgmCd + "_" + pgmDt + ".xlsx");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + pgmCd + "_" + pgmDt + ".xlsx");
 		modelMap.put("sheetName", title);
 
 		HashMap<String, Object> cslInfo = weeklyPrgService.getGrpPgm(reqMap);

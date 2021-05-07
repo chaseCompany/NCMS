@@ -19,6 +19,7 @@ public interface IndividualService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslIdv(String cslNo) throws Exception;
+	public List<HashMap<String, Object>> getCslIdvStatistics(HashMap<String, Object> map) throws Exception;
 
 	/**
 	 * 집중 상담이력을 등록 한다.
@@ -74,6 +75,7 @@ public interface IndividualService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslIspInfo(HashMap<String, Object> map) throws Exception;
+	public List<HashMap<String, Object>> getCslIspInfoStatistics(HashMap<String, Object> map) throws Exception;
 
 	/**
 	 * ISP 수립 삭제

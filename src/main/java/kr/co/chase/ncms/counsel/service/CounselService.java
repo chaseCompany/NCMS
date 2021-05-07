@@ -12,6 +12,7 @@ public interface CounselService {
 	 * @throws SQLException
 	 */
 	public HashMap<String, Object> getCslRcp(String rcpNo) throws Exception;
+	public List<HashMap<String, Object>> getCslRcpStatistics(HashMap<String, Object> map) throws Exception;
 
 	/**
 	 * 상담이력 번호 생성

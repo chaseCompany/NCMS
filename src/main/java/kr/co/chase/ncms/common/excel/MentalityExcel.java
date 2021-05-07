@@ -181,7 +181,7 @@ public class MentalityExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "등록일자");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("REG_DT"), ""));
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("REG_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "의료보장");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MEDIC_CARE_NM"), ""));
 		rowCount++;
@@ -206,7 +206,7 @@ public class MentalityExcel extends AbstractExcelView{
 				  + "~"
 				  + StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_TO_TM"), "")
 				  + "("
-				  + StringUtils.defaultIfEmpty(cslInfo.get("CSL_TERM_TM").toString(), "") + "분)");
+				  + (cslInfo.get("CSL_TERM_TM") == null ? "" : String.valueOf(cslInfo.get("CSL_TERM_TM"))) + "분)");
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
@@ -307,7 +307,7 @@ public class MentalityExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "다음 상담일자");
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_DT"), ""));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "시간");
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_TM").toString(), ""));
+		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, (cslInfo.get("NXT_CSL_TM") == null ? "" : String.valueOf(cslInfo.get("NXT_CSL_TM"))));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));

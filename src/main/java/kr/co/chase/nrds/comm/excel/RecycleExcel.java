@@ -1,8 +1,10 @@
-package kr.co.chase.ncms.common.excel;
+package kr.co.chase.nrds.comm.excel;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -22,13 +24,15 @@ import org.apache.poi.xssf.usermodel.XSSFPicture;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import kr.co.chase.ncms.common.excel.AbstractExcelView;
 import kr.co.chase.ncms.common.util.DateUtil;
 
-public class IndividualExcel extends AbstractExcelView{
+public class RecycleExcel extends AbstractExcelView{
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook) throws Exception{
-		@SuppressWarnings("unchecked")
 		HashMap<String, Object> cslInfo = (HashMap<String, Object>)model.get("cslInfo");
+		List<HashMap<String, Object>> mbrList = (List<HashMap<String, Object>>)model.get("mbrList");
 		String sheetName = StringUtils.defaultIfEmpty((String)model.get("sheetName"), "");
 
 		Sheet sheet = workbook.createSheet(sheetName);
@@ -47,6 +51,9 @@ public class IndividualExcel extends AbstractExcelView{
 
 		if(cslInfo == null) {
 			cslInfo = new HashMap<String, Object>();
+		}
+		if(mbrList == null) {
+			mbrList = new ArrayList<HashMap<String, Object>>();
 		}
 
 		//셀 스타일 - title
@@ -156,167 +163,106 @@ public class IndividualExcel extends AbstractExcelView{
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (54*15));
-		this.cellStyleLoop(1, maxCellCount, titleCellStyle, row, cell, "사례관리 상담기록지");
+		this.cellStyleLoop(1, maxCellCount, titleCellStyle, row, cell, "재활교육 프로그램");
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 1, maxCellCount));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "기본정보");
-		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "회원명");
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MBR_NM"), ""));
-		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "회원등록번호");
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MBR_NO"), ""));
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (26*15));
-		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "성별");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("GEND_NM"), ""));
-		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "연령");
-		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("AGE"), ""));
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (26*15));
-		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "등록일자");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("REG_DT"), ""));
-		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "의료보장");
-		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MEDIC_CARE_NM"), ""));
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (26*15));
-		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "기관명");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SITE_NM"), ""));
-		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "사례관리자");
-		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MNG_USR_NM"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
-		
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (26*15));
-		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("상담관련\r\n정보").toString());
-		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "상담일자");
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_DT"), ""), "-"));
-		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "상담시간");
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_FM_TM"), "")
-				  + "~"
-				  + StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_TO_TM"), "")
-				  + "("
-				  + (cslInfo.get("CSL_TERM_TM") == null ? "" : String.valueOf(cslInfo.get("CSL_TERM_TM"))) + "분)");
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (26*15));
-		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "상담대상");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_TGT_NM"), ""));
-		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "상담유형");
-		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_TP_NM"), ""));
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (26*15));
-		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "상담주제");
-		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_SBJ"), ""));
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\r\n정보").toString());
+		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "교육분류");
+		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_ED_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "상담목표");
-		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_TGT"), ""));
+		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "교육과정명");
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_NM_NM"), "")+" "+StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_SUB_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
-		
-		// 위기분류척도 미기입시 양식지 제외
-		if( !( "0".equals(cslInfo.get("RSKA_TP_CD")) && "0".equals(cslInfo.get("RSKB_TP_CD")) && "0".equals(cslInfo.get("RSKC_TP_CD"))
-				&& ( "0".equals(cslInfo.get("RSK_SCO")) || "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("RSK_SCO"), "")) )
-				&& "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_EMER"), ""))
-				&& "70".equals(cslInfo.get("URS_CD")) 
-			) ){
-		
-			rowCount++;
-			row = sheet.createRow(rowCount);
-			row.setHeight((short) (26*15));
-			tempRowCnt = rowCount;
-			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("위기분류\r\n척도").toString());
-			this.cellStyleLoop(2, 2, topCellStyle, row, cell, "위험성(A)");
-			this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("RSKA_TP_NM"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-			rowCount++;
-			row = sheet.createRow(rowCount);
-			row.setHeight((short) (26*15));
-			this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-			this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "지지체계(B)");
-			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("RSKB_TP_NM"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-			rowCount++;
-			row = sheet.createRow(rowCount);
-			row.setHeight((short) (26*15));
-			this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-			this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "협조능력(C)");
-			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("RSKC_TP_NM"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-			rowCount++;
-			row = sheet.createRow(rowCount);
-			row.setHeight((short) (26*15));
-			this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-			this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "점수");
-			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("RSK_SCO"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-			rowCount++;
-			row = sheet.createRow(rowCount);
-			row.setHeight((short) (26*15));
-			this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-			this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "위기상담");
-			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CRISIS_COUNSEL"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-			rowCount++;
-			row = sheet.createRow(rowCount);
-			row.setHeight((short) (26*15));
-			this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-			this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "URS");
-			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("URS_NM"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+5, 1, 1));
-			
-		}
-		
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (139*15));
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "상담내용");
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_CTNT"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
-		
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (139*15));
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "상담결과");
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_RST"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
-		
-		rowCount++;
-		row = sheet.createRow(rowCount);
-		row.setHeight((short) (26*15));
-		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("차기\r\n상담관련").toString());
-		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "다음 상담일자");
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_DT"), ""));
-		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "시간");
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, (cslInfo.get("NXT_CSL_TM") == null ? "" : String.valueOf(cslInfo.get("NXT_CSL_TM"))));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
-		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "다음 상담내용");
-		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_CTNT"), ""));
+		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "회기");
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SESSION"), ""));
+		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "차수");
+		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS"), ""));
+		rowCount++;
+		row = sheet.createRow(rowCount);
+		row.setHeight((short) (26*15));
+		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
+		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "주강사");
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_MAIN_LEC"), ""));
+		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "보조강사");
+		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SUB_LEC"), ""));
+		rowCount++;
+		row = sheet.createRow(rowCount);
+		row.setHeight((short) (26*15));
+		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
+		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "교육기간");
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, 
+				StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_START_DT"), "") + " " + StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_START_TM"), "")
+				+" ~ "+StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_END_DT"), "") + " " + StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_END_TM"), "")
+		);		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
+		rowCount++;
+		row = sheet.createRow(rowCount);
+		row.setHeight((short) (26*15));
+		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
+		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "교육일시");
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, 
+				StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_START_DT"), "") + " " + StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_START_TM"), "")
+				+" ~ "+StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_END_DT"), "") + " " + StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_END_TM"), "")
+		);		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));		rowCount++;		row = sheet.createRow(rowCount);		row.setHeight((short) (26*15));		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "기관명");		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_AGENT"), ""));		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "담당자");		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_MNG_USR_ID"), ""));		rowCount++;
+		row = sheet.createRow(rowCount);
+		row.setHeight((short) (26*15));
+		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
+		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "교육주제");
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SUBJECT"), ""));
+		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
+		rowCount++;
+		row = sheet.createRow(rowCount);
+		row.setHeight((short) (26*15));
+		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
+		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "교육목표");
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_GOAL"), ""));
+		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+8, 1, 1));
+		
+		rowCount++;
+		row = sheet.createRow(rowCount);
+		row.setHeight((short) (139*15));
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\r\n내용").toString());
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CTNT"), ""));
+		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
+		
+		rowCount++;
+		row = sheet.createRow(rowCount);
+		row.setHeight((short) (139*15));
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\r\n결과").toString());
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), ""));
+		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));				rowCount++;		row = sheet.createRow(rowCount);		row.setHeight((short) (26*15));
+		tempRowCnt = rowCount;		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("인적자원\r\n등록").toString());		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "직원");		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_EMP"), ""));
+		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
+		rowCount++;		row = sheet.createRow(rowCount);		row.setHeight((short) (26*15));		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "자원봉사자");		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_VOL"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
 
+		if(mbrList.size() > 0) {
+			for(int i=0; i<mbrList.size(); i++) {
+				rowCount++;
+				row = sheet.createRow(rowCount);
+				row.setHeight((short) (26*15));
+				if(i == 0) tempRowCnt = rowCount;
+				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\r\n관련").toString() : ""));
+				this.cellStyleLoop(2, 2, (i == 0 ? topCellStyle : basicCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_NM"), ""));
+				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), ""));
+				sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
+			}
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+(mbrList.size()-1), 1, 1));
+		}
+		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
