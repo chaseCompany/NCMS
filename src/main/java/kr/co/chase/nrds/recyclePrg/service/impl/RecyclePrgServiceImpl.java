@@ -125,7 +125,7 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 			resultMap.put("MSG", "등록");
 		}
 
-		this.deleteAllEdPrmMbr(map);
+		//this.deleteAllEdPrmMbr(map);
 		if(map.get("grpPgmMbrList") != null) {
 			List<HashMap<String, Object>> mbrList = (List<HashMap<String, Object>>)map.get("grpPgmMbrList");
 			for(HashMap<String, Object> mbrMap : mbrList) {

@@ -169,16 +169,7 @@ public class RecyclePrgController {
 			resultView.addObject("MSG", "교육주제는 필수 입력 항목입니다.");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmCtnt"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "교육내용은 필수 입력 항목입니다.");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("pgmRst"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "교육결과는 필수 입력 항목입니다.");
-			return resultView;
-		} 
+
 
 		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
 		String pgmId = StringUtils.defaultIfEmpty((String)reqMap.get("pgmId"), "");
