@@ -87,7 +87,7 @@
 						--%>
 						<a href="#"><i class="el-icon-printer"></i>통계관리</a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="#n">
 							<i class="el-icon-setting"></i>기초자료 관리
 							<span><i class="el-submenu__icon-arrow el-icon-arrow-down"></i></span>
