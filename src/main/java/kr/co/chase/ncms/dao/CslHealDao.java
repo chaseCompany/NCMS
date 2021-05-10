@@ -29,6 +29,9 @@ public class CslHealDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getCslHealInfo(HashMap<String, Object> map) throws SQLException{
 		return selectOne("cslHeal.getCslHeal", map);
 	}
+	public List<HashMap<String, Object>> getCslHealInfoStatistics(HashMap<String, Object> map) throws SQLException{
+		return selectList("cslHeal.getCslHeal", map);
+	}
 
 	/**
 	 * 치료재활정보 고유키 생성

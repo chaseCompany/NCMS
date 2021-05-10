@@ -84,12 +84,12 @@ public class ReportController {
 		}else if("IspStatisticsExcel".equals(excelName)) {
 			// ISP수립
 			resultMap = individualService.getCslIspInfoStatistics(reqMap);
-		}else if("IndividualStatisticsExcel".equals(excelName)) {
+		}else if("CslAnmStatisticsExcel".equals(excelName)) {
 			// 병력정보
-//			resultMap = individualService.getCslIdvStatistics(reqMap);
-		}else if("IndividualStatisticsExcel".equals(excelName)) {
+			resultMap = individualService.getCslAnmInfoStatistics(reqMap);
+		}else if("CureStatisticsExcel".equals(excelName)) {
 			// 치료재활정보
-//			resultMap = individualService.getCslIdvStatistics(reqMap);
+			resultMap = individualService.getCslHealInfoStatistics(reqMap);
 		}else if("MentalityStatisticsExcel".equals(excelName)) {
 			// 심리상담
 			resultMap = mentalityService.getCslCureStatistics(reqMap);

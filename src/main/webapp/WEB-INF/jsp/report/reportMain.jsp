@@ -11,10 +11,6 @@
 		},
 		<%--  통계 엑셀다운로드 --%>
 		statisticsExcel = function(_obj, _name){
-			if(_name == "CslAnmStatisticsExcel" || _name == "CureStatisticsExcel"){
-				alert($(_obj).find("span").text()+"는 개발중입니다.");
-				return;
-			}
 			if($("input[name='fmDt']").val() != "" && $("input[name='toDt']").val() != ""){
 				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='excelTitle' value='"+$(_obj).find("span").text()+"' />");

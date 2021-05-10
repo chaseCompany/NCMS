@@ -1065,7 +1065,7 @@ public class IndividualController {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Pragma", "public");
 		response.setHeader("Expires", "0");
-		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + cslNo + ".xlsx");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + cslNo + ".xlsx");
 		modelMap.put("sheetName", title);
 		
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();

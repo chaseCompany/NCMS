@@ -29,6 +29,9 @@ public class CslAnmDao extends EgovAbstractMapper {
 	public HashMap<String, Object> getCslAnmInfo(HashMap<String, Object> map) throws SQLException{
 		return selectOne("cslAnm.getCslAnmInfo", map);
 	}
+	public List<HashMap<String, Object>> getCslAnmInfoStatistics(HashMap<String, Object> map) throws SQLException{
+		return selectList("cslAnm.getCslAnmInfo", map);
+	}
 
 	/**
 	 * 병력정보 고유키 생성

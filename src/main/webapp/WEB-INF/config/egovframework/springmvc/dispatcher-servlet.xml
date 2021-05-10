@@ -132,6 +132,8 @@
 	<bean id="IspStatisticsExcel" class="kr.co.chase.ncms.common.excel.IspStatisticsExcel" />
 	<bean id="MentalityStatisticsExcel" class="kr.co.chase.ncms.common.excel.MentalityStatisticsExcel" />
 	<bean id="WeeklyStatisticsExcel" class="kr.co.chase.ncms.common.excel.WeeklyStatisticsExcel" />
+	<bean id="CslAnmStatisticsExcel" class="kr.co.chase.ncms.common.excel.CslAnmStatisticsExcel" />
+	<bean id="CureStatisticsExcel" class="kr.co.chase.ncms.common.excel.CureStatisticsExcel" />
 	<!-- 엑셀다운로드 재범방지교육-->
 	<bean id="RecycleExcel" class="kr.co.chase.nrds.comm.excel.RecycleExcel" />
 	<bean id="EduMngExcel" class="kr.co.chase.nrds.comm.excel.EduMngExcel" />

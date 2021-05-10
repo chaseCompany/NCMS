@@ -181,7 +181,7 @@ public class IndividualExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "등록일자");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("REG_DT"), ""));
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("REG_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "의료보장");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MEDIC_CARE_NM"), ""));
 		rowCount++;

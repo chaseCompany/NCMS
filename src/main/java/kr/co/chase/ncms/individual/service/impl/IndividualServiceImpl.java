@@ -331,6 +331,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 
 		return cslAnmDao.getCslAnmInfo(map);
 	}
+	public List<HashMap<String, Object>> getCslAnmInfoStatistics(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return cslAnmDao.getCslAnmInfoStatistics(map);
+	}
 
 	/**
 	 * 사례관리 병력정보 고유키 생성
@@ -589,6 +593,10 @@ public class IndividualServiceImpl extends EgovAbstractServiceImpl implements In
 		}
 
 		return cslHealDao.getCslHealInfo(map);
+	}
+	public List<HashMap<String, Object>> getCslHealInfoStatistics(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return cslHealDao.getCslHealInfoStatistics(map);
 	}
 
 	/**
