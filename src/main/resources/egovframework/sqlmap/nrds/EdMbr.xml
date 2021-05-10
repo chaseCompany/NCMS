@@ -93,6 +93,9 @@
 			<if test="telNo != null and telNo != ''">
 		   AND CONCAT(EM.TEL_NO1, EM.TEL_NO2, EM.TEL_NO3) LIKE CONCAT('%', REPLACE(REPLACE(#{telNo}, ' ', ''), '-', ''), '%')
 			</if>
+			<if test="searchSiteCd != null and searchSiteCd != ''">
+							AND SU.SITE_CD =#{searchSiteCd}
+			</if>
 		</trim>
 	</select>
 
@@ -117,6 +120,10 @@
 			<if test="telNo != null and telNo != ''">
 						   AND CONCAT(EM.TEL_NO1, EM.TEL_NO2, EM.TEL_NO3) LIKE CONCAT('%', REPLACE(REPLACE(#{telNo}, ' ', ''), '-', ''), '%')
 			</if>
+			<if test="searchSiteCd != null and searchSiteCd != ''">
+							AND SU.SITE_CD =#{searchSiteCd}
+			</if>
+			
 		</trim>
 	<![CDATA[
 						 ORDER BY EM.MBR_NO DESC

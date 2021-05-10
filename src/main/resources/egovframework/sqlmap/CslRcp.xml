@@ -169,6 +169,9 @@
 				</otherwise>
 			</choose>
 		</if>
+		<if test="schSiteCd != null and schSiteCd != '' and schRoleCd != '90'">
+							AND CSL_SITE = #{schSiteCd}
+		</if>
 	<![CDATA[
 						 ORDER BY CRE_DT DESC
 				  ) T,(SELECT @RNUM := 0) RNUM

@@ -52,10 +52,14 @@ public class CounselController {
 
 		cslRcpVO.setCslId(StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
 		cslRcpVO.setCslNm(StringUtils.defaultIfEmpty((String)usrInfo.get("USR_NM"), ""));
+		cslRcpVO.setCslSite(StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		
 		cslRcpVO.setIfpGbCd("10");
 		cslRcpVO.setIfpGendCd("M");
 		cslRcpVO.setTgpFrgCd("LO");
 		cslRcpVO.setTgpGendCd("M");
+		
+		model.put("roleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
 		model.put("cslRcpInfo", cslRcpVO);
 
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
@@ -305,6 +309,8 @@ public class CounselController {
 		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
+		String roleCd = StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), "");
+		String siteCd = StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "");
 		PaginationInfo paginginfo = new PaginationInfo();
 		if(currentPageNo == "" || recordCountPerPage == ""){
 			paginginfo.setCurrentPageNo(1);
@@ -342,6 +348,8 @@ public class CounselController {
 		model.put("schMth", schMth);
 		model.put("schGb", schGb);
 		model.put("schNm", schNm);
+		model.put("schRoleCd", roleCd);
+		model.put("schSiteCd", siteCd);
 		model.put("pageNo", currentPageNo);
 
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
@@ -429,7 +437,7 @@ public class CounselController {
 	@RequestMapping(value="/ajaxMstMbrList.do")
 	public String ajaxMstMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-		String searchType = StringUtils.defaultIfEmpty((String)reqMap.get("searchType"), "");
+		String listType = StringUtils.defaultIfEmpty((String)reqMap.get("listType"), "");
 		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "");
 		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
@@ -457,7 +465,7 @@ public class CounselController {
 
 		// 관리자가 아닌 경우
 		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
-			if("S".equals(searchType)) {
+			if("MEDIC".equals(listType)) {
 				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "X"));
 			}
 		}

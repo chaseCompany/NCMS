@@ -4,10 +4,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String loginUserId = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserId"), "");
+	String loginSiteCd = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginSiteCd"), "");
 	String loginSiteNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginSiteNm"), "");
 	String loginUserNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserNm"), "");
 %>
 <c:set var="loginUserId" value="<%=loginUserId%>" />
+<c:set var="loginSiteCd" value="<%=loginSiteCd%>" />
 <c:set var="loginSiteNm" value="<%=loginSiteNm%>" />
 <c:set var="loginUserNm" value="<%=loginUserNm%>" />
 
@@ -859,7 +861,8 @@
 								<th>기관명</th>
 								<td>
 									<div class="dsp-ibk tac">
-										<input type="text" name="pgmAgent" value="<c:out value="${loginSiteNm}" />" readonly class="el-input__inner" style="width: 200px;" placeholder="기관명">
+										<input type="hidden" name="pgmAgent" value="<c:out value="${loginSiteCd}" />" class="el-input__inner" style="width: 200px;">
+										<input type="text" name="pgmAgentNm" value="<c:out value="${loginSiteNm}" />" readonly class="el-input__inner" style="width: 200px;" placeholder="기관명">
 									</div>
 								</td>
 								<th> <span class="required">*</span> 담당자</th>

@@ -82,7 +82,7 @@
 					<li>
 						<a href="javaScript:goTopMenuPage('/reportMain.do');"><i class="el-icon-printer"></i>통계관리</a>
 					</li>
-<c:if test="${logUserId eq 'admin'}">
+<c:if test="${logUserId eq 'admin' || logUserId eq 'chase'}">
 					<li>
 						<a href="#n">
 							<i class="el-icon-setting"></i>기초자료 관리

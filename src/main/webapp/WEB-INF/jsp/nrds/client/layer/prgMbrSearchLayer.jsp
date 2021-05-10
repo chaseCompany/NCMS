@@ -136,7 +136,7 @@
 </c:if>
 <c:if test="${totalCount <= 0}">
 						<tr>
-							<td colspan="10">데이터 없음</td>
+							<td colspan="10">조회된 데이터가 없습니다.</td>
 						</tr>
 </c:if>
 					</tbody>

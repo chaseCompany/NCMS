@@ -477,15 +477,30 @@
 					</td>
 					<th>기관명</th>
 					<td>
+					<c:if test="${roleCd eq '90'}">
 						<select name="cslSite" style="width: 140px;">
 							<option value="">선택</option>
 <c:if test="${cslSiteList ne null and cslSiteList ne ''}">
 	<c:forEach var="result" items="${cslSiteList}" varStatus="status">
-							<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+							<option value="<c:out value="${result.CD_ID}"/>" <c:if test="${cslRcpInfo.cslSite eq result.CD_ID}">selected="selected"</c:if>>
+								<c:out value="${result.CD_NM}" />
+							</option>
 	</c:forEach>
 </c:if>
 						</select>
+					</c:if>
+					<c:if test="${roleCd ne '90'}">
+						<span class="tac"><form:input path="cslRcpInfo.cslSite" cssClass="el-input__inner" readonly="true" style="width:100px; display:none;" /></span>
+						<c:if test="${cslSiteList ne null and cslSiteList ne ''}">
+							<c:forEach var="result" items="${cslSiteList}" varStatus="status">
+								<c:if test="${cslRcpInfo.cslSite eq result.CD_ID}">
+									<input type="text" value="${result.CD_NM }" class="el-input__inner" readonly="readonly"/>
+								</c:if>
+							</c:forEach>
+						</c:if>							
+					</c:if>
 					</td>
+					
 					<th>상담자</th>
 					<td>
 						<span class="tac"><form:input path="cslRcpInfo.cslId" cssClass="el-input__inner" readonly="true" style="width:100px;" /></span>

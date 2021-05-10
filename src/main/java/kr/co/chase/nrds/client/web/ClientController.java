@@ -237,7 +237,7 @@ public class ClientController {
 	@RequestMapping(value="/ajaxEdMbrList.do")
 	public String ajaxEdMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-		String searchType = StringUtils.defaultIfEmpty((String)reqMap.get("searchType"), "");
+		String listType = StringUtils.defaultIfEmpty((String)reqMap.get("listType"), "");
 		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "");
 		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
@@ -263,8 +263,8 @@ public class ClientController {
 
 		// 관리자가 아닌 경우
 		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
-			if("S".equals(searchType)) {
-				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "X"));
+			if("MEDIC".equals(listType)) {
+				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
 			}
 		}
 
@@ -293,7 +293,7 @@ public class ClientController {
 	@RequestMapping(value="/ajaxPrgEdMbrList.do")
 	public String ajaxPrgEdMbrList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-		String searchType = StringUtils.defaultIfEmpty((String)reqMap.get("searchType"), "");
+		String listType = StringUtils.defaultIfEmpty((String)reqMap.get("listType"), "");
 		String currentPageNo = StringUtils.defaultIfEmpty((String)reqMap.get("pageNo"), "");
 		String recordCountPerPage = StringUtils.defaultIfEmpty((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
@@ -319,8 +319,8 @@ public class ClientController {
 
 		// 관리자가 아닌 경우
 		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
-			if("S".equals(searchType)) {
-				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "X"));
+			if("MEDIC".equals(listType)) {
+				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
 			}
 		}
 

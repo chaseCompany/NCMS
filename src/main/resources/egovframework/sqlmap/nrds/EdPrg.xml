@@ -48,6 +48,9 @@
 		 <if test="schEndDt != null and schEndDt != ''">
 		   AND PGM_END_DT  <![CDATA[<=]]> #{schEndDt}
 		 </if>
+		 <if test="sessionRoleCd != '90'">
+		 	AND PGM_AGENT = #{sessionSiteCd}
+		 </if>
 		 <if test="pgmEdCdList != null and pgmEdCdList.size != 0">
 		   AND PGM_ED_CD IN
 		   	<foreach collection="pgmEdCdList" item="item" index="index" separator="," open="(" close=")">

@@ -80,6 +80,8 @@ public class RecyclePrgController {
 			map.put(name, request.getParameter(name));
 		} 
 		
+		map.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		map.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
