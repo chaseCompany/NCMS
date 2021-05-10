@@ -947,14 +947,14 @@ public class IndividualController {
 	 */
 	@RequestMapping("/individualExcelDownload.do")
 	public String individualExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
-		String title = "사례관리상담";
+		String title = "사례관리 상담";
 		String cslNo = StringUtils.defaultIfEmpty((String)reqMap.get("cslNo"), "");
 
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Pragma", "public");
 		response.setHeader("Expires", "0");
-		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + cslNo + ".xlsx");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + cslNo + ".xlsx");
 		modelMap.put("sheetName", title);
 
 		HashMap<String, Object> cslInfo = individualService.getCslIdv(cslNo);
@@ -983,7 +983,7 @@ public class IndividualController {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Pragma", "public");
 		response.setHeader("Expires", "0");
-		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + mbrNo + "_" + ispDt + ".xlsx");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + mbrNo + "_" + ispDt + ".xlsx");
 		modelMap.put("sheetName", title);
 		
 		HashMap<String, Object> cslInfo = individualService.getCslIspInfo(reqMap);
@@ -1021,7 +1021,7 @@ public class IndividualController {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Pragma", "public");
 		response.setHeader("Expires", "0");
-		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8") + "_" + cslNo + ".xlsx");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + cslNo + ".xlsx");
 		modelMap.put("sheetName", title);
 
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();

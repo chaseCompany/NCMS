@@ -234,7 +234,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
-//		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
+		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "주요사용약물");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MAIN_DRUG_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
@@ -390,9 +390,9 @@ public class CslAnmExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "대인관계");
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_CHILD_RELATION_NM"), ""));
-		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "기타");
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_CHILD_TEC"), ""));
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_CHILD_RELATION_NM"), ""));
+		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "기타");
+		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_CHILD_TEC"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
 		
 		rowCount++;
@@ -409,9 +409,9 @@ public class CslAnmExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "특이사항");
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_TEEN_UNI_NM"), ""));
-		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "기타");
-		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_TEEN_ETC"), ""));
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_TEEN_UNI_NM"), ""));
+		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "기타");
+		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_TEEN_ETC"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
 		
 		rowCount++;
@@ -428,7 +428,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "기타");
-		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_ADUL_ETC"), ""));
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_ADUL_ETC"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));	
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
 		
