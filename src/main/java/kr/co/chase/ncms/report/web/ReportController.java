@@ -49,6 +49,7 @@ public class ReportController {
 	 */
 	@RequestMapping(value="/reportMain.do")
 	public String reportMain(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		@SuppressWarnings("unchecked")
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		if(usrInfo == null || StringUtils.defaultString((String)usrInfo.get("USR_ID"), "") == "") {
@@ -66,13 +67,18 @@ public class ReportController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/statisticsExcelDownload.do")
-	public String statisticsExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+	public String statisticsExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception {
+		@SuppressWarnings("unchecked")
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>) session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		
 		String excelTitle = StringUtils.defaultIfEmpty((String)reqMap.get("excelTitle"), "");
 		String excelName = StringUtils.defaultIfEmpty((String)reqMap.get("excelName"), "");
 		String fmDt = StringUtils.defaultIfEmpty((String)reqMap.get("fmDt"), "").replaceAll("-", "");
 		String toDt = StringUtils.defaultIfEmpty((String)reqMap.get("toDt"), "").replaceAll("-", "");
 		reqMap.put("fmDt", fmDt);
 		reqMap.put("toDt", toDt);
+		reqMap.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		reqMap.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
 		
 		List<HashMap<String, Object>> resultMap = new ArrayList<HashMap<String, Object>>();
 		if("CounselStatisticsExcel".equals(excelName)) {

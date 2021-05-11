@@ -30,15 +30,20 @@
 		  LEFT JOIN SYS_CD SC03 ON (GP.PGM_TP_CD = SC03.CD_ID AND SC03.GRP_CD = 'C3800')
 		  LEFT JOIN FILE_INFO FI ON (FI.FILE_ID = GP.FILE_ID)
 	]]>
-		<if test="pgmDt != '' and pgmDt != null and pgmCd != '' and pgmCd != null "><!-- 상세 조회시  -->
-		 	WHERE GP.PGM_DT = #{pgmDt}
-			   AND GP.PGM_CD = #{pgmCd}
-		 </if>
-		 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
-		 	LEFT JOIN GRP_PGM_MBR GPM ON GPM.PGM_DT = GP.PGM_DT AND GPM.PGM_CD AND GP.PGM_DT
-		  	LEFT JOIN MST_MBR MM ON (GPM.MBR_NO = MM.MBR_NO)
-		 	WHERE GP.PGM_DT BETWEEN #{fmDt} AND #{toDt}
-		 </if>
+			<if test="pgmDt != '' and pgmDt != null and pgmCd != '' and pgmCd != null "><!-- 상세 조회시  -->
+			 	WHERE GP.PGM_DT = #{pgmDt}
+				   AND GP.PGM_CD = #{pgmCd}
+			 </if>
+			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+			 	LEFT JOIN GRP_PGM_MBR GPM ON GPM.PGM_DT = GP.PGM_DT AND GPM.PGM_CD AND GP.PGM_DT
+			  	LEFT JOIN MST_MBR MM ON (GPM.MBR_NO = MM.MBR_NO)
+			 	WHERE GP.PGM_DT BETWEEN #{fmDt} AND #{toDt}
+			 </if>
+			 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
+			 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+			 		AND SU.SITE_CD = #{sessionSiteCd}
+			 	</if>
+			 </if>
 	</select>
 
 	<select id="grpPgm.getGrpPgmListCount" parameterType="hashMap" resultType="int">
