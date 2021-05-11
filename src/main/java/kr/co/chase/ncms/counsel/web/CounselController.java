@@ -348,13 +348,15 @@ public class CounselController {
 		model.put("schMth", schMth);
 		model.put("schGb", schGb);
 		model.put("schNm", schNm);
-		model.put("schRoleCd", roleCd);
-		model.put("schSiteCd", siteCd);
+		
 		model.put("pageNo", currentPageNo);
-
+		
+		reqMap.put("schRoleCd", roleCd);
+		reqMap.put("schSiteCd", siteCd);
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
 		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
-
+		System.out.println("schRoleCd"+reqMap.get("schRoleCd")+"  schSiteCd: "+reqMap.get("schSiteCd"));
+		
 		int totalCount = counselService.getCslRcpListCount(reqMap);
 		paginginfo.setTotalRecordCount(totalCount);
 

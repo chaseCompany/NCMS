@@ -25,7 +25,10 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 		String requestHOST = request.getServerName();
 
 		boolean isPermittedURL = true;
+		HttpSession session = request.getSession();
 
+		
+		
 		if(requestURI.indexOf("/") == 0) {
 			request.setAttribute("thisViewUrl", requestURI.substring(1));
 		}else {
@@ -33,19 +36,17 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 		}
 
 		if(requestURI.indexOf("login.do") < 0 && requestURI.indexOf("Login.do") < 0 ) {
-			HttpSession session = request.getSession();
-
 			HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
-
+			ModelAndView modelAndView = new ModelAndView("redirect:" + mainUrl);
 			if(usrInfo == null || StringUtil.nvl(usrInfo.get("USR_ID").toString(), "") == "") {
-				ModelAndView modelAndView = new ModelAndView("redirect:" + mainUrl);
-
+				
 				if(requestURI.indexOf("ajax") < 0) {
 					modelAndView.addObject("reDirect", requestURI);
 				}
 
 				throw new ModelAndViewDefiningException(modelAndView);
 			}else {
+				
 				request.setAttribute("LoginUserId", StringUtil.nvl(usrInfo.get("USR_ID"), ""));
 				request.setAttribute("LoginUserNm", StringUtil.nvl(usrInfo.get("USR_NM"), ""));
 				request.setAttribute("LoginSiteCd", StringUtil.nvl(usrInfo.get("SITE_CD"), ""));
@@ -53,9 +54,35 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter{
 				request.setAttribute("LoginRoleCd", StringUtil.nvl(usrInfo.get("ROLE_CD"), ""));
 				request.setAttribute("LoginSiteConsult", StringUtil.nvl(usrInfo.get("SITE_CONSULT"), ""));
 				request.setAttribute("LoginSiteEdu", StringUtil.nvl(usrInfo.get("SITE_EDU"), ""));
+				if(usrInfo != null) {
+					if(StringUtil.nvl(usrInfo.get("SITE_CONSULT"), "").equals("1")) {
+						if(!StringUtil.nvl(usrInfo.get("SITE_EDU"), "").equals("1")) {
+							System.out.println("재범방지교육권한이 없을 때");
+							if(requestURI.indexOf("/nrds") >= 0) {
+								//modelAndView.addObject("reDirect", "/counselMain.do");
+								modelAndView.setViewName("redirect:/counselMain.do");
+								throw new ModelAndViewDefiningException(modelAndView);
+							}
+						}
+						
+						
+					} else {
+						System.out.println("중독예방상담권한이 없을 때");
+						if(StringUtil.nvl(usrInfo.get("SITE_EDU"), "").equals("1")) {
+							if(requestURI.indexOf("/nrds") < 0 && requestURI.indexOf("/ajax") < 0) {
+								System.out.println("중독예방상담권한이 없을 때-1"+requestURI);
+								modelAndView.setViewName("redirect:/nrds/recyclePrgMain.do");
+								throw new ModelAndViewDefiningException(modelAndView);
+							}
+						}
+					}
+				}
 			}
+			
 		}
-
+		
+		
+	
 		return isPermittedURL;
 	}
 }
