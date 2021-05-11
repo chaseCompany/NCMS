@@ -427,7 +427,7 @@
 						<i class="el-input__icon"></i>
 						<input type="text" name="cslDt2" class="el-input__inner" style="width: 130px;" readonly/>
 					</div>
-					<div class="time-box">
+					<div class="time-box" style="height: 32px;">
 						<div class="tm-in">
 							<i class="el-input__icon"></i>
 							<input type="text" name="cslFmTm2" class="el-input__inner" style="width: 96px;" readonly/>
@@ -438,7 +438,7 @@
 							<input type="text" name="cslToTm2" class="el-input__inner" style="width: 96px;" readonly/>
 						</div>
 						<div class="t-min">
-							<span class="readonly" id="cslTermTm2"></span> 분 소요
+							<span class="readonly" id="cslTermTm2">&nbsp;</span>분 소요
 							<input type="hidden" name="cslTermTm2" readonly/>
 						</div>
 					</div>
