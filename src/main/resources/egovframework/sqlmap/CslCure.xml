@@ -55,12 +55,20 @@
 		  LEFT JOIN SYS_CD SC11 ON (SC11.GRP_CD = 'C5600' AND SC11.CD_ID = CC.URS_CD)
 		  LEFT JOIN FILE_INFO FI ON (FI.FILE_ID = CC.FILE_ID)
 	]]>
-		<if test="cslNo != '' and cslNo != null"><!-- 상세 조회시  -->
-		 	WHERE CC.CSL_NO = #{cslNo}
-		 </if>
-		 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
-		 	WHERE CC.CSL_DT BETWEEN #{fmDt} AND #{toDt}
-		 </if>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			 <if test="cslNo != '' and cslNo != null"><!-- 상세 조회시  -->
+			 	AND CC.CSL_NO = #{cslNo}
+			 </if>
+			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+			 	AND CC.CSL_DT BETWEEN #{fmDt} AND #{toDt}
+			 </if>
+			 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
+			 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+			 		AND SU.SITE_CD = #{sessionSiteCd}
+			 	</if>
+			 </if>
+		 </trim>
+		
 	</select>
 
 	<insert id="cslCure.insertCslCure" parameterType="hashMap">

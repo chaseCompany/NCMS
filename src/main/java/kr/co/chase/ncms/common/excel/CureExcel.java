@@ -197,7 +197,7 @@ public class CureExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "기관명");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty("", ""));
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MNG_SITE_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "사례관리자");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty(mngUsrId, ""));
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));

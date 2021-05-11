@@ -83,9 +83,16 @@
 			LEFT JOIN SYS_CD SC03 ON (SC03.GRP_CD = 'C5500' AND SC03.CD_ID = MM.STS_CD)
 			LEFT JOIN SYS_CD SC04 ON (SC04.GRP_CD = 'C1200' AND SC04.CD_ID = MM.JOB_CD )
 			LEFT JOIN SYS_CD SC05 ON (SC05.GRP_CD = 'C3500' AND SC05.CD_ID = SU2.SITE_CD)
-			<if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
-			 	WHERE MM.REG_DT BETWEEN #{fmDt} AND #{toDt}
-			</if>
+			<trim prefix="WHERE" prefixOverrides="AND|OR">
+				<if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+				 	AND A.CRE_DT BETWEEN #{fmDt} AND #{toDt}
+				</if>
+				<if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
+				 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+				 		AND SU2.SITE_CD = #{sessionSiteCd}
+				 	</if>
+				 </if>
+			</trim>
 	</select>
 
 	<select id="cslAnm.getCslAnmSeq" parameterType="String" resultType="String">
