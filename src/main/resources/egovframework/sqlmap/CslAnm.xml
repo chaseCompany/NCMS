@@ -85,7 +85,7 @@
 			LEFT JOIN SYS_CD SC05 ON (SC05.GRP_CD = 'C3500' AND SC05.CD_ID = SU2.SITE_CD)
 			<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
-				 	AND MM.REG_DT BETWEEN #{fmDt} AND #{toDt}
+				 	AND A.CRE_DT BETWEEN #{fmDt} AND #{toDt}
 				</if>
 				<if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
 				 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
