@@ -91,6 +91,11 @@
 		<if test="schPgmCd != null and schPgmCd != ''">
 						   AND GP.PGM_CD = #{schPgmCd}
 		</if>
+		<if test="sessionRoleCd != null and sessionRoleCd != '' and sessionRoleCd != '90'">
+			<if test="sessionSiteCd != null and sessionSiteCd != ''">
+		 		AND SU.SITE_CD = #{sessionSiteCd}
+			</if>
+		</if>
 	<![CDATA[
 						 ORDER BY GP.CRE_DT DESC
 				  ) T,(SELECT @RNUM := 0) RNUM

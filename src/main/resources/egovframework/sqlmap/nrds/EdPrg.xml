@@ -48,8 +48,10 @@
 		 <if test="schEndDt != null and schEndDt != ''">
 		   AND PGM_END_DT  <![CDATA[<=]]> #{schEndDt}
 		 </if>
-		 <if test="sessionRoleCd != '90'">
-		 	AND PGM_AGENT = #{sessionSiteCd}
+		 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'">
+		 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+		 		AND PGM_AGENT = #{sessionSiteCd}
+		 	</if>
 		 </if>
 		 <if test="pgmEdCdList != null and pgmEdCdList.size != 0">
 		   AND PGM_ED_CD IN
@@ -213,6 +215,36 @@
 		SELECT  COUNT(*) AS CNT
 		  FROM ED_PGM
 	]]>
+		WHERE 1 = 1
+		 <if test="schStrDt != null and schStrDt != '' ">
+		   AND PGM_START_DT <![CDATA[>=]]> #{schStrDt} 
+		 </if>
+		 <if test="schEndDt != null and schEndDt != ''">
+		   AND PGM_END_DT  <![CDATA[<=]]> #{schEndDt}
+		 </if>
+		 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'">
+		 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+		 		AND PGM_AGENT = #{sessionSiteCd}
+		 	</if>
+		 </if>
+		 <if test="pgmEdCdList != null and pgmEdCdList.size != 0">
+		   AND PGM_ED_CD IN
+		   	<foreach collection="pgmEdCdList" item="item" index="index" separator="," open="(" close=")">
+		   		#{item}
+		   	</foreach> 
+		 </if>
+		 <if test="pgmClassNmList != null and pgmClassNmList.size != 0">
+		   AND PGM_CLASS_NM_CD IN
+		   	<foreach collection="pgmClassNmList" item="item" index="index" separator="," open="(" close=")">
+		   		#{item}
+		   	</foreach> 
+		 </if>
+		 <if test="pgmClassSubList != null and pgmClassSubList.size != 0">
+		   AND PGM_CLASS_SUB_CD IN
+		   	<foreach collection="pgmClassSubList" item="item" index="index" separator="," open="(" close=")">
+		   		#{item}
+		   	</foreach> 
+		 </if>
 	</select>
 	
 	<delete id="edPrg.deleteEdPrm" parameterType="hashMap">

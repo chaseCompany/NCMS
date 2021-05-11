@@ -305,7 +305,7 @@ public class IndividualExcel extends AbstractExcelView{
 		tempRowCnt = rowCount;
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("차기\r\n상담관련").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "다음 상담일자");
-		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_DT"), ""));
+		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "시간");
 		this.cellStyleLoop(5, 5, topRCellStyle, row, cell, (cslInfo.get("NXT_CSL_TM") == null ? "" : String.valueOf(cslInfo.get("NXT_CSL_TM"))));
 		rowCount++;
