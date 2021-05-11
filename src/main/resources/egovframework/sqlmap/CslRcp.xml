@@ -56,12 +56,19 @@
 		  LEFT JOIN SYS_CD SC18 ON (SC18.GRP_CD = 'C5600' AND SC18.CD_ID = CR.URS_CD)
 		  LEFT JOIN SYS_CD SC19 ON (SC19.GRP_CD = 'C1300' AND SC19.CD_ID = CR.TGP_FRG_CD)		  
 	]]>
-		 <if test="rcpNo != '' and rcpNo != null"><!-- 상세 조회시  -->
-		 	WHERE CR.RCP_NO = #{rcpNo}
-		 </if>
-		 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
-		 	WHERE CR.CSL_DT BETWEEN #{fmDt} AND #{toDt}
-		 </if>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			 <if test="rcpNo != '' and rcpNo != null"><!-- 상세 조회시  -->
+			 	AND CR.RCP_NO = #{rcpNo}
+			 </if>
+			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+			 	AND CR.CSL_DT BETWEEN #{fmDt} AND #{toDt}
+			 </if>
+			 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
+			 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+			 		AND CSL_SITE = #{sessionSiteCd}
+			 	</if>
+			 </if>
+		 </trim>
 	</select>
 
 	<select id="cslRcp.getCslRcpSeq" resultType="String">
@@ -116,6 +123,9 @@
 		  FROM CSL_RCP
 		 WHERE CSL_DT BETWEEN #{schStrCslDt} AND #{schEndCslDt}
 	]]>
+		<if test="schRoleCd != '90'">
+							AND CSL_SITE = #{schSiteCd}
+		</if>
 		<if test="(schGb != null or schGb != '') and schNm != '' and schNm != null">
 			<choose>
 				<when test="schGb == '0'">

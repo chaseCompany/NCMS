@@ -48,8 +48,10 @@
 		 <if test="schEndDt != null and schEndDt != ''">
 		   AND PGM_END_DT  <![CDATA[<=]]> #{schEndDt}
 		 </if>
-		 <if test="sessionRoleCd != '90'">
-		 	AND PGM_AGENT = #{sessionSiteCd}
+		 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'">
+		 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+		 		AND PGM_AGENT = #{sessionSiteCd}
+		 	</if>
 		 </if>
 		 <if test="pgmEdCdList != null and pgmEdCdList.size != 0">
 		   AND PGM_ED_CD IN

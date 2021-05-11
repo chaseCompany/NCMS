@@ -76,7 +76,9 @@ public class EduMngController {
 			System.out.println("name: "+name +"   &&   parameter:" + request.getParameter(name));
 			map.put(name, request.getParameter(name));
 		} 
-		
+		map.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		map.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		System.out.println("sessionRoleCd:"+map.get("sessionRoleCd")+" sessionSiteCd :"+map.get("sessionSiteCd"));
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
@@ -104,6 +106,12 @@ public class EduMngController {
 	 */
 	@RequestMapping(value="/nrds/eduMng/ajaxGetEduMngPrgList.do")
 	public String ajaxGetEduMngPrgList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		@SuppressWarnings("unchecked")
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>) session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		
+		reqMap.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		reqMap.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		
 		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 

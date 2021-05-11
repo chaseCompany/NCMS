@@ -232,6 +232,12 @@ public class RecyclePrgController {
 	 */
 	@RequestMapping(value="/ajaxGetRecyclePrgList.do")
 	public String ajaxGetRecyclePrgList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		@SuppressWarnings("unchecked")
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>) session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		
+		reqMap.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		reqMap.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		
 		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
@@ -270,6 +276,7 @@ public class RecyclePrgController {
 		reqMap.put("pgmEdCdList", pgmEdCdList);
 		reqMap.put("pgmClassNmList", pgmClassNmList);
 		reqMap.put("pgmClassSubList", pgmClassSubList);
+
 		if(!"".equals(schStrDt) && !"".equals(schEndDt)) {
 			//reqMap.put("schStrDt", schStrDt.replaceAll("-", ""));
 			//reqMap.put("schEndDt", schEndDt.replaceAll("-", ""));

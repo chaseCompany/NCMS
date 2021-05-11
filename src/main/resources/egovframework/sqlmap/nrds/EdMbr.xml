@@ -85,6 +85,8 @@
 	<![CDATA[
 		SELECT /* edMbr.getEdMbrListCount */ COUNT(EM.MBR_NO) AS CNT
 		  FROM ED_MBR EM
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		  LEFT JOIN SYS_USR SU ON (EM.UPD_ID = SU.USR_ID)
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="mbrNm != null and mbrNm != ''">
