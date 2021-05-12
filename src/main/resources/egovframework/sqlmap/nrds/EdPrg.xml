@@ -36,11 +36,14 @@
 			 , FILE_ID
 			 , PGM_EMP
 			 , PGM_VOL
-			 , CRE_ID
-			 , CRE_DT
-			 , UPD_ID
-			 , UPD_DT 
-		  FROM ED_PGM EP, (SELECT @RNUM := 0) RNUM
+			 , EP.CRE_ID
+			 , EP.CRE_DT
+			 , EP.UPD_ID
+			 , EP.UPD_DT
+			 , SC01.CD_NM AS PGM_AGENT_NM 
+		  FROM ED_PGM EP
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SC01.CD_ID = EP.PGM_AGENT)
+		  , (SELECT @RNUM := 0) RNUM
 		 WHERE 1 = 1
 		 <if test="schStrDt != null and schStrDt != '' ">
 		   AND PGM_START_DT <![CDATA[>=]]> #{schStrDt} 
@@ -104,11 +107,13 @@
 			 , FILE_ID
 			 , PGM_EMP
 			 , PGM_VOL
-			 , CRE_ID
-			 , CRE_DT
-			 , UPD_ID
-			 , UPD_DT
-		  FROM ED_PGM
+			 , EP.CRE_ID
+			 , EP.CRE_DT
+			 , EP.UPD_ID
+			 , EP.UPD_DT
+			 , SC01.CD_NM AS PGM_AGENT_NM 
+		  FROM ED_PGM EP
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SC01.CD_ID = EP.PGM_AGENT)
 		 WHERE PGM_ID = #{pgmId}
 	]]>
 	</select>
@@ -171,7 +176,7 @@
 				, PGM_CLASS_DUR
 				, PGM_SUBJECT	, PGM_GOAL			, PGM_CTNT			, PGM_RST				, FILE_ID
 				, PGM_EMP		, PGM_VOL			, CRE_ID			, CRE_DT				, UPD_ID
-				, UPD_DT 
+				, UPD_DT
 		) VALUES (
 				  #{pgmEdCd}	, #{pgmClassNmCd}	, #{pgmClassSubCd}	, #{pgmMainLec}		, #{pgmSubLec}		
 				, #{pgmStartDt} , #{pgmStartTm}		, #{pgmEndDt}		, #{pgmEndTm}		, #{pgmDur}
@@ -213,7 +218,8 @@
 		/* edPrg.selectEdPrmListCount */
 	<![CDATA[
 		SELECT  COUNT(*) AS CNT
-		  FROM ED_PGM
+		  FROM ED_PGM EP
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SC01.CD_ID = EP.PGM_AGENT)
 	]]>
 		WHERE 1 = 1
 		 <if test="schStrDt != null and schStrDt != '' ">

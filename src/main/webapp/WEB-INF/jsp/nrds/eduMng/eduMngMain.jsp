@@ -4,8 +4,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String loginUserNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginUserNm"), "");
+	String loginSiteCd = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginSiteCd"), "");
+	String loginSiteNm = StringUtils.defaultIfEmpty((String)request.getAttribute("LoginSiteNm"), "");
 %>
 <c:set var="loginUserNm" value="<%=loginUserNm%>" />
+<c:set var="loginSiteCd" value="<%=loginSiteCd%>" />
+<c:set var="loginSiteNm" value="<%=loginSiteNm%>" />
 <script type="text/javascript" language="javascript" charset="utf-8" src="<c:url value='/js/jquery.form.js'/>"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 	$(document).ready(function(){
@@ -305,6 +309,9 @@
 				
 				$("#pgmEmp").val("");
 				$("#pgmVol").val("");
+				
+				$("input[name='pgmAgent']").val("<c:out value="${loginSiteCd}" />");
+				$("input[name='pgmAgentNm']").val("<c:out value="${loginSiteNm}" />");
 			}else{
 				$.ajax({
 					url : '/nrds/ajaxGetRecyclePrgInfo.do',
@@ -340,6 +347,7 @@
 						$("input[name='pgmEndTm']").val(recyclePrgInfo.pgmEndTm);
 						
 						$("input[name='pgmAgent']").val(recyclePrgInfo.pgmAgent);
+						$("input[name='pgmAgentNm']").val(recyclePrgInfo.pgmAgentNm);
 						$("select[name='pgmMngUsrId']").val(recyclePrgInfo.pgmMngUsrId);
 						
 						$("input[name='pgmClassStartDt']").datepicker('setDate', recyclePrgInfo.pgmClassStartDt);
@@ -583,7 +591,8 @@
 										<th>기관명</th>
 										<td>
 											<div class="dsp-ibk tac">
-												<input type="text" name="pgmAgent" value="<c:out value="${loginSiteNm}" />" readonly class="el-input__inner" style="width: 200px;" placeholder="기관명">
+												<input type="hidden" name="pgmAgent" value="<c:out value="${loginSiteCd}" />">
+												<input type="text" name="pgmAgentNm" value="<c:out value="${loginSiteNm}" />" readonly class="el-input__inner" style="width: 200px;" placeholder="기관명">
 											</div>
 										</td>
 										<th> <span class="required">*</span> 담당자</th>
