@@ -438,6 +438,9 @@
 				
 				$("input[name='pgmEmp']").val("");
 				$("input[name='pgmVol']").val("");
+				
+				$("input[name='pgmAgent']").val("<c:out value="${loginSiteCd}" />");
+				$("input[name='pgmAgentNm']").val("<c:out value="${loginSiteNm}" />");
 			}else{
 				$.ajax({
 					url : '/nrds/ajaxGetRecyclePrgInfo.do',
@@ -472,6 +475,7 @@
 						$("input[name='pgmEndTm']").val(recyclePrgInfo.pgmEndTm);
 						
 						$("input[name='pgmAgent']").val(recyclePrgInfo.pgmAgent);
+						$("input[name='pgmAgentNm']").val(recyclePrgInfo.pgmAgentNm);
 						$("select[name='pgmMngUsrId']").val(recyclePrgInfo.pgmMngUsrId);
 						
 						$("input[name='pgmClassStartDt']").datepicker('setDate', recyclePrgInfo.pgmClassStartDt);
