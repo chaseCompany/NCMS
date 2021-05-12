@@ -11,12 +11,12 @@
 			getWeeklyPrgList();
 		},
 		<%-- 프로그램정보 상세 보기 --%>
-		viewPrgRow = function(PGM_ID){
+		viewPrgRow = function(PGM_ID, isCopy){
 			var pgmObj = {
 				pgmId : PGM_ID
 			}
-
-			reSetPgmForm(pgmObj);
+			
+			reSetPgmForm(pgmObj, isCopy);
 		}
 	});
 </script>
@@ -24,12 +24,13 @@
 	<div class="el-table_header-wrapper">
 		<table>
 			<colgroup>
-				<col style="width:80px">
-				<col style="width:200px">
-				<col style="width:200px;">
-				<col style="width: 120px;">
-				<col style="width: 200px;">
-				<col style="width: 200px;">
+				<col width="100px">
+				<col width="250px">
+				<col width="200px">
+				<col width="150px">
+				<col width="250px">
+				<col width="250px">
+				<col width="500px">
 				<col>
 			</colgroup>
 			<thead>
@@ -41,6 +42,7 @@
 					<th>교육분류</th>
 					<th>교육과정명</th>
 					<th>참여자수</th>
+					<th>과정 정보 복사</th>
 				</tr>
 			</thead>
 		</table>
@@ -49,12 +51,13 @@
 		<c:if test="${fn:length(prgList) > 0}">
 		<table>
 			<colgroup>
-				<col style="width:80px">
-				<col style="width:200px">
-				<col style="width:200px;">
-				<col style="width: 120px;">
-				<col style="width: 200px;">
-				<col style="width: 200px;">
+				<col width="100px">
+				<col width="250px">
+				<col width="200px">
+				<col width="150px">
+				<col width="250px">
+				<col width="250px">
+				<col width="500px">
 				<col>
 			</colgroup>
 			<tbody>
@@ -68,6 +71,9 @@
 					<td><a href='javaScript:viewPrgRow("<c:out value="${result.pgmId}"/>");' class='row_link'><c:out value="${result.pgmEdNm}" /></a></td>
 					<td><a href='javaScript:viewPrgRow("<c:out value="${result.pgmId}"/>");' class='row_link'><c:out value="${result.pgmClassNm}" /></a></td>
 					<td><c:out value="${result.pgmMbrCount}" /></td>
+					<td>
+						<a href='javaScript:viewPrgRow("<c:out value="${result.pgmId}"/>", true);' class='row_link'>복사</a>
+					</td>
 				</tr>
 				</c:forEach>
 			</tbody>

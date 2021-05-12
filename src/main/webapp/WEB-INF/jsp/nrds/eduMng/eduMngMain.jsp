@@ -270,7 +270,7 @@
 		};
 		
 		<%-- 재활교육 프로그램 정보 불러오기 --%>
-		reSetPgmForm = function(obj){
+		reSetPgmForm = function(obj, isCopy){
 			if(obj == undefined){
 				$("button#delBtnYes").hide();
 				$("button#delBtnNo").show();
@@ -329,18 +329,15 @@
 						//var setDt = new Date(recyclePrgInfo.PGM_DT.substr(0, 4), recyclePrgInfo.PGM_DT.substr(4, 2), recyclePrgInfo.PGM_DT.substr(6, 2));
 						//setDt.setMonth(setDt.getMonth() - 1);
 
-						$("input[name='pgmId']").val(recyclePrgInfo.pgmId);
 						$("select[name='pgmEdCd']").val(recyclePrgInfo.pgmEdCd).prop("selected", true);
 						settingPgmEdCd(recyclePrgInfo.pgmClassNmCd, recyclePrgInfo.pgmClassSubCd);
 						$("select[name='pgmClassNmCd']").val(recyclePrgInfo.pgmClassNmCd).prop("selected", true);
 						$("select[name='pgmClassSubCd']").val(recyclePrgInfo.pgmClassSubCd).prop("selected", true);
-						$("input[name='pgmSession']").val(recyclePrgInfo.pgmSession);
+						
 						$("input[name='pgmClass']").val(recyclePrgInfo.pgmClass);
 						$("input[name='pgmDur']").val(recyclePrgInfo.pgmDur);
 						$("input[name='pgmClassDur']").val(recyclePrgInfo.pgmClassDur);
 						
-						$("input[name='pgmMainLec']").val(recyclePrgInfo.pgmMainLec);
-						$("input[name='pgmSubLec']").val(recyclePrgInfo.pgmSubLec);
 						$("input[name='pgmStartDt']").datepicker('setDate', recyclePrgInfo.pgmStartDt);
 						$("input[name='pgmEndDt']").datepicker('setDate', recyclePrgInfo.pgmEndDt);
 						$("input[name='pgmStartTm']").val(recyclePrgInfo.pgmStartTm);
@@ -350,17 +347,27 @@
 						$("input[name='pgmAgentNm']").val(recyclePrgInfo.pgmAgentNm);
 						$("select[name='pgmMngUsrId']").val(recyclePrgInfo.pgmMngUsrId);
 						
-						$("input[name='pgmClassStartDt']").datepicker('setDate', recyclePrgInfo.pgmClassStartDt);
-						$("input[name='pgmClassEndDt']").datepicker('setDate', recyclePrgInfo.pgmClassEndDt);
-						$("input[name='pgmClassStartTm']").val(recyclePrgInfo.pgmClassStartTm);
-						$("input[name='pgmClassEndTm']").val(recyclePrgInfo.pgmClassEndTm);
-						
-						$("input[name='pgmSubject']").val(recyclePrgInfo.pgmSubject);
 						$("input[name='pgmGoal']").val(recyclePrgInfo.pgmGoal);
 						$("textarea[name='pgmCtnt']").val(recyclePrgInfo.pgmCtnt);
 						$("textarea[name='pgmRst']").val(recyclePrgInfo.pgmRst);
 						$("input[name='pgmEmp']").val(recyclePrgInfo.pgmEmp);
-						$("input[name='pgmVol']").val(recyclePrgInfo.pgmVol);
+						$("input[name='pgmVol']").val(recyclePrgInfo.pgmVol);					
+						
+						if(isCopy){
+							// 복사일 경우 교육 정보 초기화 + 신규등록
+							$("input[name='pgmId']").val("");
+							$("input[name='pgmClassStartDt'], input[name='pgmClassStartTm'], input[name='pgmClassEndDt'], input[name='pgmClassEndTm'], input[name='pgmSession'], input[name='pgmSubject'], input[name='pgmMainLec'], input[name='pgmSubLec']").val("");
+						}else{
+							$("input[name='pgmId']").val(recyclePrgInfo.pgmId);
+							$("input[name='pgmClassStartDt']").datepicker('setDate', recyclePrgInfo.pgmClassStartDt);
+							$("input[name='pgmClassEndDt']").datepicker('setDate', recyclePrgInfo.pgmClassEndDt);
+							$("input[name='pgmClassStartTm']").val(recyclePrgInfo.pgmClassStartTm);
+							$("input[name='pgmClassEndTm']").val(recyclePrgInfo.pgmClassEndTm);
+							$("input[name='pgmSession']").val(recyclePrgInfo.pgmSession);
+							$("input[name='pgmSubject']").val(recyclePrgInfo.pgmSubject);
+							$("input[name='pgmMainLec']").val(recyclePrgInfo.pgmMainLec);
+							$("input[name='pgmSubLec']").val(recyclePrgInfo.pgmSubLec);
+						}
 						
 						if(recyclePrgInfo.fileList != undefined && recyclePrgInfo.fileList != ''){
 							for(let i=0 ; i<recyclePrgInfo.fileList.length ; i++){

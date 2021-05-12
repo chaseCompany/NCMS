@@ -170,13 +170,14 @@
 	</select>
 	<insert id="edPrg.insertEdPrmInfo" parameterType="hashMap">
 		/* edPrg.insertEdPrmInfo */
-	<![CDATA[
 		INSERT INTO ED_PGM ( PGM_ID
 				, PGM_ED_CD		, PGM_CLASS_NM_CD	, PGM_CLASS_SUB_CD	, PGM_MAIN_LEC	, PGM_SUB_LEC			
 				, PGM_START_DT	, PGM_START_TM		, PGM_END_DT		, PGM_END_TM	, PGM_DUR
 				, PGM_SESSION	, PGM_CLASS			, PGM_AGENT
-				, PGM_MNG_USR_ID, PGM_CLASS_START_DT, PGM_CLASS_START_TM, PGM_CLASS_END_DT, PGM_CLASS_END_TM	
-				, PGM_CLASS_DUR
+				, PGM_MNG_USR_ID, PGM_CLASS_START_DT, PGM_CLASS_START_TM, PGM_CLASS_END_DT, PGM_CLASS_END_TM
+				<if test="pgmClassDur != null and pgmClassDur != '' ">
+					, PGM_CLASS_DUR
+				</if>	
 				, PGM_SUBJECT	, PGM_GOAL			, PGM_CTNT			, PGM_RST				, FILE_ID
 				, PGM_EMP		, PGM_VOL			, CRE_ID			, CRE_DT				, UPD_ID
 				, UPD_DT 
@@ -184,14 +185,15 @@
 				, #{pgmEdCd}	, #{pgmClassNmCd}	, #{pgmClassSubCd}	, #{pgmMainLec}		, #{pgmSubLec}		
 				, #{pgmStartDt} , #{pgmStartTm}		, #{pgmEndDt}		, #{pgmEndTm}		, #{pgmDur}
 				, #{pgmSession}	, #{pgmClass}		, #{pgmAgent}
-				, #{pgmMngUsrId}, #{pgmClassStartDt}, #{pgmClassStartTm}, #{pgmClassEndDt}	, #{pgmClassEndTm}	
-				, #{pgmClassDur}
+				, #{pgmMngUsrId}, #{pgmClassStartDt}, #{pgmClassStartTm}, #{pgmClassEndDt}	, #{pgmClassEndTm}
+				<if test="pgmClassDur != null and pgmClassDur != '' ">
+					, #{pgmClassDur}
+				</if>
 				, #{pgmSubject}	, #{pgmGoal}		, #{pgmCtnt}		, #{pgmRst}			, #{fileId}
 				, #{pgmEmp}		, #{pgmVol}			, #{creId}			, NOW()			, #{updId}
 				, #{updDt}
 		)
 				
-	]]>
 	</insert>
 
 	<update id="edPrg.updateEdPrmInfo" parameterType="hashMap">
