@@ -148,9 +148,8 @@
 			}else{
 				age = dDayYear + 100 - year;
 			}
-			if(dDayDate < day){
-				age = age - 1;
-			}
+			// 한국 나이로 계산
+			age = age + 1;
 
 			$("input[name='age']").val(age);
 		}

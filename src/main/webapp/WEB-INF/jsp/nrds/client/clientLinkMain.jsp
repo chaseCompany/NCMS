@@ -291,12 +291,12 @@
 						</a>
 						<a href="<c:url value="/nrds/clientEduConMain.do"/>">
 							<div class="el-tabs__item is-top" data-id="tab-link">
-								<span><i class="el-icon-s-management"></i> 의뢰 교육조건부 기소유예</span>
+								<span><i class="el-icon-s-management"></i> 접수 (교육조건부)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientLeadConMain.do" />">
 							<div class="el-tabs__item is-top" data-id="tab-req">
-								<span><i class="el-icon-platform-eleme"></i> 의뢰 선도조건부 기소유예</span>
+								<span><i class="el-icon-platform-eleme"></i> 접수(선도조건부)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientLinkMain.do" />">
