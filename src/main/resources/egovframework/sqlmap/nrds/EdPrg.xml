@@ -36,11 +36,14 @@
 			 , FILE_ID
 			 , PGM_EMP
 			 , PGM_VOL
-			 , CRE_ID
-			 , CRE_DT
-			 , UPD_ID
-			 , UPD_DT 
-		  FROM ED_PGM EP, (SELECT @RNUM := 0) RNUM
+			 , EP.CRE_ID
+			 , EP.CRE_DT
+			 , EP.UPD_ID
+			 , EP.UPD_DT
+			 , SC01.CD_NM AS PGM_AGENT_NM 
+		  FROM ED_PGM EP
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SC01.CD_ID = EP.PGM_AGENT)
+		  , (SELECT @RNUM := 0) RNUM
 		 WHERE 1 = 1
 		 <if test="schStrDt != null and schStrDt != '' ">
 		   AND PGM_START_DT <![CDATA[>=]]> #{schStrDt} 
@@ -104,11 +107,13 @@
 			 , FILE_ID
 			 , PGM_EMP
 			 , PGM_VOL
-			 , CRE_ID
-			 , CRE_DT
-			 , UPD_ID
-			 , UPD_DT
-		  FROM ED_PGM
+			 , EP.CRE_ID
+			 , EP.CRE_DT
+			 , EP.UPD_ID
+			 , EP.UPD_DT
+			 , SC01.CD_NM AS PGM_AGENT_NM 
+		  FROM ED_PGM EP
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SC01.CD_ID = EP.PGM_AGENT)
 		 WHERE PGM_ID = #{pgmId}
 	]]>
 	</select>
@@ -160,11 +165,14 @@
 	]]>
 	</select>
 
+	<select id="edPrg.selectEdPrmPK" resultType="int">
+		SELECT MAX(PGM_ID)+1 FROM ED_PGM
+	</select>
 	<insert id="edPrg.insertEdPrmInfo" parameterType="hashMap">
 		/* edPrg.insertEdPrmInfo */
 	<![CDATA[
-		INSERT INTO ED_PGM (
-				  PGM_ED_CD		, PGM_CLASS_NM_CD	, PGM_CLASS_SUB_CD	, PGM_MAIN_LEC	, PGM_SUB_LEC			
+		INSERT INTO ED_PGM ( PGM_ID
+				, PGM_ED_CD		, PGM_CLASS_NM_CD	, PGM_CLASS_SUB_CD	, PGM_MAIN_LEC	, PGM_SUB_LEC			
 				, PGM_START_DT	, PGM_START_TM		, PGM_END_DT		, PGM_END_TM	, PGM_DUR
 				, PGM_SESSION	, PGM_CLASS			, PGM_AGENT
 				, PGM_MNG_USR_ID, PGM_CLASS_START_DT, PGM_CLASS_START_TM, PGM_CLASS_END_DT, PGM_CLASS_END_TM	
@@ -172,8 +180,8 @@
 				, PGM_SUBJECT	, PGM_GOAL			, PGM_CTNT			, PGM_RST				, FILE_ID
 				, PGM_EMP		, PGM_VOL			, CRE_ID			, CRE_DT				, UPD_ID
 				, UPD_DT 
-		) VALUES (
-				  #{pgmEdCd}	, #{pgmClassNmCd}	, #{pgmClassSubCd}	, #{pgmMainLec}		, #{pgmSubLec}		
+		) VALUES ( #{pgmId}
+				, #{pgmEdCd}	, #{pgmClassNmCd}	, #{pgmClassSubCd}	, #{pgmMainLec}		, #{pgmSubLec}		
 				, #{pgmStartDt} , #{pgmStartTm}		, #{pgmEndDt}		, #{pgmEndTm}		, #{pgmDur}
 				, #{pgmSession}	, #{pgmClass}		, #{pgmAgent}
 				, #{pgmMngUsrId}, #{pgmClassStartDt}, #{pgmClassStartTm}, #{pgmClassEndDt}	, #{pgmClassEndTm}	
@@ -213,7 +221,8 @@
 		/* edPrg.selectEdPrmListCount */
 	<![CDATA[
 		SELECT  COUNT(*) AS CNT
-		  FROM ED_PGM
+		  FROM ED_PGM EP
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SC01.CD_ID = EP.PGM_AGENT)
 	]]>
 		WHERE 1 = 1
 		 <if test="schStrDt != null and schStrDt != '' ">
