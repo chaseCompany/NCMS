@@ -197,6 +197,7 @@ public class RecyclePrgController {
 		}
 
 		// 회원 목록
+		System.out.println("프로그램 : "+pgmId);
 		if(pgmMbrNoList != null && pgmMbrNoList.length > 0) {
 			List<HashMap<String, Object>> mbrList = new ArrayList<HashMap<String, Object>>();
 
