@@ -57,14 +57,10 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 	}
 	
 	public int insertEdPrmInfo(HashMap<String, Object> map) throws Exception{
-		if(map.get("fileList") != null) {
-			List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)map.get("fileList");
-
-			for(HashMap<String, Object> info : fileList){
-				fileInfoService.insertFileInfo(info);
- 			}
-		}
-		return recyclePrgDao.insertEdPrmInfo(map);
+		int EdPrmKey = recyclePrgDao.selectEdPrmPK();
+		map.put("pgmId", EdPrmKey);
+		recyclePrgDao.insertEdPrmInfo(map);
+		return EdPrmKey;
 	}
 	
 	public int updateEdPrmInfo(HashMap<String, Object> map) throws Exception{
@@ -91,12 +87,14 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 	@Override
 	public HashMap<String, Object> processEdPrm(HashMap<String, Object> map) throws Exception {
 		int result = 0;
+		int EdPrmKey =0;
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		String deletePgmSeq = StringUtils.defaultIfEmpty((String)map.get("deletePgmSeq"), "");
 
 		if(map.get("fileList") != null) {
 			List<HashMap<String, Object>> fileList = (List<HashMap<String, Object>>)map.get("fileList");
 
+			System.out.println("fileList길이: "+fileList.size());
 			for(HashMap<String, Object> info : fileList){
 				fileInfoService.insertFileInfo(info);
  			}
@@ -121,7 +119,8 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 			result = this.updateEdPrmInfo(map);
 			resultMap.put("MSG", "수정");
 		}else{
-			result = this.insertEdPrmInfo(map);
+			EdPrmKey = this.insertEdPrmInfo(map);
+			result=1;
 			resultMap.put("MSG", "등록");
 		}
 
@@ -129,6 +128,7 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 		if(map.get("grpPgmMbrList") != null) {
 			List<HashMap<String, Object>> mbrList = (List<HashMap<String, Object>>)map.get("grpPgmMbrList");
 			for(HashMap<String, Object> mbrMap : mbrList) {
+				mbrMap.put("pgmId", EdPrmKey+"");
 				this.insertEdPgmMbr(mbrMap);
 			}
 		}

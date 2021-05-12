@@ -29,6 +29,7 @@ public class RecyclePrgMbrDao extends EgovAbstractMapper{
 	 * @throws SQLException
 	 */
 	public int insertEdPgmMbr(HashMap<String, Object> map) throws SQLException{
+		System.out.println("pgmId::::::::::::  "+map.get("pgmId"));
 		return insert("EdPrgMbr.insertEdPgmMbr", map);
 	}
 

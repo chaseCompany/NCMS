@@ -21,6 +21,9 @@ public class RecyclePrgDao extends EgovAbstractMapper{
 	public HashMap selectEdPrmInfoMap(HashMap<String, Object> map) throws Exception {
 		return selectOne("edPrg.selectEdPrmInfoMap", map);
 	}
+	public int selectEdPrmPK() throws Exception{
+		return selectOne("edPrg.selectEdPrmPK");
+	}
 	public int insertEdPrmInfo(HashMap<String, Object> map) throws Exception {
 		return insert("edPrg.insertEdPrmInfo", map);
 	}
