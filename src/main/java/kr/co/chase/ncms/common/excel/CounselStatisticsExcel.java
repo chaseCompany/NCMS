@@ -39,7 +39,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(8, (short) (103*32));
 		sheet.setColumnWidth(9, (short) (103*32));
 		sheet.setColumnWidth(10, (short) (37*32));
-		sheet.setColumnWidth(11, (short) (37*32));
+		sheet.setColumnWidth(11, (short) (60*32));
 		sheet.setColumnWidth(12, (short) (103*32));
 		sheet.setColumnWidth(13, (short) (105*32));
 		sheet.setColumnWidth(14, (short) (87*32));
@@ -47,7 +47,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(16, (short) (82*32));
 		sheet.setColumnWidth(17, (short) (103*32));
 		sheet.setColumnWidth(18, (short) (37*32));
-		sheet.setColumnWidth(19, (short) (37*32));
+		sheet.setColumnWidth(19, (short) (60*32));
 		sheet.setColumnWidth(20, (short) (103*32));
 		sheet.setColumnWidth(21, (short) (105*32));
 		sheet.setColumnWidth(22, (short) (105*32));
@@ -119,7 +119,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 		contentCellStyle.setFont(basicFont);
 
 		// 타이틀
-		String[] titleArr = {"No", "상담일자", "상담\r\n시간", "소요\r\n시간", "기관명", "상담자", "본인여부", "본인여부\r\n세부항목", "정보제공자 성명", "회원번호", "성별", "나이", "연락처", "직업", "지역", "지역\r\n세부항목", "대상자 성명", "회원번호", "나이", "성별", "연락처", "직업", "내외국인", "지역", "지역\r\n세부항목", "정보취득경로", "주호소문제", "상담유형", "최초 사용약물", "최초 사용약물\r\n세부항목", "주요사용약물", "주요 사용약물\r\n세부항목", "주요조치분류", "ASSIST점수", "위험성(A)", "지지체계(B)", "협조능력(C)", "위기분류\r\n척도점수", "위기상담", "URS", "상담내용", "상담결과"};
+		String[] titleArr = {"No", "상담일자", "상담\n시간", "소요\n시간", "기관명", "상담자", "본인여부", "본인여부\n세부항목", "정보제공자 성명", "회원번호", "성별", "나이", "연락처", "직업", "지역", "지역\n세부항목", "대상자 성명", "회원번호", "나이", "성별", "연락처", "직업", "내외국인", "지역", "지역\n세부항목", "정보취득경로", "주호소문제", "상담유형", "최초 사용약물", "최초 사용약물\n세부항목", "주요사용약물", "주요 사용약물\n세부항목", "주요조치분류", "ASSIST점수", "위험성(A)", "지지체계(B)", "협조능력(C)", "위기분류\n척도점수", "위기상담", "URS", "상담내용", "상담결과"};
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		for(int i=0; i < titleArr.length; i++) {
@@ -149,7 +149,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(8, 8, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_NM"), ""));
 			this.cellStyleLoop(9, 9, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_MBR_NO"), ""));
 			this.cellStyleLoop(10, 10, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_GEND_NM"), ""));
-			this.cellStyleLoop(11, 11, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_AGE"), ""));
+			this.cellStyleLoop(11, 11, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_AGE_NM"), ""));
 			String ifpTelNo = StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_TEL_NO1"), "");
 			if(!"".equals(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_TEL_NO2"), ""))) {
 				ifpTelNo += "-" + StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_TEL_NO2"), "");
@@ -163,7 +163,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(15, 15, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_AREA_ETC"), ""));
 			this.cellStyleLoop(16, 16, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_NM"), ""));
 			this.cellStyleLoop(17, 17, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_MBR_NO"), ""));
-			this.cellStyleLoop(18, 18, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_AGE"), ""));
+			this.cellStyleLoop(18, 18, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_AGE_NM"), ""));
 			this.cellStyleLoop(19, 19, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_GEND_NM"), ""));
 			String tgpTelNo = StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_TEL_NO1"), "");
 			if(!"".equals(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_TEL_NO2"), ""))) {

@@ -46,7 +46,7 @@
 			<td><div class="cell"><c:out value="${status.index + 1}" /></div></td>
 			<td>
 				<div class="cell">
-					<button type="button" onclick="javaScript:pgmMemDel('<c:out value="${status.index + 1}" />', \''<c:out value="${result.MBR_NO}" />\'');" class="el-button el-button--danger el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
+					<button type="button" onclick="javaScript:pgmMemDel('<c:out value="${status.index + 1}" />', '<c:out value="${result.MBR_NO}" />');" class="el-button el-button--danger el-button--mini is-plain" slot="reference" style="margin-left: 1px; padding: 4px 9px;">
 						<span>삭제</span>
 					</button>
 				</div>

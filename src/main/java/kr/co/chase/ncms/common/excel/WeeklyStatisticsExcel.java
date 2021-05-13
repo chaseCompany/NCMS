@@ -94,7 +94,7 @@ public class WeeklyStatisticsExcel extends AbstractExcelView{
 		contentCellStyle.setFont(basicFont);
 
 		// 타이틀
-		String[] titleArr = {"No", "기관명", "대분류", "중분류", "실시일시", "실시\r\n시간", "소요\r\n시간", "담당자", "회기", "강사", "주제", "목표", "내용", "결과", "회원번호", "회원명", "진행기록"};
+		String[] titleArr = {"No", "기관명", "대분류", "중분류", "실시일시", "실시\n시간", "소요\n시간", "담당자", "회기", "강사", "주제", "목표", "내용", "결과", "회원번호", "회원명", "진행기록"};
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		for(int i=0; i < titleArr.length; i++) {

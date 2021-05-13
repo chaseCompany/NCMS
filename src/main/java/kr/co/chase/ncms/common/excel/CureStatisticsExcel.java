@@ -32,7 +32,7 @@ public class CureStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(1, (short) (59*32));
 		sheet.setColumnWidth(2, (short) (103*32));
 		sheet.setColumnWidth(3, (short) (37*32));
-		sheet.setColumnWidth(4, (short) (37*32));
+		sheet.setColumnWidth(4, (short) (60*32));
 		sheet.setColumnWidth(5, (short) (82*32));
 		sheet.setColumnWidth(6, (short) (67*32));
 		sheet.setColumnWidth(7, (short) (113*32));
@@ -107,7 +107,7 @@ public class CureStatisticsExcel extends AbstractExcelView{
 
 		// 타이틀
 		String[] titleArr = {"No", "회원명", "회원번호", "성별", "나이", "등록일자", "의료보장", "기관명", "사례관리자", "치료정보", "직업력", "재활서비스 이용정보"};
-		String[] titleArr2 = {"", "", "", "", "", "", "", "", "", "진단명", "발병시기", "처방약물", "복용량", "순응도", "신체질환", "취업시작일", "취업종료일", "취업일수", "고용형태", "직업군", "직업군\r\n세부항목", "소득금액", "퇴사사유", "이용시작일", "이용종료일", "이용일수", "기관유형", "기관명", "내용"};
+		String[] titleArr2 = {"", "", "", "", "", "", "", "", "", "진단명", "발병시기", "처방약물", "복용량", "순응도", "신체질환", "취업시작일", "취업종료일", "취업일수", "고용형태", "직업군", "직업군\n세부항목", "소득금액", "퇴사사유", "이용시작일", "이용종료일", "이용일수", "기관유형", "기관명", "내용"};
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		int colCnt = 0;
@@ -154,7 +154,7 @@ public class CureStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(1, 1, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MBR_NM"), ""));
 			this.cellStyleLoop(2, 2, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MBR_NO"), ""));
 			this.cellStyleLoop(3, 3, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("GEND_NM"), ""));
-			this.cellStyleLoop(4, 4, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("AGE"), ""));
+			this.cellStyleLoop(4, 4, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("AGE_NM"), ""));
 			this.cellStyleLoop(5, 5, contentCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("REG_DT"), ""), "-"));
 			this.cellStyleLoop(6, 6, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MEDIC_CARE_NM"), ""));
 			this.cellStyleLoop(7, 7, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MNG_SITE_NM"), ""));

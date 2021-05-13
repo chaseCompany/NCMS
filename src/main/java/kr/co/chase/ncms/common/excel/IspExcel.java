@@ -205,7 +205,7 @@ public class IspExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("상담관련\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("상담관련\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "사정일자");
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("ISP_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "관리구분");
@@ -245,7 +245,7 @@ public class IspExcel extends AbstractExcelView{
 			row = sheet.createRow(rowCount);
 			row.setHeight((short) (26*15));
 			tempRowCnt = rowCount;
-			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("중독영역\r\n(급성중독과 금단)").toString());
+			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("중독영역\n(급성중독과 금단)").toString());
 			this.cellStyleLoop(2, 2, topCellStyle, row, cell, "약물중독");
 			this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO01_NM"), ""));
 			this.cellStyleLoop(4, 4, topCellStyle, row, cell, "자원연계");
@@ -295,7 +295,7 @@ public class IspExcel extends AbstractExcelView{
 			row = sheet.createRow(rowCount);
 			row.setHeight((short) (26*15));
 			tempRowCnt = rowCount;
-			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("정신 및\r\n신체영역").toString());
+			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("정신 및\n신체영역").toString());
 			this.cellStyleLoop(2, 2, topCellStyle, row, cell, "정신과적 증상");
 			this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO06_NM"), ""));
 			this.cellStyleLoop(4, 4, topCellStyle, row, cell, "자원연계");
@@ -360,7 +360,7 @@ public class IspExcel extends AbstractExcelView{
 			row = sheet.createRow(rowCount);
 			row.setHeight((short) (26*15));
 			tempRowCnt = rowCount;
-			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("사회적\r\n관계영역").toString());
+			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("사회적\n관계영역").toString());
 			this.cellStyleLoop(2, 2, topCellStyle, row, cell, "가족관계");
 			this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO10_NM"), ""));
 			this.cellStyleLoop(4, 4, topCellStyle, row, cell, "자원연계");
@@ -395,7 +395,7 @@ public class IspExcel extends AbstractExcelView{
 			row = sheet.createRow(rowCount);
 			row.setHeight((short) (26*15));
 			tempRowCnt = rowCount;
-			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("사회서비스\r\n평가영역").toString());
+			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("사회서비스\n평가영역").toString());
 			this.cellStyleLoop(2, 2, topCellStyle, row, cell, "주거");
 			this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO12_NM"), ""));
 			this.cellStyleLoop(4, 4, topCellStyle, row, cell, "자원연계");
@@ -496,7 +496,7 @@ public class IspExcel extends AbstractExcelView{
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("장단기\r\n목표수립").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("장단기\n목표수립").toString());
 		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("TGT_CTNT"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 		

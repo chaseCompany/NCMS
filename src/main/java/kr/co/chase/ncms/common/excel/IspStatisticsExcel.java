@@ -32,7 +32,7 @@ public class IspStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(1, (short) (59*32));
 		sheet.setColumnWidth(2, (short) (103*32));
 		sheet.setColumnWidth(3, (short) (37*32));
-		sheet.setColumnWidth(4, (short) (37*32));
+		sheet.setColumnWidth(4, (short) (60*32));
 		sheet.setColumnWidth(5, (short) (82*32));
 		sheet.setColumnWidth(6, (short) (67*32));
 		sheet.setColumnWidth(7, (short) (113*32));
@@ -142,7 +142,7 @@ public class IspStatisticsExcel extends AbstractExcelView{
 		contentCellStyle.setFont(basicFont);
 
 		// 타이틀
-		String[] titleArr = {"No", "회원명", "회원번호", "성별", "나이", "등록일자", "의료보장", "기관명", "사례관리자", "사정일자", "관리구분", "사례관리", "심리상담", "집단\r\n프로그램", "자원연계", "중독영역(급성중독과 금단)", "정신 및 신체영역", "위험성 영역", "사회적 관계영역", "사회서비스 평가영역", "기타영역", "ISP결과", "장단기 목표수립"};
+		String[] titleArr = {"No", "회원명", "회원번호", "성별", "나이", "등록일자", "의료보장", "기관명", "사례관리자", "사정일자", "관리구분", "사례관리", "심리상담", "집단\n프로그램", "자원연계", "중독영역(급성중독과 금단)", "정신 및 신체영역", "위험성 영역", "사회적 관계영역", "사회서비스 평가영역", "기타영역", "ISP결과", "장단기 목표수립"};
 		String[] titleArr2 = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "약물중독", "알코올중독", "도박중독", "인터넷중독", "기타중독", "정신과적 증상", "정신약물관리", "스트레스 상태", "신체질환", "자해/자살위험", "타해위험", "가족관계", "사회적 관계", "회복환경 관계", "주거", "경제활동 지원", "고용 및 교육가능성", "법률적문제", "취업 및 학업욕구", "영성", "봉사", "여가", "미래계획", "기타", "", ""};
 		String[] titleArr3 = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "심각도", "자원연계", "", "자원연계", "욕구도", "자원연계", "욕구도", "자원연계", "욕구도", "자원연계", "욕구도", "자원연계", "욕구도", "자원연계", "욕구도", "자원연계", "", ""};
 		row = sheet.createRow(rowCount++);
@@ -208,7 +208,7 @@ public class IspStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(1, 1, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MBR_NM"), ""));
 			this.cellStyleLoop(2, 2, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MBR_NO"), ""));
 			this.cellStyleLoop(3, 3, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("GEND_NM"), ""));
-			this.cellStyleLoop(4, 4, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("AGE"), ""));
+			this.cellStyleLoop(4, 4, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("AGE_NM"), ""));
 			this.cellStyleLoop(5, 5, contentCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("REG_DT"), ""), "-"));
 			this.cellStyleLoop(6, 6, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MEDIC_CARE_NM"), ""));
 			this.cellStyleLoop(7, 7, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MNG_SITE_NM"), ""));

@@ -281,7 +281,7 @@ public class CounselExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("상담관련\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("상담관련\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "정보취득경로");
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("IF_PATH_NM"), ""));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "주호소문제");
@@ -300,7 +300,7 @@ public class CounselExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("약물관련\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("약물관련\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "최초사용약물");
 		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("FST_DRUG_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
@@ -345,7 +345,7 @@ public class CounselExcel extends AbstractExcelView{
 			row = sheet.createRow(rowCount);
 			row.setHeight((short) (26*15));
 			tempRowCnt = rowCount;
-			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("위기분류\r\n척도").toString());
+			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("위기분류\n척도").toString());
 			this.cellStyleLoop(2, 2, topCellStyle, row, cell, "위험성(A)");
 			this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("RSKA_TP_NM"), ""));
 			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));

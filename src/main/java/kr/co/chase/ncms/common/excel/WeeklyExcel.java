@@ -169,7 +169,7 @@ public class WeeklyExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "대분류");
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_TP_NM"), ""));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "중분류");
@@ -221,14 +221,14 @@ public class WeeklyExcel extends AbstractExcelView{
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\r\n내용").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\n내용").toString());
 		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CTNT"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\r\n결과").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\n결과").toString());
 		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 
@@ -238,7 +238,7 @@ public class WeeklyExcel extends AbstractExcelView{
 				row = sheet.createRow(rowCount);
 				row.setHeight((short) (26*15));
 				if(i == 0) tempRowCnt = rowCount;
-				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\r\n관련").toString() : ""));
+				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\n관련").toString() : ""));
 				this.cellStyleLoop(2, 2, (i == 0 ? topCellStyle : basicCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_NM"), ""));
 				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), ""));
 				sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
