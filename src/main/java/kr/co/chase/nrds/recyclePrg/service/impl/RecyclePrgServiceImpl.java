@@ -118,17 +118,20 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 
 			result = this.updateEdPrmInfo(map);
 			resultMap.put("MSG", "수정");
+			
+			this.deleteAllEdPrmMbr(map);
 		}else{
 			EdPrmKey = this.insertEdPrmInfo(map);
 			result=1;
 			resultMap.put("MSG", "등록");
 		}
 
-		//this.deleteAllEdPrmMbr(map);
 		if(map.get("grpPgmMbrList") != null) {
 			List<HashMap<String, Object>> mbrList = (List<HashMap<String, Object>>)map.get("grpPgmMbrList");
 			for(HashMap<String, Object> mbrMap : mbrList) {
-				mbrMap.put("pgmId", EdPrmKey+"");
+				if(Integer.parseInt(StringUtils.defaultIfEmpty((String) mbrMap.get("pgmId"), "0")) ==  0) {
+					mbrMap.put("pgmId", EdPrmKey+"");
+				}
 				this.insertEdPgmMbr(mbrMap);
 			}
 		}

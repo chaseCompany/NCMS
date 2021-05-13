@@ -32,7 +32,7 @@ public class IndividualStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(1, (short) (59*32));
 		sheet.setColumnWidth(2, (short) (103*32));
 		sheet.setColumnWidth(3, (short) (37*32));
-		sheet.setColumnWidth(4, (short) (37*32));
+		sheet.setColumnWidth(4, (short) (60*32));
 		sheet.setColumnWidth(5, (short) (82*32));
 		sheet.setColumnWidth(6, (short) (67*32));
 		sheet.setColumnWidth(7, (short) (113*32));
@@ -125,7 +125,7 @@ public class IndividualStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(1, 1, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MBR_NM"), ""));
 			this.cellStyleLoop(2, 2, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MBR_NO"), ""));
 			this.cellStyleLoop(3, 3, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("GEND_NM"), ""));
-			this.cellStyleLoop(4, 4, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("AGE"), ""));
+			this.cellStyleLoop(4, 4, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("AGE_NM"), ""));
 			this.cellStyleLoop(5, 5, contentCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("REG_DT"), ""), "-"));
 			this.cellStyleLoop(6, 6, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("MEDIC_CARE_NM"), ""));
 			this.cellStyleLoop(7, 7, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("SITE_NM"), ""));

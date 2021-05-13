@@ -39,7 +39,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(8, (short) (103*32));
 		sheet.setColumnWidth(9, (short) (103*32));
 		sheet.setColumnWidth(10, (short) (37*32));
-		sheet.setColumnWidth(11, (short) (37*32));
+		sheet.setColumnWidth(11, (short) (60*32));
 		sheet.setColumnWidth(12, (short) (103*32));
 		sheet.setColumnWidth(13, (short) (105*32));
 		sheet.setColumnWidth(14, (short) (87*32));
@@ -47,7 +47,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(16, (short) (82*32));
 		sheet.setColumnWidth(17, (short) (103*32));
 		sheet.setColumnWidth(18, (short) (37*32));
-		sheet.setColumnWidth(19, (short) (37*32));
+		sheet.setColumnWidth(19, (short) (60*32));
 		sheet.setColumnWidth(20, (short) (103*32));
 		sheet.setColumnWidth(21, (short) (105*32));
 		sheet.setColumnWidth(22, (short) (105*32));
@@ -149,7 +149,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(8, 8, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_NM"), ""));
 			this.cellStyleLoop(9, 9, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_MBR_NO"), ""));
 			this.cellStyleLoop(10, 10, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_GEND_NM"), ""));
-			this.cellStyleLoop(11, 11, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_AGE"), ""));
+			this.cellStyleLoop(11, 11, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_AGE_NM"), ""));
 			String ifpTelNo = StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_TEL_NO1"), "");
 			if(!"".equals(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_TEL_NO2"), ""))) {
 				ifpTelNo += "-" + StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_TEL_NO2"), "");
@@ -163,7 +163,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(15, 15, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("IFP_AREA_ETC"), ""));
 			this.cellStyleLoop(16, 16, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_NM"), ""));
 			this.cellStyleLoop(17, 17, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_MBR_NO"), ""));
-			this.cellStyleLoop(18, 18, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_AGE"), ""));
+			this.cellStyleLoop(18, 18, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_AGE_NM"), ""));
 			this.cellStyleLoop(19, 19, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_GEND_NM"), ""));
 			String tgpTelNo = StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_TEL_NO1"), "");
 			if(!"".equals(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGP_TEL_NO2"), ""))) {
