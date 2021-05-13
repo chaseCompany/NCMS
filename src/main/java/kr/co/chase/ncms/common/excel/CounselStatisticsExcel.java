@@ -46,8 +46,8 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 		sheet.setColumnWidth(15, (short) (56*32));
 		sheet.setColumnWidth(16, (short) (82*32));
 		sheet.setColumnWidth(17, (short) (103*32));
-		sheet.setColumnWidth(18, (short) (37*32));
-		sheet.setColumnWidth(19, (short) (60*32));
+		sheet.setColumnWidth(18, (short) (60*32));
+		sheet.setColumnWidth(19, (short) (37*32));
 		sheet.setColumnWidth(20, (short) (103*32));
 		sheet.setColumnWidth(21, (short) (105*32));
 		sheet.setColumnWidth(22, (short) (105*32));
