@@ -21,12 +21,12 @@
 	<div class="l">
 		<button type="button"><img src="/images/icon_top_menu.png" alt=""></button>
 	</div>
-	<div class="c">
+	<div class="c nrds">
 		<ul>
-			<li><a href="javaScript:goTopMenuPage('/nrds/recyclePrgMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>재활교육프로그램</a></li>
-			<li><a href="javaScript:goTopMenuPage('/nrds/eduCounselMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>교육상담</a></li>
-			<li><a href="javaScript:goTopMenuPage('/nrds/eduMngMain.do');"<c:if test="${thisViewUrl eq 'mentalityMain.do'}"> class="on"</c:if>>교육관리</a></li>
-			<li><a href="javaScript:goTopMenuPage('/nrds/clientMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>대상자관리</a></li>
+			<li><a href="javaScript:goTopMenuPage('/nrds/recyclePrgMain.do');"<c:if test="${thisViewUrl eq 'nrds/recyclePrgMain.do'}"> class="on"</c:if>>재활교육프로그램</a></li>
+			<li><a href="javaScript:goTopMenuPage('/nrds/eduCounselMain.do');"<c:if test="${thisViewUrl eq 'nrds/eduCounselMain.do'}"> class="on"</c:if>>교육상담</a></li>
+			<li><a href="javaScript:goTopMenuPage('/nrds/eduMngMain.do');"<c:if test="${thisViewUrl eq 'nrds/eduMngMain.do'}"> class="on"</c:if>>교육관리</a></li>
+			<li><a href="javaScript:goTopMenuPage('/nrds/clientMain.do');"<c:if test="${thisViewUrl eq 'nrds/clientMain.do'}"> class="on"</c:if>>대상자관리</a></li>
 			<%--
 			<li><a href="javaScript:goTopMenuPage('/nrds/surveyMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>설문지관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/nrds/statMain.do');"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계관리</a></li>

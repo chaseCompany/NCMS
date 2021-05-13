@@ -1067,6 +1067,7 @@ button, a{outline: 0;}
 #header .c>ul>li{float: left;margin: 0 20px;}
 #header .c a{display:block;height:53px;line-height:53px;font-size:17px;color: #fff;}
 #header .c .on{color:#03c75a}
+#header .nrds .on{color:#ffff80}
 
 #header .r{float: right;position:relative;padding-top:12px}
 #header .r>.f{display:inline-block;color: #a3cb28;position: relative;}
