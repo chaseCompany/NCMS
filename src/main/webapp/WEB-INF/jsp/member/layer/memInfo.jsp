@@ -77,19 +77,7 @@
 			if($("select[name='medicCareCd']").val() == ""){
 				alert("의료보장은 필수 입력 항목입니다.");
 				$("select[name='medicCareCd']").focus();			return;
-			}
-			if($("input[name='fmlyName']").val() == ""){
-				alert("보호자 성명은 필수 입력 항목입니다.");
-				$("input[name='fmlyName']").focus();			return;
-			}
-			if($("select[name='fmlyRelationCd']").val() == ""){
-				alert("보호자 관계는 필수 입력 항목입니다.");
-				$("select[name='fmlyRelationCd']").focus();			return;
-			}
-			if($("input[name='fmlyAge']").val() == ""){
-				alert("보호자 연령은 필수 입력 항목입니다.");
-				$("input[name='fmlyAge']").focus();					return;
-			}
+			}						
 			if($("select[name='mngUsrId']").val() == ""){
 				alert("사례관리자는 필수 입력 항목입니다.");
 				$("select[name='mngUsrId']").focus();				return;
@@ -148,9 +136,8 @@
 			}else{
 				age = dDayYear + 100 - year;
 			}
-			if(dDayDate < day){
-				age = age - 1;
-			}
+			// 한국 나이로 계산
+			age = age + 1;
 
 			$("input[name='age']").val(age);
 		}
@@ -413,9 +400,9 @@
 					</colgroup>
 					<tbody>
 					<tr>
-						<th><span class="required">*</span> 성명</th>
+						<th> 성명</th>
 						<td><input name="fmlyName" value="<c:out value="${mbrInfo.FMLY_NAME}"/>" type="text" class="el-input__inner" style="width: 100%;"></td>
-						<th><span class="required">*</span> 관계</th>
+						<th> 관계</th>
 						<td>
 							<select name="fmlyRelationCd" style="width: 270px;">
 								<option value="">선택</option>
@@ -428,7 +415,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th><span class="required">*</span> 성별</th>
+						<th> 성별</th>
 						<td>
 <c:if test="${gendCdList ne null and gendCdList ne ''}">
 	<c:if test="${mbrInfo.FMLY_SEX_CD eq null or mbrInfo.FMLY_SEX_CD eq ''}">
