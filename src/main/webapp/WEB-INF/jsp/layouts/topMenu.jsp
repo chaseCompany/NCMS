@@ -27,7 +27,7 @@
 		<ul>
 			<li><a href="javaScript:goTopMenuPage('/counselMain.do');"<c:if test="${thisViewUrl eq 'counselMain.do'}"> class="on"</c:if>>중독예방상담</a></li>
 			<li><a href="javaScript:goTopMenuPage('/individualMain.do');"<c:if test="${thisViewUrl eq 'individualMain.do'}"> class="on"</c:if>>사례관리</a></li>
-			<li><a href="javaScript:goTopMenuPage('/mentalityMain.do');"<c:if test="${thisViewUrl eq 'mentalityMain.do'}"> class="on"</c:if>>심리치유</a></li>
+			<li><a href="javaScript:goTopMenuPage('/mentalityMain.do');"<c:if test="${thisViewUrl eq 'mentalityMain.do'}"> class="on"</c:if>>상담</a></li>
 			<li><a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>주간재활 프로그램</a></li>
 			<li><a href="javaScript:goTopMenuPage('/memberMain.do');"<c:if test="${thisViewUrl eq 'memberMain.do' || thisViewUrl eq 'memberLink.do' || thisViewUrl eq 'memberReq.do'}"> class="on"</c:if>>회원정보관리</a></li>
 			<li><a href="javaScript:goTopMenuPage('/reportMain.do');"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계관리</a></li>
@@ -45,11 +45,11 @@
 		<a href="javaScript:logOut();" class="el-button el-button--default el-button--mini s"><i class="el-icon-switch-button"></i> <span>로그아웃</span></a>
 <%--
 <c:if test="${LoginSiteEdu eq '1'}">
-		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">재범 방지 교육 바로가기</a>&nbsp;&nbsp;
+		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="f">재활교육 바로가기</a>&nbsp;&nbsp;
 --%>
 <c:if test="${LoginSiteEdu eq '1'}">
 <!-- LoginSiteEdu -->
-		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="el-button el-button--default el-button--mini s"><i class="el-icon-s-order"></i> <span>재범 방지 교육 바로가기</span></a>
+		<a href="<c:url value="/nrds/recyclePrgMain.do" />" class="el-button el-button--default el-button--mini s"><i class="el-icon-s-order"></i> <span>재활교육 바로가기</span></a>
 </c:if>
 	</div>
 	
@@ -71,7 +71,7 @@
 						<a href="javaScript:goTopMenuPage('/individualMain.do');"><i class="el-icon-s-platform"></i>사례관리</a>
 					</li>
 					<li>
-						<a href="javaScript:goTopMenuPage('/mentalityMain.do');"><i class="el-icon-s-platform"></i>심리치유</a>
+						<a href="javaScript:goTopMenuPage('/mentalityMain.do');"><i class="el-icon-s-platform"></i>상담</a>
 					</li>
 					<li>
 						<a href="javaScript:goTopMenuPage('/weeklyPrgMain.do');"><i class="el-icon-s-platform"></i>주간재활 프로그램</a>

@@ -77,7 +77,7 @@
 						<c:out value="${result.PGM_NM}" />
 </c:if>
 						</a></td>
-					<td><c:out value="${result.MBR_CNT}" /></td>
+					<td><c:out value="${result.MBR_COUNT}" /></td>
 				</tr>
 	</c:forEach>
 			</tbody>

@@ -46,6 +46,9 @@ public class EduCounselController {
 
 		codeListMap.put("grpCd", "C2500");				// 상담대상
 		model.put("cslTgtCdList", sysCodeService.getSysCdList(codeListMap));
+		
+		codeListMap.put("grpCd", "C8800");				// 상담구분
+		model.put("cslClsCdList", sysCodeService.getSysCdList(codeListMap));
 
 		codeListMap.put("grpCd", "C1600");				// 상담유형
 		model.put("cslTpCdList", sysCodeService.getSysCdList(codeListMap));

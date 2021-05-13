@@ -147,6 +147,7 @@
 						$("input[name='cslTermTm2']").val(dataInfo.CSL_TERM_TM);
 						$("input[name='cslTgtCd']:radio[value='" + dataInfo.CSL_TGT_CD + "']").prop("checked", true);
 						$("input[name='cslTpCd']:radio[value='" + dataInfo.CSL_TP_CD + "']").prop("checked", true);
+						$("input[name='cslClsCd']:radio[value='" + dataInfo.CSL_CLS_CD + "']").prop("checked", true);
 						$("input[name='cslSbj']").val(dataInfo.CSL_SBJ);
 						$("input[name='cslTgt']").val(dataInfo.CSL_TGT);
 						$("select[name='rskaTpCd']").val(dataInfo.RSKA_TP_CD).prop("selected", true);
@@ -538,6 +539,21 @@
 									</c:forEach>
 								</c:if>
 							</td>
+						</tr>
+						<tr>	
+							<th><span class="required">*</span> 상담구분</th>
+							<td>
+								<c:if test="${cslTpCdList ne null and cslClsCdList ne ''}">
+									<c:forEach var="result" items="${cslClsCdList}" varStatus="status">
+										<span class="ck-bx">
+											<input type="radio" class="el-radio__original" name="cslClsCd" id="cslClsCd-<c:out value='${status.count}'/>"value="${result.CD_ID}"<c:if test="${result.CD_ID eq cslClsCd}"> checked</c:if> />
+											<label for="cslClsCd-<c:out value='${status.count}'/>"><span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" /></label>
+										</span>
+									</c:forEach>
+								</c:if>
+							</td>
+						</tr>
+						<tr>	
 							<th><span class="required">*</span> 상담유형</th>
 							<td>
 								<c:if test="${cslTpCdList ne null and cslTpCdList ne ''}">

@@ -113,7 +113,7 @@
 			$("input[name='mbrNo']").val(obj.MBR_NO);
 			$("input[name='mbrNm']").val(obj.MBR_NM);
 			$("input[name='gendNm']").val(obj.GEND_NM);
-			$("input[name='age']").val(obj.AGE);
+			$("input[name='ageNm']").val(obj.AGE_NM);
 			$("input[name='regDt']").val(formatDate(obj.REG_DT));
 			$("input[name='medicCareNm']").val(obj.MEDIC_CARE_NM);
 			$("input[name='mngUsrId']").val(obj.MNG_USR_NM);
@@ -1370,7 +1370,7 @@
 				</td>
 				<th>연령</th>
 				<td>
-					<div class="dsp-ibk tac"><form:input path="mstMbrInfo.age" cssClass="el-input__inner" readonly="true" maxlength="3" placeholder="연령" style="width: 50px;" /></div> (세)
+					<div class="dsp-ibk tac"><form:input path="mstMbrInfo.ageNm" csslass="el-input__inner" readonly="true" placeholder="연령" style="width: 80px;" /></div>
 				</td>
 				<th>등록일자</th>
 				<td>

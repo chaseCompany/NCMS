@@ -106,6 +106,9 @@ public class CounselController {
 
 		codeListMap.put("grpCd", "C5600");				// URS
 		model.put("ursCdList", sysCodeService.getSysCdList(codeListMap));
+		
+		codeListMap.put("grpCd", "C8700");				// 연령
+		model.put("ageCdList", sysCodeService.getSysCdList(codeListMap));
 
 		return "counsel/counselMain";
 	}

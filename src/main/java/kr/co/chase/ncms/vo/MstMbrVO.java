@@ -17,6 +17,7 @@ public class MstMbrVO implements Serializable {
 	private String gendCd;
 	private String gendNm;
 	private String age;
+	private String ageNm;
 	private String juminNo1;
 	private String frgCd;
 	private String telNo1;
@@ -118,6 +119,12 @@ public class MstMbrVO implements Serializable {
 	 */
 	public void setAge(String age) {
 		this.age = age;
+	}	
+	public String getAgeNm() {
+		return ageNm;
+	}
+	public void setAgeNm(String ageNm) {
+		this.ageNm = ageNm;
 	}
 	/**
 	 * 생년월일

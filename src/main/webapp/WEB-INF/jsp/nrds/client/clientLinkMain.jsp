@@ -60,7 +60,7 @@
 						$("input[name='infoMbrNo']").val(info.MBR_NO);
 						$("input[name='infoMbrNm']").val(info.MBR_NM);
 						$("input[name='infoGendNm']").val(info.GEND_NM);
-						$("input[name='infoAge']").val(info.AGE);
+						$("input[name='infoAgeNm']").val(info.AGE_NM);
 						$("input[name='infoReqOrg']").val(info.COOP_ORG);
 						if(info.TEL_NO1 != ''){
 							$("input[name='infoTelNo']").val(info.TEL_NO1 + "-" + info.TEL_NO2 + "-" + info.TEL_NO3);
@@ -93,7 +93,7 @@
 						$("input[name='mbrNm']").val(info.MBR_NM);
 						$("select[name='gendCd']").val(info.GEND_CD).prop("selected", true);
 						$("input[name='juminNo1']").val(info.JUMIN_NO1);
-						$("input[name='age']").val(info.AGE);
+						$("input[name='ageNm']").val(info.AGE_NM);
 						$("input[name='telNo1']").val(info.TEL_NO1);
 						$("input[name='telNo2']").val(info.TEL_NO2);
 						$("input[name='telNo3']").val(info.TEL_NO3);
@@ -326,7 +326,7 @@
 							<th>성별</th>
 							<td><input type="text" name="infoGendNm" placeholder="성별" /></td>
 							<th>연령</th>
-							<td><input type="text" name="infoAge" placeholder="연령" /> (세)</td>
+							<td><input type="text" name="infoAgeNm" placeholder="연령" /></td>
 							<th>의뢰기관</th>
 							<td><input type="text" name="infoReqOrg" placeholder="의뢰기관" /></td>
 							<th>연락처</th>
@@ -408,7 +408,7 @@
 										<th content="저장시 성명과 생년월일(6자)로 중복 체크"><span class="required">*</span> 생년월일</th>
 										<td><input name="juminNo1" type="text" readonly class="el-input__inner" style="width: 90px;" placeholder="생년월일"></td>
 										<th><span class="required">*</span> 연령</th>
-										<td><input name="age" type="text" readonly class="el-input__inner" style="width: 65px;" placeholder="연령"></td>
+										<td><input name="ageNm" type="text" readonly class="el-input__inner" style="width: 65px;" placeholder="연령"></td>
 										<th><span class="required">*</span> 연락처</th>
 										<td>
 											<div class="dsp-ibk"><input name="telNo1" type="text" readonly maxlength="4" class="el-input__inner" style="width:54px"></div>

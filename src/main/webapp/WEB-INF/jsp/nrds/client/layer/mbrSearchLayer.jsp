@@ -117,7 +117,7 @@
 							<td><div class="cell"><c:out value="${result.MBR_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.JUMIN_NO1}" /></div></td>
 							<td><div class="cell"><c:out value="${result.GEND_NM}" /></div></td>
-							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
+							<td><div class="cell"><c:out value="${result.AGE_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></div></td>
 		<c:if test="${result.STS_CD ne 'RG'}">
 							<td><div class="cell"<c:if test="${result.STS_CD eq ConstantObject.rlMemStsCd}"> style="color: red;"</c:if>><c:out value="${result.STS_NM}" /></div></td>

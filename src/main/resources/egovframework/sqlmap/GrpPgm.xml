@@ -8,7 +8,7 @@
 			   GP.PGM_DT		, GP.PGM_FM_TM		, GP.PGM_TO_TM		, GP.PGM_TP_CD		, GP.MNG_USR_ID
 			 , GP.PGM_CTNT		, GP.PGM_SESSION	, GP.PGM_TEACHER	, GP.PGM_SUBJECT	, GP.PGM_GOAL
 			 , GP.PGM_RST		, GP.FILE_ID		, GP.CRE_ID			, GP.CRE_DT			, GP.UPD_ID
-			 , GP.UPD_DT
+			 , GP.UPD_DT		, GP.MBR_COUNT
 			 , GP.PGM_CD		, SC01.CD_NM AS PGM_NM
 			 , SU.SITE_CD		, SC02.CD_NM AS SITE_NM
 			 , SC03.CD_NM AS PGM_TP_NM
@@ -72,6 +72,7 @@
 							 , GP.MNG_USR_ID	, SU.USR_NM AS MNG_USR_NM
 							 , SU.SITE_CD		, SC02.CD_NM AS SITE_NM
 							 , GP.PGM_TP_CD		, SC03.CD_NM AS PGM_TP_NM
+							 , GP.MBR_COUNT
 							 , (
 								SELECT COUNT(SEQ_NO) AS CNT
 								  FROM GRP_PGM_MBR GPM
@@ -113,12 +114,12 @@
 			   PGM_DT		, PGM_CD		, PGM_FM_TM		, PGM_TO_TM		, PGM_TP_CD
 			 , MNG_USR_ID	, PGM_CTNT		, PGM_SESSION	, PGM_TEACHER	, PGM_SUBJECT
 			 , PGM_GOAL		, PGM_RST		, FILE_ID		, CRE_ID		, CRE_DT
-			 , UPD_ID		, UPD_DT
+			 , UPD_ID		, UPD_DT		, MBR_COUNT
 		)VALUES(
 			   #{pgmDt}		, #{pgmCd}		, #{pgmFmTm}	, #{pgmToTm}	, #{pgmTpCd}
 			 , #{mngUsrId}	, #{pgmCtnt}	, #{pgmSession}	, #{pgmTeacher}	, #{pgmSubject}
 			 , #{pgmGoal}	, #{pgmRst}		, #{fileId}		, #{cslId}		, NOW()
-			 , #{cslId}		, NOW()
+			 , #{cslId}		, NOW()			, #{mbrCount}
 		)
 	]]>
 	</insert>
@@ -132,7 +133,7 @@
 			 , PGM_TEACHER = #{pgmTeacher}	, PGM_SUBJECT = #{pgmSubject}
 			 , PGM_GOAL = #{pgmGoal}		, PGM_RST = #{pgmRst}
 			 , FILE_ID = #{fileId}			, UPD_ID = #{cslId}
-			 , UPD_DT = NOW()
+			 , UPD_DT = NOW()				, MBR_COUNT = #{mbrCount}
 		 WHERE PGM_DT = #{pgmDt}
 		   AND PGM_CD = #{pgmCd}
 	]]>

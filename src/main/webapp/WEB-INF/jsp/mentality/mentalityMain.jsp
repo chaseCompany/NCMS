@@ -41,7 +41,7 @@
 			$("input[name='mbrNo']").val(obj.MBR_NO);
 			$("input[name='mbrNm']").val(obj.MBR_NM);
 			$("input[name='gendNm']").val(obj.GEND_NM);
-			$("input[name='age']").val(obj.AGE);
+			$("input[name='ageNm']").val(obj.AGE_NM);
 			$("input[name='regDt']").val(formatDate(obj.REG_DT));
 			$("input[name='medicCareNm']").val(obj.MEDIC_CARE_NM);
 			$("input[name='mngUsrId']").val(obj.MNG_USR_NM);
@@ -360,7 +360,7 @@
 </script>
 <!-- 페이지 타이틀 -->
 <div class="tit-area">
-	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 심리치유</h1>
+	<h1><i class="el-icon-s-order" style="color: rgb(0, 108, 185);"></i> 상담</h1>
 </div>
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
@@ -407,7 +407,7 @@
 				</td>
 				<th>연령</th>
 				<td>
-					<div class="dsp-ibk tac"><input type="text" name="age" class="el-input__inner" readonly maxlength="3" placeholder="연령" style="width: 50px;" /></div> (세)
+					<div class="dsp-ibk tac"><input type="text" name="ageNm" class="el-input__inner" readonly placeholder="연령" style="width: 80px;" /></div>
 				</td>
 				<th>등록일자</th>
 				<td>
@@ -575,7 +575,7 @@
 							<td colspan="3"><input type="text" name="crisisCounsel" class="el-input__inner" placeholder="위기상담" style="width: 680px;" /></td>
 						</tr>
 						<tr>
-							<th><span class="required">*</span> USR</th>
+							<th><span class="required">*</span> URS</th>
 							<td colspan="3">
 								<select name="ursCd" style="width: 100%;">
 									<option value="">선택</option>

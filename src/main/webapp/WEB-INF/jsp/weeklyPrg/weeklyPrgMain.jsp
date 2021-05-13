@@ -127,6 +127,7 @@
 				$("input[name='siteNm']").val("<c:out value="${loginSiteNm}" />");
 				$("input[name='pgmSession']").val("");
 				$("input[name='pgmTeacher']").val("");
+				$("input[name='mbrCount']").val("");
 				$("input[name='pgmSubject']").val("");
 				$("input[name='pgmGoal']").val("");
 				$("textarea[name='pgmCtnt']").val("");
@@ -161,6 +162,7 @@
 						$("input[name='siteNm']").val(prgInfo.SITE_NM);
 						$("input[name='pgmSession']").val(prgInfo.PGM_SESSION);
 						$("input[name='pgmTeacher']").val(prgInfo.PGM_TEACHER);
+						$("input[name='mbrCount']").val(prgInfo.MBR_COUNT);
 						$("input[name='pgmSubject']").val(prgInfo.PGM_SUBJECT);
 						$("input[name='pgmGoal']").val(prgInfo.PGM_GOAL);
 						$("textarea[name='pgmCtnt']").val(prgInfo.PGM_CTNT);
@@ -558,9 +560,11 @@
 									</div>
 								</td>
 								<th> <span class="required">*</span> 회기</th>
-								<td> <input type="text" name="pgmSession" class="el-input__inner" placeholder="회기" style="width: 319px;"></td>
+								<td> <input type="text" name="pgmSession" class="el-input__inner" placeholder="회기" style="width: 200px;"></td>
 								<th> <span class="required">*</span> 강사</th>
-								<td> <input type="text" name="pgmTeacher" class="el-input__inner" placeholder="강사" style="width: 319px;"></td>
+								<td> <input type="text" name="pgmTeacher" class="el-input__inner" placeholder="강사" style="width: 200px;"></td>
+								<th> <span class="required">*</span> 참여자수</th>
+								<td> <input type="text" name="mbrCount" class="el-input__inner" placeholder="참여자수" style="width: 156px;"></td>
 							</tr>
 							<tr>
 								<th> <span class="required">*</span> 주제 </th>

@@ -17,13 +17,14 @@
 			mstMbrSearchPopup($("input[name='reFunName']").val());
 		}
 		<%-- 회원선택 --%>
-		choiceMem = function(mbrNm, mbrNo, gendCd, gendNm, age, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm){
+		choiceMem = function(mbrNm, mbrNo, gendCd, gendNm, age, ageNm, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm){
 			var tagMemObj = {
 				MBR_NM : mbrNm,
 				MBR_NO : mbrNo,
 				GEND_CD : gendCd,
 				GEND_NM : gendNm,
 				AGE : age,
+				AGE_NM : ageNm,
 				TEL_NO1 : telNo1,
 				TEL_NO2 : telNo2,
 				TEL_NO3 : telNo3,
@@ -133,6 +134,7 @@
 																					  , '<c:out value="${result.GEND_CD}" />'
 																					  , '<c:out value="${result.GEND_NM}" />'
 																					  , '<c:out value="${result.AGE}" />'
+																					   , '<c:out value="${result.AGE_NM}" />'
 																					  , '<c:out value="${result.TEL_NO1}" />'
 																					  , '<c:out value="${result.TEL_NO2}" />'
 																					  , '<c:out value="${result.TEL_NO3}" />'
@@ -149,7 +151,7 @@
 							<td><div class="cell"><c:out value="${result.MBR_NO}" /></div></td>
 							<td><div class="cell"><c:out value="${result.MBR_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.GEND_NM}" /></div></td>
-							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
+							<td><div class="cell"><c:out value="${result.AGE_NM}" /></div></td>
 							<td><div class="cell"><fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd"/></div></td>
 							<td><div class="cell"><c:out value="${result.MEDIC_CARE_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.SITE_NM}" /></div></td>
@@ -241,7 +243,7 @@
 							<td><div class="cell"><c:out value="${result.MBR_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.JUMIN_NO1}" /></div></td>
 							<td><div class="cell"><c:out value="${result.GEND_NM}" /></div></td>
-							<td><div class="cell"><c:out value="${result.AGE}" /></div></td>
+							<td><div class="cell"><c:out value="${result.AGE_NM}" /></div></td>
 							<td><div class="cell"><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></div></td>
 			<c:if test="${result.STS_CD ne 'RG'}">
 							<td><div class="cell"<c:if test="${result.STS_CD eq ConstantObject.rlMemStsCd}"> style="color: red;"</c:if>><c:out value="${result.STS_NM}" /></div></td>

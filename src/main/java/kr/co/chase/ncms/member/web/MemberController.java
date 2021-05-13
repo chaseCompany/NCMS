@@ -332,26 +332,6 @@ public class MemberController {
 			resultView.addObject("MSG", "필수정보 누락");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyName"), ""))) {						// 보호자 성명
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyRelationCd"), ""))) {				// 보호자 관계
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlySexCd"), ""))) {					// 보호자 성별
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyAge"), ""))) {						// 보호자 연령
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("mngUsrId"), ""))) {						// 사례관리자
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");

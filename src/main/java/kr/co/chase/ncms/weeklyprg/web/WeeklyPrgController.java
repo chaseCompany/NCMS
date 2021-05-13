@@ -248,6 +248,11 @@ public class WeeklyPrgController {
 			resultView.addObject("MSG", "결과는 필수 입력 항목입니다.");
 			return resultView;
 		}
+		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("mbrCount"), ""))) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "참여자수는 필수 입력 항목입니다.");
+			return resultView;
+		}
 
 		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
 		String pgmDt = StringUtils.defaultIfEmpty((String)reqMap.get("pgmDt"), "").replaceAll("-", "");
@@ -278,7 +283,13 @@ public class WeeklyPrgController {
 		// 회원 목록
 		if(pgmMbrNoList != null && pgmMbrNoList.length > 0) {
 			List<HashMap<String, Object>> mbrList = new ArrayList<HashMap<String, Object>>();
-
+			
+			if(pgmMbrNoList.length > Integer.parseInt((String) reqMap.get("mbrCount"))) {
+				resultView.addObject("err", ConstantObject.Y);
+				resultView.addObject("MSG", "참여자수는 회원목록수보다 크거나 같아야합니다.");
+				return resultView;
+			}
+			
 			for(int i=0 ; i<pgmMbrNoList.length ; i++) {
 				HashMap<String, Object> mbrMap = new HashMap<String, Object>();
 				mbrMap.put("pgmDt", pgmDt);

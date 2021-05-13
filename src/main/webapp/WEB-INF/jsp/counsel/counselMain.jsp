@@ -234,7 +234,7 @@
 			$("input[name='ifpNm']").val(obj.MBR_NM);
 			$("input[name='ifpMbrNo']").val(obj.MBR_NO);
 			$("input[name='ifpGendCd']:radio[value='" + obj.GEND_CD + "']").prop("checked", true);
-			$("input[name='ifpAge']").val(obj.AGE);
+			$("select[name='ifpAge']").val(obj.AGE).prop("selected", true);
 			$("input[name='ifpTelNo1']").val(obj.TEL_NO1);
 			$("input[name='ifpTelNo2']").val(obj.TEL_NO2);
 			$("input[name='ifpTelNo3']").val(obj.TEL_NO3);
@@ -245,7 +245,7 @@
 			$("input[name='tgpNm']").val($("input[name='ifpNm']").val());
 			$("input[name='tgpMbrNo']").val($("input[name='ifpMbrNo']").val());
 			$("input[name='tgpGendCd']:radio[value='" + $("input[name='ifpGendCd']:radio:checked").val() + "']").prop("checked", true);
-			$("input[name='tgpAge']").val($("input[name='ifpAge']").val());
+			$("select[name='tgpAge']").val($("select[name='ifpAge']").val()).prop("selected", true);
 			$("input[name='tgpTelNo1']").val($("input[name='ifpTelNo1']").val());
 			$("input[name='tgpTelNo2']").val($("input[name='ifpTelNo2']").val());
 			$("input[name='tgpTelNo3']").val($("input[name='ifpTelNo3']").val());
@@ -263,7 +263,7 @@
 			$("input[name='tgpNm']").val(obj.MBR_NM);
 			$("input[name='tgpMbrNo']").val(obj.MBR_NO);
 			$("input[name='tgpGendCd']:radio[value='" + obj.GEND_CD + "']").prop("checked", true);
-			$("input[name='tgpAge']").val(obj.AGE);
+			$("select[name='tgpAge']").val(obj.AGE).prop("selected", true);
 			$("input[name='tgpTelNo1']").val(obj.TEL_NO1);
 			$("input[name='tgpTelNo2']").val(obj.TEL_NO2);
 			$("input[name='tgpTelNo3']").val(obj.TEL_NO3);
@@ -300,7 +300,7 @@
 						$("input[name='ifpNm']").val(res.cslRcpInfo.IFP_NM);
 						$("input[name='ifpMbrNo']").val(res.cslRcpInfo.IFP_MBR_NO);
 						$("input[name='ifpGendCd']:radio[value='" + res.cslRcpInfo.IFP_GEND_CD + "']").prop("checked", true);
-						$("input[name='ifpAge']").val(res.cslRcpInfo.IFP_AGE);
+						$("select[name='ifpAge']").val(res.cslRcpInfo.IFP_AGE).prop("selected", true);
 						$("input[name='ifpTelNo1']").val(res.cslRcpInfo.IFP_TEL_NO1);
 						$("input[name='ifpTelNo2']").val(res.cslRcpInfo.IFP_TEL_NO2);
 						$("input[name='ifpTelNo3']").val(res.cslRcpInfo.IFP_TEL_NO3);
@@ -316,7 +316,7 @@
 						$("input[name='tgpNm']").val(res.cslRcpInfo.TGP_NM);
 						$("input[name='tgpMbrNo']").val(res.cslRcpInfo.TGP_MBR_NO);
 						$("input[name='tgpGendCd']:radio[value='" + res.cslRcpInfo.TGP_GEND_CD + "']").prop("checked", true);
-						$("input[name='tgpAge']").val(res.cslRcpInfo.TGP_AGE);
+						$("select[name='tgpAge']").val(res.cslRcpInfo.TGP_AGE).prop("selected", true);
 						$("input[name='tgpTelNo1']").val(res.cslRcpInfo.TGP_TEL_NO1);
 						$("input[name='tgpTelNo2']").val(res.cslRcpInfo.TGP_TEL_NO2);
 						$("input[name='tgpTelNo3']").val(res.cslRcpInfo.TGP_TEL_NO3);
@@ -581,7 +581,16 @@
 									</div>
 								</td>
 								<th><span class="required">*</span> 연령</th>
-								<td class="tac"><form:input path="cslRcpInfo.ifpAge" cssClass="el-input__inner" placeholder="연령" maxlength="3" style="width: 60px;" /></td>
+									<td class="tac">
+										<select name="ifpAge" style="width: 132px;">
+											<option value="">선택</option>
+											<c:if test="${ageCdList ne null and ageCdList ne ''}">
+												<c:forEach var="result" items="${ageCdList}" varStatus="status">
+													<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+												</c:forEach>
+											</c:if>
+										</select>
+									</td>
 							</tr>
 							<tr>
 								<th><span class="required">*</span> 연락처</th>
@@ -670,7 +679,16 @@
 									</div>
 								</td>
 								<th><span class="required">*</span> 연령</th>
-								<td class="tac"><form:input path="cslRcpInfo.tgpAge" cssClass="el-input__inner" maxlength="3" placeholder="연령" style="width: 60px;" /></td>
+								<td class="tac">
+									<select name="tgpAge" style="width: 100px;">
+										<option value="">선택</option>
+										<c:if test="${ageCdList ne null and ageCdList ne ''}">
+											<c:forEach var="result" items="${ageCdList}" varStatus="status">
+												<option value="<c:out value="${result.CD_ID}"/>"><c:out value="${result.CD_NM}" /></option>
+											</c:forEach>
+										</c:if>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<th><span class="required">*</span> 연락처</th>
