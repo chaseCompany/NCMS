@@ -432,7 +432,7 @@
 	</c:forEach>
 </c:if>
 						</td>
-						<th><span class="required">*</span> 연령</th>
+						<th>연령</th>
 						<td><input name="fmlyAge" value="<c:out value="${mbrInfo.FMLY_AGE}"/>" type="text" class="el-input__inner" style="width: 100%;"></td>
 					</tr>
 					<tr>

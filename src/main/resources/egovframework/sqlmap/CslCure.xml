@@ -39,6 +39,7 @@
 			 , SC10.CD_NM AS RSKC_TP_NM			, SC11.CD_NM AS URS_NM
 			 , FI.ORIGNL_FILE_NM
 			 , FN_AGE_CD(MM.AGE,'Y') AS AGE_NM
+			 , CSL_CLS_CD
 		  FROM CSL_CURE CC
   		  INNER JOIN MST_MBR MM ON MM.MBR_NO = CC.MBR_NO
 		  LEFT JOIN SYS_USR SU  ON (SU.USR_ID = CC.CSL_ID)
@@ -54,6 +55,7 @@
 		  LEFT JOIN SYS_CD SC09 ON (SC09.GRP_CD = 'C2200' AND SC09.CD_ID = CC.RSKB_TP_CD)
 		  LEFT JOIN SYS_CD SC10 ON (SC10.GRP_CD = 'C2300' AND SC10.CD_ID = CC.RSKC_TP_CD)
 		  LEFT JOIN SYS_CD SC11 ON (SC11.GRP_CD = 'C5600' AND SC11.CD_ID = CC.URS_CD)
+		  LEFT JOIN SYS_CD SC12 ON (SC12.GRP_CD = 'C8900' AND SC12.CD_ID = CC.CSL_CLS_CD)
 		  LEFT JOIN FILE_INFO FI ON (FI.FILE_ID = CC.FILE_ID)
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -82,7 +84,7 @@
 			 , ACT_CD				, AROUND_SUICIDE_CD		, SUICIDE_PLAN_CD		, OLD_ACT_WAY_CD		, ACT_WAY_CD
 			 , CURE_CD				, CSL_CTNT				, CSL_RST				, NXT_CSL_DT			, NXT_CSL_TM
 			 , NXT_CSL_CTNT			, FILE_ID				, CRE_ID				, CRE_DT				, UPD_ID
-			 , UPD_DT
+			 , UPD_DT				, CSL_CLS_CD
 		)VALUES(
 			   #{mbrNo}				, #{cslNo}				, #{cslId}				, #{cslDt}				, #{cslFmTm}
 			 , #{cslToTm}			, #{cslTermTm}			, #{pgmCd}				, #{cslTgtCd}			, #{cslTpCd}
@@ -91,7 +93,7 @@
 			 , #{actCd}				, #{aroundSuicideCd}	, #{suicidePlanCd}		, #{oldActWayCd}		, #{actWayCd}
 			 , #{cureCd}			, #{cslCtnt}			, #{cslRst}				, #{nxtCslDt}			, #{nxtCslTm}
 			 , #{nxtCslCtnt}		, #{fileId}				, #{cslId}				, NOW()					, #{cslId}
-			 , NOW()
+			 , NOW()				, #{cslClsCd}
 		)
 	]]>
 	</insert>
@@ -114,7 +116,7 @@
 			 , CSL_RST = #{cslRst}						, NXT_CSL_DT = #{nxtCslDt}
 			 , NXT_CSL_TM = #{nxtCslTm}					, NXT_CSL_CTNT = #{nxtCslCtnt}
 			 , FILE_ID = #{fileId}						, UPD_ID = #{cslId}
-			 , UPD_DT = NOW()
+			 , UPD_DT = NOW()							, CSL_CLS_CD = #{cslClsCd}
 		 WHERE CSL_NO = #{cslNo}
 	]]>
 	</update>
