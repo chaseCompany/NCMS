@@ -272,7 +272,7 @@ public class MemberExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("보호자\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("보호자\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "성명");
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, StringUtils.defaultIfEmpty((String)mbrInfo.get("FMLY_NM"), ""));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "관계");

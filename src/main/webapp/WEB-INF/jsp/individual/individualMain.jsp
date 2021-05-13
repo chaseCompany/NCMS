@@ -368,7 +368,7 @@
 				$("select[name='rskcTpCd']").focus();				return;
 			}
 			if($("select[name='ursCd']").val() == ""){
-				alert("USR은 필수 입력 항목입니다.");
+				alert("URS은 필수 입력 항목입니다.");
 				$("select[name='ursCd']").focus();					return;
 			}
 			if($("textarea[name='cslCtnt']").val() == ""){
@@ -1575,7 +1575,7 @@
 								<td colspan="3"><form:input path="cslIdvInfo.crisisCounsel" cssClass="el-input__inner" placeholder="위기상담" style="width: 680px;" /></td>
 							</tr>
 							<tr>
-								<th><span class="required">*</span> USR</th>
+								<th><span class="required">*</span> URS</th>
 								<td colspan="3">
 									<select name="ursCd" style="width: 100%;">
 										<option value="">선택</option>

@@ -123,11 +123,11 @@ public class MentalityStatisticsExcel extends AbstractExcelView{
 		contentCellStyle.setFont(basicFont);
 
 		// 타이틀
-		String[] titleArr = {"No", "회원명", "회원번호", "성별", "나이", "등록일자", "의료보장", "기관명", "상담자", "상담일자", "상담\r\n시간", "소요\r\n시간", "상담대상", "상담유형", "상담주제", "상담목표", "위험성(A)", "지지체계(B)", "협조능력(C)", "위기분류\r\n척도점수", "위기상담", "URS", "상담내용", "상담결과", "다음\r\n상담일자", "다음\r\n상담시간", "다음\r\n상담내용"};
+		String[] titleArr = {"No", "회원명", "회원번호", "성별", "나이", "등록일자", "의료보장", "기관명", "상담자", "상담일자", "상담\n시간", "소요\n시간", "상담대상", "상담유형", "상담주제", "상담목표", "위험성(A)", "지지체계(B)", "협조능력(C)", "위기분류\n척도점수", "위기상담", "URS", "상담내용", "상담결과", "다음\n상담일자", "다음\n상담시간", "다음\n상담내용"};
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		for(int i=0; i < titleArr.length; i++) {
-//			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\r\n상담내용".equals(titleArr[i])) {
+//			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\n상담내용".equals(titleArr[i])) {
 //				this.cellStyleLoop(i, i, redCellStyle, row, cell, new XSSFRichTextString(titleArr[i]).toString());
 //			}else {
 				this.cellStyleLoop(i, i, titleCellStyle, row, cell, new XSSFRichTextString(titleArr[i]).toString());
@@ -136,7 +136,7 @@ public class MentalityStatisticsExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		for(int i=0; i < titleArr.length; i++) {
-//			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\r\n상담내용".equals(titleArr[i])) {
+//			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\n상담내용".equals(titleArr[i])) {
 //				this.cellStyleLoop(i, i, redCellStyle, row, cell, "");
 //			}else {
 				this.cellStyleLoop(i, i, titleCellStyle, row, cell, "");

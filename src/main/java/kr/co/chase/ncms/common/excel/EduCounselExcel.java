@@ -201,7 +201,7 @@ public class EduCounselExcel extends AbstractExcelView{
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
-		this.cellStyleLoop(0, 0, nameCellStyle, row, cell, "USR");
+		this.cellStyleLoop(0, 0, nameCellStyle, row, cell, "URS");
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 1, maxCellCount));
 		this.cellStyleLoop(1, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("USR"), ""));
 

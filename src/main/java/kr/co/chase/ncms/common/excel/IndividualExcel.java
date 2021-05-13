@@ -198,7 +198,7 @@ public class IndividualExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("상담관련\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("상담관련\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "상담일자");
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "상담시간");
@@ -242,7 +242,7 @@ public class IndividualExcel extends AbstractExcelView{
 			row = sheet.createRow(rowCount);
 			row.setHeight((short) (26*15));
 			tempRowCnt = rowCount;
-			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("위기분류\r\n척도").toString());
+			this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("위기분류\n척도").toString());
 			this.cellStyleLoop(2, 2, topCellStyle, row, cell, "위험성(A)");
 			this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("RSKA_TP_NM"), ""));
 			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
@@ -303,7 +303,7 @@ public class IndividualExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("차기\r\n상담관련").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("차기\n상담관련").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "다음 상담일자");
 		this.cellStyleLoop(3, 3, topCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_DT"), ""), "-"));
 		this.cellStyleLoop(4, 4, topCellStyle, row, cell, "시간");
