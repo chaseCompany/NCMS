@@ -130,7 +130,7 @@ public class EduCounselExcel extends AbstractExcelView{
 		this.cellStyleLoop(6, 6, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("GEND"), ""));
 		this.cellStyleLoop(7, 7, nameCellStyle, row, cell, "연령");
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 8, 9));
-		this.cellStyleLoop(8, 9, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("AGE_NM"), ""));
+		this.cellStyleLoop(8, 9, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("AGE"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 10, 11));
 		this.cellStyleLoop(10, 10, nameCellStyle, row, cell, "내/외국인");
 		this.cellStyleLoop(maxCellCount, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("FRG"), ""));

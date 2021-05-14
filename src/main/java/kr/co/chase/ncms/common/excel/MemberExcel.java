@@ -204,7 +204,7 @@ public class MemberExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "생년월일");
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)mbrInfo.get("JUMIN_NO1"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "나이");
-		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)mbrInfo.get("AGE_NM"), ""));
+		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)mbrInfo.get("AGE"), ""));
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
