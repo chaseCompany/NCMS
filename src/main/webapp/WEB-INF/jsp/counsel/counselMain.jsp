@@ -657,7 +657,7 @@
 								</td>
 								<th>회원번호</th>
 								<td>
-									<span class="dsp-ibk tac">
+									<span class="tac">
 										<form:input path="cslRcpInfo.tgpMbrNo" cssClass="el-input__inner" placeholder="회원번호" readonly="true" style="width: 140px;" />
 									</span>
 								</td>
@@ -711,7 +711,7 @@
 									</select>
 								</td>
 								<th><span class="required">*</span> 내/외국인</th>
-								<td>
+								<td colspan="3">
 									<span class="ck-bx">
 										<input type="radio" class="el-radio__original" name="tgpFrgCd" id="tgpFrgCd1" value="LO"<c:if test="${cslRcpInfo.tgpFrgCd eq 'LO'}"> checked</c:if> />
 										<label for="tgpFrgCd1"><span class="el-radio__input"><span class="el-radio__inner"></span></span> 내국인</label>
@@ -724,7 +724,7 @@
 							</tr>
 							<tr>
 								<th><span class="required">*</span> 지역</th>
-								<td colspan="4">
+								<td colspan="7">
 									<span class="el-inp mgr3">
 										<select name="tgpAreaCd" style="width: 178px;" onchange="javaScript:inputDisabledChang(this, 'tgpAreaEtc');">
 											<option value="">선택</option>

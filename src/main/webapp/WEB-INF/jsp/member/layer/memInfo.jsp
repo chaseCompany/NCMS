@@ -230,7 +230,7 @@
 							</button>
 						</td>
 						<th><span class="required">*</span> 연령</th>
-						<td><input name="age" value="<c:out value="${mbrInfo.AGE_NM}" />" type="text" <c:out value="${inputFlagStr}"/> class="el-input__inner" style="width: 65px;" placeholder="연령"></td>
+						<td><input name="age" value="<c:out value="${mbrInfo.AGE}" />" type="text" <c:out value="${inputFlagStr}"/> class="el-input__inner" style="width: 65px;" placeholder="연령"></td>
 						<th><span class="required">*</span> 연락처</th>
 						<td colspan="2">
 							<div class="dsp-ibk"><input name="telNo1" value="<c:out value="${mbrInfo.TEL_NO1}" />" type="text" <c:out value="${inputFlagStr}"/> maxlength="4" class="el-input__inner" style="width:54px"></div>

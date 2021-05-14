@@ -22,7 +22,7 @@
 		<td><a href="javaScript:getMbrInfo('<c:out value="${result.MBR_NO}" />', '<c:out value="${result.MBR_ED_ID}" />');"><c:out value="${result.MBR_NO}" /></a></td>
 		<td><c:out value="${result.MBR_NM}" /></td>
 		<td><c:out value="${result.GEND_NM}" /></td>
-		<td><c:out value="${result.AGE_NM}" /></td>
+		<td><c:out value="${result.AGE}" /></td>
 		<td><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></td>
 		<td><c:out value="${result.REQ_ORG}" /></td>
 		<td><c:out value="${result.SITE_NM}" /></td>

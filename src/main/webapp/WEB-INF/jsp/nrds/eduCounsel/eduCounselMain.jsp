@@ -529,7 +529,7 @@
 						</tr>
 						<tr>
 							<th><span class="required">*</span> 상담대상</th>
-							<td>
+							<td colspan="3">
 								<c:if test="${cslTgtCdList ne null and cslTgtCdList ne ''}">
 									<c:forEach var="result" items="${cslTgtCdList}" varStatus="status">
 										<span class="ck-bx">
@@ -542,7 +542,7 @@
 						</tr>
 						<tr>	
 							<th><span class="required">*</span> 상담구분</th>
-							<td>
+							<td colspan="3">
 								<c:if test="${cslTpCdList ne null and cslClsCdList ne ''}">
 									<c:forEach var="result" items="${cslClsCdList}" varStatus="status">
 										<span class="ck-bx">
@@ -555,7 +555,7 @@
 						</tr>
 						<tr>	
 							<th><span class="required">*</span> 상담유형</th>
-							<td>
+							<td colspan="3">
 								<c:if test="${cslTpCdList ne null and cslTpCdList ne ''}">
 									<c:forEach var="result" items="${cslTpCdList}" varStatus="status">
 										<span class="ck-bx">
