@@ -186,7 +186,7 @@ public class EduMngExcel extends AbstractExcelView{
 		row.setHeight((short) (26*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "기관명");
-		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_AGENT"), ""));
+		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_AGENT_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "담당자");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_MNG_USR_ID"), ""));
 		rowCount++;

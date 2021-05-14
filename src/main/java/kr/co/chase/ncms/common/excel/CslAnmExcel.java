@@ -322,7 +322,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "상세내용");
-		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SUD_CTNT"), ""));
+		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SUD_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
 		

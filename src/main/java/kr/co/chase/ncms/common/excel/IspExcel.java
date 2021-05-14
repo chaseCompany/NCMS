@@ -490,14 +490,14 @@ public class IspExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, "ISP결과");
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("ISP_RST"), ""));
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("ISP_RST"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("장단기\n목표수립").toString());
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("TGT_CTNT"), ""));
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("TGT_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 		
         rowCount++;

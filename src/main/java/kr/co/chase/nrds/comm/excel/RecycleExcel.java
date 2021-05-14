@@ -234,14 +234,14 @@ public class RecycleExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\r\n내용").toString());
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CTNT"), ""));
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\r\n결과").toString());
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), ""));
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));				rowCount++;		row = sheet.createRow(rowCount);		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("인적자원\r\n등록").toString());		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "직원");		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_EMP"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
@@ -257,7 +257,7 @@ public class RecycleExcel extends AbstractExcelView{
 				if(i == 0) tempRowCnt = rowCount;
 				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\r\n관련").toString() : ""));
 				this.cellStyleLoop(2, 2, (i == 0 ? topCellStyle : basicCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_NM"), ""));
-				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), ""));
+				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), "").replaceAll("\r\n", "\n"));
 				sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 			}
 			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+(mbrList.size()-1), 1, 1));

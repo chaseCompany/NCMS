@@ -243,7 +243,7 @@ public class EduCounselExcel extends AbstractExcelView{
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount+5, 0, 0));
 		this.cellStyleLoop(0, 0, nameCellStyle, row, cell, "상담내용");
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount+5, 1, maxCellCount));
-		this.cellStyleLoop(1, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_CTNT"), ""));
+		this.cellStyleLoop(1, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_CTNT"), "").replaceAll("\r\n", "\n"));
 		rowCount++;rowCount++;rowCount++;rowCount++;
 		
 		rowCount++;
@@ -251,7 +251,7 @@ public class EduCounselExcel extends AbstractExcelView{
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount+4, 0, 0));
 		this.cellStyleLoop(0, 0, nameCellStyle, row, cell, "상담결과");
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount+4, 1, maxCellCount));
-		this.cellStyleLoop(1, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_RST"), ""));
+		this.cellStyleLoop(1, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_RST"), "").replaceAll("\r\n", "\n"));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -267,7 +267,7 @@ public class EduCounselExcel extends AbstractExcelView{
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount+4, 0, 0));
 		this.cellStyleLoop(0, 0, nameCellStyle, row, cell, "다음상담내용");
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount+4, 1, maxCellCount));
-		this.cellStyleLoop(1, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_CTNT"), ""));
+		this.cellStyleLoop(1, maxCellCount, valueCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_CTNT"), "").replaceAll("\r\n", "\n"));
 	}
 
 	@Override
