@@ -242,7 +242,7 @@ public class CslAnmStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(34, 34, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("SUD_SOUL_NM"), ""));
 			this.cellStyleLoop(35, 35, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("SUD_WAY_NM"), ""));
 			this.cellStyleLoop(36, 36, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("SUD_WAY_ETC"), ""));
-			this.cellStyleLoop(37, 37, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("SUD_CTNT"), ""));
+			this.cellStyleLoop(37, 37, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("SUD_CTNT"), "").replaceAll("\r\n", "\n"));
 			this.cellStyleLoop(38, 38, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("DEV_BABY_PREG_NM"), ""));
 			this.cellStyleLoop(39, 39, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("DEB_BABY_DEV_NM"), ""));
 			this.cellStyleLoop(40, 40, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("DEV_BABY_NURT_NM"), ""));

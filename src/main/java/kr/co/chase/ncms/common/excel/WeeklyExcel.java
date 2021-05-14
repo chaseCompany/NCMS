@@ -222,14 +222,14 @@ public class WeeklyExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\n내용").toString());
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CTNT"), ""));
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
 		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\n결과").toString());
-		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), ""));
+		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 
 		if(mbrList.size() > 0) {
@@ -240,7 +240,7 @@ public class WeeklyExcel extends AbstractExcelView{
 				if(i == 0) tempRowCnt = rowCount;
 				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\n관련").toString() : ""));
 				this.cellStyleLoop(2, 2, (i == 0 ? topCellStyle : basicCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_NM"), ""));
-				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), ""));
+				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), "").replaceAll("\r\n", "\n"));
 				sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 			}
 			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+(mbrList.size()-1), 1, 1));

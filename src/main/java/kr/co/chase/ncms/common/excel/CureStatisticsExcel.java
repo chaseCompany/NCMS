@@ -172,13 +172,13 @@ public class CureStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(19, 19, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("JOB_TYPE_NM"), ""));
 			this.cellStyleLoop(20, 20, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("JOB_TYPE_ETC"), ""));
 			this.cellStyleLoop(21, 21, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("JOB_INCOME"), ""));
-			this.cellStyleLoop(22, 22, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("JOB_RESIGN"), ""));
+			this.cellStyleLoop(22, 22, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("JOB_RESIGN"), "").replaceAll("\r\n", "\n"));
 			this.cellStyleLoop(23, 23, contentCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("HEAL_ST_DT"), ""), "-"));
 			this.cellStyleLoop(24, 24, contentCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("HEAL_END_DT"), ""), "-"));
 			this.cellStyleLoop(25, 25, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("HEAL_TERM"), ""));
 			this.cellStyleLoop(26, 26, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("ORGAN_FORM_NM"), ""));
 			this.cellStyleLoop(27, 27, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("ORGAN_NAME"), ""));
-			this.cellStyleLoop(28, 28, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("ORGAN_CTNT"), ""));
+			this.cellStyleLoop(28, 28, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("ORGAN_CTNT"), "").replaceAll("\r\n", "\n"));
 		}
 	}
 

@@ -71,10 +71,14 @@ public class MentalityStatisticsExcel extends AbstractExcelView{
 		titleFont.setFontHeight((short)(9*20));								// 사이즈
 		titleFont.setBoldweight(Font.BOLDWEIGHT_BOLD);						// 굵기
 //		titleFont.setColor(Font.COLOR_NORMAL);
+		titleFont.setColor(HSSFColor.BLACK.index);;
 		
 		//폰트 설정 - 제목 red 
-//		Font redFont = titleFont;
-//		redFont.setColor(Font.COLOR_RED);
+		Font redFont = workbook.createFont();
+		redFont.setFontName("나눔고딕");											// 글씨체
+		redFont.setFontHeight((short)(9*20));								// 사이즈
+		redFont.setBoldweight(Font.BOLDWEIGHT_BOLD);		
+		redFont.setColor(HSSFColor.RED.index);
 		
 		//셀 스타일 - 제목
 		CellStyle titleCellStyle = workbook.createCellStyle();
@@ -91,18 +95,18 @@ public class MentalityStatisticsExcel extends AbstractExcelView{
 		titleCellStyle.setFont(titleFont);
 		
 //		//셀 스타일 - 제목 red
-//		CellStyle redCellStyle = workbook.createCellStyle();
-//		redCellStyle.setWrapText(true);
-//		redCellStyle.setAlignment(CellStyle.ALIGN_CENTER);						// 정렬
-//		redCellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);			// 높이 정렬
-//		//테두리 선(우, 좌, 위, 아래)
-//		redCellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-//		redCellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-//		redCellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-//		redCellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-//		redCellStyle.setFillForegroundColor(HSSFColor.LIGHT_CORNFLOWER_BLUE.index);  // 배경색
-//		redCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);	   // 배경패턴
-//		redCellStyle.setFont(redFont);
+		CellStyle redCellStyle = workbook.createCellStyle();
+		redCellStyle.setWrapText(true);
+		redCellStyle.setAlignment(CellStyle.ALIGN_CENTER);						// 정렬
+		redCellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);			// 높이 정렬
+		//테두리 선(우, 좌, 위, 아래)
+		redCellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		redCellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		redCellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		redCellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		redCellStyle.setFillForegroundColor(HSSFColor.LIGHT_CORNFLOWER_BLUE.index);  // 배경색
+		redCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);	   // 배경패턴
+		redCellStyle.setFont(redFont);
 		
 		//폰트 설정 - 내용 
 		Font basicFont = workbook.createFont();
@@ -121,26 +125,26 @@ public class MentalityStatisticsExcel extends AbstractExcelView{
 		contentCellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		contentCellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		contentCellStyle.setFont(basicFont);
-
+		
 		// 타이틀
 		String[] titleArr = {"No", "회원명", "회원번호", "성별", "나이", "등록일자", "의료보장", "기관명", "상담자", "상담일자", "상담\n시간", "소요\n시간", "상담대상", "상담유형", "상담주제", "상담목표", "위험성(A)", "지지체계(B)", "협조능력(C)", "위기분류\n척도점수", "위기상담", "URS", "상담내용", "상담결과", "다음\n상담일자", "다음\n상담시간", "다음\n상담내용"};
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		for(int i=0; i < titleArr.length; i++) {
-//			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\n상담내용".equals(titleArr[i])) {
-//				this.cellStyleLoop(i, i, redCellStyle, row, cell, new XSSFRichTextString(titleArr[i]).toString());
-//			}else {
+			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\n상담내용".equals(titleArr[i])) {
+				this.cellStyleLoop(i, i, redCellStyle, row, cell, new XSSFRichTextString(titleArr[i]).toString());
+			}else {
 				this.cellStyleLoop(i, i, titleCellStyle, row, cell, new XSSFRichTextString(titleArr[i]).toString());
-//			}
+			}
 		}
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		for(int i=0; i < titleArr.length; i++) {
-//			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\n상담내용".equals(titleArr[i])) {
-//				this.cellStyleLoop(i, i, redCellStyle, row, cell, "");
-//			}else {
+			if("위기상담".equals(titleArr[i]) || "상담내용".equals(titleArr[i]) || "상담결과".equals(titleArr[i]) || "다음\n상담내용".equals(titleArr[i])) {
+				this.cellStyleLoop(i, i, redCellStyle, row, cell, "");
+			}else {
 				this.cellStyleLoop(i, i, titleCellStyle, row, cell, "");
-//			}
+			}
 			sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i));
 		}
 
@@ -172,11 +176,11 @@ public class MentalityStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(19, 19, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSK_SCO"), ""));
 			this.cellStyleLoop(20, 20, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CRISIS_COUNSEL"), ""));
 			this.cellStyleLoop(21, 21, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("URS_NM"), ""));
-			this.cellStyleLoop(22, 22, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_CTNT"), ""));
-			this.cellStyleLoop(23, 23, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_RST"), ""));
+			this.cellStyleLoop(22, 22, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_CTNT"), "").replaceAll("\r\n", "\n"));
+			this.cellStyleLoop(23, 23, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_RST"), "").replaceAll("\r\n", "\n"));
 			this.cellStyleLoop(24, 24, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("NXT_CSL_DT"), ""));
 			this.cellStyleLoop(25, 25, contentCellStyle, row, cell, (cslInfo.get(i).get("NXT_CSL_TM") == null ? "" : String.valueOf(cslInfo.get(i).get("NXT_CSL_TM"))));
-			this.cellStyleLoop(26, 26, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("NXT_CSL_CTNT"), ""));
+			this.cellStyleLoop(26, 26, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("NXT_CSL_CTNT"), "").replaceAll("\r\n", "\n"));
 		}
 	}
 

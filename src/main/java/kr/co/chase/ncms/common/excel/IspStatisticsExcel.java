@@ -268,8 +268,8 @@ public class IspStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(60, 60, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("EVL_ITM_LNK24"), ""));
 			this.cellStyleLoop(61, 61, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("EVL_ITM_SCO25_NM"), ""));
 			this.cellStyleLoop(62, 62, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("EVL_ITM_LNK25"), ""));
-			this.cellStyleLoop(63, 63, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("ISP_RST"), ""));
-			this.cellStyleLoop(64, 64, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGT_CTNT"), ""));
+			this.cellStyleLoop(63, 63, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("ISP_RST"), "").replaceAll("\r\n", "\n"));
+			this.cellStyleLoop(64, 64, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("TGT_CTNT"), "").replaceAll("\r\n", "\n"));
 		}
 	}
 
