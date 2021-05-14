@@ -234,11 +234,12 @@
 			$("input[name='ifpNm']").val(obj.MBR_NM);
 			$("input[name='ifpMbrNo']").val(obj.MBR_NO);
 			$("input[name='ifpGendCd']:radio[value='" + obj.GEND_CD + "']").prop("checked", true);
-			$("select[name='ifpAge']").val(obj.AGE).prop("selected", true);
+			$("select[name='ifpAge']").val(obj.AGE_CD).prop("selected", true);
 			$("input[name='ifpTelNo1']").val(obj.TEL_NO1);
 			$("input[name='ifpTelNo2']").val(obj.TEL_NO2);
 			$("input[name='ifpTelNo3']").val(obj.TEL_NO3);
 			$("select[name='ifpJobCd']").val(obj.JOB_CD).prop("selected", true);
+			
 		},
 		<%-- 정보제공자 복사 --%>
 		ifpCopy = function(){
@@ -300,7 +301,7 @@
 						$("input[name='ifpNm']").val(res.cslRcpInfo.IFP_NM);
 						$("input[name='ifpMbrNo']").val(res.cslRcpInfo.IFP_MBR_NO);
 						$("input[name='ifpGendCd']:radio[value='" + res.cslRcpInfo.IFP_GEND_CD + "']").prop("checked", true);
-						$("select[name='ifpAge']").val(res.cslRcpInfo.IFP_AGE).prop("selected", true);
+						$("select[name='ifpAge']").val(res.cslRcpInfo.IFP_AGE_CD).prop("selected", true);
 						$("input[name='ifpTelNo1']").val(res.cslRcpInfo.IFP_TEL_NO1);
 						$("input[name='ifpTelNo2']").val(res.cslRcpInfo.IFP_TEL_NO2);
 						$("input[name='ifpTelNo3']").val(res.cslRcpInfo.IFP_TEL_NO3);
@@ -316,7 +317,7 @@
 						$("input[name='tgpNm']").val(res.cslRcpInfo.TGP_NM);
 						$("input[name='tgpMbrNo']").val(res.cslRcpInfo.TGP_MBR_NO);
 						$("input[name='tgpGendCd']:radio[value='" + res.cslRcpInfo.TGP_GEND_CD + "']").prop("checked", true);
-						$("select[name='tgpAge']").val(res.cslRcpInfo.TGP_AGE).prop("selected", true);
+						$("select[name='tgpAge']").val(res.cslRcpInfo.TGP_AGE_CD).prop("selected", true);
 						$("input[name='tgpTelNo1']").val(res.cslRcpInfo.TGP_TEL_NO1);
 						$("input[name='tgpTelNo2']").val(res.cslRcpInfo.TGP_TEL_NO2);
 						$("input[name='tgpTelNo3']").val(res.cslRcpInfo.TGP_TEL_NO3);

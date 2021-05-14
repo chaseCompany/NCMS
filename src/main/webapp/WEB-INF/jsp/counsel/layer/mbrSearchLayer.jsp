@@ -17,7 +17,7 @@
 			mstMbrSearchPopup($("input[name='reFunName']").val());
 		}
 		<%-- 회원선택 --%>
-		choiceMem = function(mbrNm, mbrNo, gendCd, gendNm, age, ageNm, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm){
+		choiceMem = function(mbrNm, mbrNo, gendCd, gendNm, age, ageNm ,ageCd, telNo1, telNo2, telNo3, jobCd, regDt, medicCareNm, mngUsrNm, jobNm, juminNo1){
 			var tagMemObj = {
 				MBR_NM : mbrNm,
 				MBR_NO : mbrNo,
@@ -25,6 +25,7 @@
 				GEND_NM : gendNm,
 				AGE : age,
 				AGE_NM : ageNm,
+				AGE_CD : ageCd,
 				TEL_NO1 : telNo1,
 				TEL_NO2 : telNo2,
 				TEL_NO3 : telNo3,
@@ -32,9 +33,10 @@
 				REG_DT : regDt,
 				MEDIC_CARE_NM : medicCareNm,
 				MNG_USR_NM : mngUsrNm,
-				JOB_NM : jobNm
+				JOB_NM : jobNm,
+				JUMIN_NO1 : juminNo1
 			};
-
+			
 			eval($("input[name='reFunName']").val() + "(tagMemObj)");
 <c:if test="${closeFlg ne 'N'}">
 			layerPopupClose('memberPopUp');
@@ -135,6 +137,7 @@
 																					  , '<c:out value="${result.GEND_NM}" />'
 																					  , '<c:out value="${result.AGE}" />'
 																					   , '<c:out value="${result.AGE_NM}" />'
+																					   , '<c:out value="${result.AGE_CD}" />'
 																					  , '<c:out value="${result.TEL_NO1}" />'
 																					  , '<c:out value="${result.TEL_NO2}" />'
 																					  , '<c:out value="${result.TEL_NO3}" />'
@@ -143,6 +146,7 @@
 																					  , '<c:out value="${result.MEDIC_CARE_NM}" />'
 																					  , '<c:out value="${result.MNG_USR_NM}" />'
 																					  , '<c:out value="${result.JOB_NM}" />'
+																					  , '<c:out value="${result.JUMIN_NO1}" />'
 																	);" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
 										<span>선택</span>
 									</button>
@@ -226,6 +230,8 @@
 																					  , '<c:out value="${result.GEND_CD}" />'
 																					  , '<c:out value="${result.GEND_NM}" />'
 																					  , '<c:out value="${result.AGE}" />'
+																					  , '<c:out value="${result.AGE_NM}" />'
+																					  , '<c:out value="${result.AGE_CD}" />'
 																					  , '<c:out value="${result.TEL_NO1}" />'
 																					  , '<c:out value="${result.TEL_NO2}" />'
 																					  , '<c:out value="${result.TEL_NO3}" />'
@@ -234,6 +240,7 @@
 																					  , '<c:out value="${result.MEDIC_CARE_NM}" />'
 																					  , '<c:out value="${result.MNG_USR_NM}" />'
 																					  , '<c:out value="${result.JOB_NM}" />'
+																					  , '<c:out value="${result.JUMIN_NO1}" />'
 																	);" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;">
 										<span>선택</span>
 									</button>
