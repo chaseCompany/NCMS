@@ -712,8 +712,6 @@
 		},
 		<%-- 엑셀다운로드 --%>
 		recycleExcel = function(){
-			alert("준비중");
-			return;
 			if($("input[name='pgmId']").val() != ""){
 				$("form#excelForm").empty();
 				$("form#excelForm").append("<input type='hidden' name='pgmId' value='" + $("input[name='pgmId']").val() + "' />");

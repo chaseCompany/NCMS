@@ -192,7 +192,7 @@ public class IndividualExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SITE_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "사례관리자");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MNG_USR_NM"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -229,12 +229,12 @@ public class IndividualExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "상담목표");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_TGT"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		// 위기분류척도 미기입시 양식지 제외
 		if( !( "0".equals(cslInfo.get("RSKA_TP_CD")) && "0".equals(cslInfo.get("RSKB_TP_CD")) && "0".equals(cslInfo.get("RSKC_TP_CD"))
-				&& ( "0".equals(cslInfo.get("RSK_SCO")) || "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("RSK_SCO"), "")) )
-				&& "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("CSL_EMER"), ""))
+				&& ( "0".equals(cslInfo.get("RSK_SCO")) || cslInfo.get("RSK_SCO") == null)
+				&& "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("CRISIS_COUNSEL"), ""))
 				&& "70".equals(cslInfo.get("URS_CD")) 
 			) ){
 		
@@ -265,7 +265,7 @@ public class IndividualExcel extends AbstractExcelView{
 			row.setHeight((short) (26*15));
 			this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 			this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "점수");
-			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("RSK_SCO"), ""));
+			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, (cslInfo.get("RSK_SCO") == null ? "" : String.valueOf(cslInfo.get("RSK_SCO"))));
 			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 			rowCount++;
 			row = sheet.createRow(rowCount);
@@ -281,7 +281,7 @@ public class IndividualExcel extends AbstractExcelView{
 			this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "URS");
 			this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("URS_NM"), ""));
 			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+5, 1, 1));
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 			
 		}
 		
@@ -315,7 +315,7 @@ public class IndividualExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "다음 상담내용");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("NXT_CSL_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -334,7 +334,7 @@ public class IndividualExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (18*15));
 		this.cellStyleLoop(1, 5, bottomCellStyle, row, cell, "");
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 5));
 
 		
 		// 이미지

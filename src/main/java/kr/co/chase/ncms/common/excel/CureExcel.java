@@ -200,7 +200,7 @@ public class CureExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MNG_SITE_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "사례관리자");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty(mngUsrId, ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -255,7 +255,7 @@ public class CureExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "신체질환");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MEDI_ILL_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+6, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -289,7 +289,7 @@ public class CureExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "퇴사사유");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("JOB_RESIGN"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -321,7 +321,7 @@ public class CureExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "내용");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("ORGAN_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));		
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));		
 				
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -340,7 +340,7 @@ public class CureExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (18*15));
 		this.cellStyleLoop(1, 5, bottomCellStyle, row, cell, "");
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 5));
 
 		
 		// 이미지

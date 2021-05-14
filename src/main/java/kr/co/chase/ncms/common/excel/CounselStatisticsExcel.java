@@ -189,7 +189,7 @@ public class CounselStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(34, 34, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSKA_TP_NM"), ""));
 			this.cellStyleLoop(35, 35, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSKB_TP_NM"), ""));
 			this.cellStyleLoop(36, 36, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSKC_TP_NM"), ""));
-			this.cellStyleLoop(37, 37, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSK_SCO"), ""));
+			this.cellStyleLoop(37, 37, contentCellStyle, row, cell, (cslInfo.get(i).get("RSK_SCO") == null ? "" : String.valueOf(cslInfo.get(i).get("RSK_SCO"))));
 			this.cellStyleLoop(38, 38, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_EMER"), ""));
 			this.cellStyleLoop(39, 39, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("URS_NM"), ""));
 			this.cellStyleLoop(40, 40, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_CTNT"), "").replaceAll("\r\n", "\n"));

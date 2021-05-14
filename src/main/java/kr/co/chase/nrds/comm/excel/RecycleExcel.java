@@ -170,7 +170,7 @@ public class RecycleExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("프로그램\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "교육분류");
 		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_ED_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
@@ -233,21 +233,21 @@ public class RecycleExcel extends AbstractExcelView{
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\r\n내용").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\n내용").toString());
 		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (139*15));
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\r\n결과").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\n결과").toString());
 		this.cellStyleLoop(2, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_RST"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 2, 5));				rowCount++;		row = sheet.createRow(rowCount);		row.setHeight((short) (26*15));
-		tempRowCnt = rowCount;		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("인적자원\r\n등록").toString());		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "직원");		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_EMP"), ""));
+		tempRowCnt = rowCount;		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("인적자원\n등록").toString());		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "직원");		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_EMP"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 		rowCount++;		row = sheet.createRow(rowCount);		row.setHeight((short) (26*15));		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "자원봉사자");		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_VOL"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 
 		if(mbrList.size() > 0) {
 			for(int i=0; i<mbrList.size(); i++) {
@@ -255,7 +255,7 @@ public class RecycleExcel extends AbstractExcelView{
 				row = sheet.createRow(rowCount);
 				row.setHeight((short) (26*15));
 				if(i == 0) tempRowCnt = rowCount;
-				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\r\n관련").toString() : ""));
+				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\n관련").toString() : ""));
 				this.cellStyleLoop(2, 2, (i == 0 ? topCellStyle : basicCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_NM"), ""));
 				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), "").replaceAll("\r\n", "\n"));
 				sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
@@ -280,7 +280,7 @@ public class RecycleExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (18*15));
 		this.cellStyleLoop(1, 5, bottomCellStyle, row, cell, "");
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 5));
 
 		
 		// 이미지

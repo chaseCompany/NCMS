@@ -173,12 +173,12 @@ public class MentalityStatisticsExcel extends AbstractExcelView{
 			this.cellStyleLoop(16, 16, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSKA_TP_NM"), ""));
 			this.cellStyleLoop(17, 17, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSKB_TP_NM"), ""));
 			this.cellStyleLoop(18, 18, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSKC_TP_NM"), ""));
-			this.cellStyleLoop(19, 19, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("RSK_SCO"), ""));
+			this.cellStyleLoop(19, 19, contentCellStyle, row, cell, (cslInfo.get(i).get("RSK_SCO") == null ? "" : String.valueOf(cslInfo.get(i).get("RSK_SCO"))));
 			this.cellStyleLoop(20, 20, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CRISIS_COUNSEL"), ""));
 			this.cellStyleLoop(21, 21, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("URS_NM"), ""));
 			this.cellStyleLoop(22, 22, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_CTNT"), "").replaceAll("\r\n", "\n"));
 			this.cellStyleLoop(23, 23, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("CSL_RST"), "").replaceAll("\r\n", "\n"));
-			this.cellStyleLoop(24, 24, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("NXT_CSL_DT"), ""));
+			this.cellStyleLoop(24, 24, contentCellStyle, row, cell, DateUtil.getDateFormat(StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("NXT_CSL_DT"), ""), "-"));
 			this.cellStyleLoop(25, 25, contentCellStyle, row, cell, (cslInfo.get(i).get("NXT_CSL_TM") == null ? "" : String.valueOf(cslInfo.get(i).get("NXT_CSL_TM"))));
 			this.cellStyleLoop(26, 26, contentCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get(i).get("NXT_CSL_CTNT"), "").replaceAll("\r\n", "\n"));
 		}

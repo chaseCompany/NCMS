@@ -210,6 +210,7 @@ public class MentalityController {
 
 		String cslId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
 		reqMap.put("cslDt", StringUtils.defaultIfEmpty((String)reqMap.get("cslDt"), "").replaceAll("-", ""));
+		reqMap.put("nxtCslDt", StringUtils.defaultIfEmpty((String)reqMap.get("nxtCslDt"), "").replaceAll("-", ""));
 		reqMap.put("cslId", cslId);
 
 		// 첨부 파일 정보

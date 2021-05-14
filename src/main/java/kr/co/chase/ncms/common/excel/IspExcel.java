@@ -199,7 +199,7 @@ public class IspExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MNG_SITE_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "사례관리자");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MNG_USR_NM"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -232,7 +232,7 @@ public class IspExcel extends AbstractExcelView{
 		}
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, linkNm);
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		if( !( "0".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO01"), "")) && "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK01"), ""))
 				&& "0".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO02"), "")) && "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK02"), ""))
@@ -282,7 +282,7 @@ public class IspExcel extends AbstractExcelView{
 			this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO17_NM"), ""));
 			this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "자원연계");
 			this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK17"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+4, 1, 1));
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		}
 		
 		if( !( "0".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO06"), "")) && "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK06"), ""))
@@ -324,7 +324,7 @@ public class IspExcel extends AbstractExcelView{
 			this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO09_NM"), ""));
 			this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "자원연계");
 			this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK09"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		}
 		
 		if( !( "0".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO18"), "")) && "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK18"), ""))
@@ -348,7 +348,7 @@ public class IspExcel extends AbstractExcelView{
 			this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO19_NM"), ""));
 			this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "자원연계");
 			this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK19"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		}
 		
 		if( !( "0".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO10"), "")) && "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK10"), ""))
@@ -381,7 +381,7 @@ public class IspExcel extends AbstractExcelView{
 			this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO20_NM"), ""));
 			this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "자원연계");
 			this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK20"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+2, 1, 1));
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		}
 		
 		if( !( "0".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO12"), "")) && "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK12"), ""))
@@ -432,7 +432,7 @@ public class IspExcel extends AbstractExcelView{
 			this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO14_NM"), ""));
 			this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "자원연계");
 			this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK14"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+4, 1, 1));
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		}
 		
 		if( !( "1".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO21"), "")) && "".equals(StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK21"), ""))
@@ -483,7 +483,7 @@ public class IspExcel extends AbstractExcelView{
 			this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_SCO25_NM"), ""));
 			this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "자원연계");
 			this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("EVL_ITM_LNK25"), ""));
-			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+4, 1, 1));
+			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		}
 		
 		rowCount++;
@@ -509,7 +509,7 @@ public class IspExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (18*15));
 		this.cellStyleLoop(1, 5, bottomCellStyle, row, cell, "");
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 5));
 
 		
 		// 이미지

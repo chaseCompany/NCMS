@@ -216,7 +216,7 @@ public class WeeklyExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "프로그램 목표");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_GOAL"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+5, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -263,7 +263,7 @@ public class WeeklyExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (18*15));
 		this.cellStyleLoop(1, 5, bottomCellStyle, row, cell, "");
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 5));
 
 		
 		// 이미지

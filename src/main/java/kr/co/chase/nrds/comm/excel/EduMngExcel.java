@@ -170,7 +170,7 @@ public class EduMngExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("과정\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("과정\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "교육분류");
 		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_ED_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
@@ -214,13 +214,13 @@ public class EduMngExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SESSION"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "차수");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+5, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (26*15));
 		tempRowCnt = rowCount;
-		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\r\n정보").toString());
+		this.cellStyleLoop(1, 1, topLCellStyle, row, cell, new XSSFRichTextString("교육\n정보").toString());
 		this.cellStyleLoop(2, 2, topCellStyle, row, cell, "교육일시");
 		this.cellStyleLoop(3, 5, topRCellStyle, row, cell, 
 				StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_START_DT"), "") + " " + StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS_START_TM"), "")
@@ -240,7 +240,7 @@ public class EduMngExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "주강사");
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_MAIN_LEC"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "보조강사");		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SUB_LEC"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+2, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		
         rowCount++;
@@ -252,7 +252,7 @@ public class EduMngExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (18*15));
 		this.cellStyleLoop(1, 5, bottomCellStyle, row, cell, "");
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 5));
 
 		
 		// 이미지

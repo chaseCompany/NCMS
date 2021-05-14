@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -263,7 +264,7 @@ public class EduCounselController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/eduCounselDownload.do")
-	public String counselExelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response) throws Exception {
+	public String counselExelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
 		String title = "교육상담";
 		String cslNo = StringUtils.defaultIfEmpty((String)reqMap.get("cslNo"), "");
 
@@ -277,6 +278,7 @@ public class EduCounselController {
 		HashMap<String, Object> cslInfo = eduCounselService.getCslCure(cslNo);
 
 		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
 
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);		

@@ -214,7 +214,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("MNG_SITE_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "사례관리자");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty(mngUsrId, ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -324,7 +324,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "상세내용");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("SUD_CTNT"), "").replaceAll("\r\n", "\n"));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+3, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -349,7 +349,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "단약이유");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("CUREOFF_REASON"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));	
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+2, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -374,7 +374,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "주양육자");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_BABY_NURT_NM"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));	
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -393,7 +393,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_CHILD_RELATION_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "기타");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_CHILD_TEC"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -412,7 +412,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_TEEN_UNI_NM"), ""));
 		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "기타");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_TEEN_ETC"), ""));
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
 		rowCount++;
 		row = sheet.createRow(rowCount);
@@ -430,7 +430,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "기타");
 		this.cellStyleLoop(3, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("DEV_ADUL_ETC"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));	
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 1));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		
         rowCount++;
 		row = sheet.createRow(rowCount);
@@ -441,7 +441,7 @@ public class CslAnmExcel extends AbstractExcelView{
 		row = sheet.createRow(rowCount);
 		row.setHeight((short) (18*15));
 		this.cellStyleLoop(1, 5, bottomCellStyle, row, cell, "");
-		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+1, 1, 5));
+		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 5));
 
 		
 		// 이미지
