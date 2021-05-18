@@ -79,6 +79,9 @@ public class ClientController {
 
 		codeListMap.put("grpCd", "C3200");				// 약물관련 법적문제
 		model.put("lawPbmList", sysCodeService.getSysCdList(codeListMap));
+		
+		codeListMap.put("grpCd", "R0600");				// 대상자구분
+		model.put("mbrStCdList", sysCodeService.getSysCdList(codeListMap));
 
 		return "nrds/client/clientMain";
 	}
@@ -112,6 +115,7 @@ public class ClientController {
 		String mbrTp4 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp4"), "");
 		String mbrTp5 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp5"), "");
 		String mbrTp6 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp6"), "");
+		String mbrSt = StringUtils.defaultIfEmpty((String)reqMap.get("mbrSt"), "");
 		String fstDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("fstDrugCd"), "");
 		String mainDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("mainDrugCd"), "");
 		String fstAge = StringUtils.defaultIfEmpty((String)reqMap.get("fstAge"), "");
@@ -526,11 +530,11 @@ public class ClientController {
 			resultView.addObject("MSG", "의뢰일을 입력하세요.");
 			return resultView;
 		}
-		if("".equals(docNo)) {
+		/*if("".equals(docNo)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "문서번호를 입력하세요.");
 			return resultView;
-		}
+		}*/
 		if("".equals(crimeType01) && "".equals(crimeType02) && "".equals(crimeType03) && "".equals(crimeType04)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "범죄유형을 선택하세요.");
@@ -652,11 +656,11 @@ public class ClientController {
 			resultView.addObject("MSG", "의뢰일을 선택하세요.");
 			return resultView;
 		}
-		if("".equals(docNo)) {
+		/*if("".equals(docNo)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "문서번호를 입력하세요.");
 			return resultView;
-		}
+		}*/
 		if("".equals(reqOrg)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "의뢰처를 입력하세요.");

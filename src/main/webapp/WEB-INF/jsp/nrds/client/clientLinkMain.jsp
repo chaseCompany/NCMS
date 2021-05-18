@@ -286,12 +286,12 @@
 					<div role="tablist" class="el-tabs__nav is-top">
 						<a href="<c:url value="/nrds/clientMain.do" />">
 							<div class="el-tabs__item is-top" data-id="tab-mem">
-								<span><i class="el-icon-s-help"></i> 대상자 정보관리</span>
+								<span><i class="el-icon-s-help"></i> 접수(법정의무교육)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientEduConMain.do"/>">
 							<div class="el-tabs__item is-top" data-id="tab-link">
-								<span><i class="el-icon-s-management"></i> 접수 (교육조건부)</span>
+								<span><i class="el-icon-s-management"></i> 접수(교육조건부)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientLeadConMain.do" />">

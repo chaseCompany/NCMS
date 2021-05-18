@@ -76,6 +76,10 @@
 				alert("대상자구분을 선택하세요.");
 				$("input[name='mbrTp1']").focus();				return;
 			}
+			if(!$("input[name='mbrSt']").is(":checked")){
+				alert("대상자상태를 선택하세요.");
+				$("input[name='mbrSt']").focus();				return;
+			}
 			if($("select[name='fstDrugCd']").val() == ""){
 				alert("최초사용약물을 선택하세요.");
 				$("select[name='fstDrugCd']").focus();				return;
@@ -206,6 +210,7 @@
 						}else{
 							$("input[name='mbrTp6']").prop("checked", false);
 						}
+						$("input[name='mbrSt']:radio[value='" + info.MBR_ST + "']").prop("checked", true);
 						$("select[name='mrgCd']").val(info.MRG_CD).prop("selected", true);
 						$("select[name='eduCd']").val(info.EDU_CD).prop("selected", true);
 						$("select[name='edu02Cd']").val(info.EDU02_CD).prop("selected", true);
@@ -268,6 +273,7 @@
 			$("input[name='mbrTp4']").prop("checked", false);
 			$("input[name='mbrTp5']").prop("checked", false);
 			$("input[name='mbrTp6']").prop("checked", false);
+			$("input[name='mbrSt']").prop("checked", false);
 			$("select[name='mrgCd']").val("").prop("selected", true);
 			$("select[name='eduCd']").val("").prop("selected", true);
 			$("select[name='edu02Cd']").val("").prop("selected", true);
@@ -373,12 +379,12 @@
 					<div role="tablist" class="el-tabs__nav is-top">
 						<a href="<c:url value="/nrds/clientMain.do" />">
 							<div class="el-tabs__item is-top is-active" data-id="tab-mem">
-								<span><i class="el-icon-s-help"></i> 대상자 정보관리</span>
+								<span><i class="el-icon-s-help"></i> 접수(법정의무교육)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientEduConMain.do"/>">
 							<div class="el-tabs__item is-top" data-id="tab-link">
-								<span><i class="el-icon-s-management"></i> 접수 (교육조건부)</span>
+								<span><i class="el-icon-s-management"></i> 접수(교육조건부)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientLeadConMain.do" />">
@@ -509,6 +515,21 @@
 											<input type="checkbox" name="mbrTp6" id="mbrTp6" value="1">
 											<label for="mbrTp6">단기과정</label>
 										</span>
+									</td>
+								</tr>
+								<tr>
+									<th><span class="required">*</span> 대상자상태</th>
+									<td>
+<c:if test="${mbrStCdList ne null and mbrStCdList ne ''}">
+	<c:forEach var="result" items="${mbrStCdList}" varStatus="status">
+										<span class="ck-bx">
+											<input type="radio" class="el-radio__original" name="mbrSt" value="<c:out value="${result.CD_ID}" />" id="mbrSt-<c:out value="${status.count}" />">
+											<label for="mbrSt-<c:out value="${status.count}" />">
+												<span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" />
+											</label>
+										</span>
+	</c:forEach>
+</c:if>
 									</td>
 								</tr>
 								<tr>

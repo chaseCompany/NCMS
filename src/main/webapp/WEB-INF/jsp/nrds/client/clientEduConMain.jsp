@@ -248,14 +248,10 @@
 				alert("의뢰일을 입력하세요.");
 				$("input[name='reqDt']").focus();				return;
 			}
-			if($("input[name='docNo']").val() == ""){
+			/*if($("input[name='docNo']").val() == ""){
 				alert("문서번호를 입력하세요.");
 				$("input[name='docNo']").focus();				return;
-			}
-			if($("input[name='docNo']").val() == ""){
-				alert("문서번호를 입력하세요.");
-				$("input[name='docNo']").focus();				return;
-			}
+			}*/
 			if(
 				!($("input[name='crimeType01']").is(":checked") || $("input[name='crimeType02']").is(":checked") ||
 				  $("input[name='crimeType03']").is(":checked") || $("input[name='crimeType04']").is(":checked"))
@@ -443,12 +439,12 @@
 					<div role="tablist" class="el-tabs__nav is-top">
 						<a href="<c:url value="/nrds/clientMain.do" />">
 							<div class="el-tabs__item is-top" data-id="tab-mem">
-								<span><i class="el-icon-s-help"></i> 대상자 정보관리</span>
+								<span><i class="el-icon-s-help"></i> 접수(법정의무교육)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientEduConMain.do"/>">
 							<div class="el-tabs__item is-top is-active" data-id="tab-link">
-								<span><i class="el-icon-s-management"></i> 접수 (교육조건부)</span>
+								<span><i class="el-icon-s-management"></i> 접수(교육조건부)</span>
 							</div>
 						</a>
 						<a href="<c:url value="/nrds/clientLeadConMain.do" />">
@@ -630,7 +626,7 @@
 												<input type="text" name="reqDt" class="el-input__inner datepicker" placeholder="의뢰일" style="width: 130px;" />
 											</div>
 										</td>
-										<th><span class="required">*</span> 문서번호</th>
+										<th>문서번호</th>
 										<td><input type="text" name="docNo" class="el-input__inner" placeholder="문서번호" maxlength="50" style="width: 130px;" /></td>
 										<th>사건번호</th>
 										<td><input type="text" name="caseNo" class="el-input__inner" placeholder="사건번호" maxlength="50" style="width: 130px;" /></td>

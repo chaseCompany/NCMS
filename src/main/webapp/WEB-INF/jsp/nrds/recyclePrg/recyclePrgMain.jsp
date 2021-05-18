@@ -366,14 +366,14 @@
 				alert("주제는 필수 입력 항목입니다.");
 				$("input[name='pgmSubject']").focus();					return;
 			}
-			if($("textarea[name='pgmCtnt']").val() == ""){
-				alert("프로그램 내용은 필수 입력 항목입니다.");
+			/*if($("textarea[name='pgmCtnt']").val() == ""){
+				alert("교육내용은 필수 입력 항목입니다.");
 				$("textarea[name='pgmCtnt']").focus();				return;
 			}
 			if($("textarea[name='pgmRst']").val() == ""){
-				alert("프로그램 결과는 필수 입력 항목입니다.");
+				alert("교육결과는 필수 입력 항목입니다.");
 				$("textarea[name='pgmRst']").focus();				return;
-			} 
+			}*/ 
 
 			$.ajax({
 				url : '/nrds/ajaxRecyclePrgAdd.do',
@@ -910,7 +910,7 @@
 						<tbody>
 							<tr>
 								<th>
-									<span class="required">*</span>교육내용<br>
+									교육내용<br>
 									<button type="button" onclick="javaScript:viewCtnt('pgmCtnt', '');" class="el-button el-button--success el-button--mini is-plain" style="padding: 4px 6px;">
 										<i class="el-icon-search"></i>
 									</button>
