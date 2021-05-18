@@ -351,22 +351,21 @@
 						$("textarea[name='pgmCtnt']").val(recyclePrgInfo.pgmCtnt);
 						$("textarea[name='pgmRst']").val(recyclePrgInfo.pgmRst);
 						$("input[name='pgmEmp']").val(recyclePrgInfo.pgmEmp);
-						$("input[name='pgmVol']").val(recyclePrgInfo.pgmVol);					
+						$("input[name='pgmVol']").val(recyclePrgInfo.pgmVol);
+						
+						$("input[name='pgmId']").val(recyclePrgInfo.pgmId);
+						$("input[name='pgmClassStartDt']").datepicker('setDate', recyclePrgInfo.pgmClassStartDt);
+						$("input[name='pgmClassEndDt']").datepicker('setDate', recyclePrgInfo.pgmClassEndDt);
+						$("input[name='pgmClassStartTm']").val(recyclePrgInfo.pgmClassStartTm);
+						$("input[name='pgmClassEndTm']").val(recyclePrgInfo.pgmClassEndTm);
+						$("input[name='pgmSession']").val(recyclePrgInfo.pgmSession);
+						$("input[name='pgmSubject']").val(recyclePrgInfo.pgmSubject);
+						$("input[name='pgmMainLec']").val(recyclePrgInfo.pgmMainLec);
+						$("input[name='pgmSubLec']").val(recyclePrgInfo.pgmSubLec);
 						
 						if(isCopy){
-							// 복사일 경우 교육 정보 초기화 + 신규등록
+							// 복사일 경우 신규등록 가능하게 초기화
 							$("input[name='pgmId']").val("");
-							$("input[name='pgmClassStartDt'], input[name='pgmClassStartTm'], input[name='pgmClassEndDt'], input[name='pgmClassEndTm'], input[name='pgmSession'], input[name='pgmSubject'], input[name='pgmMainLec'], input[name='pgmSubLec']").val("");
-						}else{
-							$("input[name='pgmId']").val(recyclePrgInfo.pgmId);
-							$("input[name='pgmClassStartDt']").datepicker('setDate', recyclePrgInfo.pgmClassStartDt);
-							$("input[name='pgmClassEndDt']").datepicker('setDate', recyclePrgInfo.pgmClassEndDt);
-							$("input[name='pgmClassStartTm']").val(recyclePrgInfo.pgmClassStartTm);
-							$("input[name='pgmClassEndTm']").val(recyclePrgInfo.pgmClassEndTm);
-							$("input[name='pgmSession']").val(recyclePrgInfo.pgmSession);
-							$("input[name='pgmSubject']").val(recyclePrgInfo.pgmSubject);
-							$("input[name='pgmMainLec']").val(recyclePrgInfo.pgmMainLec);
-							$("input[name='pgmSubLec']").val(recyclePrgInfo.pgmSubLec);
 						}
 						
 						if(recyclePrgInfo.fileList != undefined && recyclePrgInfo.fileList != ''){

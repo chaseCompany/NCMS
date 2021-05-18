@@ -257,7 +257,7 @@ public class RecycleExcel extends AbstractExcelView{
 				if(i == 0) tempRowCnt = rowCount;
 				this.cellStyleLoop(1, 1, (i == 0 ? topLCellStyle : basicLCellStyle), row, cell, (i == 0 ? new XSSFRichTextString("참여자\n관련").toString() : ""));
 				this.cellStyleLoop(2, 2, (i == 0 ? topCellStyle : basicCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_NM"), ""));
-				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("MBR_CTNT"), "").replaceAll("\r\n", "\n"));
+				this.cellStyleLoop(3, 5, (i == 0 ? topRCellStyle : basicRCellStyle), row, cell, StringUtils.defaultIfEmpty((String)mbrList.get(i).get("PGM_USER_CNT"), "").replaceAll("\r\n", "\n"));
 				sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 3, 5));
 			}
 			sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, tempRowCnt+(mbrList.size()-1), 1, 1));
