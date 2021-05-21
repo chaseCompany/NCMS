@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
@@ -32,6 +33,9 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 	
 	@Resource(name = "FileManagerUtil")
 	private FileManagerUtil fileUtil;
+	
+	@Resource(name="propertiesService")
+	protected EgovPropertyService propertiesService;
 
 	public List<EgovMap> selectEdPrmList(HashMap<String, Object> map) throws Exception{
 		return recyclePrgDao.selectEdPrmList(map);
@@ -162,6 +166,7 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 
 	@Override
 	public HashMap<String, Object> getEdPrm(HashMap<String, Object> map) throws Exception {
+		map.put("paswKey", propertiesService.getString("aes256Key"));
 
 		HashMap<String, Object> result = recyclePrgDao.selectEdPrmInfoMap(map);
 		if(result != null) {
@@ -175,6 +180,10 @@ public class RecyclePrgServiceImpl implements RecyclePrgService{
 		}
 
 		return result;
+	}
+	public List<HashMap<String, Object>> getEdPrmStatistics(HashMap<String, Object> map) throws Exception {
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		return recyclePrgDao.selectEdPrmInfoMapStatistics(map); 
 	}
 
 	/**

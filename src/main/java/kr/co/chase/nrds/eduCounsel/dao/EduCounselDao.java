@@ -27,8 +27,11 @@ public class EduCounselDao extends EgovAbstractMapper{
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<String, Object> getCslCure(String cslNo) throws SQLException{
-		return selectOne("eduCounsel.getCslCure", cslNo);
+	public HashMap<String, Object> getCslCure(HashMap<String, Object> map) throws SQLException{
+		return selectOne("eduCounsel.getCslCure", map);
+	}
+	public List<HashMap<String, Object>> getCslCureStatistics(HashMap<String, Object> map) throws SQLException{
+		return selectList("eduCounsel.getCslCure", map);
 	}
 
 	/**

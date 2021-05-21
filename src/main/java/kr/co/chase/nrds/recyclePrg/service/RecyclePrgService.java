@@ -26,6 +26,7 @@ public interface RecyclePrgService {
 	public HashMap<String, Object> processEdPrm(HashMap<String, Object> map) throws Exception;
 	
 	public HashMap<String, Object> getEdPrm(HashMap<String, Object> map) throws Exception;
+	public List<HashMap<String, Object>> getEdPrmStatistics(HashMap<String, Object> map) throws Exception;
 
 	public List<HashMap<String, Object>> getEdPgmMbrList(HashMap<String, Object> map) throws Exception;
 

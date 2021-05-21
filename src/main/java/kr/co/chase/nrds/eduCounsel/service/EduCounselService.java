@@ -20,6 +20,7 @@ public interface EduCounselService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslCure(String cslNo) throws Exception;
+	public List<HashMap<String, Object>> getCslCureStatistics(HashMap<String, Object> map) throws Exception;
 
 	/**
 	 * 교육상담 이력을 등록 한다.

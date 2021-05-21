@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
+
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.co.chase.ncms.common.ConstantObject;
 import kr.co.chase.ncms.common.service.FileInfoService;
@@ -49,7 +51,9 @@ public class EduCounselServiceImpl extends EgovAbstractServiceImpl implements Ed
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> getCslCure(String cslNo) throws Exception{
-		HashMap<String, Object> result = eduCounselDao.getCslCure(cslNo);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cslNo", cslNo);
+		HashMap<String, Object> result = eduCounselDao.getCslCure(map);
 
 		if(!result.isEmpty()) {
 			String fileId = StringUtils.defaultIfEmpty((String)result.get("FILE_ID"), "");
@@ -62,6 +66,10 @@ public class EduCounselServiceImpl extends EgovAbstractServiceImpl implements Ed
 		}
 
 		return result;
+	}
+	public List<HashMap<String, Object>> getCslCureStatistics(HashMap<String, Object> map) throws Exception{
+		
+		return eduCounselDao.getCslCureStatistics(map); 
 	}
 
 	/**

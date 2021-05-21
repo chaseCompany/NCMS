@@ -32,7 +32,7 @@
 			<li><a href="javaScript:goTopMenuPage('/nrds/statMain.do');"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계관리</a></li>
 			--%>
 			<li><a href="#"<c:if test="${thisViewUrl eq 'weeklyPrgMain.do'}"> class="on"</c:if>>설문지관리</a></li>
-			<li><a href="#"<c:if test="${thisViewUrl eq 'reportMain.do'}"> class="on"</c:if>>통계관리</a></li>
+			<li><a href="javaScript:goTopMenuPage('/nrds/reportMain.do');"<c:if test="${thisViewUrl eq 'nrds/reportMain.do'}"> class="on"</c:if>>통계관리</a></li>
 		</ul>
 	</div>
 	<div class="r">
@@ -87,7 +87,7 @@
 						<%--
 						<a href="javaScript:goTopMenuPage('/nrds/statMain.do');"><i class="el-icon-printer"></i>통계관리</a>
 						--%>
-						<a href="#"><i class="el-icon-printer"></i>통계관리</a>
+						<a href="javaScript:goTopMenuPage('/nrds/reportMain.do');"><i class="el-icon-s-platform"></i>대상자관리</a>
 					</li>
 					<!-- <li>
 						<a href="#n">

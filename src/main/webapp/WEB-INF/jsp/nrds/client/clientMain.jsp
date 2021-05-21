@@ -331,11 +331,27 @@
 				$("button#delButNoYes").show();
 				$("button#stsButNo").hide();
 				$("button#stsRlButYes").show();
+				$("button#excelButNo").hide();
+				$("button#excelButYes").show();
 			}else{
 				$("button#delButNo").show();
 				$("button#delButNoYes").hide();
 				$("button#stsButNo").show();
 				$("button#stsRlButYes").hide();
+				$("button#excelButNo").show();
+				$("button#excelButYes").hide();
+			}
+		}
+		
+		<%-- 엑셀다운로드 --%>
+		clientExcel = function(){
+			if($("input[name='mbrNo']").val() != ""){
+				$("form#excelForm").empty();
+				$("form#excelForm").append("<input type='hidden' name='mbrNo' value='" + $("input[name='mbrNo']").val() + "' />");
+				$("form#excelForm").attr("action", "/nrds/clientExcelDownload.do");
+				$("form#excelForm").submit();
+			}else{
+				alert("회원을 선택 하세요.");
 			}
 		}
 	});
@@ -367,6 +383,12 @@
 	</button>
 	<button type="button" id="stsRrButYes" onclick="javaScript:openStsPage('A', '<%=ConstantObject.rrMemStsCd%>');" class="el-button normal el-button--danger el-button--small is-plain" style="margin-left: 8px;display:none;">
 		<i class="el-icon-s-claim"></i><span>재등록 처리</span>
+	</button>
+	<button type="button" id="excelButNo" disabled="disabled" class="el-button normal el-button--default el-button--small is-plain">
+		<i class="el-icon-document"></i><span>엑셀다운로드</span>
+	</button>
+	<button type="button" onclick="javaScript:clientExcel();" id="excelButYes" class="el-button normal el-button--default el-button--small is-plain" style="display: none;">
+		<i class="el-icon-document"></i><span>엑셀다운로드</span>
 	</button>
 </div>
 <!-- // 상단 버튼 -->

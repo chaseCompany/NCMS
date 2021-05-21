@@ -119,7 +119,6 @@
 	</bean>
 	<!-- 엑셀다운로드 -->
 	<bean id="counselExcel" class="kr.co.chase.ncms.common.excel.CounselExcel" />
-	<bean id="EduCounselExcel" class="kr.co.chase.ncms.common.excel.EduCounselExcel" />
 	<bean id="MemberExcel" class="kr.co.chase.ncms.common.excel.MemberExcel" />
 	<bean id="IndividualExcel" class="kr.co.chase.ncms.common.excel.IndividualExcel" />
 	<bean id="MentalityExcel" class="kr.co.chase.ncms.common.excel.MentalityExcel" />
@@ -135,8 +134,13 @@
 	<bean id="CslAnmStatisticsExcel" class="kr.co.chase.ncms.common.excel.CslAnmStatisticsExcel" />
 	<bean id="CureStatisticsExcel" class="kr.co.chase.ncms.common.excel.CureStatisticsExcel" />
 	<!-- 엑셀다운로드 재범방지교육-->
+	<bean id="EduCounselExcel" class="kr.co.chase.ncms.common.excel.EduCounselExcel" />
+	<bean id="EduCounselStatisticsExcel" class="kr.co.chase.nrds.comm.excel.EduCounselStatisticsExcel" />
 	<bean id="RecycleExcel" class="kr.co.chase.nrds.comm.excel.RecycleExcel" />
+	<bean id="RecycleStatisticsExcel" class="kr.co.chase.nrds.comm.excel.RecycleStatisticsExcel" />
 	<bean id="EduMngExcel" class="kr.co.chase.nrds.comm.excel.EduMngExcel" />
+	<bean id="EduMngStatisticsExcel" class="kr.co.chase.nrds.comm.excel.EduMngStatisticsExcel" />
+	<bean id="ClientExcel" class="kr.co.chase.nrds.comm.excel.ClientExcel" />
 
 	<mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>

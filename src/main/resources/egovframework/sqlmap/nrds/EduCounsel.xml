@@ -19,7 +19,7 @@
 	]]>
 	</select>
 
-	<select id="eduCounsel.getCslCure" parameterType="String" resultType="hashMap">
+	<select id="eduCounsel.getCslCure" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* eduCounsel.getCslCure */
 			   CC.MBR_NO				, CC.CSL_NO					, CC.CSL_ID					, SU.USR_NM AS CSL_NM		, CC.CSL_DT
@@ -34,7 +34,7 @@
 			 , CONCAT(MB.TEL_NO1,'-',MB.TEL_NO2,'-',MB.TEL_NO3) AS TEL_NO
 			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = MB.GEND_CD AND GRP_CD = 'C1100') AS GEND
 			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = MB.JOB_CD AND GRP_CD = 'C1200') AS JOB
-			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = CC.CSL_TGT_CD AND GRP_CD = 'C2500') AS CSL_TGT /* 상담대상 */
+			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = CC.CSL_TGT_CD AND GRP_CD = 'C2500') AS CSL_TGT_NM /* 상담대상 */
 			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = CC.CSL_CLS_CD AND GRP_CD = 'C8800') AS CSL_CLS /* 상담구분 */
 			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = CC.CSL_TP_CD AND GRP_CD = 'C1600') AS CSL_TP /* 상담유형 */
 			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = CC.RSKA_TP_CD AND GRP_CD = 'C2100') AS RSKA /* rating A */
@@ -54,8 +54,20 @@
 		  LEFT JOIN SYS_USR SU ON (CC.CSL_ID = SU.USR_ID)
 		  LEFT JOIN ED_MBR MB ON CC.MBR_NO = MB.MBR_NO
 		  LEFT JOIN FILE_INFO FI ON (FI.FILE_ID = CC.FILE_ID)
-		 WHERE CC.CSL_NO = #{cslNo}
 	]]>
+		 <trim prefix="WHERE" prefixOverrides="AND|OR">
+			 <if test="cslNo != '' and cslNo != null"><!-- 상세 조회시  -->
+			 	AND CC.CSL_NO = #{cslNo}
+			 </if>
+			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
+			 	AND DATE_FORMAT(CC.CSL_DT, '%Y%m%d') BETWEEN #{fmDt} AND #{toDt}
+			 </if>
+			 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
+			 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
+			 		AND SU.SITE_CD = #{sessionSiteCd}
+			 	</if>
+			 </if>
+		 </trim>
 	</select>
 
 	<insert id="eduCounsel.insertCslCure" parameterType="hashMap">

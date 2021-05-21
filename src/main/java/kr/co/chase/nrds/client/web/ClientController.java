@@ -1,10 +1,13 @@
 package kr.co.chase.nrds.client.web;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -919,5 +922,31 @@ public class ClientController {
 		}
 
 		return resultView;
+	}
+	
+	/**
+	 * 대상자관리 엑셀다운로드
+	 * @param modelMap
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/clientExcelDownload.do")
+	public String clientExcelDownload(@RequestParam HashMap<String, Object> reqMap, Map<String, Object> modelMap, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		String title = "대상자관리 기록지";
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Pragma", "public");
+		response.setHeader("Expires", "0");
+		response.setHeader("Content-Disposition", "attachment; filename = " + URLEncoder.encode(title, "UTF-8").replaceAll("\\+", "%20") + "_" + mbrNo + ".xlsx");
+		modelMap.put("sheetName", title);
+
+		HashMap<String, Object> cslInfo = clientService.getEdMbrInfo(reqMap);
+		modelMap.put("cslInfo", cslInfo);
+		modelMap.put("imagesPath", request.getServletContext().getRealPath("/images/excel_logo.png"));
+
+		return "ClientExcel";
 	}
 }
