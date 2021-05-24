@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edMbrLaw">
+	<insert id="edMbrLaw.insertEdMbrLaw" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* edMbrLaw.insertEdMbrLaw */ INTO ED_MBR_LAW(
+			  MBR_NO			, MBR_TP1			, MBR_TP2			, MBR_TP3
+			 , MBR_TP4			, MBR_TP5			, MBR_TP6		, MRG_CD			, EDU_CD
+			 , EDU02_CD			, RLGN_CD			, JOB_CD			, FST_DRUG_CD		, FST_DRUG
+			 , MAIN_DRUG_CD		, MAIN_DRUG			, FST_AGE			, LST_AGE			, USE_TERM
+			 , USE_FRQ_CD		, USE_CAU_CD		, USE_CAU_ETC		, LAW_PBM_CD		, LAW_PBM_ETC
+			 , MEDIC_CARE_CD	, CUREOFF_EXP_CD
+			 , CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
+		)VALUES(
+			   #{mbrNo}	 		, #{mbrTp1}			, #{mbrTp2}			, #{mbrTp3}
+			 , #{mbrTp4}			, #{mbrTp5}			, #{mbrTp6}			, #{mrgCd}			, #{eduCd}
+			 , #{edu02Cd}		, #{rlgnCd}			, #{jobCd}			, #{fstDrugCd}		, #{fstDrug}
+			 , #{mainDrugCd}	, #{mainDrug}		, #{fstAge}			, #{lstAge}			, #{useTerm}
+			 , #{useFrqCd}		, #{useCauCd}		, #{useCauEtc}		, #{lawPbmCd}		, #{lawPbmEtc}
+			 , #{medicCareCd}		, #{cureoffExpCd}		
+			 , #{loginId}		, NOW()				, #{loginId}		, NOW()
+		)
+	]]>
+	</insert>
+
+	<select id="edMbrLaw.getEdMbrLawLastInfo" parameterType="String" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrLaw.getEdMbrLawLastInfo */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, SC01.CD_NM AS GEND_NM	, EM.AGE
+			   			
+			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EML.CRE_ID
+			 , SC02.CD_NM AS SITE_NM
+			 , FN_AGE_CD(EM.AGE,'Y') AS AGE_NM 
+		  FROM ED_MBR EM
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		  LEFT JOIN ED_MBR_LAW EML ON (EM.MBR_NO = EML.MBR_NO)
+		  LEFT JOIN SYS_USR SU ON (EML.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3500' AND SU.SITE_CD = SC02.CD_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+		 ORDER BY EML.MBR_LAW_ID DESC
+		 LIMIT 1
+	]]>
+	</select>
+
+	<select id="edMbrLaw.getEdMbrLawInfo" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrLaw.getEdMbrLawInfo */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
+			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
+			 , EM.ADDR2				, EM.MBR_ST			, EM.CRE_USR_DT AS CRE_DT
+			 , EML.MBR_TP1			, EML.MBR_TP2			, EML.MBR_TP3		, EML.MBR_TP4			, EML.MBR_TP5			, EML.MBR_TP6
+			 , EML.MBR_LAW_ID		, EML.MRG_CD			, EML.EDU_CD
+			 , EML.EDU02_CD			, EML.RLGN_CD			, EML.JOB_CD			, EML.FST_DRUG_CD		, EML.FST_DRUG
+			 , EML.MAIN_DRUG_CD		, EML.MAIN_DRUG			, EML.FST_AGE			, EML.LST_AGE			, EML.USE_TERM
+			 , EML.USE_FRQ_CD		, EML.USE_CAU_CD		, EML.USE_CAU_ETC		, EML.LAW_PBM_CD		, EML.LAW_PBM_ETC
+			 , EML.CRE_ID			, EML.CRE_DT AS EML_CRE_DT			, EML.UPD_ID			, EML.UPD_DT
+			 , EML.MEDIC_CARE_CD	, EML.CUREOFF_EXP_CD
+			 , FN_AGE_CD(EM.AGE,'Y') AS AGE_NM 
+		  FROM ED_MBR EM
+		  JOIN ED_MBR_LAW EML ON (EM.MBR_NO = EML.MBR_NO)
+		 WHERE EM.MBR_NO = #{mbrNo}
+	]]>
+		<if test="mbrLawId != null and mbrLawId != ''">
+		   AND EML.MBR_LAW_ID = #{mbrLawId}
+		</if>
+	</select>
+
+	<select id="edMbrLaw.getEdMbrLawList" parameterType="hashMap" resultType="hashMap">
+	<![CDATA[
+		SELECT /* edMbrLaw.getEdMbrLawList */
+			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
+			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
+			 , EM.ADDR2				, EM.MBR_ST			, EM.CRE_USR_DT
+			 , EML.MBR_TP1			, EML.MBR_TP2			, EML.MBR_TP3		, EML.MBR_TP4			, EML.MBR_TP5			, EML.MBR_TP6
+			 , EML.MBR_LAW_ID  AS MBR_ED_ID		
+			 , EML.MRG_CD			, EML.EDU_CD
+			 , EML.EDU02_CD			, EML.RLGN_CD			, EML.JOB_CD			, EML.FST_DRUG_CD		, EML.FST_DRUG
+			 , EML.MAIN_DRUG_CD		, EML.MAIN_DRUG			, EML.FST_AGE			, EML.LST_AGE			, EML.USE_TERM
+			 , EML.USE_FRQ_CD		, EML.USE_CAU_CD		, EML.USE_CAU_ETC		, EML.LAW_PBM_CD		, EML.LAW_PBM_ETC
+			 , EML.CRE_ID			, EML.CRE_DT			, EML.UPD_ID			, EML.UPD_DT
+			 , EML.MEDIC_CARE_CD	, EML.CUREOFF_EXP_CD
+			 , SC01.CD_NM AS GEND_NM
+			 , SC02.CD_NM AS SITE_NM
+			 , FN_AGE_CD(EM.AGE,'Y') AS AGE_NM 
+		  FROM ED_MBR EM
+		  JOIN ED_MBR_LAW EML ON (EM.MBR_NO = EML.MBR_NO)
+		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C1100' AND EM.GEND_CD = SC01.CD_ID)
+		  LEFT JOIN SYS_USR SU ON (EML.CRE_ID = SU.USR_ID)
+		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3500' AND SU.SITE_CD = SC02.CD_ID)
+		 WHERE EM.MBR_NO = #{mbrNo}
+	]]>
+		<if test="mbrLawId != null and mbrLawId != ''">
+		   AND EML.MBR_LAW_ID = #{mbrLawId}
+		</if>
+		 ORDER BY EML.MBR_LAW_ID DESC
+	</select>
+
+	<update id="edMbrLaw.updateEdMbrLaw" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* edMbrLaw.updateEdMbrLaw */ ED_MBR_LAW
+		   SET MBR_TP1		= #{mbrTp1}
+			 , MBR_TP2		= #{mbrTp2}		, MBR_TP3		= #{mbrTp3}
+			 , MBR_TP4		= #{mbrTp4}		, MBR_TP5		= #{mbrTp5}
+			 , MBR_TP6		= #{mbrTp6}		, MRG_CD		= #{mrgCd}
+			 , EDU_CD		= #{eduCd}		, EDU02_CD		= #{edu02Cd}
+			 , RLGN_CD		= #{rlgnCd}		, JOB_CD		= #{jobCd}
+			 , FST_DRUG_CD	= #{fstDrugCd}	, FST_DRUG		= #{fstDrug}
+			 , MAIN_DRUG_CD	= #{mainDrugCd}	, MAIN_DRUG		= #{mainDrug}
+			 , FST_AGE		= #{fstAge}		, LST_AGE		= #{lstAge}
+			 , USE_TERM		= #{useTerm}	, USE_FRQ_CD	= #{useFrqCd}
+			 , USE_CAU_CD	= #{useCauCd}	, USE_CAU_ETC	= #{useCauEtc}
+			 , LAW_PBM_CD	= #{lawPbmCd}	, LAW_PBM_ETC	= #{lawPbmEtc}
+			 , MEDIC_CARE_CD = #{medicCareCd}	, CUREOFF_EXP_CD = #{cureoffExpCd}
+			 ,  UPD_ID		= #{loginId}
+			 , UPD_DT		= NOW()
+		 WHERE MBR_LAW_ID = #{mbrLawId}
+	]]>
+	</update>
+
+	<delete id="edMbrLaw.deleteEdMbrLaw" parameterType="hashMap">
+	<![CDATA[
+		DELETE /* edMbrLaw.deleteEdMbrLaw */ FROM ED_MBR_LAW
+		 WHERE MBR_LAW_ID = #{mbrLawId}
+		   AND MBR_NO = #{mbrNo}
+	]]>
+	</delete>
+</mapper>

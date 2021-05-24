@@ -69,48 +69,9 @@
 				alert("주소를 입력하세요.");
 				zipCodePop();									return;
 			}
-			if(
-				!($("input[name='mbrTp1']").is(":checked") || $("input[name='mbrTp2']").is(":checked") || $("input[name='mbrTp3']").is(":checked") ||
-				  $("input[name='mbrTp4']").is(":checked") || $("input[name='mbrTp5']").is(":checked") || $("input[name='mbrTp6']").is(":checked"))
-			  ){
-				alert("대상자구분을 선택하세요.");
-				$("input[name='mbrTp1']").focus();				return;
-			}
 			if(!$("input[name='mbrSt']").is(":checked")){
 				alert("대상자상태를 선택하세요.");
 				$("input[name='mbrSt']").focus();				return;
-			}
-			if($("select[name='fstDrugCd']").val() == ""){
-				alert("최초사용약물을 선택하세요.");
-				$("select[name='fstDrugCd']").focus();				return;
-			}
-			if($("select[name='mainDrugCd']").val() == ""){
-				alert("주요사용약물을 선택하세요.");
-				$("select[name='mainDrugCd']").focus();				return;
-			}
-			if($("input[name='fstAge']").val() == ""){
-				alert("최초 사용시기를 입력하세요.");
-				$("input[name='fstAge']").focus();					return;
-			}
-			if($("input[name='lstAge']").val() == ""){
-				alert("마지막 사용시기를 입력하세요.");
-				$("input[name='lstAge']").focus();					return;
-			}
-			if($("input[name='useTerm']").val() == ""){
-				alert("사용기간을 입력하세요.");
-				$("input[name='useTerm']").focus();					return;
-			}
-			if($("select[name='useFrqCd']").val() == ""){
-				alert("사용빈도를 선택하세요.");
-				$("select[name='useFrqCd']").focus();				return;
-			}
-			if($("select[name='useCauCd']").val() == ""){
-				alert("사용원인을 선택하세요.");
-				$("select[name='useCauCd']").focus();				return;
-			}
-			if($("select[name='lawPbmCd']").val() == ""){
-				alert("약물관련 법적문제를 선택하세요.");
-				$("select[name='lawPbmCd']").focus();				return;
 			}
 			if($("input[name='creUsrDt']").val() == ""){
 				alert("최초등록일자을 입력하세요.");
@@ -180,67 +141,7 @@
 						$("input[name='zipCd']").val(info.ZIP_CD);
 						$("input[name='addr1']").val(info.ADDR1);
 						$("input[name='addr2']").val(info.ADDR2);
-						if(info.MBR_TP1 == '1'){
-							$("input[name='mbrTp1']").prop("checked", true);
-						}else{
-							$("input[name='mbrTp1']").prop("checked", false);
-						}
-						if(info.MBR_TP2 == '1'){
-							$("input[name='mbrTp2']").prop("checked", true);
-						}else{
-							$("input[name='mbrTp2']").prop("checked", false);
-						}
-						if(info.MBR_TP3 == '1'){
-							$("input[name='mbrTp3']").prop("checked", true);
-						}else{
-							$("input[name='mbrTp3']").prop("checked", false);
-						}
-						if(info.MBR_TP4 == '1'){
-							$("input[name='mbrTp4']").prop("checked", true);
-						}else{
-							$("input[name='mbrTp4']").prop("checked", false);
-						}
-						if(info.MBR_TP5 == '1'){
-							$("input[name='mbrTp5']").prop("checked", true);
-						}else{
-							$("input[name='mbrTp5']").prop("checked", false);
-						}
-						if(info.MBR_TP6 == '1'){
-							$("input[name='mbrTp6']").prop("checked", true);
-						}else{
-							$("input[name='mbrTp6']").prop("checked", false);
-						}
 						$("input[name='mbrSt']:radio[value='" + info.MBR_ST + "']").prop("checked", true);
-						$("select[name='mrgCd']").val(info.MRG_CD).prop("selected", true);
-						$("select[name='eduCd']").val(info.EDU_CD).prop("selected", true);
-						$("select[name='edu02Cd']").val(info.EDU02_CD).prop("selected", true);
-						$("select[name='rlgnCd']").val(info.RLGN_CD).prop("selected", true);
-						$("select[name='jobCd']").val(info.JOB_CD).prop("selected", true);
-
-						$("select[name='fstDrugCd']").val(info.FST_DRUG_CD).prop("selected", true);
-						$("input[name='fstDrug']").val(info.FST_DRUG);
-						$("select[name='mainDrugCd']").val(info.MAIN_DRUG_CD).prop("selected", true);
-						$("input[name='mainDrug']").val(info.MAIN_DRUG);
-						$("input[name='fstAge']").val(info.FST_AGE);
-						$("input[name='lstAge']").val(info.LST_AGE);
-						$("input[name='useTerm']").val(info.USE_TERM);
-						$("select[name='useFrqCd']").val(info.USE_FRQ_CD).prop("selected", true);
-						$("select[name='useCauCd']").val(info.USE_CAU_CD).prop("selected", true);
-						if(info.USE_CAU_CD == "ZZ"){
-							$("input[name='useCauEtc']").val(info.USE_CAU_ETC);
-							$("input[name='useCauEtc']").attr("disabled", false);
-						}else{
-							$("input[name='useCauEtc']").val("");
-							$("input[name='useCauEtc']").attr("disabled", true);
-						}
-						$("select[name='lawPbmCd']").val(info.LAW_PBM_CD).prop("selected", true);
-						if(info.LAW_PBM_CD == "ZZ"){
-							$("input[name='lawPbmEtc']").val(info.LAW_PBM_ETC);
-							$("input[name='lawPbmEtc']").attr("disabled", false);
-						}else{
-							$("input[name='lawPbmEtc']").val("");
-							$("input[name='lawPbmEtc']").attr("disabled", true);
-						}
 						$("input[name='creUsrDt']").val(formatDate(info.CRE_DT));
 						$("input[name='updDt']").val(formatDate(info.UPD_DT));
 						$("input[name='updNm']").val(info.UPD_NM);
@@ -267,33 +168,7 @@
 			$("input[name='zipCd']").val("");
 			$("input[name='addr1']").val("");
 			$("input[name='addr2']").val("");
-			$("input[name='mbrTp1']").prop("checked", false);
-			$("input[name='mbrTp2']").prop("checked", false);
-			$("input[name='mbrTp3']").prop("checked", false);
-			$("input[name='mbrTp4']").prop("checked", false);
-			$("input[name='mbrTp5']").prop("checked", false);
-			$("input[name='mbrTp6']").prop("checked", false);
 			$("input[name='mbrSt']").prop("checked", false);
-			$("select[name='mrgCd']").val("").prop("selected", true);
-			$("select[name='eduCd']").val("").prop("selected", true);
-			$("select[name='edu02Cd']").val("").prop("selected", true);
-			$("select[name='rlgnCd']").val("10").prop("selected", true);
-			$("select[name='jobCd']").val("").prop("selected", true);
-
-			$("select[name='fstDrugCd']").val("").prop("selected", true);
-			$("input[name='fstDrug']").val("");
-			$("select[name='mainDrugCd']").val("").prop("selected", true);
-			$("input[name='mainDrug']").val("");
-			$("input[name='fstAge']").val("");
-			$("input[name='lstAge']").val("");
-			$("input[name='useTerm']").val("");
-			$("select[name='useFrqCd']").val("").prop("selected", true);
-			$("select[name='useCauCd']").val("").prop("selected", true);
-			$("input[name='useCauEtc']").val("");
-			$("input[name='useCauEtc']").attr("disabled", true);
-			$("select[name='lawPbmCd']").val("").prop("selected", true);
-			$("input[name='lawPbmEtc']").val("");
-			$("input[name='lawPbmEtc']").attr("disabled", true);
 			$("input[name='creUsrDt']").datepicker('setDate', 'today');
 			$("input[name='updDt']").val("");
 			$("input[name='updNm']").val("");
@@ -401,6 +276,11 @@
 					<div role="tablist" class="el-tabs__nav is-top">
 						<a href="<c:url value="/nrds/clientMain.do" />">
 							<div class="el-tabs__item is-top is-active" data-id="tab-mem">
+								<span><i class="el-icon-s-help"></i> 대상자관리</span>
+							</div>
+						</a>
+						<a href="<c:url value="/nrds/clientLawConMain.do" />">
+							<div class="el-tabs__item is-top" data-id="tab-mem">
 								<span><i class="el-icon-s-help"></i> 접수(법정의무교육)</span>
 							</div>
 						</a>
@@ -511,35 +391,6 @@
 								</colgroup>
 								<tbody>
 								<tr>
-									<th><span class="required">*</span> 대상자구분</th>
-									<td colspan="5">
-										<span class="ck-bx">
-											<input type="checkbox" name="mbrTp1" id="mbrTp1" value="1">
-											<label for="mbrTp1">수강명령 과정</label>
-										</span>
-										<span class="ck-bx">
-											<input type="checkbox" name="mbrTp2" id="mbrTp2" value="1">
-											<label for="mbrTp2">이수명령 과정</label>
-										</span>
-										<span class="ck-bx">
-											<input type="checkbox" name="mbrTp3" id="mbrTp3" value="1">
-											<label for="mbrTp3">기본과정</label>
-										</span>
-										<span class="ck-bx">
-											<input type="checkbox" name="mbrTp4" id="mbrTp4" value="1">
-											<label for="mbrTp4">집중과정</label>
-										</span>
-										<span class="ck-bx">
-											<input type="checkbox" name="mbrTp5" id="mbrTp5" value="1">
-											<label for="mbrTp5">심화과정</label>
-										</span>
-										<span class="ck-bx">
-											<input type="checkbox" name="mbrTp6" id="mbrTp6" value="1">
-											<label for="mbrTp6">단기과정</label>
-										</span>
-									</td>
-								</tr>
-								<tr>
 									<th><span class="required">*</span> 대상자상태</th>
 									<td>
 <c:if test="${mbrStCdList ne null and mbrStCdList ne ''}">
@@ -554,185 +405,34 @@
 </c:if>
 									</td>
 								</tr>
-								<tr>
-									<th> 결혼여부</th>
-									<td>
-										<select name="mrgCd" style="width: 150px;">
-											<option value="">선택</option>
-<c:if test="${mrgCdList ne null and mrgCdList ne ''}">
-	<c:forEach var="result" items="${mrgCdList}" varStatus="status">
-											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-										</select>
-									</td>
-									<th>학력</th>
-									<td colspan="5">
-										<select name="eduCd" style="width: 135px;">
-											<option value="">선택</option>
-<c:if test="${eduCdList ne null and eduCdList ne ''}">
-	<c:forEach var="result" items="${eduCdList}" varStatus="status">
-											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-										</select>
-										<select name="edu02Cd" style="width: 135px;">
-											<option value="">선택</option>
-<c:if test="${edu02CdList ne null and edu02CdList ne ''}">
-	<c:forEach var="result" items="${edu02CdList}" varStatus="status">
-											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<th>종교</th>
-									<td>
-										<select name="rlgnCd" style="width: 150px;">
-<c:if test="${rlgnCdList ne null and rlgnCdList ne ''}">
-	<c:forEach var="result" items="${rlgnCdList}" varStatus="status">
-											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-										</select>
-									</td>
-									<th>직업</th>
-									<td colspan="5">
-										<select name="jobCd" style="width: 270px;">
-											<option value="">선택</option>
-<c:if test="${jobCdList ne null and jobCdList ne ''}">
-	<c:forEach var="result" items="${jobCdList}" varStatus="status">
-											<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-										</select>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="row2">
-					<div class="section pdn mgn">
-						<div class="el-card_header">
-							<h2><i class="el-icon-s-opportunity"></i> 중독력</h2>
-						</div>
-						<div class="el-card_body">
-							<table class="w-auto wr-form">
-								<colgroup>
-									<col style="width: 70px;">
-									<col style="width: 70px;">
-									<col style="width: 70px;">
-									<col style="width: 70px;">
-									<col style="width: 70px;">
-									<col>
-								</colgroup>
-								<tbody>
-									<tr>
-										<th class="v-top"><span class="required">*</span> 최초사용약물</th>
-										<td colspan="5">
-											<select name="fstDrugCd">
-												<option value="">선택</option>
-<c:if test="${fstDrugList ne null and fstDrugList ne ''}">
-	<c:forEach var="result" items="${fstDrugList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-											</select>
-											<div style="margin-top:5px">
-												<input type="text" name="fstDrug" class="el-input__inner" maxlength="250" style="width: 100%;">
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th class="v-top"><span class="required">*</span> 주요사용약물</th>
-										<td colspan="5">
-											<select name="mainDrugCd">
-												<option value="">선택</option>
-<c:if test="${mainDrugList ne null and mainDrugList ne ''}">
-	<c:forEach var="result" items="${mainDrugList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-											</select>
-											<div style="margin-top:5px">
-												<input type="text" name="mainDrug" class="el-input__inner" maxlength="250" style="width: 100%;"/>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 최초 사용시기</th>
-										<td><input type="text" name="fstAge" class="el-input__inner" maxlength="4" style="width: 100%;"></td>
-										<th><span class="required">*</span> 마지막 사용시기</th>
-										<td><input type="text" name="lstAge" class="el-input__inner" maxlength="4" style="width: 100%;"></td>
-										<th><span class="required">*</span> 사용기간</th>
-										<td><input type="text" name="useTerm" class="el-input__inner" maxlength="10" style="width: 100%;"></td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 사용빈도</th>
-										<td>
-											<select name="useFrqCd">
-												<option value="">선택</option>
-<c:if test="${useFrqList ne null and useFrqList ne ''}">
-	<c:forEach var="result" items="${useFrqList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-											</select>
-										</td>
-										<th><span class="required">*</span> 사용원인</th>
-										<td colspan="3">
-											<select name="useCauCd" onchange="javaScript:inputDisabledChang(this, 'useCauEtc');">
-												<option value="">선택</option>
-<c:if test="${useCauList ne null and useCauList ne ''}">
-	<c:forEach var="result" items="${useCauList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-											</select>
-											<input type="text" name="useCauEtc" class="el-input__inner" disabled maxlength="200" style="width: 150px;"/>
-										</td>
-									</tr>
-									<tr>
-										<th><span class="required">*</span> 약물관련 법적문제</th>
-										<td colspan="5">
-											<select name="lawPbmCd" onchange="javaScript:inputDisabledChang(this, 'lawPbmEtc');">
-												<option value="">선택</option>
-<c:if test="${lawPbmList ne null and lawPbmList ne ''}">
-	<c:forEach var="result" items="${lawPbmList}" varStatus="status">
-												<option value="<c:out value="${result.CD_ID}" />"><c:out value="${result.CD_NM}" /></option>
-	</c:forEach>
-</c:if>
-											</select>
-											<input type="text" name="lawPbmEtc" class="el-input__inner" disabled maxlength="200" style="width: 100%;"/>
-										</td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<table class="w-auto">
-					<tbody>
-					<tr>
-						<th><span class="required">*</span> 최초등록일자</th>
-						<td>
-							<div class="dat-pk">
-								<i class="el-input__icon el-icon-date"></i>
-								<input name="creUsrDt" type="text" class="el-input__inner datepicker" placeholder="날짜" style="width: 130px;">
-							</div>
-						</td>
-						<th>최종수정일시</th>
-						<td><input name="updDt" type="text" class="el-input__inner" readonly style="width:160px"></td>
-						<th>최종수정자</th>
-						<td><input name="updNm" type="text" class="el-input__inner" readonly style="width:120px"></td>
-					</tr>
-					</tbody>
-				</table>
+			<div class="el-row">
+				<div class="row2">
+					<div class="section">
+						<table class="w-auto">
+						<tbody>
+						<tr>
+							<th><span class="required">*</span> 최초등록일자</th>
+							<td>
+								<div class="dat-pk">
+									<i class="el-input__icon el-icon-date"></i>
+									<input name="creUsrDt" type="text" class="el-input__inner datepicker" placeholder="날짜" style="width: 130px;">
+								</div>
+							</td>
+							<th>최종수정일시</th>
+							<td><input name="updDt" type="text" class="el-input__inner" readonly style="width:160px"></td>
+							<th>최종수정자</th>
+							<td><input name="updNm" type="text" class="el-input__inner" readonly style="width:120px"></td>
+						</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
 			</div>
 			</form>
 		</div>

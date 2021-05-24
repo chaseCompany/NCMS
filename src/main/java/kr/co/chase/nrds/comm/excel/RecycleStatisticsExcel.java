@@ -96,7 +96,7 @@ public class RecycleStatisticsExcel extends AbstractExcelView{
 		contentCellStyle.setFont(basicFont);
 
 		// 타이틀
-		String[] titleArr = {"No", "기관명", "교육분류", "교육과정명", "회기", "차수", "주강사", "보조강사", "교육기간", "교육일시", "교육주제", "교육목표", "교육내용", "교육결과", "직원", "자원봉사자", "회원명", "진행기록"};
+		String[] titleArr = {"No", "기관명", "교육분류", "교육과정명", "회기", "기수", "주강사", "보조강사", "교육기간", "교육일시", "교육주제", "교육목표", "교육내용", "교육결과", "직원", "자원봉사자", "회원명", "진행기록"};
 		row = sheet.createRow(rowCount++);
 		row.setHeight((short) (22*15));
 		for(int i=0; i < titleArr.length; i++) {

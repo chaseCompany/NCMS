@@ -355,7 +355,7 @@
 				$("input[name='pgmSession']").focus();					return;
 			}
 			if($("input[name='pgmClass']").val() == ""){
-				alert("차수는 필수 입력 항목입니다.");
+				alert("기수는 필수 입력 항목입니다.");
 				$("input[name='pgmClass']").focus();					return;
 			}
 			if($("input[name='pgmMainLec']").val() == ""){
@@ -822,8 +822,8 @@
 								</td>
 								<th><span class="required">*</span> 회기</th>
 								<td><input type="text" name="pgmSession" class="el-input__inner" placeholder="회기" style="width: 80px;"></td>
-								<th><span class="required">*</span> 차수</th>
-								<td><input type="text" name="pgmClass" class="el-input__inner" placeholder="차수" style="width: 80px;"></td>
+								<th><span class="required">*</span> 기수</th>
+								<td><input type="text" name="pgmClass" class="el-input__inner" placeholder="기수" style="width: 80px;"></td>
 							</tr>
 						</tbody>
 					</table>

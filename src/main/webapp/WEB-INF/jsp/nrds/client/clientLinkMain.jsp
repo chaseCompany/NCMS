@@ -286,6 +286,11 @@
 					<div role="tablist" class="el-tabs__nav is-top">
 						<a href="<c:url value="/nrds/clientMain.do" />">
 							<div class="el-tabs__item is-top" data-id="tab-mem">
+								<span><i class="el-icon-s-help"></i> 대상자관리</span>
+							</div>
+						</a>
+						<a href="<c:url value="/nrds/clientLawConMain.do" />">
+							<div class="el-tabs__item is-top" data-id="tab-mem">
 								<span><i class="el-icon-s-help"></i> 접수(법정의무교육)</span>
 							</div>
 						</a>
@@ -321,7 +326,7 @@
 									<button type="button" onclick="javaScript:mstMbrSearchPopup();"><i class="el-icon-search"></i></button>
 								</div>
 							</td>
-							<th><span class="required">*</span> 성명</th>
+							<th>성명</th>
 							<td><input type="text" name="infoMbrNm" class="el-input__inner datepicker" placeholder="성명" maxlength="8" style="width: 130px;" /></td>
 							<th>성별</th>
 							<td><input type="text" name="infoGendNm" placeholder="성별" /></td>

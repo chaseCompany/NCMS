@@ -77,6 +77,7 @@
 						$("input[name='mbrNo']").val(info.MBR_NO);
 						$("input[name='mbrNm']").val(info.MBR_NM);
 						$("select[name='gendCd']").val(info.GEND_CD).prop("selected", true);
+						$("input[name='frgCd']:radio[value='" + info.FRG_CD + "']").prop("checked", true);
 						$("input[name='juminNo1']").val(info.JUMIN_NO1);
 						$("input[name='age']").val(info.AGE);
 						$("input[name='telNo1']").val(info.TEL_NO1);
@@ -85,9 +86,11 @@
 						$("input[name='zipCd']").val(info.ZIP_CD);
 						$("input[name='addr1']").val(info.ADDR1);
 						$("input[name='addr2']").val(info.ADDR2);
-						$("select[name='jobCd']").val(info.JOB_CD).prop("selected", true);
+						$("input[name='mbrSt']:radio[value='" + info.MBR_ST + "']").prop("checked", true);
 
 						if(info.MBR_ED_ID != '' && info.MBR_ED_ID != undefined){
+							$("select[name='jobCd']").val(info.JOB_CD).prop("selected", true);
+							
 							$("input[name='rZipCd']").val(info.R_ZIP_CD);
 							$("input[name='rAddr1']").val(info.R_ADDR1);
 							$("input[name='rAddr2']").val(info.R_ADDR2);
@@ -364,6 +367,7 @@
 		}
 		<%-- 폼 초기화 --%>
 		newMemInfo = function(){
+			$("select[name='jobCd']").val("");
 			$("input[name='rZipCd']").val("");
 			$("input[name='rAddr1']").val("");
 			$("input[name='rAddr2']").val("");
@@ -438,6 +442,11 @@
 				<div class="el-tabs__nav-scroll">
 					<div role="tablist" class="el-tabs__nav is-top">
 						<a href="<c:url value="/nrds/clientMain.do" />">
+							<div class="el-tabs__item is-top" data-id="tab-mem">
+								<span><i class="el-icon-s-help"></i> 대상자관리</span>
+							</div>
+						</a>
+						<a href="<c:url value="/nrds/clientLawConMain.do" />">
 							<div class="el-tabs__item is-top" data-id="tab-mem">
 								<span><i class="el-icon-s-help"></i> 접수(법정의무교육)</span>
 							</div>
@@ -554,6 +563,19 @@
 												</select>
 											</div>
 										</td>
+										<th><span class="required">*</span> 내/외국인</th>
+										<td>
+<c:if test="${frgCdList ne null and frgCdList ne ''}">
+	<c:forEach var="result" items="${frgCdList}" varStatus="status">
+										<span class="ck-bx">
+											<input type="radio" class="el-radio__original" name="frgCd" value="<c:out value="${result.CD_ID}" />" id="frgCd-<c:out value="${status.count}" />"  disabled="disabled">
+											<label for="frgCd-<c:out value="${status.count}" />">
+												<span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" />
+											</label>
+										</span>
+	</c:forEach>
+</c:if>
+										</td>
 									</tr>
 									<tr>
 										<th content="저장시 성명과 생년월일(6자)로 중복 체크"><span class="required">*</span> 생년월일</th>
@@ -561,7 +583,7 @@
 										<th><span class="required">*</span> 연령</th>
 										<td><input name="age" type="text" readonly class="el-input__inner" style="width: 65px;" placeholder="연령"></td>
 										<th><span class="required">*</span> 연락처</th>
-										<td>
+										<td colspan="3">
 											<div class="dsp-ibk"><input name="telNo1" type="text" readonly maxlength="4" class="el-input__inner" style="width:54px"></div>
 											<span>-</span>
 											<div class="dsp-ibk"><input name="telNo2" type="text" readonly maxlength="4" class="el-input__inner" style="width:54px"></div>
@@ -571,7 +593,7 @@
 									</tr>
 									<tr>
 										<th class="v-top"><span class="required">*</span> 주소</th>
-										<td colspan="5">
+										<td colspan="7">
 											<input type="text" name="zipCd" readonly class="el-input__inner" readonly style="width: 65px;">
 											<input name="addr1" type="text" readonly class="el-input__inner" readonly style="width: 525px;">
 											<div style="margin-top:5px">
@@ -579,6 +601,34 @@
 											</div>
 										</td>
 									</tr>
+									<tr>
+									<th><span class="required">*</span> 대상자상태</th>
+									<td colspan="7">
+<c:if test="${mbrStCdList ne null and mbrStCdList ne ''}">
+	<c:forEach var="result" items="${mbrStCdList}" varStatus="status">
+										<span class="ck-bx">
+											<input type="radio" class="el-radio__original" name="mbrSt" value="<c:out value="${result.CD_ID}" />" id="mbrSt-<c:out value="${status.count}" />" disabled="disabled">
+											<label for="mbrSt-<c:out value="${status.count}" />">
+												<span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" />
+											</label>
+										</span>
+	</c:forEach>
+</c:if>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row2">
+					<div class="section pdn">
+						<div class="el-card_header">
+							<h2><i class="el-icon-s-opportunity"></i> 의뢰정보</h2>
+						</div>
+						<div class="el-card_body">
+							<table class="w-auto wr-form">
+								<tbody>
 									<tr>
 										<th class="v-top">실거주지</th>
 										<td colspan="5">
@@ -595,7 +645,7 @@
 									<tr>
 										<th>직업</th>
 										<td colspan="5">
-											<select name="jobCd" disabled="true" style="width: 150px;">
+											<select name="jobCd" style="width: 150px;">
 												<option value="">선택</option>
 <c:if test="${jobCdList ne null and jobCdList ne ''}">
 	<c:forEach var="result" items="${jobCdList}" varStatus="status">
@@ -605,19 +655,6 @@
 											</select>
 										</td>
 									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="row2">
-					<div class="section pdn">
-						<div class="el-card_header">
-							<h2><i class="el-icon-s-opportunity"></i> 의뢰정보</h2>
-						</div>
-						<div class="el-card_body">
-							<table class="w-auto wr-form">
-								<tbody>
 									<tr>
 										<th><span class="required">*</span> 의뢰일</th>
 										<td>

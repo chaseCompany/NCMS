@@ -968,6 +968,7 @@
 			$("select[name='lawPbmCd'] option").each(function(i, e){
 				$(e).prop("selected", false);
 			});
+			$("select[name='lawPbmCd']")[0].sumo.reload();
 			$("input[name='lawPbmEtc']").attr("disabled", true);
 			$("input[name='lawPbmEtc']").val("");
 

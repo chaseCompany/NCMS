@@ -49,22 +49,12 @@
 		INSERT /* edMbr.insertEdMbr */ INTO ED_MBR(
 			   MBR_NO			, MBR_NM			, GEND_CD			, FRG_CD			, JUMIN_NO1
 			 , AGE				, TEL_NO1			, TEL_NO2			, TEL_NO3			, ZIP_CD
-			 , ADDR1			, ADDR2				, MBR_TP1			, MBR_TP2			, MBR_TP3
-			 , MBR_TP4			, MBR_TP5			, MBR_TP6			, MBR_ST			
-			 , MRG_CD			, EDU_CD
-			 , EDU02_CD			, RLGN_CD			, JOB_CD			, FST_DRUG_CD		, FST_DRUG
-			 , MAIN_DRUG_CD		, MAIN_DRUG			, FST_AGE			, LST_AGE			, USE_TERM
-			 , USE_FRQ_CD		, USE_CAU_CD		, USE_CAU_ETC		, LAW_PBM_CD		, LAW_PBM_ETC
+			 , ADDR1			, ADDR2				, MBR_ST			
 			 , CRE_USR_DT		, CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
 		)VALUES(
 			   #{mbrNo}			, #{mbrNm}			, #{gendCd}			, #{frgCd}			, #{juminNo1}
 			 , #{age}			, #{telNo1}			, #{telNo2}			, #{telNo3}			, #{zipCd}
-			 , #{addr1}			, #{addr2}			, #{mbrTp1}			, #{mbrTp2}			, #{mbrTp3}
-			 , #{mbrTp4}		, #{mbrTp5}			, #{mbrTp6}			, #{mbrSt}			
-			 , #{mrgCd}			, #{eduCd}
-			 , #{edu02Cd}		, #{rlgnCd}			, #{jobCd}			, #{fstDrugCd}		, #{fstDrug}
-			 , #{mainDrugCd}	, #{mainDrug}		, #{fstAge}			, #{lstAge}			, #{useTerm}
-			 , #{useFrqCd}		, #{useCauCd}		, #{useCauEtc}		, #{lawPbmCd}		, #{lawPbmEtc}
+			 , #{addr1}			, #{addr2}			, #{mbrSt}			
 			 , #{creUsrDt}		, #{loginId}		, NOW()				, #{loginId}		, NOW()
 		)
 	]]>
@@ -78,19 +68,7 @@
 			 , AGE			= #{age}		, TEL_NO1		= #{telNo1}
 			 , TEL_NO2		= #{telNo2}		, TEL_NO3		= #{telNo3}
 			 , ZIP_CD		= #{zipCd}		, ADDR1			= #{addr1}
-			 , ADDR2		= #{addr2}		, MBR_TP1		= #{mbrTp1}
-			 , MBR_TP2		= #{mbrTp2}		, MBR_TP3		= #{mbrTp3}
-			 , MBR_TP4		= #{mbrTp4}		, MBR_TP5		= #{mbrTp5}
-			 , MBR_TP6		= #{mbrTp6}		, MBR_ST		= #{mbrSt}
-			 , MRG_CD		= #{mrgCd}
-			 , EDU_CD		= #{eduCd}		, EDU02_CD		= #{edu02Cd}
-			 , RLGN_CD		= #{rlgnCd}		, JOB_CD		= #{jobCd}
-			 , FST_DRUG_CD	= #{fstDrugCd}	, FST_DRUG		= #{fstDrug}
-			 , MAIN_DRUG_CD	= #{mainDrugCd}	, MAIN_DRUG		= #{mainDrug}
-			 , FST_AGE		= #{fstAge}		, LST_AGE		= #{lstAge}
-			 , USE_TERM		= #{useTerm}	, USE_FRQ_CD	= #{useFrqCd}
-			 , USE_CAU_CD	= #{useCauCd}	, USE_CAU_ETC	= #{useCauEtc}
-			 , LAW_PBM_CD	= #{lawPbmCd}	, LAW_PBM_ETC	= #{lawPbmEtc}
+			 , ADDR2		= #{addr2}		, MBR_ST		= #{mbrSt}
 			 , CRE_USR_DT	= #{creUsrDt}	, UPD_ID		= #{loginId}
 			 , UPD_DT		= NOW()
 		 WHERE MBR_NO = #{mbrNo}

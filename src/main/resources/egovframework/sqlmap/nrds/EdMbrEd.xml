@@ -11,7 +11,7 @@
 			 , DRUG2_ETC		, DRUG3				, DRUG3_ETC			, DRUG4				, DRUG4_ETC
 			 , USE_TERM			, REQ_DETAILS01		, REQ_DETAILS02		, REQ_DETAILS03		, REQ_DETAILS04
 			 , REQ_DETAILS_ETC	, REQ_ORG			, PROS_NO			, DETECTIVE			, FILE_ID
-			 , CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT
+			 , CRE_ID			, CRE_DT			, UPD_ID			, UPD_DT		, JOB_CD
 		)VALUES(
 			   #{mbrNo}			, #{rZipCd}			, #{rAddr1}			, #{rAddr2}			, #{reqDt}
 			 , #{docNo}			, #{caseNo}			, #{crimeType01}	, #{crimeType02}	, #{crimeType03}
@@ -19,7 +19,7 @@
 			 , #{drug2Etc}		, #{drug3}			, #{drug3Etc}		, #{drug4}			, #{drug4Etc}
 			 , #{useTerm}		, #{reqDetails01}	, #{reqDetails02}	, #{reqDetails03}	, #{reqDetails04}
 			 , #{reqDetailsEtc}	, #{reqOrg}			, #{prosNo}			, #{detective}		, #{fileId}
-			 , #{loginId}		, NOW()				, #{loginId}		, NOW()
+			 , #{loginId}		, NOW()				, #{loginId}		, NOW()		, #{jobCd}
 		)
 	]]>
 	</insert>
@@ -47,7 +47,7 @@
 		SELECT /* edMbrEd.getEdMbrEdInfo */
 			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
 			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
-			 , EM.ADDR2				, EM.JOB_CD				, EME.R_ZIP_CD			, EME.R_ADDR1			, EME.R_ADDR2
+			 , EM.ADDR2				, EME.JOB_CD				, EME.R_ZIP_CD			, EME.R_ADDR1			, EME.R_ADDR2
 			 , EME.REQ_DT			, EME.DOC_NO			, EME.CASE_NO			, EME.CRIME_TYPE01		, EME.CRIME_TYPE02
 			 , EME.CRIME_TYPE03		, EME.CRIME_TYPE04		, EME.CRIME_TYPE_ETC	, EME.DRUG1				, EME.DRUG1_ETC
 			 , EME.DRUG2			, EME.DRUG2_ETC			, EME.DRUG3				, EME.DRUG3_ETC			, EME.DRUG4
@@ -69,7 +69,7 @@
 		SELECT /* edMbrEd.getEdMbrEdList */
 			   EM.MBR_NO			, EM.MBR_NM				, EM.GEND_CD			, EM.JUMIN_NO1			, EM.AGE
 			 , EM.TEL_NO1			, EM.TEL_NO2			, EM.TEL_NO3			, EM.ZIP_CD				, EM.ADDR1
-			 , EM.ADDR2				, EM.JOB_CD				, EME.R_ZIP_CD			, EME.R_ADDR1			, EME.R_ADDR2
+			 , EM.ADDR2				, EME.JOB_CD				, EME.R_ZIP_CD			, EME.R_ADDR1			, EME.R_ADDR2
 			 , EME.REQ_DT			, EME.DOC_NO			, EME.CASE_NO			, EME.CRIME_TYPE01		, EME.CRIME_TYPE02
 			 , EME.CRIME_TYPE03		, EME.CRIME_TYPE04		, EME.CRIME_TYPE_ETC	, EME.DRUG1				, EME.DRUG1_ETC
 			 , EME.DRUG2			, EME.DRUG2_ETC			, EME.DRUG3				, EME.DRUG3_ETC			, EME.DRUG4
@@ -111,6 +111,7 @@
 			 , PROS_NO			= #{prosNo}			, DETECTIVE		= #{detective}
 			 , FILE_ID			= #{fileId}			, UPD_ID		= #{loginId}
 			 , UPD_DT			= NOW()
+			 , JOB_CD		= #{jobCd}
 		 WHERE MBR_ED_ID = #{mbrEdId}
 	]]>
 	</update>

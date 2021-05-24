@@ -212,7 +212,7 @@ public class EduMngExcel extends AbstractExcelView{
 		this.cellStyleLoop(1, 1, basicLCellStyle, row, cell, "");
 		this.cellStyleLoop(2, 2, basicCellStyle, row, cell, "회기");
 		this.cellStyleLoop(3, 3, basicCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_SESSION"), ""));
-		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "차수");
+		this.cellStyleLoop(4, 4, basicCellStyle, row, cell, "기수");
 		this.cellStyleLoop(5, 5, basicRCellStyle, row, cell, StringUtils.defaultIfEmpty((String)cslInfo.get("PGM_CLASS"), ""));
 		sheet.addMergedRegion(new CellRangeAddress(tempRowCnt, rowCount, 1, 1));
 		

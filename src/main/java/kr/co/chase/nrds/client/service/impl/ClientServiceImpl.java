@@ -18,6 +18,7 @@ import kr.co.chase.nrds.client.service.ClientService;
 import kr.co.chase.nrds.dao.EdMbrDao;
 import kr.co.chase.nrds.dao.EdMbrEdDao;
 import kr.co.chase.nrds.dao.EdMbrGuDao;
+import kr.co.chase.nrds.dao.EdMbrLawDao;
 import kr.co.chase.nrds.dao.EdMbrTransDao;
 
 @Service("clientService")
@@ -40,6 +41,9 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 	@Resource(name="edMbrTransDao")
 	private EdMbrTransDao edMbrTransDao;
 
+	@Resource(name="edMbrLawDao")
+	private EdMbrLawDao edMbrLawDao;
+	
 	@Override
 	public HashMap<String, Object> getEdMbrInfo(HashMap<String, Object> map) throws Exception {
 		return edMbrDao.getEdMbrInfo(map);
@@ -59,7 +63,6 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 	public int updateEdMbr(HashMap<String, Object> map) throws Exception {
 		return edMbrDao.updateEdMbr(map);
 	}
-
 	@Override
 	public int getEdMbrListCount(HashMap<String, Object> map) throws Exception {
 		return edMbrDao.getEdMbrListCount(map);
@@ -106,7 +109,7 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 
 		return resultMap;
 	}
-
+	
 	@Override
 	public int deleteEdMbr(String mbrNo) throws Exception {
 		return edMbrDao.deleteEdMbr(mbrNo);
@@ -367,6 +370,61 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 			resultMap.put("MSG", resultMap.get("MSG") + " 오류");
 		}
 
+		return resultMap;
+	}
+	
+	
+	@Override
+	public int insertEdMbrLaw(HashMap<String, Object> map) throws Exception {
+		return edMbrLawDao.insertEdMbrLaw(map);
+	}
+
+	@Override
+	public HashMap<String, Object> getEdMbrLawLastInfo(String mbrNo) throws Exception {
+		return edMbrLawDao.getEdMbrLawLastInfo(mbrNo);
+	}
+
+	@Override
+	public HashMap<String, Object> getEdMbrLawInfo(HashMap<String, Object> map) throws Exception {
+		return edMbrLawDao.getEdMbrLawInfo(map);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getEdMbrLawList(HashMap<String, Object> map) throws Exception {
+		return edMbrLawDao.getEdMbrLawList(map);
+	}
+
+	@Override
+	public int updateEdMbrLaw(HashMap<String, Object> map) throws Exception {
+		return edMbrLawDao.updateEdMbrLaw(map);
+	}
+
+	@Override
+	public int deleteEdMbrLaw(HashMap<String, Object> map) throws Exception {
+		return edMbrLawDao.deleteEdMbrLaw(map);
+	}
+	
+	@Override
+	public HashMap<String, Object> saveEdMbrLaw(HashMap<String, Object> map) throws Exception{
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		int result = 0;
+		
+		String mbrLawId = StringUtils.defaultIfEmpty((String)map.get("mbrLawId"), "");
+		if(!"".equals(mbrLawId)) {
+			result = this.updateEdMbrLaw(map);
+			resultMap.put("MSG", "수정");
+		}else{
+			result = this.insertEdMbrLaw(map);
+			resultMap.put("MSG", "등록");
+		}
+		
+		if(result > 0) {
+			resultMap.put("err", ConstantObject.N);
+		}else{
+			resultMap.put("err", ConstantObject.Y);
+			resultMap.put("MSG", resultMap.get("MSG") + " 오류");
+		}
+		
 		return resultMap;
 	}
 }

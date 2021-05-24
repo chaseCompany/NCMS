@@ -1,6 +1,7 @@
 package kr.co.chase.nrds.client.web;
 
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,21 +113,7 @@ public class ClientController {
 		String telNo3 = StringUtils.defaultIfEmpty((String)reqMap.get("telNo3"), "");
 		String zipCd = StringUtils.defaultIfEmpty((String)reqMap.get("zipCd"), "");
 		String addr1 = StringUtils.defaultIfEmpty((String)reqMap.get("addr1"), "");
-		String mbrTp1 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp1"), "");
-		String mbrTp2 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp2"), "");
-		String mbrTp3 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp3"), "");
-		String mbrTp4 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp4"), "");
-		String mbrTp5 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp5"), "");
-		String mbrTp6 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp6"), "");
 		String mbrSt = StringUtils.defaultIfEmpty((String)reqMap.get("mbrSt"), "");
-		String fstDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("fstDrugCd"), "");
-		String mainDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("mainDrugCd"), "");
-		String fstAge = StringUtils.defaultIfEmpty((String)reqMap.get("fstAge"), "");
-		String lstAge = StringUtils.defaultIfEmpty((String)reqMap.get("lstAge"), "");
-		String useTerm = StringUtils.defaultIfEmpty((String)reqMap.get("useTerm"), "");
-		String useFrqCd = StringUtils.defaultIfEmpty((String)reqMap.get("useFrqCd"), "");
-		String useCauCd = StringUtils.defaultIfEmpty((String)reqMap.get("useCauCd"), "");
-		String lawPbmCd = StringUtils.defaultIfEmpty((String)reqMap.get("lawPbmCd"), "");
 		String creUsrDt = StringUtils.defaultIfEmpty((String)reqMap.get("creUsrDt"), "");
 
 		if("".equals(loginUsrId)) {
@@ -169,49 +156,9 @@ public class ClientController {
 			resultView.addObject("MSG", "주소를 입력하세요.");
 			return resultView;
 		}
-		if("".equals(mbrTp1) && "".equals(mbrTp2) && "".equals(mbrTp3) && "".equals(mbrTp4) && "".equals(mbrTp5) && "".equals(mbrTp6)) {
+		if("".equals(mbrSt)) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "대상자구분을 선택하세요.");
-			return resultView;
-		}
-		if("".equals(fstDrugCd)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "최초사용약물을 선택하세요.");
-			return resultView;
-		}
-		if("".equals(mainDrugCd)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "주요사용약물을 선택하세요.");
-			return resultView;
-		}
-		if("".equals(fstAge)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "최초 사용시기를 입력하세요.");
-			return resultView;
-		}
-		if("".equals(lstAge)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "마지막 사용시기를 입력하세요.");
-			return resultView;
-		}
-		if("".equals(useTerm)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "사용기간을 입력하세요.");
-			return resultView;
-		}
-		if("".equals(useFrqCd)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "사용빈도를 선택하세요.");
-			return resultView;
-		}
-		if("".equals(useCauCd)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "사용원인을 선택하세요.");
-			return resultView;
-		}
-		if("".equals(lawPbmCd)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "약물관련 법적문제를 선택하세요.");
+			resultView.addObject("MSG", "대상자상태를 선택하세요.");
 			return resultView;
 		}
 		if("".equals(creUsrDt)) {
@@ -383,6 +330,273 @@ public class ClientController {
 
 		return resultView;
 	}
+	
+	
+	/**
+	 * 대상자 정보 관리
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/clientLawConMain.do")
+	public String clientLawConMain(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
+		codeListMap.put("useYn", ConstantObject.Y);
+
+		codeListMap.put("grpCd", "C1100");				// 성별
+		model.put("gendCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1300");				// 내/외국인
+		model.put("frgCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C2800");				// 결혼여부
+		model.put("mrgCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C8000");				// 최종학력
+		model.put("eduCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C7900");				// 학력결과
+		model.put("edu02CdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C3000");				// 종교
+		model.put("rlgnCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1200");				// 직업
+		model.put("jobCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1800");				// 최초사용약물
+		model.put("fstDrugList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1900");				// 주요사용약물
+		model.put("mainDrugList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C2600");				// 사용빈도
+		model.put("useFrqList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C4100");				// 사용원인
+		model.put("useCauList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C3200");				// 약물관련 법적문제
+		model.put("lawPbmList", sysCodeService.getSysCdList(codeListMap));
+		
+		codeListMap.put("grpCd", "R0600");				// 대상자구분
+		model.put("mbrStCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C9000");				// 단약경험
+		model.put("cureoffExpCdList", sysCodeService.getSysCdList(codeListMap));
+		
+		codeListMap.put("grpCd", "C9100");				// 의료보장(법정의무교육)
+		model.put("medicCareCdList", sysCodeService.getSysCdList(codeListMap));
+		
+		return "nrds/client/clientLawConMain";
+	}
+	
+	/**
+	 * 법정의무교육  등록
+	 * @param multiRequest
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEmLawAdd.do")
+	public @ResponseBody ModelAndView ajaxEmLawAdd(@RequestParam HashMap<String, Object> reqMap, HttpServletRequest request, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String loginUsrId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String mbrTp1 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp1"), "");
+		String mbrTp2 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp2"), "");
+		String mbrTp3 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp3"), "");
+		String mbrTp4 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp4"), "");
+		String mbrTp5 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp5"), "");
+		String mbrTp6 = StringUtils.defaultIfEmpty((String)reqMap.get("mbrTp6"), "");
+		String fstDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("fstDrugCd"), "");
+		String mainDrugCd = StringUtils.defaultIfEmpty((String)reqMap.get("mainDrugCd"), "");
+		String fstAge = StringUtils.defaultIfEmpty((String)reqMap.get("fstAge"), "");
+		String lstAge = StringUtils.defaultIfEmpty((String)reqMap.get("lstAge"), "");
+		String useTerm = StringUtils.defaultIfEmpty((String)reqMap.get("useTerm"), "");
+		String useFrqCd = StringUtils.defaultIfEmpty((String)reqMap.get("useFrqCd"), "");
+		
+		String[] lawPbmCdList = request.getParameterValues("lawPbmCd");											// 약물관련 법적문제
+		String[] useCauCdList = request.getParameterValues("useCauCd");											// 사용원인
+
+		if("".equals(loginUsrId)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "로그인 후 이용");
+			return resultView;
+		}
+		if("".equals(mbrNo)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "회원을 선택하세요.");
+			return resultView;
+		}
+		if("".equals(mbrTp1) && "".equals(mbrTp2) && "".equals(mbrTp3) && "".equals(mbrTp4) && "".equals(mbrTp5) && "".equals(mbrTp6)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "대상자구분을 선택하세요.");
+			return resultView;
+		}
+		if("".equals(fstDrugCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "최초사용약물을 선택하세요.");
+			return resultView;
+		}
+		if("".equals(mainDrugCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "주요사용약물을 선택하세요.");
+			return resultView;
+		}
+		if("".equals(fstAge)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "최초 사용시기를 입력하세요.");
+			return resultView;
+		}
+		if("".equals(lstAge)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "마지막 사용시기를 입력하세요.");
+			return resultView;
+		}
+		if("".equals(useTerm)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "사용기간을 입력하세요.");
+			return resultView;
+		}
+		if("".equals(useFrqCd)) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "사용빈도를 선택하세요.");
+			return resultView;
+		}
+		if(useCauCdList == null || useCauCdList.length <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "사용원인을 선택하세요.");
+			return resultView;
+		}
+		if(lawPbmCdList == null || lawPbmCdList.length <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "약물관련 법적문제를 선택하세요.");
+			return resultView;
+		}
+		
+		String lawPbmCd = "[";
+		for(String pbmCd : lawPbmCdList) {
+			lawPbmCd += pbmCd + ", ";
+		}
+		lawPbmCd = lawPbmCd.substring(0, lawPbmCd.length() - 2) + "]";
+		reqMap.put("lawPbmCd", lawPbmCd);
+		
+		String useCauCd = "[";
+		for(String cauCd : useCauCdList) {
+			useCauCd += cauCd + ", ";
+		}
+		useCauCd = useCauCd.substring(0, useCauCd.length() - 2) + "]";
+		reqMap.put("useCauCd", useCauCd);
+
+		reqMap.put("loginId", loginUsrId);
+
+		HashMap<String, Object> resultMap = clientService.saveEdMbrLaw(reqMap);
+		if(resultMap != null) {
+			resultView.addObject("err", resultMap.get("err"));
+			resultView.addObject("MSG", resultMap.get("MSG"));
+			resultView.addObject("mbrNo", resultMap.get("mbrNo"));
+		}
+		
+		return resultView;
+	}
+
+	/**
+	 * 법정의무교육 타이틀 정보 조회
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrLawLastInfoJson.do")
+	public @ResponseBody ModelAndView ajaxEdMbrLawLastInfoJson(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		if(!"".equals(mbrNo)){
+			resultView.addObject("mbrEdInfo", clientService.getEdMbrLawLastInfo(mbrNo));
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 법정의무교육 상세
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxLawInfoJson.do")
+	public @ResponseBody ModelAndView ajaxLawInfoJson(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String mbrLawId = StringUtils.defaultIfEmpty((String)reqMap.get("mbrLawId"), "");
+
+		if(!"".equals(mbrNo)){
+			if(!"".equals(mbrLawId)) {
+				resultView.addObject("mbrEdInfo", clientService.getEdMbrLawInfo(reqMap));
+			}else{
+				resultView.addObject("mbrEdInfo", clientService.getEdMbrInfo(reqMap));
+			}
+		}
+
+		return resultView;
+	}
+
+	/**
+	 * 법정의무교육 목록
+	 * @param model
+	 * @param reqMap
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrLawList.do")
+	public String ajaxEdMbrLawList(ModelMap model, @RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
+		String loginUsrId = StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), "");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+
+		if(!"".equals(loginUsrId) && !"".equals(mbrNo)) {
+			model.put("resultList", clientService.getEdMbrLawList(reqMap));
+		}
+
+		return "nrds/client/layer/clientEduList";
+	}
+
+	/**
+	 * 법정의무교육 삭제
+	 * @param mbrNo
+	 * @param session
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/ajaxEdMbrLawDel.do")
+	public @ResponseBody ModelAndView ajaxEdMbrLawDel(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+		ModelAndView resultView = new ModelAndView("jsonView");
+		String mbrNo = StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), "");
+		String mbrLawId = StringUtils.defaultIfEmpty((String)reqMap.get("mbrLawId"), "");
+		int result = 0;
+
+		if(!"".equals(mbrNo) && !"".equals(mbrLawId)) {
+			result = clientService.deleteEdMbrLaw(reqMap);
+		}
+
+		if(result <= 0) {
+			resultView.addObject("err", ConstantObject.Y);
+			resultView.addObject("MSG", "삭제 처리 오류");
+		}
+
+		return resultView;
+	}
+	
+	
 
 	/**
 	 * 의뢰 교육조건부 기소유예
@@ -411,6 +625,12 @@ public class ClientController {
 
 		codeListMap.put("grpCd", "R0400");				// 교육의뢰경위
 		model.put("reqDetailsList", sysCodeService.getSysCdList(codeListMap));
+		
+		codeListMap.put("grpCd", "C1300");				// 내/외국인
+		model.put("frgCdList", sysCodeService.getSysCdList(codeListMap));
+		
+		codeListMap.put("grpCd", "R0600");				// 대상자구분
+		model.put("mbrStCdList", sysCodeService.getSysCdList(codeListMap));
 
 		return "nrds/client/clientEduConMain";
 	}
@@ -621,6 +841,12 @@ public class ClientController {
 
 		codeListMap.put("grpCd", "C1200");				// 직업
 		model.put("jobCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "C1300");				// 내/외국인
+		model.put("frgCdList", sysCodeService.getSysCdList(codeListMap));
+
+		codeListMap.put("grpCd", "R0600");				// 대상자구분
+		model.put("mbrStCdList", sysCodeService.getSysCdList(codeListMap));
 
 		return "nrds/client/clientLeadConMain";
 	}

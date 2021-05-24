@@ -53,7 +53,7 @@ public interface ClientService {
 	 * @throws Exception
 	 */
 	public List<HashMap<String, Object>> getEdMbrList(HashMap<String, Object> map) throws Exception;
-
+	
 	/**
 	 * 회원 정보 저장
 	 * @param map
@@ -61,7 +61,7 @@ public interface ClientService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> saveEdMbr(HashMap<String, Object> map) throws Exception;
-
+	
 	/**
 	 * 회원정보 삭제
 	 * @param mbrNo
@@ -240,4 +240,61 @@ public interface ClientService {
 	 * @throws Exception
 	 */
 	public HashMap<String, Object> saveEdMbrTrans(Map<String, MultipartFile> files, HashMap<String, Object> map) throws Exception;
+	
+	/**
+	 * 법정의무교육 등록
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertEdMbrLaw(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 법정의무교육 기본 정보 조회
+	 * @param mbrNo
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getEdMbrLawLastInfo(String mbrNo) throws Exception;
+
+	/**
+	 * 법정의무교육 상세 정보 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> getEdMbrLawInfo(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 법정의무교육 목록 조회
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<HashMap<String, Object>> getEdMbrLawList(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 법정의무교육 수정
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateEdMbrLaw(HashMap<String, Object> map) throws Exception;
+
+	/**
+	 * 법정의무교육 삭제
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteEdMbrLaw(HashMap<String, Object> map) throws Exception;
+
+	/**법정의무교육 상세 정보 저장
+	 *
+	 * @param files
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public HashMap<String, Object> saveEdMbrLaw(HashMap<String, Object> map) throws Exception;
 }
