@@ -79,13 +79,16 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 		int result = 0;
 
 		String mbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
-		if("".equals(mbrNo)){
-			HashMap<String, Object> sechMap = new HashMap<String, Object>();
-			sechMap.put("mbrNm", map.get("mbrNm"));
-			sechMap.put("juminNo1", map.get("juminNo1"));
 
-			int memCnt = this.getEdMbrListCount(sechMap);
-			if(memCnt <= 0){
+		HashMap<String, Object> sechMap = new HashMap<String, Object>();
+		sechMap.put("saveChkMbrNm", map.get("mbrNm"));
+		sechMap.put("saveChkJuminNo1", map.get("juminNo1"));
+		int memCnt = this.getEdMbrListCount(sechMap);
+		if(memCnt > 0){
+			resultMap.put("err", ConstantObject.Y);
+			resultMap.put("MSG", "동일 회원 정보 존재");
+		}else {
+			if("".equals(mbrNo)){
 				String newMbrNo = this.getMbrNoSeq();
 				map.put("mbrId", newMbrNo);
 				map.put("mbrNo", newMbrNo);
@@ -94,13 +97,10 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 				resultMap.put("MSG", "등록");
 				resultMap.put("mbrNo", newMbrNo);
 			}else{
-				resultMap.put("err", ConstantObject.Y);
-				resultMap.put("MSG", "동일 회원 정보 존재");
+				result = this.updateEdMbr(map);
+				resultMap.put("MSG", "수정");
+				resultMap.put("mbrNo", map.get("mbrNo"));
 			}
-		}else{
-			result = this.updateEdMbr(map);
-			resultMap.put("MSG", "수정");
-			resultMap.put("mbrNo", map.get("mbrNo"));
 		}
 
 		if(result <= 0) {

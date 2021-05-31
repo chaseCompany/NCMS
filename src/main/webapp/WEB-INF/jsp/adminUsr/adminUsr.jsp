@@ -32,16 +32,15 @@
 						}
 						$("input[name='useYn']:radio[value='" + res.usrView.USE_YN + "']").prop("checked", true);
 						$("input[id='regDt']").val(res.usrView.REG_DT);
+						$("input[id='accIp']").val(res.usrView.ACC_IP);
 						$('#iInitializePwdDefault').hide();
 						$('#iInitializePwdActive').show();
 						$('#deleteBtnDefault').hide();
 						$('#deleteBtnActive').show();
 					}else{
-						console.log("상세내용 조회 오류");
 					}
 				},
 				error : function(xhr, status){
-					console.log(xhr);
 				}
 			});
 		},
@@ -60,6 +59,7 @@
 					data : $('#formUsrUpdate').serialize(),
 					success : function(res){
 						if(res.err != "Y"){
+							alert("수정되었습니다.");
 							location.reload();
 						}else{
 							alert(res.MSG);
@@ -83,6 +83,7 @@
 					data : $('#formUsrUpdate').serialize(),
 					success : function(res){
 						if(res.err != "Y"){
+							alert("저장되었습니다.");
 							location.reload();
 						}else{
 							alert(res.MSG);
@@ -142,7 +143,6 @@
 					}
 				},
 				error : function(xhr, status){
-					console.log(xhr);
 				}
 			});
 		},
@@ -216,6 +216,7 @@
 			$("input[name='siteEdu']").prop("checked", false);
 			$("input[name='useYn']:radio[value='Y']").prop("checked", true);
 			$("input[id='regDt']").val("");
+			$("input[id='accIp']").val("");
 		}
 
 		$('#iInitializePwdActive').hide();
@@ -531,6 +532,12 @@
                                 <th>등록 일시</th>
                                 <td>
                                     <input type="text" readonly class="el-input__inner" placeholder="등록 일시" style="width: 200px;" name="regDt" id="regDt">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>접근IP</th>
+                                <td>
+                                    <input type="text" class="el-input__inner" style="width: 200px;" placeholder="접근IP" name="accIp" id="accIp" onKeyup="this.value=this.value.replace(/[^.|^0(0)+|^0-9.]/g,'');" maxlength="20">
                                 </td>
                             </tr>
                         </tbody>

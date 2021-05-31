@@ -54,7 +54,7 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/ajaxLogin.do")
-	public @ResponseBody ModelAndView ajaxLogin(@RequestParam HashMap<String, Object> reqMap, HttpSession session) throws Exception{
+	public @ResponseBody ModelAndView ajaxLogin(@RequestParam HashMap<String, Object> reqMap, HttpSession session, HttpServletRequest request) throws Exception{
 		ModelAndView resultView = new ModelAndView ("jsonView");
 
 		String usrId = StringUtils.defaultString((String)reqMap.get("usrId"), "");
@@ -64,8 +64,10 @@ public class LoginController {
 			resultView.addObject("err", "Y");
 			resultView.addObject("MSG", "사용자 ID 또는 비밀번호를 입력하세요.");
 		}else{
+			reqMap.put("accIp", getWAFRemoteAddr(request));
+			
 			HashMap<String, Object> usrInfoMap = loginService.getSysUsrInfo(reqMap);
-
+			
 			if(usrInfoMap != null) {
 				session.setAttribute(ConstantObject.LOGIN_SESSEION_INFO, usrInfoMap);
 
@@ -80,7 +82,7 @@ public class LoginController {
 				}
 			}else{
 				resultView.addObject("err", ConstantObject.Y);
-				resultView.addObject("MSG", "사용자 ID가 존재하지 않거나 비밀번호가 맞지 않습니다.");
+				resultView.addObject("MSG", "사용자 ID가 존재하지 않거나 비밀번호가 맞지 않습니다.\n또는 접속허용IP와 맞지 않습니다.");
 			}
 		}
 
@@ -99,4 +101,30 @@ public class LoginController {
 
 		return "redirect:/login.do";
 	}
+	
+	/**
+	 * Client IP 가져오기 위한 처리
+	 * @param request
+	 * @return
+	 */
+	public static String getWAFRemoteAddr(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("Proxy-Client-IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("WL-Proxy-Client-IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("HTTP_CLIENT_IP"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR"); 
+        } 
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+            ip = request.getRemoteAddr(); 
+        }
+        return ip;
+    }
 }

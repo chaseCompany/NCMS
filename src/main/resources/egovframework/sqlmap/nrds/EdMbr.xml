@@ -92,6 +92,12 @@
 			<if test="searchSiteCd != null and searchSiteCd != ''">
 							AND SU.SITE_CD =#{searchSiteCd}
 			</if>
+			<if test="saveChkMbrNm != null and saveChkMbrNm != ''">
+		   AND EM.MBR_NM = REPLACE(#{saveChkMbrNm}, ' ', '')
+			</if>
+			<if test="saveChkJuminNo1 != null and saveChkJuminNo1 != ''">
+		   AND EM.JUMIN_NO1 LIKE CONCAT('%', REPLACE(#{saveChkJuminNo1}, ' ', ''), '%')
+			</if>
 		</trim>
 	</select>
 

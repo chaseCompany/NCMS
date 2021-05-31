@@ -5,7 +5,7 @@
 	<select id="sysUsr.getSysUsrList" parameterType="hashMap" resultType="hashMap">
 	<![CDATA[
 		SELECT /* sysUsr.getSysUsrList */
-			   SU.USR_ID		, SU.USR_NM			, SU.REG_DT			, SC01.CD_NM AS SITE_NM
+			   SU.USR_ID		, SU.USR_NM			, SU.REG_DT			, SC01.CD_NM AS SITE_NM		, ACC_IP
 		  FROM SYS_USR SU
 		  LEFT JOIN SYS_CD SC01 ON (SU.SITE_CD = SC01.CD_ID AND SC01.GRP_CD = 'C3500')
 	]]>
@@ -30,13 +30,19 @@
 	<![CDATA[
 		SELECT /* sysUsr.getSysUsrInfo */
 			   SU.USR_ID	, SU.USR_NM		, SU.ROLE_CD	, SU.SITE_CD	, SU.REG_DT
-			 , SU.UPD_DT	, SC01.CD_NM AS SITE_NM		, SITE_CONSULT	, SITE_EDU
+			 , SU.UPD_DT	, SC01.CD_NM AS SITE_NM		, SITE_CONSULT	, SITE_EDU 	, ACC_IP
 		  FROM SYS_USR SU
 		  LEFT JOIN SYS_CD SC01 ON (SU.SITE_CD = SC01.CD_ID AND SC01.GRP_CD = 'C3500')
 		 WHERE SU.USR_ID = #{usrId}
-		   AND SU.PASSWD = SUBSTR(PASSWORD(#{passwd}), 2)
+		   AND SU.PASSWD = UPPER(SHA1(UNHEX(SHA1(#{passwd}))))
 		   AND SU.USE_YN = 'Y'
 	]]>
+		<if test="accIp != null and accIp != ''">
+		   AND (
+			   (EXISTS (SELECT * FROM SYS_CD where GRP_CD = 'C9900' AND CD_ID='IP_CHK' AND CD_MISC1='Y') AND SU.ACC_IP=#{accIp})
+			   OR EXISTS (SELECT * FROM SYS_CD where GRP_CD = 'C9900' AND CD_ID='IP_CHK' AND CD_MISC1='N')
+			)
+		</if>
 	</select>
 
 	<select id="sysUsr.getAdminUsrList" parameterType="hashMap" resultType="hashMap">
@@ -48,6 +54,7 @@
 			   , ROLE_CD	, SC02.CD_NM AS ROLE_NM
 			   , SU.USE_YN
 			   , REG_DT
+			   , ACC_IP
 		  FROM SYS_USR SU
 		  LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'C3500' AND SU.SITE_CD = SC01.CD_ID AND SC01.USE_YN = 'Y')
 		  LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'C3600' AND SU.ROLE_CD = SC02.CD_ID AND SC02.USE_YN = 'Y')
@@ -65,6 +72,7 @@
 			   , SITE_CONSULT
 			   , SITE_EDU
 			   , REG_DT
+			   , ACC_IP
 		  FROM SYS_USR
 		  WHERE USR_ID = #{usrId}
 	]]>
@@ -77,6 +85,7 @@
 			 , SITE_CD			= #{siteCd}							, SITE_CONSULT		= IFNULL(#{siteConsult}, '0')
 			 , SITE_EDU			= IFNULL(#{siteEdu}, '0')			, USE_YN			= #{useYn}
 			 , UPD_ID			= #{updId}			 				, UPD_DT			= NOW()
+			 , ACC_IP			= #{accIp}
 		 WHERE	USR_ID	= #{usrId}
 	]]>
 	</update>
@@ -148,12 +157,12 @@
 			  USR_ID			, USR_NM			, PASSWD			, ROLE_CD
 			, SITE_CD			, SITE_CONSULT		, SITE_EDU			, USE_YN
 			, REG_DT			, CRE_DT			, CRE_ID			, UPD_DT
-			, UPD_ID
+			, UPD_ID			, ACC_IP
 		)VALUES(
 			  #{usrId}			, #{usrNm}						, SUBSTR(PASSWORD(#{passWd}) FROM 2)	, #{roleCd}
 			, #{siteCd}			, IFNULL(#{siteConsult}, "0")	, IFNULL(#{siteEdu}, "0")				, #{useYn}
 			, NOW()				, NOW()							, #{creId}								, NOW()
-			, #{updId}
+			, #{updId}		, #{accIp}
 		)
 	]]>
 	</insert>
