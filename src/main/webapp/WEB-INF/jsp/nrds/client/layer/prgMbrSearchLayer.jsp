@@ -153,7 +153,7 @@
 	<!-- 닫기 -->
 	<div class="el-dialog__footer">
 		<button type="button" class="el-button el-button--default el-button--small" onclick="layerPopupClose('memberPopUp');">
-			<span>닫기</span>
+			<span>저장</span>
 		</button>
 	</div>
 	<!-- // 닫기 -->

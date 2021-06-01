@@ -12,6 +12,7 @@
 				url : '<c:url value="/nrds/ajaxEdMbrList.do"/>',
 				type : 'POST',
 				data : {
+					listType : "MEDIC",
 					pageNo : $("input[name='memPageNo']").val(),
 					mbrNm : $("input[name='memSchMbrNm']").val(),
 					telNo : $("input[name='memSchTelNo']").val()
@@ -484,7 +485,7 @@
 								</div>
 							</td>
 							<th>성명</th>
-							<td><input type="text" name="infoMbrNm" class="el-input__inner datepicker" placeholder="성명" maxlength="8" style="width: 130px;" /></td>
+							<td><input type="text" name="infoMbrNm" placeholder="성명" maxlength="8" /></td>
 							<th>성별</th>
 							<td><input type="text" name="infoGendNm" placeholder="성별" /></td>
 							<th>연령</th>

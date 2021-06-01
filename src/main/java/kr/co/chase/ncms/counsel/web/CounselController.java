@@ -471,7 +471,7 @@ public class CounselController {
 		// 관리자가 아닌 경우
 		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
 			if("MEDIC".equals(listType)) {
-				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "X"));
+				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
 			}
 		}
 

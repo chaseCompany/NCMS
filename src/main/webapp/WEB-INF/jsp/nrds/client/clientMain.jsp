@@ -102,6 +102,7 @@
 				url : '<c:url value="/nrds/ajaxEdMbrList.do"/>',
 				type : 'POST',
 				data : {
+					listType : "MEDIC",
 					pageNo : $("input[name='memPageNo']").val(),
 					mbrNm : $("input[name='memSchMbrNm']").val(),
 					telNo : $("input[name='memSchTelNo']").val()

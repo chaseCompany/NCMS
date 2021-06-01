@@ -81,6 +81,7 @@ public class ClientServiceImpl extends EgovAbstractServiceImpl implements Client
 		String mbrNo = StringUtils.defaultIfEmpty((String)map.get("mbrNo"), "");
 
 		HashMap<String, Object> sechMap = new HashMap<String, Object>();
+		sechMap.put("saveMbrNo", mbrNo);
 		sechMap.put("saveChkMbrNm", map.get("mbrNm"));
 		sechMap.put("saveChkJuminNo1", map.get("juminNo1"));
 		int memCnt = this.getEdMbrListCount(sechMap);
