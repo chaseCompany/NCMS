@@ -51,7 +51,7 @@
 			 , (SELECT CD_NM FROM SYS_CD WHERE CD_ID = CC.ACT_WAY_CD AND GRP_CD = 'C6000') AS ACT_WAY /* 시도계획방법 */
 			 , FI.ORIGNL_FILE_NM
 		  FROM ED_CONSULT CC
-		  LEFT JOIN SYS_USR SU ON (CC.CSL_ID = SU.USR_ID)
+		  LEFT JOIN SYS_USR SU ON (CC.CSL_MNG_USR_ID = SU.USR_ID)
 		  LEFT JOIN ED_MBR MB ON CC.MBR_NO = MB.MBR_NO
 		  LEFT JOIN FILE_INFO FI ON (FI.FILE_ID = CC.FILE_ID)
 	]]>
@@ -62,11 +62,20 @@
 			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
 			 	AND DATE_FORMAT(CC.CSL_DT, '%Y%m%d') BETWEEN #{fmDt} AND #{toDt}
 			 </if>
-			 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
-			 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
-			 		AND SU.SITE_CD = #{sessionSiteCd}
-			 	</if>
-			 </if>
+			 <if test="searchRoleCd != null and searchRoleCd != '' and searchRoleCd != '90'">
+				<choose>
+					<when test="searchRoleCd != 5"> 
+						<if test="searchSiteCd != null and searchSiteCd != ''"> <!-- 관리자, 외부직원 제외: 본인 소속만 조회 -->
+							AND SU.SITE_CD = ${searchSiteCd}
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchUserId != null and searchUserId != ''"> <!-- 외부직원: 본인만 조회 -->
+							AND CC.CSL_MNG_USR_ID = #{searchUserId}
+						</if>
+					</otherwise>
+				</choose>
+			</if>
 		 </trim>
 	</select>
 

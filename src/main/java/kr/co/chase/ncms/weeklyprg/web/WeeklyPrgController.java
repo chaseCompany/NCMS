@@ -90,8 +90,9 @@ public class WeeklyPrgController {
 		@SuppressWarnings("unchecked")
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>) session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		
-		reqMap.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
-		reqMap.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		reqMap.put("searchRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		reqMap.put("searchUserId", StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
 		
 		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);

@@ -104,11 +104,20 @@
 			LEFT JOIN SYS_CD SC05 ON (SC05.GRP_CD = 'C3500' AND SC05.CD_ID = SU2.SITE_CD)
 	]]>
 			<trim prefix="WHERE" prefixOverrides="AND|OR">
-				<if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
-				 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
-				 		AND SU2.SITE_CD = #{sessionSiteCd}
-				 	</if>
-				 </if>
+				 <if test="searchRoleCd != null and searchRoleCd != '' and searchRoleCd != '90'">
+					<choose>
+						<when test="searchRoleCd != 5"> 
+							<if test="searchSiteCd != null and searchSiteCd != ''"> <!-- 관리자, 외부직원 제외: 본인 소속만 조회 -->
+								AND SU2.SITE_CD = ${searchSiteCd}
+							</if>
+						</when>
+						<otherwise>
+							<if test="searchUserId != null and searchUserId != ''"> <!-- 외부직원: 본인만 조회 -->
+								AND A.CRE_ID = #{searchUserId}
+							</if>
+						</otherwise>
+					</choose>
+				</if>
 			</trim>
 	</select>
 

@@ -76,9 +76,10 @@ public class EduMngController {
 			System.out.println("name: "+name +"   &&   parameter:" + request.getParameter(name));
 			map.put(name, request.getParameter(name));
 		} 
-		map.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
-		map.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
-		System.out.println("sessionRoleCd:"+map.get("sessionRoleCd")+" sessionSiteCd :"+map.get("sessionSiteCd"));
+		map.put("searchRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		map.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		map.put("searchUserId", StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
+		
 		HashMap<String, Object> codeListMap = new HashMap<String, Object>();
 		codeListMap.put("useYn", ConstantObject.Y);
 
@@ -109,8 +110,9 @@ public class EduMngController {
 		@SuppressWarnings("unchecked")
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>) session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 		
-		reqMap.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
-		reqMap.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		reqMap.put("searchRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		reqMap.put("searchUserId", StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
 		
 		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);

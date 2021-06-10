@@ -314,6 +314,7 @@ public class CounselController {
 
 		String roleCd = StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), "");
 		String siteCd = StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), "");
+		String userId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
 		PaginationInfo paginginfo = new PaginationInfo();
 		if(currentPageNo == "" || recordCountPerPage == ""){
 			paginginfo.setCurrentPageNo(1);
@@ -356,9 +357,11 @@ public class CounselController {
 		
 		reqMap.put("schRoleCd", roleCd);
 		reqMap.put("schSiteCd", siteCd);
+		reqMap.put("schUserId", userId);
+		
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
 		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
-		System.out.println("schRoleCd"+reqMap.get("schRoleCd")+"  schSiteCd: "+reqMap.get("schSiteCd"));
+		System.out.println("schRoleCd"+reqMap.get("schRoleCd")+"  schSiteCd: "+reqMap.get("schSiteCd")+"  schUserId: "+reqMap.get("schUserId"));
 		
 		int totalCount = counselService.getCslRcpListCount(reqMap);
 		paginginfo.setTotalRecordCount(totalCount);
@@ -468,8 +471,12 @@ public class CounselController {
 		reqMap.put("currentPageNo", paginginfo.getCurrentPageNo());
 		reqMap.put("recordCountPerPage", paginginfo.getRecordCountPerPage());
 
+		String roleCd = StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), "");
+		String userId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
+		reqMap.put("searchRoleCd", roleCd);
+		reqMap.put("searchUserId", userId);
 		// 관리자가 아닌 경우
-		if(!ConstantObject.adminRoleCd.equals(StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""))) {
+		if(!ConstantObject.adminRoleCd.equals(roleCd)) {
 			if("MEDIC".equals(listType)) {
 				reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
 			}

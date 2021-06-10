@@ -65,11 +65,20 @@
 			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
 			 	AND CC.CSL_DT BETWEEN #{fmDt} AND #{toDt}
 			 </if>
-			 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
-			 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
-			 		AND SU.SITE_CD = #{sessionSiteCd}
-			 	</if>
-			 </if>
+			 <if test="searchRoleCd != null and searchRoleCd != '' and searchRoleCd != '90'">
+				<choose>
+					<when test="searchRoleCd != 5"> 
+						<if test="searchSiteCd != null and searchSiteCd != ''"> <!-- 관리자, 외부직원 제외: 본인 소속만 조회 -->
+							AND SU.SITE_CD = ${searchSiteCd}
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchUserId != null and searchUserId != ''"> <!-- 외부직원: 본인만 조회 -->
+							AND CC.CSL_ID = #{searchUserId}
+						</if>
+					</otherwise>
+				</choose>
+			</if>
 		 </trim>
 		
 	</select>

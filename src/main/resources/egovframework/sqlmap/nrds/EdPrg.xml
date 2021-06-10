@@ -51,11 +51,6 @@
 		 <if test="schEndDt != null and schEndDt != ''">
 		   AND PGM_END_DT  <![CDATA[<=]]> #{schEndDt}
 		 </if>
-		 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'">
-		 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
-		 		AND PGM_AGENT = #{sessionSiteCd}
-		 	</if>
-		 </if>
 		 <if test="pgmEdCdList != null and pgmEdCdList.size != 0">
 		   AND PGM_ED_CD IN
 		   	<foreach collection="pgmEdCdList" item="item" index="index" separator="," open="(" close=")">
@@ -74,6 +69,20 @@
 		   		#{item}
 		   	</foreach> 
 		 </if>
+		 <if test="searchRoleCd != null and searchRoleCd != '' and searchRoleCd != '90'">
+			<choose>
+				<when test="searchRoleCd != 5"> 
+					<if test="searchSiteCd != null and searchSiteCd != ''"> <!-- 관리자, 외부직원 제외: 본인 소속만 조회 -->
+						AND EP.PGM_AGENT = ${searchSiteCd}
+					</if>
+				</when>
+				<otherwise>
+					<if test="searchUserId != null and searchUserId != ''"> <!-- 외부직원: 본인만 조회 -->
+						AND EP.CRE_ID = #{searchUserId}
+					</if>
+				</otherwise>
+			</choose>
+		</if>
 	
 	</select>
 
@@ -163,7 +172,7 @@
 		  FROM ED_PGM EP
 		    LEFT JOIN FILE_INFO FI ON (FI.FILE_ID = EP.FILE_ID)
 			LEFT JOIN SYS_CD SC01 ON (SC01.GRP_CD = 'R0100' AND SC01.CD_ID = EP.PGM_ED_CD)
-			LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD = 'R0101' AND SC02.CD_ID = EP.PGM_CLASS_NM_CD)
+			LEFT JOIN SYS_CD SC02 ON (SC02.GRP_CD LIKE 'R010%' AND SC02.CD_ID = EP.PGM_CLASS_NM_CD)
 			LEFT JOIN SYS_CD SC03 ON (SC03.GRP_CD = 'R010101' AND SC03.CD_ID = EP.PGM_CLASS_SUB_CD)
 			LEFT JOIN SYS_CD SC04 ON (SC04.GRP_CD = 'C1200' AND SC04.CD_ID = EP.PGM_CLASS_NM_CD)
 			LEFT JOIN SYS_CD SC05 ON (SC05.GRP_CD = 'C3500' AND SC05.CD_ID = EP.PGM_AGENT)
@@ -175,10 +184,19 @@
 				LEFT JOIN ED_MBR EM ON EPM.MBR_NO = EM.MBR_NO
 			 	WHERE DATE_FORMAT(EP.PGM_CLASS_START_DT, '%Y%m%d') BETWEEN #{fmDt} AND #{toDt}
 			</if>
-			<if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'"><!-- 관리자가 아니면 본인 소속만 조회(엑셀)  -->
-				<if test="sessionSiteCd != '' and sessionSiteCd != null">
-			 		AND EP.PGM_AGENT = #{sessionSiteCd}
-				</if>
+			<if test="searchRoleCd != null and searchRoleCd != '' and searchRoleCd != '90'">
+				<choose>
+					<when test="searchRoleCd != 5"> 
+						<if test="searchSiteCd != null and searchSiteCd != ''"> <!-- 관리자, 외부직원 제외: 본인 소속만 조회 -->
+							AND EP.PGM_AGENT = ${searchSiteCd}
+						</if>
+					</when>
+					<otherwise>
+						<if test="searchUserId != null and searchUserId != ''"> <!-- 외부직원: 본인만 조회 -->
+							AND EP.CRE_ID = #{searchUserId}
+						</if>
+					</otherwise>
+				</choose>
 			</if>
 	</select>
 
@@ -208,7 +226,7 @@
 				</if>
 				, #{pgmSubject}	, #{pgmGoal}		, #{pgmCtnt}		, #{pgmRst}			, #{fileId}
 				, #{pgmEmp}		, #{pgmVol}			, #{creId}			, NOW()			, #{updId}
-				, #{updDt}
+				, NOW()
 		)
 				
 	</insert>
@@ -250,11 +268,6 @@
 		 <if test="schEndDt != null and schEndDt != ''">
 		   AND PGM_END_DT  <![CDATA[<=]]> #{schEndDt}
 		 </if>
-		 <if test="sessionRoleCd != '' and sessionRoleCd != null and sessionRoleCd != '90'">
-		 	<if test="sessionSiteCd != '' and sessionSiteCd != null">
-		 		AND PGM_AGENT = #{sessionSiteCd}
-		 	</if>
-		 </if>
 		 <if test="pgmEdCdList != null and pgmEdCdList.size != 0">
 		   AND PGM_ED_CD IN
 		   	<foreach collection="pgmEdCdList" item="item" index="index" separator="," open="(" close=")">
@@ -273,6 +286,20 @@
 		   		#{item}
 		   	</foreach> 
 		 </if>
+		 <if test="searchRoleCd != null and searchRoleCd != '' and searchRoleCd != '90'">
+			<choose>
+				<when test="searchRoleCd != 5"> 
+					<if test="searchSiteCd != null and searchSiteCd != ''"> <!-- 관리자, 외부직원 제외: 본인 소속만 조회 -->
+						AND EP.PGM_AGENT = ${searchSiteCd}
+					</if>
+				</when>
+				<otherwise>
+					<if test="searchUserId != null and searchUserId != ''"> <!-- 외부직원: 본인만 조회 -->
+						AND EP.CRE_ID = #{searchUserId}
+					</if>
+				</otherwise>
+			</choose>
+		</if>
 	</select>
 	
 	<delete id="edPrg.deleteEdPrm" parameterType="hashMap">

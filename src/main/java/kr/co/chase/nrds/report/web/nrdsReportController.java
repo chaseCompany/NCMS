@@ -69,8 +69,9 @@ public class nrdsReportController {
 		String toDt = StringUtils.defaultIfEmpty((String)reqMap.get("toDt"), "").replaceAll("-", "");
 		reqMap.put("fmDt", fmDt);
 		reqMap.put("toDt", toDt);
-		reqMap.put("sessionRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
-		reqMap.put("sessionSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		reqMap.put("searchRoleCd", StringUtils.defaultIfEmpty((String)usrInfo.get("ROLE_CD"), ""));
+		reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
+		reqMap.put("searchUserId", StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
 		
 		List<HashMap<String, Object>> resultMap = new ArrayList<HashMap<String, Object>>();
 		if("RecycleStatisticsExcel".equals(excelName)) {
