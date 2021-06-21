@@ -69,7 +69,7 @@ public class MemberController {
 	}
 
 	/**
-	 * 회원정보관리 의뢰
+	 * 회원정보관리 연계( 구: 의뢰 ) 의뢰 ↔ 연계 맞바꿈
 	 * @param model
 	 * @param reqMap
 	 * @param session
@@ -467,7 +467,7 @@ public class MemberController {
 	}
 
 	/**
-	 * 의뢰내용 등록
+	 * 연계내용 등록
 	 * @param multiRequest
 	 * @param reqMap
 	 * @param session
@@ -481,7 +481,7 @@ public class MemberController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		String usrId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
-		String transDt = StringUtils.defaultIfEmpty((String)reqMap.get("transDt"), "").replaceAll("-", "");		// 의뢰일자
+		String transDt = StringUtils.defaultIfEmpty((String)reqMap.get("transDt"), "").replaceAll("-", "");		// 연계일자
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("mbrNo"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
@@ -497,26 +497,26 @@ public class MemberController {
 			resultView.addObject("MSG", "필수정보 누락");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyName"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyRelationCd"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlySexCd"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyAge"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyName"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyRelationCd"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlySexCd"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyAge"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
 
 		reqMap.put("transDt", transDt);
 		reqMap.put("creId", usrId);
@@ -557,7 +557,7 @@ public class MemberController {
 	}
 
 	/**
-	 * 의뢰 목록 조회
+	 * 연계 목록 조회
 	 * @param model
 	 * @param reqMap
 	 * @param session
@@ -612,7 +612,7 @@ public class MemberController {
 	}
 
 	/**
-	 * 의뢰 상세 정보 조회
+	 * 연계 상세 정보 조회
 	 * @param transNo
 	 * @param session
 	 * @return
@@ -637,7 +637,7 @@ public class MemberController {
 	}
 
 	/**
-	 * 회원정보관리 의뢰
+	 * 회원정보관리 의뢰 ( 구: 연계 ) 의뢰 ↔ 연계 맞바꿈
 	 * @param model
 	 * @param reqMap
 	 * @param session
@@ -695,7 +695,7 @@ public class MemberController {
 	}
 
 	/**
-	 * 연계내용 저장
+	 * 의뢰내용 저장
 	 * @param multiRequest
 	 * @param reqMap
 	 * @param session
@@ -709,7 +709,7 @@ public class MemberController {
 		HashMap<String, Object> usrInfo = (HashMap<String, Object>)session.getAttribute(ConstantObject.LOGIN_SESSEION_INFO);
 
 		String usrId = StringUtils.defaultString((String)usrInfo.get("USR_ID"), "");
-		String transDt = StringUtils.defaultIfEmpty((String)reqMap.get("transDt"), "").replaceAll("-", "");		// 의뢰일자
+		String transDt = StringUtils.defaultIfEmpty((String)reqMap.get("transDt"), "").replaceAll("-", "");		// 연계일자
 		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("transNo"), ""))) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "필수정보 누락");
@@ -730,26 +730,26 @@ public class MemberController {
 			resultView.addObject("MSG", "필수정보 누락");
 			return resultView;
 		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyName"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyRelationCd"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlySexCd"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
-		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyAge"), ""))) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "필수정보 누락");
-			return resultView;
-		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyName"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyRelationCd"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlySexCd"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
+//		if("".equals(StringUtils.defaultIfEmpty((String)reqMap.get("fmlyAge"), ""))) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "필수정보 누락");
+//			return resultView;
+//		}
 
 		reqMap.put("transDt", transDt);
 		reqMap.put("creId", usrId);

@@ -29,31 +29,31 @@
 				}
 			});
 		}
-		<%-- 의뢰정보저장 --%>
+		<%-- 연계정보저장 --%>
 		transSave = function(){
 			if($("input[name='mbrNo']").val() == ""){
 				alert("회원을 선택하세요.");						return;
 			}
 			if($("select[name='receiptInstCd']").val() == ""){
-				alert("의뢰기관은 필수 선택입니다.");
+				alert("연계기관은 필수 선택입니다.");
 				$("select[name='receiptInstCd']").focus();	return;
 			}
 			if($("input[name='transDt']").val() == ""){
-				alert("의뢰일자는 필수 선택입니다.");
+				alert("연계일자는 필수 선택입니다.");
 				$("input[name='transDt']").focus();			return;
 			}
-			if($("input[name='fmlyName']").val() == ""){
-				alert("보호자 성명은 필수 입력 항목입니다.");
-				$("input[name='fmlyName']").focus();			return;
-			}
-			if($("select[name='fmlyRelationCd']").val() == ""){
-				alert("보호자 관계는 필수 입력 항목입니다.");
-				$("select[name='fmlyRelationCd']").focus();			return;
-			}
-			if($("input[name='fmlyAge']").val() == ""){
-				alert("보호자 연령은 필수 입력 항목입니다.");
-				$("input[name='fmlyAge']").focus();					return;
-			}
+// 			if($("input[name='fmlyName']").val() == ""){
+// 				alert("보호자 성명은 필수 입력 항목입니다.");
+// 				$("input[name='fmlyName']").focus();			return;
+// 			}
+// 			if($("select[name='fmlyRelationCd']").val() == ""){
+// 				alert("보호자 관계는 필수 입력 항목입니다.");
+// 				$("select[name='fmlyRelationCd']").focus();			return;
+// 			}
+// 			if($("input[name='fmlyAge']").val() == ""){
+// 				alert("보호자 연령은 필수 입력 항목입니다.");
+// 				$("input[name='fmlyAge']").focus();					return;
+// 			}
 
 			$.ajax({
 				url : '/ajaxTransAdd.do',
@@ -77,7 +77,7 @@
 				}
 			});
 		}
-		<%-- 의뢰목록 조회 --%>
+		<%-- 연계목록 조회 --%>
 		getTransList = function(){
 			$.ajax({
 				url : '/getTransList.do',
@@ -135,14 +135,14 @@
 								<span><i class="el-icon-s-help"></i> 회원정보관리</span>
 							</div>
 						</a>
-						<a href="/memberLink.do">
-							<div class="el-tabs__item is-top" data-id="tab-link">
-								<span><i class="el-icon-s-management"></i> 연계</span>
-							</div>
-						</a>
 						<a href="/memberReq.do">
 							<div class="el-tabs__item is-top is-active" data-id="tab-req">
-								<span><i class="el-icon-platform-eleme"></i> 의뢰</span>
+								<span><i class="el-icon-platform-eleme"></i> 연계</span>
+							</div>
+						</a>
+						<a href="/memberLink.do">
+							<div class="el-tabs__item is-top" data-id="tab-link">
+								<span><i class="el-icon-s-management"></i> 의뢰</span>
 							</div>
 						</a>
 					</div>
@@ -170,11 +170,11 @@
 							<thead>
 							<tr>
 								<th>#</th>
-								<th>의뢰유형</th>
+								<th>연계유형</th>
 								<th>성명</th>
-								<th>의뢰기관</th>
-								<th>의뢰일자</th>
-								<th>의뢰자</th>
+								<th>연계기관</th>
+								<th>연계일자</th>
+								<th>연계자</th>
 								<th>접수기관</th>
 								<th>접수일자</th>
 								<th>접수자</th>
@@ -196,7 +196,7 @@
 				<table class="w-auto">
 					<tbody>
 					<tr>
-						<th><span class="required">*</span> 의뢰기관</th>
+						<th><span class="required">*</span> 연계기관</th>
 						<td>
 							<select name="receiptInstCd" style="width:130px">
 								<option value="">선택</option>
@@ -207,14 +207,14 @@
 </c:if>
 							</select>
 						</td>
-						<th><span class="required">*</span> 의뢰일자</th>
+						<th><span class="required">*</span> 연계일자</th>
 						<td>
 							<div class="dat-pk">
 								<i class="el-input__icon el-icon-date"></i>
-								<input name="transDt" type="text" class="el-input__inner datepicker" placeholder="의뢰일자" style="width: 130px;">
+								<input name="transDt" type="text" class="el-input__inner datepicker" placeholder="연계일자" style="width: 130px;">
 							</div>
 						</td>
-						<th>의뢰자</th>
+						<th>연계자</th>
 						<td><input name="transMemNm" value="<c:out value="${loginUserNm}"/>" type="text" class="el-input__inner" readonly style="width:160px"></td>
 						<th>요청서비스</th>
 						<td>
@@ -611,9 +611,9 @@
 			</div>
 			<div class="section pdn">
 				<div class="el-card_header">
-					<h2><i class="el-icon-s-opportunity"></i> 의뢰사유</h2>
+					<h2><i class="el-icon-s-opportunity"></i> 연계사유</h2>
 				</div>
-				<div class="el-card_body"><textarea name="transCtnt" style="height: 120px;" placeholder="의뢰사유"></textarea></div>
+				<div class="el-card_body"><textarea name="transCtnt" style="height: 120px;" placeholder="연계사유"></textarea></div>
 				<div class="el-card_body">
 					<div id="transfileName"></div>
 					<input type="hidden" name="transfileNameFlag" value="N" />

@@ -524,6 +524,8 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 	 * @throws Exception
 	 */
 	public List<HashMap<String, Object>> getMstTransList(HashMap<String, Object> map) throws Exception{
+		map.put("paswKey", propertiesService.getString("aes256Key"));
+		
 		if(map.get("currentPageNo")== null || StringUtils.defaultString(map.get("currentPageNo").toString(), "") == "") {
 			throw new Exception("MemberServiceImpl.getMstTransList currentPageNo 페이지 수 누락");
 		}

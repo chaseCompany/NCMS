@@ -29,7 +29,7 @@
 				}
 			});
 		}
-		<%-- 연계목록 조회 --%>
+		<%-- 의뢰목록 조회 --%>
 		getLinkList = function(){
 			$.ajax({
 				url : '/getTransList.do',
@@ -46,7 +46,7 @@
 				}
 			});
 		}
-		<%-- 연계여부 저장 --%>
+		<%-- 의뢰여부 저장 --%>
 		transSave = function(type){
 			if($("input[name='mbrNo']").val() == ""){
 				alert("회원을 선택 하세요.");			return;
@@ -124,14 +124,14 @@
 								<span><i class="el-icon-s-help"></i> 회원정보관리</span>
 							</div>
 						</a>
-						<a href="/memberLink.do">
-							<div class="el-tabs__item is-top is-active" data-id="tab-link">
-								<span><i class="el-icon-s-management"></i> 연계</span>
-							</div>
-						</a>
 						<a href="/memberReq.do">
 							<div class="el-tabs__item is-top" data-id="tab-req">
-								<span><i class="el-icon-platform-eleme"></i> 의뢰</span>
+								<span><i class="el-icon-platform-eleme"></i> 연계</span>
+							</div>
+						</a>
+						<a href="/memberLink.do">
+							<div class="el-tabs__item is-top is-active" data-id="tab-link">
+								<span><i class="el-icon-s-management"></i> 의뢰</span>
 							</div>
 						</a>
 					</div>
@@ -181,7 +181,7 @@
 				<table class="w-auto">
 					<tbody>
 					<tr>
-						<th>연계기관</th>
+						<th>의뢰기관</th>
 						<td>
 							<select name="receiptInstCd" style="width:130px">
 								<option value="">선택</option>
@@ -192,14 +192,14 @@
 </c:if>
 							</select>
 						</td>
-						<th>연계일자</th>
+						<th>의뢰일자</th>
 						<td>
 							<div class="dat-pk">
 								<i class="el-input__icon el-icon-date"></i>
-								<input name="transDt" type="text" class="el-input__inner datepicker" placeholder="연계일자" style="width: 130px;">
+								<input name="transDt" type="text" class="el-input__inner datepicker" placeholder="의뢰일자" style="width: 130px;">
 							</div>
 						</td>
-						<th>연계유형</th>
+						<th>의뢰유형</th>
 						<td>
 							<select style="width:130px">
 								<option value="">선택</option>
@@ -586,9 +586,9 @@
 			</div>
 			<div class="section pdn">
 				<div class="el-card_header">
-					<h2><i class="el-icon-s-opportunity"></i> 연계사유</h2>
+					<h2><i class="el-icon-s-opportunity"></i> 의뢰사유</h2>
 				</div>
-				<div class="el-card_body"><textarea name="transCtnt" style="height: 120px;" placeholder="연계사유"></textarea></div>
+				<div class="el-card_body"><textarea name="transCtnt" style="height: 120px;" placeholder="의뢰사유"></textarea></div>
 				<div class="el-card_body">
 					<div id="transfileName"></div>
 					<input type="hidden" name="transfileNameFlag" value="N" />

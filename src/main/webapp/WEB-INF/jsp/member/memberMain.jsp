@@ -208,14 +208,14 @@
 								<span><i class="el-icon-s-help"></i> 회원정보관리</span>
 							</div>
 						</a>
-						<a href="/memberLink.do">
-							<div class="el-tabs__item is-top" data-id="tab-link">
-								<span><i class="el-icon-s-management"></i> 연계</span>
-							</div>
-						</a>
 						<a href="/memberReq.do">
 							<div class="el-tabs__item is-top" data-id="tab-req">
-								<span><i class="el-icon-platform-eleme"></i> 의뢰</span>
+								<span><i class="el-icon-platform-eleme"></i> 연계</span>
+							</div>
+						</a>
+						<a href="/memberLink.do">
+							<div class="el-tabs__item is-top" data-id="tab-link">
+								<span><i class="el-icon-s-management"></i> 의뢰</span>
 							</div>
 						</a>
 					</div>

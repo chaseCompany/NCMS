@@ -169,7 +169,7 @@
 									   + "	<td><div class='cell'>" + obj.CSL_TERM_TM + "</div></td>"
 									   + "	<td class='txt-left'><div class='cell'>" + obj.CSL_SBJ + "</div></td>"
 									   + "	<td class='txt-left'><div class='cell'>" + obj.CSL_TGT + "</div></td>"
-									   + "	<td><div class='cell'>" + obj.CSL_ID + "</div></td>"
+									   + "	<td><div class='cell'>" + obj.CSL_NM + "</div></td>"
 									   + "	<td><div class='cell'>"
 									   + "		<button type='button' onclick='javaScript:idvDel(\"" + obj.CSL_NO + "\", \"" + idx + "\");' class='el-button el-button--danger el-button--mini is-plain' style='margin-left: 1px; padding: 4px 9px;'> <span>삭제</span> </button>"
 									   + "	</div></td>"
