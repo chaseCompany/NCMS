@@ -133,7 +133,7 @@ public class MentalityController {
 		int resultNum = mentalityService.deleteCslCure(StringUtils.defaultString(reqMap.get("cslNo").toString(), ""));
 		if(resultNum <= 0) {
 			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "삭제 오류");
+			resultView.addObject("MSG", "삭제도중 오류가 발생하였습니다.");
 		}
 
 		return resultView;

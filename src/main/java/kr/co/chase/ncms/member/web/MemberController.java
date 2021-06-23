@@ -551,6 +551,7 @@ public class MemberController {
 		if(resultMap != null) {
 			resultView.addObject("err", resultMap.get("err"));
 			resultView.addObject("MSG", resultMap.get("MSG"));
+			resultView.addObject("transNo", resultMap.get("transNo"));
 		}
 
 		return resultView;

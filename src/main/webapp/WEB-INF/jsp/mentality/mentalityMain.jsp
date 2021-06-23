@@ -198,6 +198,7 @@
 						if($("#idvTableList tr").length <= 0){
 							$("div#idvList").html("<div class='no-data'>조회된 데이터가 없습니다.</div>");
 						}
+						alert("삭제되었습니다.");
 
 						newIdv();
 					}else{

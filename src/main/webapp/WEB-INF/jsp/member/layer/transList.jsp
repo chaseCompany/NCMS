@@ -26,13 +26,28 @@
 					var resultObj = res.transInfo;
 
 					if(resultObj != null){
-						getMemInfo(resultObj.MBR_NO);
-
+						getMemInfo(resultObj.MBR_NO, false);
+						
 						$("input[name='transNo']").val(resultObj.TRANS_NO);
 						$("select[name='receiptInstCd']").val(resultObj.RECEIPT_INST_CD).prop("selected", true);
 						$("input[name='transDt']").val(formatDate(resultObj.TRANS_DT));
 						$("input[name='transMemNm']").val(resultObj.TRANS_USR_NM);
-						$("input[name='reqServiceCd']:radio[value='" + resultObj.REQ_SERVICE_CD + "']").prop("checked", true);
+						<c:if test="${listType ne 'L'}">
+							$("input[name='reqServiceCd']:radio[value='" + resultObj.REQ_SERVICE_CD + "']").prop("checked", true);
+						</c:if>
+						<c:if test="${listType eq 'L'}">
+							$("input[name='linkStateCd']").val(resultObj.LINK_STATE_CD);
+							
+							if(resultObj.LINK_STATE_CD == 2){
+								$("button#btnReceipt").addClass("is-disabled");
+								$("button#btnReject").removeClass("is-disabled");
+							}else if(resultObj.LINK_STATE_CD == 3){
+								$("button#btnReceipt").removeClass("is-disabled");
+								$("button#btnReject").addClass("is-disabled");
+							}else{
+								$("button#btnReceipt, button#btnReject").removeClass("is-disabled");
+							}
+						</c:if>
 						$("input[name='linkStateCd']:radio[value='" + resultObj.LINK_STATE_CD + "']").prop("checked", true);
 						$("select[name='evlItmSco01']").val(resultObj.EVL_ITM_SCO01).prop("selected", true);
 						$("input[name='evlItmLnk01']").val(resultObj.EVL_ITM_LNK01);
@@ -164,6 +179,7 @@
 			<col style="width:120px">
 			<col style="width:150px">
 			<col style="width:150px">
+			<col style="width:150px">
 			<col>
 		</colgroup>
 		<tbody>
@@ -177,6 +193,7 @@
 				<td><div class="cell"><c:out value="${result.TEL_NO1}" />-<c:out value="${result.TEL_NO2}" />-<c:out value="${result.TEL_NO3}" /></div></td>
 				<td><div class="cell"><c:out value="${result.MNG_USR_NM}" /></div></td>
 				<td><div class="cell"><c:out value="${result.SITE_NM}" /></div></td>
+				<td><div class="cell"><c:out value="${result.LINK_STATE_NM}" /></div></td>
 				<td>
 					<div class="cell">
 						<button type="button" class="el-button el-button--warning el-button--mini is-plain" style="margin-left: 1px; padding: 4px 9px;" onclick="javaScript:transView('<c:out value="${result.TRANS_NO}" />');">

@@ -54,9 +54,14 @@
 			if($("input[name='transNo']").val() == ""){
 				alert("처리대상을 선택 하세요.");			return;
 			}
+			
+			if($("input[name='linkStateCd']").val() == type){
+// 				alert("이미 "+(type == "2" ? "접수": "반려")+"된 데이터입니다.\r\n연계상태 값을 확인하여 주십시오.");
+				return;
+			}
 
 			$("input[name='linkStateCd']").val(type);
-
+			
 			$.ajax({
 				url : '/ajaxTransResult.do',
 				type : 'POST',
@@ -66,7 +71,7 @@
 				data : new FormData($("#transForm")[0]),
 				success : function(res){
 					if(res.err != "Y"){
-						alert("성공");
+						alert((type == "2" ? "접수": "반려")+" 되었습니다.");
 						getLinkList();
 
 						transView($("input[name='transNo']").val());
@@ -104,10 +109,10 @@
 <!-- // 페이지 타이틀 -->
 <!-- 상단 버튼 -->
 <div class="top-right-btn">
-	<button type="button" onclick="javaScript:transSave('2');" class="el-button normal el-button--primary el-button--small is-plain">
+	<button type="button" id="btnReceipt" onclick="javaScript:transSave('2');" class="el-button normal el-button--primary el-button--small is-plain">
 		<i class="el-icon-check"></i><span>접수</span>
 	</button>
-	<button type="button" onclick="javaScript:transSave('3');" class="el-button normal el-button--primary el-button--small is-plain">
+	<button type="button" id="btnReject" onclick="javaScript:transSave('3');" class="el-button normal el-button--primary el-button--small is-plain">
 		<i class="el-icon-check"></i><span>반려</span>
 	</button>
 </div>
@@ -152,6 +157,7 @@
 								<col style="width:120px">
 								<col style="width:150px">
 								<col style="width:150px">
+								<col style="width:150px">
 								<col>
 							</colgroup>
 							<thead>
@@ -163,6 +169,7 @@
 								<th>연락처</th>
 								<th>사례관리자</th>
 								<th>최초등록기관</th>
+								<th>연계상태</th>
 								<th>작업</th>
 							</tr>
 							</thead>

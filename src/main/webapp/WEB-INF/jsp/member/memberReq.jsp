@@ -13,7 +13,7 @@
 		$("input[name='transDt']").datepicker('setDate', 'today');
 
 		<%-- 회원 정보 페이지 로딩 --%>
-		getMemInfo = function(tagMbrNo){
+		getMemInfo = function(tagMbrNo, isChk){
 			$.ajax({
 				url : '/ajaxMbrInfo.do',
 				type : 'POST',
@@ -23,6 +23,10 @@
 				},
 				success : function(res){
 					$("div#memInfoView").html(res);
+					if(isChk == undefined){
+						$("input[name='linkStateCd']:radio[value=1]").prop("checked", true);
+						$("input[name='transNo']").val("");
+					}
 				},
 				error : function(xhr, status){
 					console.log(xhr);
@@ -54,6 +58,7 @@
 // 				alert("보호자 연령은 필수 입력 항목입니다.");
 // 				$("input[name='fmlyAge']").focus();					return;
 // 			}
+			$("input[name=linkStateCd]").attr("disabled", false);
 
 			$.ajax({
 				url : '/ajaxTransAdd.do',
@@ -64,10 +69,11 @@
 				data : new FormData($("#transForm")[0]),
 				success : function(res){
 					if(res.err != "Y"){
-						alert(res.MSG + " 성공");
+						alert(res.MSG + " 되었습니다.");
 
 						getTransList();
-						transView($("input[name='transNo']").val());
+						
+						transView(res.transNo);
 					}else{
 						alert(res.MSG);
 					}
@@ -236,7 +242,7 @@
 	<c:set var="linkStateCd" value="1" />
 	<c:forEach var="result" items="${linkStateList}" varStatus="status">
 							<span class="ck-bx">
-								<input type="radio" class="el-radio__original" name="linkStateCd" value="<c:out value="${result.CD_ID}" />" id="linkStateCd-<c:out value="${status.count}" />"<c:if test="${linkStateCd eq result.CD_ID}"> checked</c:if>>
+								<input type="radio" class="el-radio__original" name="linkStateCd" value="<c:out value="${result.CD_ID}" />" id="linkStateCd-<c:out value="${status.count}" />"<c:if test="${linkStateCd eq result.CD_ID}"> checked</c:if> disabled="disabled">
 								<label for="linkStateCd-<c:out value="${status.count}" />">
 									<span class="el-radio__input"><span class="el-radio__inner"></span></span> <c:out value="${result.CD_NM}" />
 								</label>

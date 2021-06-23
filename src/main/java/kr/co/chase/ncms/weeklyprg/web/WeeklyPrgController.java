@@ -94,7 +94,7 @@ public class WeeklyPrgController {
 		reqMap.put("searchSiteCd", StringUtils.defaultIfEmpty((String)usrInfo.get("SITE_CD"), ""));
 		reqMap.put("searchUserId", StringUtils.defaultIfEmpty((String)usrInfo.get("USR_ID"), ""));
 		
-		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pageNo"), "1");
+		String currentPageNo = StringUtils.defaultString((String)reqMap.get("pgmPageNo"), "1");
 		String recordCountPerPage = StringUtils.defaultString((String)reqMap.get("perPage"), ConstantObject.defaultRowSize);
 
 		PaginationInfo paginginfo = new PaginationInfo();

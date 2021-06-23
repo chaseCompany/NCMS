@@ -435,7 +435,8 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		}
 
 		if("".equals(transNo)) {
-			map.put("transNo", this.getMstTransSeq());
+			transNo = this.getMstTransSeq();
+			map.put("transNo", transNo);
 
 			result = this.insertMstTrans(map);
 
@@ -500,6 +501,7 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 			result = this.updateMbrFmly(map);
 		}
 
+		resultMap.put("transNo", transNo);
 		if(result <= 0) {
 			resultMap.put("err", ConstantObject.Y);
 		}
