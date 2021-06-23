@@ -39,13 +39,13 @@
 							$("input[name='linkStateCd']").val(resultObj.LINK_STATE_CD);
 							
 							if(resultObj.LINK_STATE_CD == 2){
-								$("button#btnReceipt").addClass("is-disabled");
-								$("button#btnReject").removeClass("is-disabled");
+								$("button#btnReceipt").attr("disabled", true);
+								$("button#btnReject").attr("disabled", false);
 							}else if(resultObj.LINK_STATE_CD == 3){
-								$("button#btnReceipt").removeClass("is-disabled");
-								$("button#btnReject").addClass("is-disabled");
+								$("button#btnReceipt").attr("disabled", false);
+								$("button#btnReject").attr("disabled", true);
 							}else{
-								$("button#btnReceipt, button#btnReject").removeClass("is-disabled");
+								$("button#btnReceipt, button#btnReject").attr("disabled", false);
 							}
 						</c:if>
 						$("input[name='linkStateCd']:radio[value='" + resultObj.LINK_STATE_CD + "']").prop("checked", true);

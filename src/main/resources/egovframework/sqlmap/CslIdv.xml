@@ -8,16 +8,17 @@
 			   CSL_NO		, CSL_ID		, CSL_DT		, CSL_FM_TM		, CSL_TO_TM
 			 , CSL_TERM_TM	, CSL_SBJ		, CSL_TGT		, MBR_NO
 			 , SU.USR_NM AS CSL_NM
+			 , SU.SITE_CD AS SITE_CD
 		  FROM CSL_IDV CI
 		  LEFT JOIN SYS_USR SU ON (CI.CSL_ID = SU.USR_ID)
 	]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="mbrNo != null or mbrNo != ''">
-		   AND MBR_NO = #{mbrNo}
+		   AND CI.MBR_NO = #{mbrNo}
 			</if>
 		</trim>
 	<![CDATA[
-		 ORDER BY CRE_DT DESC
+		 ORDER BY CI.CRE_DT DESC
 	]]>
 	</select>
 
