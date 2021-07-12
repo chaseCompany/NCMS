@@ -20,6 +20,12 @@
 			eval($("input[name='reFunName']").val() + "(mbrNo)");
 			layerPopupClose('memberPopUp');
 		}
+		
+		$("input[name='memSchMbrNm']").keydown(function(key) {
+            if (key.keyCode == 13) {
+            	schPageList();
+            }
+        });
 	});
 </script>
 <!-- 회원 검색 팝업 -->

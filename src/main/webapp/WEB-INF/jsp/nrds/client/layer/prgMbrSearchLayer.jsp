@@ -23,6 +23,11 @@
 			};
 			eval($("input[name='reFunName']").val() + "(tagMemObj)");
 		}
+		$("input[name='memSchMbrNm']").keydown(function(key) {
+            if (key.keyCode == 13) {
+            	schPageList();
+            }
+        });
 	});
 </script>
 <!-- 회원 검색 팝업 -->
