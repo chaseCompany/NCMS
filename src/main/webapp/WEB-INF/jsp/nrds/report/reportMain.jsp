@@ -85,7 +85,7 @@
 			</li>
 			<li>
 				<button onclick="javaScript:statisticsExcel(this, 'EduMngStatisticsExcel');" type="button" class="el-button el-button--primary el-button--medium is-plain" style="padding: 15px 21px 14px;">
-					<i class="el-icon-document"></i><span>심리상담 통계</span>
+					<i class="el-icon-document"></i><span>교육관리 통계</span>
 				</button>
 			</li>
 		</ul>
