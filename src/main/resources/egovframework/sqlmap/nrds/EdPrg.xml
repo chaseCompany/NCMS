@@ -164,7 +164,7 @@
 		  	 , SC01.CD_NM AS PGM_ED_NM							, SC02.CD_NM AS PGM_CLASS_NM_NM
 			 , SC03.CD_NM AS PGM_CLASS_SUB_NM				, SC04.CD_NM AS CSL_SITE_NM
 			 , SC05.CD_NM AS PGM_AGENT_NM
-			 <if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null">
+			 <if test='joinYn == "Y"'><!-- 재활교육프로그램 통계 조인 추가 -->
 				, EPM.MBR_NO
 				, EPM.PGM_USER_CNT
 				, IFNULL(CAST(AES_DECRYPT(UNHEX(EM.MBR_NM), #{paswKey}) AS CHAR), EM.MBR_NM) AS MBR_NM
@@ -180,8 +180,10 @@
 			 	WHERE EP.PGM_ID = #{pgmId}
 			</if>
 			<if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
-				LEFT JOIN ED_PGM_MBR EPM ON EPM.PGM_ID = EP.PGM_ID
-				LEFT JOIN ED_MBR EM ON EPM.MBR_NO = EM.MBR_NO
+			 	<if test='joinYn == "Y"'><!-- 재활교육프로그램 통계 조인 추가 -->
+				 	LEFT JOIN ED_PGM_MBR EPM ON EPM.PGM_ID = EP.PGM_ID
+					LEFT JOIN ED_MBR EM ON EPM.MBR_NO = EM.MBR_NO
+			 	</if>
 			 	WHERE DATE_FORMAT(EP.PGM_START_DT, '%Y%m%d') <![CDATA[>=]]> #{fmDt}
 			 	AND DATE_FORMAT(EP.PGM_END_DT, '%Y%m%d')  <![CDATA[<=]]> #{toDt}
 			</if>

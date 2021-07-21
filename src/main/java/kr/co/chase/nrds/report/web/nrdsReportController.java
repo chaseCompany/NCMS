@@ -75,13 +75,14 @@ public class nrdsReportController {
 		
 		List<HashMap<String, Object>> resultMap = new ArrayList<HashMap<String, Object>>();
 		if("RecycleStatisticsExcel".equals(excelName)) {
-			// 재활교육프로그램 edPrg.selectEdPrmInfoMap 교육일시:PGM_CLASS_START_DT
+			// 재활교육프로그램 edPrg.selectEdPrmInfoMap 교육일시:PGM_START_DT
+			reqMap.put("joinYn", "Y");
 			resultMap = recyclePrgService.getEdPrmStatistics(reqMap);
 		}else if("EduCounselStatisticsExcel".equals(excelName)) {
 			// 교육상담 eduCounsel.getCslCure 상담일자:CSL_DT
 			resultMap = eduCounselService.getCslCureStatistics(reqMap);
 		}else if("EduMngStatisticsExcel".equals(excelName)) {
-			// 교육관리 edPrg.selectEdPrmInfoMap 교육일시:PGM_CLASS_START_DT
+			// 교육관리 edPrg.selectEdPrmInfoMap 교육일시:PGM_START_DT
 			resultMap = recyclePrgService.getEdPrmStatistics(reqMap);
 		}
 		
