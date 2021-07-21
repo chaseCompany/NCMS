@@ -182,8 +182,8 @@
 			<if test="fmDt != '' and fmDt != null and toDt != '' and toDt != null"><!-- 통계 엑셀 조회시  -->
 				LEFT JOIN ED_PGM_MBR EPM ON EPM.PGM_ID = EP.PGM_ID
 				LEFT JOIN ED_MBR EM ON EPM.MBR_NO = EM.MBR_NO
-			 	WHERE EP.PGM_START_DT <![CDATA[>=]]> #{schStrDt}
-			 	AND EP.PGM_END_DT  <![CDATA[<=]]> #{schEndDt}
+			 	WHERE DATE_FORMAT(EP.PGM_START_DT, '%Y%m%d') <![CDATA[>=]]> #{fmDt}
+			 	AND DATE_FORMAT(EP.PGM_END_DT, '%Y%m%d')  <![CDATA[<=]]> #{toDt}
 			</if>
 			<if test="searchRoleCd != null and searchRoleCd != '' and searchRoleCd != '90'">
 				<choose>
