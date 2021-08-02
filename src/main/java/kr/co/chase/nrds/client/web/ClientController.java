@@ -749,11 +749,11 @@ public class ClientController {
 			resultView.addObject("MSG", "회원을 선택하세요.");
 			return resultView;
 		}
-		if("".equals(rZipCd) || "".equals(rAddr1)) {
-			resultView.addObject("err", ConstantObject.Y);
-			resultView.addObject("MSG", "실거주지를 입력하세요.");
-			return resultView;
-		}
+//		if("".equals(rZipCd) || "".equals(rAddr1)) {
+//			resultView.addObject("err", ConstantObject.Y);
+//			resultView.addObject("MSG", "실거주지를 입력하세요.");
+//			return resultView;
+//		}
 		if("".equals(reqDt)) {
 			resultView.addObject("err", ConstantObject.Y);
 			resultView.addObject("MSG", "의뢰일을 입력하세요.");

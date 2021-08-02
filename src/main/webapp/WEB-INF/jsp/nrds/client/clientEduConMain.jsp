@@ -244,10 +244,10 @@
 				alert("대상자를 선택해 주세요.");
 				mstMbrSearchPopup();							return;
 			}
-			if($("input[name='rZipCd']").val() == "" || $("input[name='rAddr1']").val() == ""){
-				alert("실거주지를 입력하세요.");
-				zipCodePop();									return;
-			}
+// 			if($("input[name='rZipCd']").val() == "" || $("input[name='rAddr1']").val() == ""){
+// 				alert("실거주지를 입력하세요.");
+// 				zipCodePop();									return;
+// 			}
 			if($("input[name='reqDt']").val() == ""){
 				alert("의뢰일을 입력하세요.");
 				$("input[name='reqDt']").focus();				return;
